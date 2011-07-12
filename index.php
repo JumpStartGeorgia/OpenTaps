@@ -11,6 +11,7 @@ require_once DIR . 'application/Slim/Slim.php';
 Slim::init();
 
 Storage::instance()->title = 'Home Page';
+Storage::instance()->content = template('home');
 
 require_once DIR . 'application/routes.php';
 
