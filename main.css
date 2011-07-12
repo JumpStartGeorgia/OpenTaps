@@ -1,0 +1,282 @@
+* { 
+  margin: 0 auto;
+}
+
+body {
+  margin-top:25px;
+  color: #333;
+  padding-bottom:25px;font-size:100.01%;
+}
+
+body, div.header_right, div.projects_organization, div.news{
+  background-image:url('images/bg.jpg');
+}
+
+.main{
+  width:950px;
+  min-height:1100px;
+  margin-left:auto;
+  margin-right:auto;
+  background-color: #fff;
+  padding: 22px 25px 22px 25px;
+}
+
+div.header{
+  
+}
+
+div.header_right{
+  width:563px;
+  height:74px;
+  float:right;
+  padding: 17px 31px 25px 21px ;
+  font-size:12px;
+  font-family:Arial;
+  color:#565656;
+}
+
+div.header_right p{
+  font-size:1.55em;
+  font-family:Arial;
+  margin-bottom:6px;
+}
+
+div.after_header{
+  height:7px;
+  margin-top:22px;
+  background-image:url('images/bg_after_header.jpg');
+}
+
+div.menu{
+}
+
+div.menu ul{
+  list-style-type: none;
+  padding:0;
+  float:left;
+}
+div.menu ul li{
+  height:33px;
+  cursor:hand;
+  cursor:pointer;
+  padding:0 8px 0 9px;
+}
+
+div.menu ul li, div.projects_organization, div.news, div.spacer{
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  color:#00AFF2;
+  font-size:1.0em;
+  font-family:Arial;
+}
+div.menu ul li{
+  font-size:0.85em;
+}
+
+div.search{
+  float:right;
+  border-left:1px solid #707C90;
+  margin-top:5px;
+  padding-left:2px;
+}
+div.search input.search{
+  border:0px;
+  height:24px;
+  width:122px;
+}
+div.search input.submit{
+  background-image:url('images/search.jpg');
+  cursor:hand;
+  cursor:pointer;
+  width:16px;
+  height:16px;
+  border:0px;
+}
+
+div.middle{
+  height:350px;
+  border-top:1px dotted #A6A6A6;
+  margin-top:33px;
+  padding-top:11px;
+  margin-bottom:35px;
+}
+
+div.projects_organization{
+  height:31px;
+  width:301px;
+}
+
+div.news{
+  height:31px;
+  width:585px;
+  text-align:left;
+}
+
+div.news, div.projects_organization, div.spacer{
+  height:31px;
+}
+
+div.spacer{
+  width:61px;
+}
+
+div.news img{
+  vertical-align:middle;
+  float:left;
+}
+
+div.news span{
+  float:left;
+  padding-top:6px;
+}
+
+div.chart{
+  margin-top:40px;
+  width:301px;
+  height:410px;
+  float:left;
+}
+
+div.news_body{
+  color:#565656;
+  font-size:13px;
+  font-family:Arial;
+  padding:0 38px 0 17px;
+  float:right;
+  margin-top:22px;
+}
+
+div.news_body hr{
+  margin-top:20px;
+  border:1px solid #CCC;
+  border-top:1px solid #909090;
+}
+div.news_body hr, div.news_body{
+  width:531px;
+}
+div.news_each, div.news_each_with_bg{
+  min-height:70px;
+  padding:12px 6px 10px 5px;
+  width:520px;
+  cursor:hand;
+  cursor:pointer;
+  margin-bottom:4px;
+}
+div.news_each_with_bg{
+  background-image:url("images/bg.jpg");
+}
+
+p.ptitle{
+  font-size:18px;
+  float:left;
+}
+p.pdate{
+  color:#565656;
+  font-size:13px;
+  float:right;
+}
+div.news_text{
+  color:#565656;
+  margin-top:25px;
+  padding-right:62px;
+}
+
+
+div.more_news{
+  float:right;
+  margin-top:10px;
+  cursor:hand;
+  cursor:pointer;
+}
+
+
+
+
+hr.bottom{
+  width:950px;
+  margin-top:585px;
+  margin-bottom:5px;
+  background-color:grey;
+  border:1px solid #CCC;
+  border-top:1px solid grey;
+}
+
+div.bottom, div.bottom1, div.bottom2, div.bottom3{
+  float:left;
+  font-size:0.7em;
+  font-family:arial;
+  color:grey;
+}
+div.bottom1{
+  margin-left:30px;
+}
+
+div.bottom a{
+  color:grey;
+  text-decoration:none;
+}
+div.bottom a:hover{
+  text-decoration:underline;
+  color:black;	
+}
+
+div.bottom2{
+  margin-left:55px;
+  color:#909090;
+}
+div.bottom3{
+  float:right;
+  vertical-align:middle;
+}
+
+div.bottom3 img{
+  vertical-align:middle;
+  margin-top:-5px;
+}
+
+.maxItemInactive{
+	width:25px;
+	height:20px;
+	background: url("images/max.jpg");
+	opacity:.5;
+	margin-top:20px;
+	margin-left:20px;
+	cursor:pointer;
+}
+.minItemInactive{
+	width:25px;
+	height:20px;
+	background:url("images/min.jpg");
+	opacity:.5;
+	margin-top:-20px;
+	margin-left:50px;
+	cursor:pointer;
+}
+.filtersItemInactive{
+	width:25px;
+	height:20px;
+	background:url("images/filters.jpg");
+	opacity:.5;
+	margin-top:-20px;
+	margin-left:845px;
+	cursor:pointer;
+}
+.setsItemInactive{
+	width:25px;
+	height:20px;
+	background:url("images/sets.jpg");
+	opacity:.5;
+	margin-top:-20px;
+	margin-left:875px;
+	cursor:pointer;
+}
+.tagsItemInactive{
+	width:25px;
+	height:20px;
+	background:url("images/tags.jpg");
+	opacity:.5;
+	margin-top:-20px;
+	margin-left:905px;
+	cursor:pointer;
+}
