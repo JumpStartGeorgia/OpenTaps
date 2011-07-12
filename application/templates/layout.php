@@ -2,6 +2,7 @@
     <head>
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
         <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
+        <meta charset="utf-8"/>
     </head>
     <body onload="init()">
 
@@ -43,16 +44,10 @@
             <div id="map" class="middle">
             </div>
             <br/><br/>
-            <div class='projects_organization'>
-                PROJECTS ORGANIZATION
-            </div>
-
-            <div class='spacer'>
-            </div>
 
             <?php echo Storage::instance()->content ?>
 
-            <hr class='bottom' />
+            <hr class='bottom' id='myhr' />
 
             <div class='bottom'>
                 © 2011 OPEN TAPS. &nbsp;&nbsp; Designed and developed by <a href='http://jumpstart.ge/'>Jumpstart Georgia</a>
