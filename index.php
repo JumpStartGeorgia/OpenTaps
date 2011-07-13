@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-echo sha1('password');
+
 define('DIR', getcwd() . '/');
 define('URL', 'http://www.localhost.com/OpenTaps/');
 
