@@ -39,16 +39,11 @@
                     </form>
                 </div>
             </div>
-
+		
             <div id="map" class="middle">
             </div>
             <br/><br/>
-            <div class='projects_organization'>
-                PROJECTS ORGANIZATION
-            </div>
-
-            <div class='spacer'>
-            </div>
+            
 
             <?php echo Storage::instance()->content ?>
 
@@ -63,6 +58,10 @@
 
         </div>
 
+	<script type="text/javascript">
+	    var places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>];
+	</script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>

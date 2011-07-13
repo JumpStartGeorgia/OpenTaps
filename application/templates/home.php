@@ -1,3 +1,9 @@
+<div class='projects_organization'>
+                PROJECTS ORGANIZATION
+            </div>
+
+            <div class='spacer'>
+            </div>
 <div class='news'>
     <img src='<?php echo URL ?>images/news.jpg' />
     <span>NEWS</span>

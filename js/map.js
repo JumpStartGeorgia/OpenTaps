@@ -17,6 +17,13 @@ function get_osm_url (bounds)
     return url + path;
 }
 
+/*function buthoverEffect(){
+
+	$(".maxItemInactive").click(function(){
+		alert("ika");
+	});	
+}*/
+
 function setUpPanControls(){
 	var max_button = function(){
 		map.zoomTo(map.getZoom() + zoomNum);
@@ -63,6 +70,16 @@ function stopZoomOut(){
 	if(map.getZoom() != maxZoomOut){
 		map.zoomTo(map.getZoom() - zoomNum);
 	}
+}
+
+
+function makeMarker(){
+//	console.log(places);
+    var markers = new OpenLayers.Layer.Markers( "OpenTaps::Markers" );
+    map.addLayer(markers);
+    for(var i=0;i<places.length;i++){
+    	markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(places[i][1],places[i][2])));
+    }
 }
 
 function map_init()
@@ -143,8 +160,10 @@ function map_init()
 		div:document.getElementById("panel"),
 		defaultControl:conts[0]
 	});panel.addControls(conts);
+	//buthoverEffect();
 	map.addLayers([mapspot_layer]);
-	map.addControls([panel,nav]);
+	makeMarker();
+	map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);
 	map.setCenter(new OpenLayers.LonLat(44.230957031249,-43.483886718751));
-	map.zoomTo(7.5);
+	map.zoomTo(7);
 }
