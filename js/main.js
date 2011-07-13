@@ -2,17 +2,6 @@ function init(){
 	map_init();
 	chart_init();
 }
-function menu_over(m)
-{
-  m.style.backgroundColor = "#5FCCF3";
-  m.style.color = "#FFFFFF";
-}
-
-function menu_out(m)
-{
-  m.style.backgroundColor = "#FFFFFF";
-  m.style.color = "#01AEF0";
-}
 
 function news_over(m,i)
 {
@@ -29,3 +18,15 @@ function news_out(m,i)
   document.getElementById('p_news'+i).style.color = "#565656";
   m.style.backgroundColor = "#FFF";
 }
+
+$(function()
+{
+    var menu = $('#menu'),
+    minimum_submenu_width = 144;
+    menu.children('li').hover(function(){
+        $(this).children('ul.submenu').slideToggle(100);
+        $(this).find('li').width($(this).width());
+       // $(this).find('a').css('color','white');
+    });
+});
+
