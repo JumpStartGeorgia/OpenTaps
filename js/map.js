@@ -146,5 +146,5 @@ function map_init()
 	map.addLayers([mapspot_layer]);
 	map.addControls([panel,nav]);
 	map.setCenter(new OpenLayers.LonLat(44.230957031249,-43.483886718751));
-	map.zoomTo(7.5);
+	map.zoomTo(7);
 }
