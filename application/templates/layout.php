@@ -2,6 +2,7 @@
     <head>
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
         <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo URL ?>adm.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8"/>
     </head>
     <body onload="init()">
@@ -24,7 +25,7 @@
             </div>
 
             <div class='menu'>
-                <ul id="menu"><?php echo Storage::instance()->menu ?></ul>
+                <ul id="menu"><?php echo Storage::instance()->viewmenu ?></ul>
 
                 <div class='search'>
                     <form method='GET' action=''>

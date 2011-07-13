@@ -1,5 +1,5 @@
 <?
-  $menu = read_menu();
+  $menu = Storage::instance()->menu;
   for($i = 0, $c = count($menu); $i < $c; $i ++)
   {
     $style = ($i == 0) ? "style='padding-left:0;'" : "";

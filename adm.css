@@ -1,0 +1,31 @@
+div.admin{
+  width:400px;
+  border:1px solid black;
+  color:#00AFF2;
+  float:left;
+  margin-right:50px;
+}
+div.admin p{
+  font-size:21px;
+  border-bottom:1px solid grey;
+  font-weight:bold;
+}
+div.admin div.admin_show{
+  display:none;
+}
+div.admin_show div.name{
+  float:left;
+}
+div.admin_show div.link{
+  float:right;
+}
+div.admin_show div.link a{
+  color:grey;
+  text-decoration:none;
+}
+div.admin_show div.link a:hover{
+  color:black;
+}
+div.add a{
+  color:black;
+}

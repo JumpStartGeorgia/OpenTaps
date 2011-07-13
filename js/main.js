@@ -26,7 +26,10 @@ $(function()
     menu.children('li').hover(function(){
         $(this).children('ul.submenu').slideToggle(100);
         $(this).find('li').width($(this).width());
-       // $(this).find('a').css('color','white');
+    });
+
+     $('.admin').hover(function(){
+        $(this).children('div').slideToggle(100);
     });
 });
 
