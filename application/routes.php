@@ -58,9 +58,28 @@ Slim::post('/admin/:table/create/', function($table){
     if(userloggedin())
 	Storage::instance()->content = template('admin/' . $table . '/create', array('table' => $table));
 });
-Slim::post('/admin/:table/:id/update/', function($table, $id){
+Slim::post('/admin/menu/:id/update/', function($id){
     if(userloggedin())
-	Storage::instance()->content = template('admin/' . $table . '/update', array('table' => $table, 'id' => $id));
+    {
+  	$sql = "
+	UPDATE  `opentaps`.`menu` SET  `parent_id` =  :parent_id, `short_name` =  :short_name, `name` =  :name WHERE  `menu`.`id` =:id
+	 ";
+  	$statement = Storage::instance()->db->prepare($sql);
+
+  	$statement->execute(array(
+ 		':id' => $id,
+ 		':short_name' => $_POST['m_short_name'],
+ 		':name' => $_POST['m_name'],
+ 		':parent_id' => $_POST['m_parent_id']
+ 	));
+	Storage::instance()->content = "
+		Menu <b><i>" . $_POST['m_name'] . "</i></b> updated successfully.
+		<br />
+		<a href=\"" . href("admin/menu/". $id) . "\">Edit</a>
+		<br />
+		<a href=\"" . href("admin/menu") . "\">Back to menu list</a>
+	";
+    }
 });
 
 

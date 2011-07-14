@@ -15,28 +15,39 @@
   	    <br />
   	    <input name='m_short_name' id='mshortname' type='text' value=\"" . $result['short_name'] . "\" />
   	    <br /><br />
+  ";
+  if($result['parent_id'] != 0)
+  {
+      echo "
   	    Parent: 
   	    <select name='m_parent_id'>
-  ";
+      ";
 
-  $parents = Storage::instance()->menu;
-  foreach($parents as $parent)
-  {
-      $selected = ($parent['id'] == $result['parent_id']) ? "selected" : "";
+      $parents = Storage::instance()->menu;
+      foreach($parents as $parent)
+      {
+        $selected = ($parent['id'] == $result['parent_id']) ? "selected" : "";
 
-      if($parent['name'] != $result['name'])
          echo "
       		<option " . $selected . " value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>
+      	    </select>
+      	    <br /><br />
          ";
+      }
   }
+  else
+    echo "
+    		<input type='hidden' value='0' name='m_parent_id' />
+    ";
 
-  echo"
-  	    </select>
+  echo "
+  	    <input type='submit' value='Submit' />
   	    <br /><br />
-  	    <input type='submit' value='Submit' /><br /><br />
   	</form>
 
   	<a href=\"" . href("admin/menu") . "\">Back</a>
   	<br />
-  	<a href=\"" . href("admin/menu/" . $result['id'] . "/delete") . "\" onclick='return confirm(\"Are you sure?\");'>Delete this record</a>
+  	<a href=\"" . href("admin/menu/" . $result['id'] . "/delete") . "\" onclick='return confirm(\"Are you sure?\");'>
+  	    Delete this record
+  	</a>
   ";

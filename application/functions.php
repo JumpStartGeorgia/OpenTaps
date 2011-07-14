@@ -44,5 +44,5 @@ function read_menu($parent_id = 0, $lang = null)
 
 function userloggedin()
 {
-  return (isset($_SESSION['id']) && isset($_SESSION['username']));
+    return (isset($_SESSION['id']) && isset($_SESSION['username']));
 }
