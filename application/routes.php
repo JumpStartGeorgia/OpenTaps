@@ -1,12 +1,12 @@
 <?php
 
-$places = fetch_places();
+$places = fetch_db("SELECT * FROM places");
 $js_places = array();
-foreach ($places AS $place)
+foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ']';
 Storage::instance()->js_places = $js_places;
 
-Slim::get('/', function(){
+Slim::get("/",function(){
 
 });
 
@@ -45,6 +45,10 @@ Slim::post('/places',function(){
 	}
 	Storage::instance()->content = template('places');
 	
+});
+
+Slim::get('/orgmanagement',function(){
+	Storage::instance()->content = template('orgmanagement');
 });
 
 

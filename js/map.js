@@ -17,13 +17,6 @@ function get_osm_url (bounds)
     return url + path;
 }
 
-/*function buthoverEffect(){
-
-	$(".maxItemInactive").click(function(){
-		alert("ika");
-	});	
-}*/
-
 function setUpPanControls(){
 	var max_button = function(){
 		map.zoomTo(map.getZoom() + zoomNum);
@@ -70,6 +63,21 @@ function stopZoomOut(){
 	if(map.getZoom() != maxZoomOut){
 		map.zoomTo(map.getZoom() - zoomNum);
 	}
+}
+
+function buthoverEffect(but_class){
+		document.getElementsByClassName(but_class)[0].onmouseover = function(){
+			this.style.opacity = 1;
+		}
+		document.getElementsByClassName(but_class)[0].onmouseout = function(){
+			this.style.opacity = 0.5;
+		}
+		document.getElementsByClassName(but_class)[0].onmouseover = function(){
+			this.style.opacity = 1;
+		}
+		document.getElementsByClassName(but_class)[0].onmouseout = function(){
+			this.style.opacity = 0.5;	
+		}
 }
 
 
@@ -160,10 +168,14 @@ function map_init()
 		div:document.getElementById("panel"),
 		defaultControl:conts[0]
 	});panel.addControls(conts);
-	//buthoverEffect();
 	map.addLayers([mapspot_layer]);
 	makeMarker();
 	map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);
 	map.setCenter(new OpenLayers.LonLat(44.230957031249,-43.483886718751));
 	map.zoomTo(7);
+	new function (){
+		var hover_control_classes = ["maxItemInactive","minItemInactive","filtersItemInactive","setsItemInactive","tagsItemInactive"];
+		for(var i=0,len = hover_control_classes.length;i<len;i++)
+			buthoverEffect(hover_control_classes[i]);
+	}
 }

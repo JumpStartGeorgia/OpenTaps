@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 ﻿<html>
     <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
         <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
     </head>
     <body onload="init()">
-
         <div class='main'>
 
             <div class='header'>
@@ -69,6 +70,7 @@
         <script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
-
+	
+	
     </body>
 </html>
