@@ -31,9 +31,11 @@
          echo "
       		<option " . $selected . " value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>
       	    </select>
-      	    <br /><br />
          ";
       }
+      echo "
+            <br /><br />
+      ";
   }
   else
     echo "
