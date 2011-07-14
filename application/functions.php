@@ -15,7 +15,7 @@ function config($item)
 
 function href($segments = NULL)
 {
-    return URL . ltrim($segments, '/');
+    return URL . ltrim($segments, '/') . "/";
 }
 
 function authenticate($username, $password)
@@ -40,4 +40,9 @@ function read_menu($parent_id = 0, $lang = null)
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute(array(':parent_id' => $parent_id));
     return $statement->fetchAll();    
+}
+
+function userloggedin()
+{
+  return (isset($_SESSION['id']) && isset($_SESSION['username']));
 }

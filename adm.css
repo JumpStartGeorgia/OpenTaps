@@ -1,31 +1,70 @@
-div.admin{
-  width:400px;
-  border:1px solid black;
+table.records, table.records td, table.records th{
+  border:1px solid #CCC	;
+}
+table.records th{
+  color:black;
+  padding:4px;
+}
+table.records td{
+text-align:center;
+}
+
+table.records a{
+  color:grey;
+  display:block;
+  text-decoration:none;
+  padding:4px;
+}
+table.records tr{
   color:#00AFF2;
-  float:left;
-  margin-right:50px;
 }
-div.admin p{
-  font-size:21px;
+table.records tr:hover{
+  background-color:#5FCCF3;
+  color:white;
+}
+table.records a:hover{
+  color:white;
+  background-color:grey;
+}
+
+div.panel{
+  width:510px;
+  float:left;
+  border-top:1px solid grey;
+  padding:0;
+  color:white;
+  font-size:17px;
+}
+
+div.panel a{
+  color:green;
+  text-decoration:none;
+  margin-left:11px;
+}
+
+div.panel a:hover{
+  color:black;
+  font-size:18px;
+}
+
+div.record{
+  width:500px;
+  height:17px;
+  padding:5px; 
   border-bottom:1px solid grey;
-  font-weight:bold;
+  background-color:#5FCCF3;
 }
-div.admin div.admin_show{
-  display:none;
+div.record:hover{
+  background-color:white;
+  color:black;
 }
-div.admin_show div.name{
+
+div.rleft, div.rleftsub{
   float:left;
 }
-div.admin_show div.link{
+div.rright{
   float:right;
 }
-div.admin_show div.link a{
-  color:grey;
-  text-decoration:none;
-}
-div.admin_show div.link a:hover{
-  color:black;
-}
-div.add a{
-  color:black;
+div.rleftsub{
+  margin-left:15px;
 }

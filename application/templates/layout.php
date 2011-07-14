@@ -1,4 +1,5 @@
-﻿<html>
+<!DOCTYPE html>
+<html>
     <head>
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
         <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
