@@ -68,3 +68,16 @@ div.rright{
 div.rleftsub{
   margin-left:15px;
 }
+div.newrecord{
+  float:left;
+}
+div.newrecord a{
+  display:block;
+  width:510px;
+  text-align:center;
+  background-color:#CCC;
+}
+div.newrecord a:hover{
+  color:;
+  background-color:;
+}

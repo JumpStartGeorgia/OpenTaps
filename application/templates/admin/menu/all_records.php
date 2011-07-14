@@ -38,5 +38,8 @@
   }
 
   echo "
+  		<div class='newrecord'>
+  		    <a href=\"" . href("admin/menu/new") . "\">New Record</a>
+  		</div>
   	</div>
   ";

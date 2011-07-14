@@ -33,30 +33,61 @@ Slim::get('/admin/', function(){
 	Storage::instance()->content = template('admin/admin');
 });
 
-Slim::get('/admin/:table/', function($table){
+Slim::get('/admin/menu/', function(){
     if(userloggedin())
-	Storage::instance()->content = template('admin/' . $table . '/all_records', array('table' => $table));
+	Storage::instance()->content = template('admin/menu/all_records');
 });
 
-Slim::get('/admin/:table/new/', function($table){
+Slim::get('/admin/menu/new/', function(){
     if(userloggedin())
-	Storage::instance()->content = template('admin/' . $table . '/new', array('table' => $table));
+	Storage::instance()->content = template('admin/menu/new');
 });
 
-Slim::get('/admin/:table/:id/', function($table, $id){
+Slim::get('/admin/menu/:id/', function($id){
     if(userloggedin())
-	Storage::instance()->content = template('admin/' . $table . '/edit', array('table' => $table, 'id' => $id));
+    {
+	$sql = "SELECT * FROM menu WHERE id = :id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(':id' => $id));
+	$result = $statement->fetch(PDO::FETCH_ASSOC);
+	Storage::instance()->content = template('admin/menu/edit', array('id' => $id, 'result' => $result));
+    }
 });
 
-Slim::get('/admin/:table/:id/delete/', function($table, $id){
+Slim::get('/admin/menu/:id/delete/', function($id){
     if(userloggedin())
-	Storage::instance()->content = template('admin/' . $table . '/delete', array('table' => $table, 'id' => $id));
+    {
+  	$sql = "DELETE FROM `opentaps`.`menu` WHERE  `menu`.`id` =:id";
+  	$statement = Storage::instance()->db->prepare($sql);
+
+  	$statement->execute(array(':id' => $id));
+	Storage::instance()->content = "
+		Menu deleted successfully.
+		<meta http-equiv='refresh' content='1; url=" . href("admin/menu") . "' />
+	";
+    }
 });
 
 
-Slim::post('/admin/:table/create/', function($table){
+Slim::post('/admin/menu/create/', function(){
     if(userloggedin())
-	Storage::instance()->content = template('admin/' . $table . '/create', array('table' => $table));
+    {
+  	$sql = "INSERT INTO  `opentaps`.`menu` (`parent_id`, `name`, `short_name`) VALUES(:parent_id, :name, :short_name)";
+  	$statement = Storage::instance()->db->prepare($sql);
+
+  	$statement->execute(array(
+ 		':short_name' => $_POST['m_short_name'],
+ 		':name' => $_POST['m_name'],
+ 		':parent_id' => $_POST['m_parent_id']
+ 	));
+	Storage::instance()->content = "
+		Menu <b><i>" . $_POST['m_name'] . "</i></b> added successfully.
+		<br />
+		<a href=\"" . href("admin/menu/". Storage::instance()->db->lastInsertId()) . "\">Edit</a>
+		<br />
+		<a href=\"" . href("admin/menu") . "\">Back to menu list</a>
+	";
+    }
 });
 Slim::post('/admin/menu/:id/update/', function($id){
     if(userloggedin())

@@ -1,9 +1,4 @@
 <?
-  $sql = "SELECT * FROM menu WHERE id = :id";
-  $statement = Storage::instance()->db->prepare($sql);
-  $statement->execute(array(':id' => $id));
-  $result = $statement->fetch(PDO::FETCH_ASSOC);
-
   $action = href("admin/menu/" . $result['id'] . "/update");
   echo "
   	<form action='" . $action . "' method='post'>
@@ -30,10 +25,10 @@
 
          echo "
       		<option " . $selected . " value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>
-      	    </select>
          ";
       }
       echo "
+      	    </select>
             <br /><br />
       ";
   }
