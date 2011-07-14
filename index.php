@@ -26,7 +26,9 @@ Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
 Storage::instance()->content = template('home');
 
-require_once DIR . 'application/routes.php';
+require_once DIR . 'application/default_routes.php';
+require_once DIR . 'application/menu_routes.php';
+require_once DIR . 'application/news_routes.php';
 
 Slim::run();
 

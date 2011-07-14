@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
     <head>
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
