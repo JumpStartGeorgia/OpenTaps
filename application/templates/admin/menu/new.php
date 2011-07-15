@@ -9,20 +9,14 @@
   	    <br />
   	    <input name='m_short_name' id='mshortname' type='text' />
   	    <br /><br />
-  ";
-  echo "
   	    Parent: 
   	    <select name='m_parent_id'>
   	        <option selected value='0'>None</option>
   ";
 
-  $parents = Storage::instance()->menu;
-  foreach($parents as $parent)
-  {
-    echo "
-      		<option value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>
-     ";
-  }
+  foreach(Storage::instance()->menu as $parent)
+    echo "  	<option value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>";
+
   echo "
   	    </select>
             <br /><br />

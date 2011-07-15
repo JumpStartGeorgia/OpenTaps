@@ -1,33 +1,34 @@
 <?
-  $menu = Storage::instance()->menu;
-  for($i = 0, $c = count($menu); $i < $c; $i ++)
+  foreach(Storage::instance()->menu as $menu)
   {
-    $style = ($i == 0) ? "style='padding-left:0;'" : "";
-
-    $submenu = read_menu($menu[$i]['id']);
-    if(count($submenu) == 0)
+    $submenus = read_menu($menu['id']);
+    if(count($submenus) == 0)
     {
         echo "
-		<li {$style}>
-		    <a href=\"" . href('page/' . $menu[$i]['short_name']) . "\">". strtoupper($menu[$i]['name']) ."</a>
+		<li>
+		    <a href=\"" . href('page/' . $menu['short_name']) . "\">". strtoupper($menu['name']) ."</a>
 		</li>
         ";
     }
     else
     {
         echo "
-		<li {$style}>
-		   <a href=\"" . href('page/' . $menu[$i]['short_name']) . "\">" . strtoupper($menu[$i]['name']) . " ▾</a>
-		    <ul class='submenu' id='ul_{$menu[$i]['id']}'>
+		<li>
+		   <a href=\"" . href('page/' . $menu['short_name']) . "\">" . strtoupper($menu['name']) . " ▾</a>
+		    <ul class='submenu' id='ul_{$menu['id']}'>
 	";
-        for($j = 0, $n = count($submenu); $j < $n; $j ++)
+        foreach($submenus as $submenu)
         {
-            echo "     <li>
-            		  <a href=\"" . href('page/' . $submenu[$j]['id']) . "\">".strtoupper($submenu[$j]['name']) ."</a>
-            	       </li>";
+            echo "
+             	       <li>
+            		  <a href=\"" . href('page/' . $submenu['id']) . "\">".strtoupper($submenu['name']) ."</a>
+            	       </li>
+            ";
         }
-        echo "      </ul>
-                </li>";
+        echo "
+	            </ul>
+                </li>
+        ";
      }
   }
 ?>

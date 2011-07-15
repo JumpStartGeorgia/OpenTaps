@@ -1,34 +1,19 @@
 <?
   echo "
-  	<form action='" . href("admin/menu/create") . "' method='post'>
-  	    <label for='mname'>Name: </label>
+  	<form action='" . href("admin/news/create") . "' method='post'>
+  	    <label for='ntitle'>Title: </label>
   	    <br />
-  	    <input name='m_name' id='mname' type='text' />
+  	    <input name='n_title' id='ntitle' type='text' />
   	    <br /><br />
-  	    <label for='mshortname'>Short Name: </label>
+  	    <label for='nbody'>Body: </label>
   	    <br />
-  	    <input name='m_short_name' id='mshortname' type='text' />
+  	    <textarea name='n_body' id='nbody' cols='70' rows='5'></textarea>
   	    <br /><br />
-  ";
-  echo "
-  	    Parent: 
-  	    <select name='m_parent_id'>
-  	        <option selected value='0'>None</option>
-  ";
-
-  $parents = Storage::instance()->menu;
-  foreach($parents as $parent)
-  {
-    echo "
-      		<option value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>
-     ";
-  }
-  echo "
-  	    </select>
-            <br /><br />
-  	    <input type='submit' value='Submit' />
+  	    <input type='submit' value='Submit' onclick='
+  	    	return document.getElementById(\"ntitle\").value != \"\" && document.getElementById(\"nbody\").value != \"\"
+  	    	' />
   	    <br /><br />
   	</form>
 
-  	<a href=\"" . href("admin/menu") . "\">Back</a>
+  	<a href=\"" . href("admin/news") . "\">Back</a>
   ";

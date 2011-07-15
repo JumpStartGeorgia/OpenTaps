@@ -18,14 +18,11 @@
   	    <select name='m_parent_id'>
       ";
 
-      $parents = Storage::instance()->menu;
-      foreach($parents as $parent)
+      foreach(Storage::instance()->menu as $parent)
       {
-        $selected = ($parent['id'] == $result['parent_id']) ? "selected" : "";
+         $selected = ($parent['id'] == $result['parent_id']) ? "selected" : "";
 
-         echo "
-      		<option " . $selected . " value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>
-         ";
+         echo "  <option " . $selected . " value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>";
       }
       echo "
       	    </select>
@@ -33,9 +30,7 @@
       ";
   }
   else
-    echo "
-    		<input type='hidden' value='0' name='m_parent_id' />
-    ";
+    echo "  <input type='hidden' value='0' name='m_parent_id' />";
 
   echo "
   	    <input type='submit' value='Submit' />

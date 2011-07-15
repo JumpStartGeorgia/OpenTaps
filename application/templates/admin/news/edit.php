@@ -1,50 +1,20 @@
 <?
-  $action = href("admin/menu/" . $result['id'] . "/update");
+  $action = href("admin/news/" . $news[0]['id'] . "/update");
   echo "
   	<form action='" . $action . "' method='post'>
-  	    <label for='mname'>Name: </label>
+  	    <label for='ntitle'>Title: </label>
   	    <br />
-  	    <input name='m_name' id='mname' type='text' value=\"" . $result['name'] . "\" />
+  	    <input name='n_title' id='ntitle' type='text' value=\"" . $news[0]['title'] . "\" />
   	    <br /><br />
-  	    <label for='mshortname'>Short Name: </label>
+  	    <label for='nbody'>Body: </label>
   	    <br />
-  	    <input name='m_short_name' id='mshortname' type='text' value=\"" . $result['short_name'] . "\" />
+  	    <textarea name='n_body' id='nbody' cols='70' rows='5'>" . $news[0]['body'] . "</textarea>
   	    <br /><br />
-  ";
-  if($result['parent_id'] != 0)
-  {
-      echo "
-  	    Parent: 
-  	    <select name='m_parent_id'>
-      ";
-
-      $parents = Storage::instance()->menu;
-      foreach($parents as $parent)
-      {
-        $selected = ($parent['id'] == $result['parent_id']) ? "selected" : "";
-
-         echo "
-      		<option " . $selected . " value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>
-         ";
-      }
-      echo "
-      	    </select>
-            <br /><br />
-      ";
-  }
-  else
-    echo "
-    		<input type='hidden' value='0' name='m_parent_id' />
-    ";
-
-  echo "
-  	    <input type='submit' value='Submit' />
+  	    <input type='submit' value='Submit' onclick='
+	  	    return document.getElementById(\"ntitle\").value != \"\" && document.getElementById(\"nbody\").value != \"\"
+  	    ' />
   	    <br /><br />
   	</form>
 
-  	<a href=\"" . href("admin/menu") . "\">Back</a>
-  	<br />
-  	<a href=\"" . href("admin/menu/" . $result['id'] . "/delete") . "\" onclick='return confirm(\"Are you sure?\");'>
-  	    Delete this record
-  	</a>
+  	<a href=\"" . href("admin/news") . "\">Back</a>
   ";

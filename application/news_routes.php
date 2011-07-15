@@ -13,70 +13,46 @@ Slim::get('/admin/news/new/', function(){
 Slim::get('/admin/news/:id/', function($id){
     if(userloggedin())
     {
-	$sql = "SELECT * FROM news WHERE id = :id";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(':id' => $id));
-	$result = $statement->fetch(PDO::FETCH_ASSOC);
-	Storage::instance()->content = template('admin/news/edit', array('id' => $id, 'result' => $result));
+	Storage::instance()->content = template('admin/news/edit', array('id' => $id, 'news' => read_news(1, $id)));
     }
 });
 
 Slim::get('/admin/news/:id/delete/', function($id){
     if(userloggedin())
-    {
-  	$sql = "DELETE FROM `opentaps`.`news` WHERE  `news`.`id` =:id";
-  	$statement = Storage::instance()->db->prepare($sql);
-
-  	$statement->execute(array(':id' => $id));
+      if( delete_news($id) )
 	Storage::instance()->content = "
-		News deleted successfully.
-		<meta http-equiv='refresh' content='1; url=" . href("admin/news") . "' />
+		<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />
 	";
-    }
+      else
+	Storage::instance()->content = "
+		invalid data <br />
+		<a href=\"" . href("admin/news") . "\">Back</a>
+	";
 });
-
 
 Slim::post('/admin/news/create/', function(){
     if(userloggedin())
-    {
-  	$sql = "INSERT INTO  `opentaps`.`news` (`parent_id`, `name`, `short_name`) VALUES(:parent_id, :name, :short_name)";
-  	$statement = Storage::instance()->db->prepare($sql);
-
-  	$statement->execute(array(
- 		':short_name' => $_POST['m_short_name'],
- 		':name' => $_POST['m_name'],
- 		':parent_id' => $_POST['m_parent_id']
- 	));
-	Storage::instance()->content = "
-		News <b><i>" . $_POST['m_name'] . "</i></b> added successfully.
-		<br />
-		<a href=\"" . href("admin/news/". Storage::instance()->db->lastInsertId()) . "\">Edit</a>
-		<br />
-		<a href=\"" . href("admin/news") . "\">Back to news list</a>
-	";
-    }
+      if( add_news($_POST['n_title'], $_POST['n_body']) )
+	  Storage::instance()->content = "
+		<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />
+	  ";
+      else
+	  Storage::instance()->content = "
+		invalid data <br />
+		<a href=\"" . href("admin/news") . "\">Back</a>
+	  ";
 });
+
 Slim::post('/admin/news/:id/update/', function($id){
     if(userloggedin())
-    {
-  	$sql = "
-	UPDATE  `opentaps`.`news` SET  `parent_id` =  :parent_id, `short_name` =  :short_name, `name` =  :name WHERE  `news`.`id` =:id
-	 ";
-  	$statement = Storage::instance()->db->prepare($sql);
-
-  	$statement->execute(array(
- 		':id' => $id,
- 		':short_name' => $_POST['m_short_name'],
- 		':name' => $_POST['m_name'],
- 		':parent_id' => $_POST['m_parent_id']
- 	));
-	Storage::instance()->content = "
-		News <b><i>" . $_POST['m_name'] . "</i></b> updated successfully.
-		<br />
-		<a href=\"" . href("admin/news/". $id) . "\">Edit</a>
-		<br />
-		<a href=\"" . href("admin/news") . "\">Back to News list</a>
-	";
-    }
+      if( update_news($id, $_POST['n_title'], $_POST['n_body']) )
+	  Storage::instance()->content = "
+		<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />
+	  ";
+      else
+	  Storage::instance()->content = "
+		invalid data <br />
+		<a href=\"" . href("admin/news") . "\">Back</a>
+	  ";
 });
 ################################################################ News admin routes end
