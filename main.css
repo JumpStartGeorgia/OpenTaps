@@ -92,10 +92,10 @@ div.menu ul.submenu{
 }
 div.menu ul.submenu li{
   float:none;
-  background-color:rgba(95,204,243,0.65);
+  background-color:rgba(95,204,243,0.9);
   border-top:1px dotted white;
   color:white;
-  font-size:.95em;
+  font-size:.8em;
   text-align:left;
   width:500px;
 }

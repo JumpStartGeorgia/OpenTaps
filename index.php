@@ -1,9 +1,8 @@
 <?php
-
 session_start();
 
 define('DIR', getcwd() . '/');
-define('URL', 'http://www.localhost.com/OpenTaps/');
+define('URL', 'http://www.localhost.com/OTcombined/');
 
 require_once DIR . 'application/storage.php';
 Storage::instance()->config = require DIR . 'application/config.php';

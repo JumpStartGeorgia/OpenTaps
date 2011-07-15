@@ -57,6 +57,10 @@
 
         </div>
 
+	<script type="text/javascript">
+	    var places =
+	    [<?php echo implode(', ', count(Storage::instance()->js_places) == 0 ? array() : Storage::instance()->js_places) ?>];
+	</script>
         <script type="text/javascript" src="<?php echo URL ?>js/OpenLayers.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/jq.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>

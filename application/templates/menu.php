@@ -14,7 +14,8 @@
     {
         echo "
 		<li>
-		   <a href=\"" . href('page/' . $menu['short_name']) . "\">" . strtoupper($menu['name']) . " ▾</a>
+		   <a href=\"" . href('page/' . $menu['short_name']) . "\">
+		       " . strtoupper($menu['name']) . " <span style='font-size:10px;'>▾</span></a>
 		    <ul class='submenu' id='ul_{$menu['id']}'>
 	";
         foreach($submenus as $submenu)
