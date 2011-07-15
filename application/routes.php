@@ -48,7 +48,33 @@ Slim::post('/places',function(){
 });
 
 Slim::get('/orgmanagement',function(){
+	if(isset($_GET['id'])){
+		if(strlen($_GET['id'])!=0){
+			if(is_numeric($_GET['id'])){
+				delete_organization($_GET['id']);
+			}
+		}
+	}
+	unset($_GET['id']);
 	Storage::instance()->content = template('orgmanagement');
 });
+Slim::post('/orgmanagement',function(){
+	if(isset($_POST['org_name']) && isset($_POST['org_desc']) && !isset($_POST['org_id'])){
+		if(strlen($_POST['org_name'])!=0 && strlen($_POST['org_desc'])!=0){
+			add_organization($_POST['org_name'],$_POST['org_desc']);
+		}
+	}
+	else if(isset($_POST['org_name']) && isset($_POST['org_desc']) && isset($_POST['org_id'])){
+		if(strlen($_POST['org_name'])!=0 && strlen($_POST['org_desc'])!=0 && strlen($_POST['org_id'])!=0){
+			if(is_numeric($_POST['org_id'])){
+				edit_organization($_POST['org_id'],$_POST['org_name'],$_POST['org_desc']);
+			}
+		}
+	}
+	
+	Storage::instance()->content = template('orgmanagement');
+	
+});
+
 
 

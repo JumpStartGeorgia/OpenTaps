@@ -6,6 +6,7 @@ function template($view, $vars = array())
     empty($vars) OR extract($vars);
     require_once DIR . 'application/templates/' . $view . '.php';
     return ob_get_clean();
+
 }
 
 function config($item)
@@ -41,7 +42,7 @@ function list_places(){
 }
 
 function delete_place($id){
-	$sql = "DELETE FROM places where id='$id'";
+	$sql = "DELETE FROM places WHERE id='$id'";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
@@ -55,9 +56,11 @@ function list_organizations(){
 	else foreach($results as $result){
 		$i++;
 		echo "<tr>
-			<td>".$i."</td>
-			<td>".$result['org_name']."</td>
-			<td>".$result['org_description']."</td>
+			<td><div style='border:1px solid #000;'>".$i."</div></td>
+			<td><div style='border:1px solid #000;'>".$result['org_name']."</div></td>
+			<td><div style='border:1px solid #000;'>".$result['org_description']."</div></td>
+			<td><div style='border:1px solid #000;'><a href='javascript:show_org_edit(".$result['id'].",&#39;".$result['org_name']."&#39;,&#39;".$result['org_description']."&#39;);'>Edit</a></div></td>
+			<td><div style='border:1px solid #000;'><a href='?id=".$result['id']."'>Delete</a></div></td>
 		</tr>";	
 	}
 }
@@ -67,6 +70,24 @@ function edit_place($id,$lon,$lat){
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
+}
+
+function delete_organization($id){
+	$sql = "DELETE FROM organizations WHERE id='$id'";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute();
+}
+
+function add_organization($org_name,$org_desc){
+	$sql = "INSERT INTO organizations(org_name,org_description) VALUES('$org_name','$org_desc')";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute();
+}
+
+function edit_organization($org_id,$org_name,$org_desc){
+	$sql = "UPDATE organizations SET org_name='$org_name',org_description='$org_desc' WHERE id='$org_id'";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute();
 }
 
 
