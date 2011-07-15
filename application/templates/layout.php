@@ -39,16 +39,21 @@
             <div id="map" class="middle">
             </div>
 
-            <?php echo Storage::instance()->content ?>
+	    <div class='content'>
+              <?php echo Storage::instance()->content ?>
+            </div>
 
-            <hr class='bottom' id='myhr' />
+
+            <hr class='bottom' />
 
             <div class='bottom'>
                 © 2011 OPEN TAPS. &nbsp;&nbsp; Designed and developed by <a href='http://jumpstart.ge/'>Jumpstart Georgia</a>
             </div>
             <div class='bottom1'>Donate | About Us | Report</div>
             <div class='bottom2'>GEORGIAN WATER PROJECT </div>
-            <div class='bottom3'><img src='<?php echo URL ?>images/connect_fb.jpg' /> &nbsp;CONNECT HERE&nbsp; <img src='<?php echo URL ?>images/connect.jpg' /></div>
+            <div class='bottom3'><img src='<?php echo URL ?>images/connect_fb.jpg' />
+                &nbsp;CONNECT HERE&nbsp; <img src='<?php echo URL ?>images/connect.jpg' />
+            </div>
 
         </div>
 
