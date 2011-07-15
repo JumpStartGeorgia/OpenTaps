@@ -1,6 +1,20 @@
 var zoomNum = 1;
 var maxZoomOut = 7;
 var map = null;
+var map_confs = {"boundsLeft":4260630.1231925,
+		"boundsBottom":4999230.0089212,
+		"boundsRight":5422472.9529191,
+		"boundsTop":5427277.3672416,
+		"zoom":7.5,
+		"lon":4876406.8229462,
+		"lat":5183290.372998};
+var mapspot_confs = {"boundsLeft":38.704833984374,
+		     "boundsBottom":-45.120849609376,
+		     "boundsRight":49.141845703124,
+		     "boundsTop":-41.275634765626,
+		     "zoom":7,
+		     "lon":44.230957031249,
+		     "lat":-43.483886718751};
 
 function get_osm_url (bounds)
 {
@@ -65,21 +79,50 @@ function stopZoomOut(){
 	}
 }
 
+function buthoverEffect(but_class){
+		document.getElementsByClassName(but_class)[0].onmouseover = function(){
+			this.style.opacity = 1;
+		}
+		document.getElementsByClassName(but_class)[0].onmouseout = function(){
+			this.style.opacity = 0.5;
+		}
+		document.getElementsByClassName(but_class)[0].onmouseover = function(){
+			this.style.opacity = 1;
+		}
+		document.getElementsByClassName(but_class)[0].onmouseout = function(){
+			this.style.opacity = 0.5;	
+		}
+}
+
+
+function makeMarker(){
+//	console.log(places);
+    var markers = new OpenLayers.Layer.Markers( "OpenTaps::Markers" );
+    map.addLayer(markers);
+    for(var i=0;i<places.length;i++){
+    	markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(places[i][1],places[i][2])));
+    }
+}
+
+
+
 function map_init()
 {
+
 	map = new OpenLayers.Map("map",{
 		controls:[],
-		restrictedExtent:new OpenLayers.Bounds(38.704833984374,
-											  -45.120849609376,
-											  49.141845703124,
-											  -41.275634765626)
+		restrictedExtent:new OpenLayers.Bounds(map_confs.boundsLeft,map_confs.boundsBottom,map_confs.boundsRight,map_confs.boundsTop)
 	});
 	
-	var mapspot_layer = new OpenLayers.Layer.TMS(
+	 var deven = new OpenLayers.Layer.OSM("English", "http://a.tile.mapspot.ge/ndi_en/${z}/${x}/${y}.png", {numZoomLevels: 19}, {isBaseLayer:true});
+	var devka = new OpenLayers.Layer.OSM("Georgian", "http://a.tile.mapspot.ge/ndi_ka/${z}/${x}/${y}.png", {numZoomLevels: 19}, {isBaseLayer:false});
+	
+	/*var mapspot_layer = new OpenLayers.Layer.TMS(
 			"MapSpot",
 			"http://tile.mapspot.ge/new_en/",
-			{type:"png",getURL:get_osm_url}
-	);
+			{type:"png",getURL:get_osm_url},
+			{isBaseLayer:true}
+	);*/
 	
 	var nav = new OpenLayers.Control.Navigation({
 		handleRightClicks:true,
@@ -143,8 +186,14 @@ function map_init()
 		div:document.getElementById("panel"),
 		defaultControl:conts[0]
 	});panel.addControls(conts);
-	map.addLayers([mapspot_layer]);
-	map.addControls([panel,nav]);
-	map.setCenter(new OpenLayers.LonLat(44.230957031249,-43.483886718751));
-	map.zoomTo(7);
+	map.addLayers([deven,devka]);//[mapspot_layer]);
+	makeMarker();
+	map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);
+	map.setCenter(new OpenLayers.LonLat(map_confs.lon,map_confs.lat));
+	map.zoomTo(map_confs.zoom);
+	new function (){
+		var hover_control_classes = ["maxItemInactive","minItemInactive","filtersItemInactive","setsItemInactive","tagsItemInactive"];
+		for(var i=0,len = hover_control_classes.length;i<len;i++)
+			buthoverEffect(hover_control_classes[i]);
+	}
 }
