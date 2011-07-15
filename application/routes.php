@@ -4,6 +4,7 @@ $places = fetch_db("SELECT * FROM places");
 $js_places = array();
 foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ']';
+	print_r($js_places);
 Storage::instance()->js_places = $js_places;
 
 Slim::get("/",function(){

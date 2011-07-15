@@ -2,6 +2,7 @@ pieData = [40,30,20,10,5];
 pieLegend = ["%% - text1","%% - text2","%% - text3","%% - text4","%% - text5"];	
 	
 function chart_init(){
+	if(document.getElementById('chart').value != ""){
 	 var r = Raphael("chart");
                 var pie = r.g.piechart(150,110, 100, pieData, {legend:pieLegend,legendpos:"south"});
                 pie.hover(function () {
@@ -19,5 +20,5 @@ function chart_init(){
                         this.label[1].attr({"font-weight": 400});
                     }
                 });
-	
+	}
 }
