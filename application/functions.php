@@ -28,6 +28,7 @@ function authenticate($username, $password)
     ));
 
     return ($statement->columnCount() == 2) ? $statement->fetch(PDO::FETCH_ASSOC) : FALSE;
+    //if executed statement returned two columns - username and password, then this function returns fetched statement
 }
 
 function userloggedin()
@@ -160,7 +161,7 @@ function delete_news($id)
 
    return ($exec) ? true : false;
 }
-						################################ irakliii
+						################################ IRAKLI'S FUNCTIONS
 function fetch_db($sql){
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();

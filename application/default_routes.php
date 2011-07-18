@@ -1,5 +1,6 @@
 <?php
 
+################################################################ IRAKLI's routes START
 $places = fetch_db("SELECT * FROM places");
 $js_places = array();
 foreach ($places as $place)
@@ -68,7 +69,7 @@ Slim::get('/page/:short_name', function($short_name){
 ################################################################ Login routes start
 Slim::get('/login', function(){
     if(!userloggedin())
-      Storage::instance()->content = template('login');
+	Storage::instance()->content = template('login');
 });
 
 Slim::post('/login', function(){
@@ -96,4 +97,6 @@ Slim::get('/logout', function(){
 Slim::get('/admin/', function(){
     if(userloggedin())
 	Storage::instance()->content = template('admin/admin');
+    else
+	Storage::instance()->content = template('login');
 });
