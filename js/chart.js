@@ -1,9 +1,9 @@
-pieData = [40,30,20,10,5];
-pieLegend = ["%% - text1","%% - text2","%% - text3","%% - text4","%% - text5"];	
+pieData = [50,30,20,10,5,34,74];
+pieLegend = ["%% - text1","%% - text2","%% - text3","%% - text4","%% - text5", "%% - text6", "%% - text7"];	
 	
 function chart_init(){
 	 var r = Raphael("chart");
-                var pie = r.g.piechart(150,110, 100, pieData, {legend:pieLegend,legendpos:"south"});
+                var pie = r.g.piechart("#00AFF2", 150,110, 100, pieData, {legend:pieLegend,legendpos:"south"});
                 pie.hover(function () {
                     this.sector.stop();
                     this.sector.scale(1.1, 1.1, this.cx, this.cy);
