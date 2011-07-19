@@ -1,7 +1,8 @@
 Raphael.fn.g.piechart = function(colour,e,d,o,b,l)
 {
   l = l||{};
-  var k = this, m = [], g = this.set(), n = this.set(), j = this.set(), u = [], w = b.length, x=0, A=0, z=0, c=9, y=true, fo=0;
+  var k = this, m = [], g = this.set(), n = this.set(), j = this.set(), u = [], w = b.length,
+      x=0, A=0, z=0, c=9, y=true, fo=0, coef = 1 - Math.max.apply(null, b) / array_sum(b);
   n.covers = g;
   if(w==1){
     j.push (this.circle(e,d,o).attr({
@@ -67,7 +68,7 @@ Raphael.fn.g.piechart = function(colour,e,d,o,b,l)
         var h = t( e, d, 1, x, x - 360*b[v]/A ).join(",");
       }
       var s = t(e, d, o, x, x -= 360*b[v]/A);
-      fo = b[v] / array_sum(b) + .2;
+      fo = b[v] / array_sum(b) + (coef);
       var q = this.path(l.init?h:s).attr({
               fill:colour,
               stroke:l.stroke||"#fff",
@@ -184,3 +185,6 @@ function array_sum(arr)
     sum += arr[i];
   return sum;
 }
+Array.max = function( array ){
+  return Math.max.apply( Math, array );
+};
