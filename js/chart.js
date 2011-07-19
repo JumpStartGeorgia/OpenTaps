@@ -1,11 +1,25 @@
 pieData = [40,30,20,10,5];
-pieLegend = ["%% - text1","%% - text2","%% - text3","%% - text4","%% - text5"];	
+pieLegend = ["%% - text1","%% - text2","%% - text3","%% - text4","%% - text5"];
 	
+var r = Raphael("chart");
 function chart_init(){
 	if(document.getElementById('chart').value != ""){
-	 var r = Raphael("chart");
-                var pie = r.g.piechart(150,110, 100, pieData, {legend:pieLegend,legendpos:"south"});
-                pie.hover(function () {
+      // pieChart();
+        barChart();
+	}
+}
+
+function barChart(){
+    var bar = r.g.barchart(10, 10, 300, 220, [[55, 20, 13, 32, 5, 1, 2, 10]]).hover(function(){
+        this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+    },
+    function(){
+        this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+    }
+    );
+}
+function pieChart(){
+      var pie = r.g.piechart(150,110, 100, pieData, {legend:pieLegend,legendpos:"south"}).hover(function () {
                     this.sector.stop();
                     this.sector.scale(1.1, 1.1, this.cx, this.cy);
                     if (this.label) {
@@ -20,5 +34,4 @@ function chart_init(){
                         this.label[1].attr({"font-weight": 400});
                     }
                 });
-	}
 }
