@@ -86,11 +86,15 @@ Slim::get('/organizations',function(){
 });
 
 Slim::get('/orgmanagement',function(){
-	Storage::instance()->content = template('orgmanagement',);
+	$sql = "SELECT * FROM organizations";
+	$results = fetch_db($sql);
+	Storage::instance()->content = template('orgmanagement',array(
+		'organizations' => $results
+	));
 });
 Slim::get('/orgmanagement/:id/delete',function($id){
 	if(isset($id)) delete_organization($id);
-	Storage::instance()->content = template('orgmanagement');
+	Slim::redirect(href('orgmanagement'));
 });
 
 Slim::post('/orgmanagement',function(){
@@ -99,7 +103,7 @@ Slim::post('/orgmanagement',function(){
 	elseif(isset($_POST['org_name']) && isset($_POST['org_desc']) && isset($_POST['org_id']) ):
 			edit_organization($_POST['org_id'],$_POST['org_name'],$_POST['org_desc']);
 	endif;
-	Storage::instance()->content = template('orgmanagement');
+	Slim::redirect('orgmanagement');
 	
 });
 

@@ -29,9 +29,33 @@
 </div>
 
 <div style="border:0px solid #000;width:500px;height:auto;">
-	
-	
 
+	<?php if(empty($organizations)):?>
+		<h2>No organiations</h2>
+	<?php else: ?>
+	<table>
+	<tr>
+		<td>N.</td>
+		<td>Name</td>
+		<td>Description</td>
+	</tr>
+	<?php $idx = 1; ?>
+	<?php foreach($organizations as $organization): ?>
+		<tr>
+			<td><?php echo $idx; ?></td>
+			<td><?php echo $organization['org_name']; ?></td>
+			<td><?php echo $organization['org_description'];?></td>
+			<td><a href="show_org_edit('<?php echo $organization['id']; ?>',
+						   '<?php echo $organization['org_name']; ?>',
+						   '<?php echo $organization['org_description']; ?>'
+						   )">edit</a></td>
+			<td><a href="<?php echo href("orgmanagement/{$organization['id']}/delete"); ?>">delete</a></td>
+		</tr>
+		
+		<?php $idx++; ?>
+	<?php endforeach;?>
+	</table>
+	<?php endif;?>
 </div>
 </div>
 </center>

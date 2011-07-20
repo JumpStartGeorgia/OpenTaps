@@ -14,6 +14,10 @@ function config($item)
     return isset(Storage::instance()->config[$item]) ? Storage::instance()->config[$item] : FALSE;
 }
 
+function href($uri)
+{
+	return URL . trim($uri, '/');
+}
 
 function fetch_db($sql)
 {
@@ -93,7 +97,6 @@ function delete_organization($id){
 	$sql = "DELETE FROM organizations WHERE id='$id'";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
-	Slim::redirect('organizations');
 }
 
 function add_organization($org_name,$org_desc){
