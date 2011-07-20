@@ -38,9 +38,7 @@ Slim::get('/admin/menu/:id/delete/', function($id){
 Slim::post('/admin/menu/create/', function(){
     if(userloggedin())
 	if( add_menu($_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_id']) )
-	    Storage::instance()->content = "
-		<meta http-equiv='refresh' content='0; url=" . href("admin/menu") . "' />
- 	    ";
+ 	    Slim::redirect(href('admin/menu'));
         else
 	    Storage::instance()->content = "
 		invalid data <br />

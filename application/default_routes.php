@@ -37,6 +37,7 @@ Slim::get('/admin/orgmanagement/',function(){
 	Storage::instance()->content = template('orgmanagement');
     }
 });
+
 Slim::post('/admin/orgmanagement/',function(){
     if(userloggedin())
     {
@@ -88,8 +89,6 @@ Slim::get('/logout', function(){
     session_destroy();
 });
 ################################################################ Login routes end
-
-
 
 Slim::get('/admin/', function(){
     if(userloggedin())

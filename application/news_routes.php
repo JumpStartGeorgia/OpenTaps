@@ -2,12 +2,12 @@
 ################################################################ News show routes start
 
 Slim::get('/news/', function(){
-    Storage::instance()->content = template('news', array('limit' => false));
+    Storage::instance()->content = template('news', array('news_all' => read_news(FALSE)));
 });
 
 
 
-################################################################ News show routes start
+################################################################ News show routes end
 
 ################################################################ News admin routes start
 Slim::get('/admin/news/', function(){

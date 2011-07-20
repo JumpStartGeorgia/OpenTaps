@@ -5,7 +5,7 @@ Slim::get('/tags/', function(){
     Storage::instance()->content = template('tags', array('limit' => false));
 });
 
-################################################################ tags show routes start
+################################################################ tags show routes end
 
 ################################################################ tags admin routes start
 Slim::get('/admin/tags/', function(){
