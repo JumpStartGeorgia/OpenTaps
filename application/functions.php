@@ -15,15 +15,13 @@ function config($item)
 }
 
 
-function fetch_db($sql){
+function fetch_db($sql)
+{
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
 	$result = $statement->fetchAll();
-	if(count($result)!=0) return $result;
-	else return array();
+	return empty($result) ? array() : $result;
 }
-
-
 
 
 function add_place($lon,$lat){
@@ -34,7 +32,8 @@ function add_place($lon,$lat){
 }
 
 function list_places(){
-	$results = fetch_db("SELECT * FROM places");
+	$sql = "SELECT * FROM places";
+	$results = fetch_db($sql);
 	if(count($results) == 0) echo "<h2>No places</h2>";
 	else foreach($results as $result){
 		echo "<br /><div id='".$result['id']."' style='background-color:#CCC;border:1px solid #000;width:300px;height:60px;'><p align='left'><font size='2pt'>Longitude:".$result['longitude']."<br />Latitude:".$result['latitude']."</font></p><p align='right'><font size='2pt'><a href='javascript:showedit(".$result['id'].",".$result['longitude'].",".$result['latitude'].");'>edit</a>&nbsp;<a href='?id=".$result['id']."'>delete</a></font></p></div>";
@@ -55,30 +54,10 @@ function delete_place($id){
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
 }
 
-
-
-
-function list_donors(){
-    $i=0;
-	$results = fetch_db("SELECT * FROM donors");
-	if(count($results) == 0)echo "<h2>No donors</h2>";
-	else{
-               echo "<table border='0px' style='font-size:9pt;'>
-	<tr><td><center></div></center></td><td><center>Donor</center></td><td><center>Description</center></td></tr>";
-        foreach($results as $result){
-		$i++;
-		echo "<tr>
-			<td><div style='border:1px solid #000;'>".$i."</div></td>
-			<td><div style='border:1px solid #000;'>".$result['don_name']."</div></td>
-			<td><div style='border:1px solid #000;'>".$result['don_description']."</div></td>
-			<td><div style='border:1px solid #000;'><a href='javascript:show_don_edit(".$result['id'].",&#39;".$result['don_name']."&#39;,&#39;".$result['don_description']."&#39;);'>Edit</a></div></td>
-			<td><div style='border:1px solid #000;'><a href='?id=".$result['id']."'>Delete</a></div></td>
-		</tr>";	
-        }
-    echo "</table>";
-    }
+function is_admin()
+{
+	return (isset($_SESSION['username']) AND !empty($_SESSION['username']));
 }
-
 
 function delete_donor($id){
 	$sql = "DELETE FROM donors WHERE id='$id'";
@@ -87,7 +66,7 @@ function delete_donor($id){
 }
 
 function add_donor($don_name,$don_desc){
-	$sql = "INSERT INTO donors(don_name,don_description) VALUES('$don_name','$don_desc')";
+	$sql = "INSERT INTO donors(don_name,don_description) VALUES('".$don_name."','".$don_desc."')";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
 }
@@ -98,33 +77,23 @@ function edit_donor($don_id,$don_name,$don_desc){
 	$statement->execute();
 }
 
-function list_organizations(){
-	$i=0;
-	$results = fetch_db("SELECT * FROM organizations");
-	if(count($results) == 0)echo "<h2>No organizations</h2>";
-	else{
-      echo " <table border='0px' style='font-size:9pt;'>
-	<tr><td><center></div></center></td><td><center>Organization</center></td><td><center>Description</center></td></tr>";
-        foreach($results as $result){
-		$i++;
-		echo "<tr>
-			<td><div style='border:1px solid #000;'>".$i."</div></td>
-			<td><div style='border:1px solid #000;'>".$result['org_name']."</div></td>
-			<td><div style='border:1px solid #000;'>".$result['org_description']."</div></td>
-			<td><div style='border:1px solid #000;'><a href='javascript:show_org_edit(".$result['id'].",&#39;".$result['org_name']."&#39;,&#39;".$result['org_description']."&#39;);'>Edit</a></div></td>
-			<td><div style='border:1px solid #000;'><a href='?id=".$result['id']."'>Delete</a></div></td>
-		</tr>";	
-	}
-    echo "</table>";
+
+
+
+function show_organization($id){
+	$sql = "SELECT * FROM organizations WHERE id='$id'";
+    $results = fetch_db();
+    foreach($results as $result){
+        echo "<div><center><h2>".$result['org_name']."</h2></center></div>";
+        echo "<div><blockquote>".$result['org_description']."</blockquote></div>";
     }
 }
-
-
 
 function delete_organization($id){
 	$sql = "DELETE FROM organizations WHERE id='$id'";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
+	Slim::redirect('organizations');
 }
 
 function add_organization($org_name,$org_desc){

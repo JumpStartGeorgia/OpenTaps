@@ -47,49 +47,68 @@ Slim::post('/places',function(){
 	
 });
 
+Slim::get('/donors',function(){
+	$sql = "SELECT * FROM donors;";
+	$results = fetch_db($sql);
+	return Storage::instance()->content = template('donors', array(
+		'donors' => $results
+	));
+});
+
+Slim::get('/donor/:id', function($id){
+	$sql = "SELECT * FROM donors WHERE id = '$id' LIMIT 1;";
+	$result = fetch_db($sql);
+	return Storage::instance()->content = template('donor', array(
+		'donor' => $result[0]
+	));
+});
+
+Slim::get('/donor/:id/delete', function($id){
+	$sql = "DELETE FROM donors WHERE id = {$id} LIMIT 1;";
+	Storage::instance()->db->exec($sql);
+	Slim::redirect('donors');
+});
+
+Slim::get('/organization/:id',function($id){
+	$sql = "SELECT * FROM organizations WHERE id='$id' LIMIT 1;";
+	$result = fetch_db($sql);
+	return Storage::instance()->content = template('organization',array(
+		'organization' => $result[0]
+	));
+});
+
+Slim::get('/organizations',function(){
+	$sql = "SELECT * FROM organizations";
+	$results = fetch_db($sql); 
+        Storage::instance()->content = template('organizations',array(
+        	'organizations' => $results
+        ));
+});
+
 Slim::get('/orgmanagement',function(){
-	if(isset($_GET['id'])){
-		if(strlen($_GET['id'])!=0){
-			if(is_numeric($_GET['id'])){
-				delete_organization($_GET['id']);
-			}
-		}
-	}
-	unset($_GET['id']);
+	Storage::instance()->content = template('orgmanagement',);
+});
+Slim::get('/orgmanagement/:id/delete',function($id){
+	if(isset($id)) delete_organization($id);
 	Storage::instance()->content = template('orgmanagement');
 });
 
 Slim::post('/orgmanagement',function(){
-	if(isset($_POST['org_name']) && isset($_POST['org_desc']) && !isset($_POST['org_id'])){
-		if(strlen($_POST['org_name'])!=0 && strlen($_POST['org_desc'])!=0){
+	if(isset($_POST['org_name']) && isset($_POST['org_desc']) && !isset($_POST['org_id'])  ):
 			add_organization($_POST['org_name'],$_POST['org_desc']);
-		}
-	}
-	else if(isset($_POST['org_name']) && isset($_POST['org_desc']) && isset($_POST['org_id'])){
-		if(strlen($_POST['org_name'])!=0 && strlen($_POST['org_desc'])!=0 && strlen($_POST['org_id'])!=0){
-			if(is_numeric($_POST['org_id'])){
-				edit_organization($_POST['org_id'],$_POST['org_name'],$_POST['org_desc']);
-			}
-		}
-	}
-	
+	elseif(isset($_POST['org_name']) && isset($_POST['org_desc']) && isset($_POST['org_id']) ):
+			edit_organization($_POST['org_id'],$_POST['org_name'],$_POST['org_desc']);
+	endif;
 	Storage::instance()->content = template('orgmanagement');
 	
 });
 
 Slim::post('/donmanagement',function(){
-            if(isset($_POST['don_name']) && isset($_POST['don_desc']) && !isset($_POST['don_id'])){
-		if(strlen($_POST['don_name'])!=0 && strlen($_POST['don_desc'])!=0){
+            if(isset($_POST['don_name']) && isset($_POST['don_desc']) && !isset($_POST['don_id']))
 			add_donor($_POST['don_name'],$_POST['don_desc']);
-		}
-	}
-	else if(isset($_POST['don_name']) && isset($_POST['don_desc']) && isset($_POST['don_id'])){
-		if(strlen($_POST['don_name'])!=0 && strlen($_POST['don_desc'])!=0 && strlen($_POST['don_id'])!=0){
-			if(is_numeric($_POST['don_id'])){
-				edit_donor($_POST['don_id'],$_POST['don_name'],$_POST['don_desc']);
-			}
-		}
-	}
+	   else if(isset($_POST['don_name']) && isset($_POST['don_desc']) && isset($_POST['don_id']))
+			edit_donor($_POST['don_id'],$_POST['don_name'],$_POST['don_desc']);
+		
 	
 	Storage::instance()->content = template('donmanagement');
 });

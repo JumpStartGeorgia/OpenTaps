@@ -28,9 +28,9 @@
 	</div>
 </div>
 
-<div style="border:0px solid #000;width:500px;height:auto;overflow:auto;">
+<div style="border:0px solid #000;width:500px;height:auto;">
 
-	<?php list_donors(); ?>
+	<?php list_donors("admin"); ?>
 	
 </div>
 </div>
