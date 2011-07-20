@@ -99,13 +99,14 @@ function read_news($limit = false, $news_id = false)
 {
     if($news_id)
     {
-	$sql = "SELECT * FROM news WHERE id = :news_id";
+	$sql = "SELECT * FROM news WHERE id = :news_id ORDER BY published_at DESC";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(':news_id' => $news_id));
     }
     else
     {
-	$sql = ( $limit ) ? "SELECT * FROM news LIMIT :limit" : "SELECT * FROM news";
+	$sql = ( $limit ) ? "SELECT * FROM news ORDER BY published_at DESC LIMIT ".$limit
+	                  : "SELECT * FROM news ORDER BY published_at DESC";
 	$arr = ( $limit ) ? array(':limit' => $limit) : null;
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute($arr);
@@ -113,44 +114,71 @@ function read_news($limit = false, $news_id = false)
     return $statement->fetchAll();
 }
 
-function add_news($title, $body)
+function add_news($title, $body, $filedata)
 {
     if( strlen($title) < 3 || strlen($body) < 11 )
-	return false;
+	return "either title or body is too short";
 
-    $sql = "INSERT INTO  `opentaps`.`news` (`title`, `body`, `published_at`) VALUES(:title, :body, :published_at)";
+    $up = image_upload( $filedata );
+    if( substr($up, 0, 8) != "uploads/" && $up != "" )		//return if any errors
+        return $up;
+
+    $sql = "INSERT INTO  `opentaps`.`news` (`title`, `body`, `published_at`, `image`) VALUES(:title, :body, :published_at, :image)";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
  	':title' => $title,
  	':body' => $body,
- 	':published_at' => date("Y-m-d")
+ 	':published_at' => date("Y-m-d H:i"),
+ 	':image' => $up
     ));
 
-    return ($exec) ? true : false;
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
+    return ($exec) ? $metarefresh : "couldn't insert into database";
 }
 
-function update_news($id, $title, $body)
+function update_news($id, $title, $body, $filedata)
 {
     if( strlen($title) < 3 || strlen($body) < 11 || !is_numeric($id) )
-	return false;
+	return "either title or body is too short, or invalid id";
 
-    $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` =  :body WHERE  `news`.`id` =:id";
+    $up = image_upload( $filedata ); 
+    if( substr($up, 0, 8) != "uploads/" && $up != "" )			//return if any errors
+	return $up;
+    elseif( $up == "" )
+    {
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` =  :body WHERE  `news`.`id` =:id";
+        $data = array(
+            ':id' => $id,
+ 	    ':title' => $title,
+ 	    ':body' => $body
+        );
+    }
+    else
+    {
+        delete_image($id);
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body WHERE  `news`.`id` =:id";
+        $data = array(
+            ':id' => $id,
+ 	    ':title' => $title,
+ 	    ':body' => $body,
+ 	    ':image' => $up
+        );
+    }
+    
     $statement = Storage::instance()->db->prepare($sql);
+    $exec = $statement->execute($data);
 
-    $exec = $statement->execute(array(
- 	':id' => $id,
- 	':title' => $title,
- 	':body' => $body,
-    ));
-
-    return ($exec) ? true : false;
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
+    return ($exec) ? $metarefresh : "couldn't update record/database error";
 }
 
 function delete_news($id)
 {
     if( !is_numeric($id) )
 	return false;
+
+    delete_image($id);
 
     $sql = "DELETE FROM `opentaps`.`news` WHERE  `news`.`id` =:id";
     $statement = Storage::instance()->db->prepare($sql);
@@ -161,6 +189,117 @@ function delete_news($id)
 
    return ($exec) ? true : false;
 }
+
+function image_upload($filedata)
+{
+    if($filedata['size'] > 0)
+       if( ($filedata['type'] == "image/jpeg" || $filedata['type'] == "image/pjpeg" ||
+            $filedata['type'] == "image/gif"  || $filedata['type'] == "image/png")  && $filedata['size'] / 1024 < 2049 )
+       {
+           $path = "uploads/";
+           $name = mt_rand(0,1000) . $filedata['name'];
+           if( file_exists($path . $name) )
+               $name = mt_rand(0,99999) . $name;
+           $upload = move_uploaded_file($filedata["tmp_name"], $path . $name);
+           if( !$upload )
+               return "file is valid but upload failed";
+           return $path . $name;
+       }
+       else
+           return "uploaded file is not an image or file size exceeds 2MB";
+    else
+        return "";
+}
+function delete_image($news_id)
+{
+    $sql = "SELECT image FROM news WHERE id = :news_id";
+    $statement = Storage::instance()->db->prepare($sql);
+    $statement->execute(array(':news_id' => $news_id));
+    $image = $statement->fetch(PDO::FETCH_ASSOC);
+    if( file_exists($image['image']) )
+        unlink($image['image']);
+}
+function view_image($news_id)
+{
+    $sql = "SELECT image FROM news WHERE id = :news_id";
+    $statement = Storage::instance()->db->prepare($sql);
+    $statement->execute(array(':news_id' => $news_id));
+    $image = $statement->fetch(PDO::FETCH_ASSOC);
+    return ( file_exists($image['image']) ) ? URL . $image['image'] : false;
+}
+
+
+								### TAGS MANAGEMENT
+function read_tags($tag_id = false)
+{
+    if($tag_id)
+    {
+        $sql = "SELECT * FROM tags WHERE id = :id";
+        $statement = Storage::instance()->db->prepare($sql);
+        $statement->execute(array(':id' => $tag_id));
+        return $statement->fetch(PDO::FETCH_ASSOC);    
+    }
+
+    $sql = "SELECT * FROM tags";
+    $statement = Storage::instance()->db->prepare($sql);
+    $statement->execute();
+    return $statement->fetchAll();    
+}
+
+function add_tag($name)
+{
+    $back = "<br /><a href=\"" . href("admin/tags/new") . "\">Back</a>";
+
+    if( strlen($name) < 2 )
+	return "name too short".$back;
+
+    $sql = "INSERT INTO  `opentaps`.`tags` (`name`) VALUES(:name)";
+    $statement = Storage::instance()->db->prepare($sql);
+
+    $exec = $statement->execute(array(
+ 	':name' => $name
+    ));
+
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags") . "' />";
+    return ($exec) ? $metarefresh : "couldn't insert into database".$back;
+}
+
+function update_tag($id, $name)
+{
+    $back = "<br /><a href=\"" . href("admin/tags/".$id) . "\">Back</a>";
+
+    if( strlen($name) < 2 || !is_numeric($id) )
+	return "name too short or invalid id" . $back;
+
+    $sql = "UPDATE `tags` SET  `name` =  :name WHERE  `tags`.`id` =:id";
+    $statement = Storage::instance()->db->prepare($sql);
+
+    $exec = $statement->execute(array(
+        ':id' => $id,
+ 	':name' => $name
+    ));
+
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags") . "' />";
+    return ($exec) ? $metarefresh : "couldn't update record/database error" . $back;
+}
+
+function delete_tag($id)
+{
+    if( !is_numeric($id) )
+	return "invalid id";
+
+    $sql = "DELETE FROM `opentaps`.`tags` WHERE  `tags`.`id` =:id";
+    $statement = Storage::instance()->db->prepare($sql);
+
+    $exec = $statement->execute(array(
+ 	':id' => $id
+    ));
+
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags") . "' />";
+    return ($exec) ? $metarefresh : "couldn't delete record/database error";
+}
+
+
 						################################ IRAKLI'S FUNCTIONS
 function fetch_db($sql){
 	$statement = Storage::instance()->db->prepare($sql);

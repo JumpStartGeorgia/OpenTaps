@@ -1,4 +1,14 @@
 <?php
+################################################################ News show routes start
+
+Slim::get('/news/', function(){
+    Storage::instance()->content = template('news', array('limit' => false));
+});
+
+
+
+################################################################ News show routes start
+
 ################################################################ News admin routes start
 Slim::get('/admin/news/', function(){
     if(userloggedin())
@@ -12,9 +22,7 @@ Slim::get('/admin/news/new/', function(){
 
 Slim::get('/admin/news/:id/', function($id){
     if(userloggedin())
-    {
-	Storage::instance()->content = template('admin/news/edit', array('id' => $id, 'news' => read_news(1, $id)));
-    }
+	Storage::instance()->content = template('admin/news/edit', array('news' => read_news(false, $id)));
 });
 
 Slim::get('/admin/news/:id/delete/', function($id){
@@ -32,27 +40,27 @@ Slim::get('/admin/news/:id/delete/', function($id){
 
 Slim::post('/admin/news/create/', function(){
     if(userloggedin())
-      if( add_news($_POST['n_title'], $_POST['n_body']) )
-	  Storage::instance()->content = "
-		<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />
-	  ";
-      else
-	  Storage::instance()->content = "
-		invalid data <br />
-		<a href=\"" . href("admin/news") . "\">Back</a>
-	  ";
+    {
+      $filedata = array(
+      	  "name" => $_FILES['n_file']['name'],
+      	  "type" => $_FILES['n_file']['type'],
+      	  "size" => $_FILES['n_file']['size'],
+      	  "tmp_name" => $_FILES['n_file']['tmp_name']
+      );
+      Storage::instance()->content = add_news( $_POST['n_title'], $_POST['n_body'], $filedata );
+    }
 });
 
 Slim::post('/admin/news/:id/update/', function($id){
     if(userloggedin())
-      if( update_news($id, $_POST['n_title'], $_POST['n_body']) )
-	  Storage::instance()->content = "
-		<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />
-	  ";
-      else
-	  Storage::instance()->content = "
-		invalid data <br />
-		<a href=\"" . href("admin/news") . "\">Back</a>
-	  ";
+    {
+      $filedata = array(
+      	  "name" => $_FILES['n_file']['name'],
+      	  "type" => $_FILES['n_file']['type'],
+      	  "size" => $_FILES['n_file']['size'],
+      	  "tmp_name" => $_FILES['n_file']['tmp_name']
+      );
+      Storage::instance()->content = update_news( $id, $_POST['n_title'], $_POST['n_body'], $filedata );
+    }
 });
 ################################################################ News admin routes end

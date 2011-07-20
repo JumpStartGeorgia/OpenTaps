@@ -1,6 +1,6 @@
 <center>
 
-  <? echo isset($alert) ? "<i>".$alert."</i><br />" : ""; ?>
+  <?php echo isset($alert) ? "<i>".$alert."</i><br />" : ""; ?>
 
   <form action='' method='post' id='loginform'>
 

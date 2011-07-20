@@ -1,4 +1,4 @@
-<?
+<?php
   foreach(Storage::instance()->menu as $menu)
   {
     $submenus = read_menu($menu['id']);

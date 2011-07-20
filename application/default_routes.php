@@ -67,12 +67,12 @@ Slim::get('/page/:short_name', function($short_name){
     Storage::instance()->content = $short_name;
 });
 ################################################################ Login routes start
-Slim::get('/login', function(){
+Slim::get('/login/', function(){
     if(!userloggedin())
 	Storage::instance()->content = template('login');
 });
 
-Slim::post('/login', function(){
+Slim::post('/login/', function(){
     $user = authenticate($_POST['username'], $_POST['password']);
     if($user)
     {

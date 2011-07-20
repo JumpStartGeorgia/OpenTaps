@@ -88,3 +88,8 @@ div.newrecord a{
 div.newrecord a:hover{
   background-color:#c4c4c4;
 }
+
+label.newpiclabel{
+  cursor:pointer;
+  text-decoration:underline;
+}

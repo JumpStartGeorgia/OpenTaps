@@ -53,7 +53,6 @@ div.menu ul{
   list-style-type: none;
   padding:0;
   float:left;
-  margin-bottom:9px;
 }
 div.menu ul li{
   float:left;
@@ -62,8 +61,8 @@ div.menu ul li{
 
 div.menu ul li a{
   display:block;
-  height:23px;
-  padding:6 12px 0 7px;
+  height:26px;
+  padding:10px 12px 0 12px;
   text-decoration:none;
   color:#00AFF2;
   font-size:1.0em;
@@ -107,14 +106,15 @@ div.menu ul.submenu li a{
 
 div.search{
   float:right;
-  border-left:1px solid #707C90;
-  margin-top:2px; 
+  border-left:1px solid grey;
+  margin-top:5px; 
   padding-left:2px;
 }
 div.search input.search{
   border:0px;
-  height:24px;
+  height:25px;
   width:122px;
+  color:grey;
 }
 div.search input.submit{
   background-image:url('images/search.jpg');
@@ -127,8 +127,8 @@ div.search input.submit{
 
 div.middle{
   height:350px;
-  border-top:1px dotted #A6A6A6;
-  margin-top:29px;
+  border:1px dotted #A6A6A6;
+  margin-top:37px;
   margin-bottom:35px;
 }
 
