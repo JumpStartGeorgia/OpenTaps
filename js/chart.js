@@ -11,12 +11,11 @@ function chart_init(){
 
 function barChart(){
     var bar = r.g.barchart(10, 10, 300, 220, [[55, 20, 13, 32, 5, 1, 2, 10]]).hover(function(){
-        this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+       this.flag = r.g.popup(this.bar.x, this.bar.y, this.bar.value || "0").insertBefore(this);
     },
     function(){
-        this.flag.animate({opacity: 0}, 300, function () {this.remove();});
-    }
-    );
+     this.flag.animate({opacity: 0}, 300, function () {this.remove();});
+    });
 }
 function pieChart(){
       var pie = r.g.piechart(150,110, 100, pieData, {legend:pieLegend,legendpos:"south"}).hover(function () {

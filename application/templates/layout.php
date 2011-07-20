@@ -67,10 +67,11 @@
         <script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/g.pie.js"></script>
+                                                                                        <script type="text/javascript" src="<?php echo URL ?>js/g.bar.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/g.bar.js"></script>                                                                               
+                                                                               
 	
 	
     </body>

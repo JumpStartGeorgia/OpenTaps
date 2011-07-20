@@ -25,3 +25,4 @@ require_once DIR . 'application/routes.php';
 Slim::run();
 
 echo template('layout');
+

@@ -29,10 +29,9 @@
 </div>
 
 <div style="border:0px solid #000;width:500px;height:auto;overflow:auto;">
-	<table border="0px" style="font-size:9pt;">
-	<tr><td><center></div></center></td><td><center>Organization</center></td><td><center>Description</center></td></tr>
+	
 	<?php list_organizations(); ?>
-	</table>
+
 </div>
 </div>
 </center>

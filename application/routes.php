@@ -4,7 +4,6 @@ $places = fetch_db("SELECT * FROM places");
 $js_places = array();
 foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ']';
-	print_r($js_places);
 Storage::instance()->js_places = $js_places;
 
 Slim::get("/",function(){
@@ -59,6 +58,7 @@ Slim::get('/orgmanagement',function(){
 	unset($_GET['id']);
 	Storage::instance()->content = template('orgmanagement');
 });
+
 Slim::post('/orgmanagement',function(){
 	if(isset($_POST['org_name']) && isset($_POST['org_desc']) && !isset($_POST['org_id'])){
 		if(strlen($_POST['org_name'])!=0 && strlen($_POST['org_desc'])!=0){
@@ -75,6 +75,34 @@ Slim::post('/orgmanagement',function(){
 	
 	Storage::instance()->content = template('orgmanagement');
 	
+});
+
+Slim::post('/donmanagement',function(){
+            if(isset($_POST['don_name']) && isset($_POST['don_desc']) && !isset($_POST['don_id'])){
+		if(strlen($_POST['don_name'])!=0 && strlen($_POST['don_desc'])!=0){
+			add_donor($_POST['don_name'],$_POST['don_desc']);
+		}
+	}
+	else if(isset($_POST['don_name']) && isset($_POST['don_desc']) && isset($_POST['don_id'])){
+		if(strlen($_POST['don_name'])!=0 && strlen($_POST['don_desc'])!=0 && strlen($_POST['don_id'])!=0){
+			if(is_numeric($_POST['don_id'])){
+				edit_donor($_POST['don_id'],$_POST['don_name'],$_POST['don_desc']);
+			}
+		}
+	}
+	
+	Storage::instance()->content = template('donmanagement');
+});
+Slim::get('/donmanagement',function(){
+        	if(isset($_GET['id'])){
+		if(strlen($_GET['id'])!=0){
+			if(is_numeric($_GET['id'])){
+				delete_donor($_GET['id']);
+			}
+		}
+    	}
+	unset($_GET['id']);
+        Storage::instance()->content = template('donmanagement');
 });
 
 
