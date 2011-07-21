@@ -9,32 +9,26 @@ Slim::get('/tags/', function(){
 
 ################################################################ tags admin routes start
 Slim::get('/admin/tags/', function(){
-    if(userloggedin())
-       Storage::instance()->content = template('admin/tags/all_records');
+    Storage::instance()->content = userloggedin() ? template('admin/tags/all_records') : template('login');
 });
 
 Slim::get('/admin/tags/new/', function(){
-    if(userloggedin())
-	Storage::instance()->content = template('admin/tags/new');
+    Storage::instance()->content = userloggedin() ? template('admin/tags/new') : template('login');
 });
 
 Slim::get('/admin/tags/:id/', function($id){
-    if(userloggedin())
-	Storage::instance()->content = template('admin/tags/edit', array('result' => read_tags($id)));
+    Storage::instance()->content = userloggedin() ? template('admin/tags/edit', array('result' => read_tags($id))) : template('login');
 });
 
 Slim::get('/admin/tags/:id/delete/', function($id){
-    if(userloggedin())
-	Storage::instance()->content = delete_tag($id);
+    Storage::instance()->content = userloggedin() ? delete_tag($id) : template('login');
 });
 
 Slim::post('/admin/tags/create/', function(){
-    if(userloggedin())
-        Storage::instance()->content = add_tag( $_POST['t_name'] );
+    Storage::instance()->content = userloggedin() ? add_tag( $_POST['t_name'] ) : template('login');
 });
 
 Slim::post('/admin/tags/:id/update/', function($id){
-    if(userloggedin())
-        Storage::instance()->content = update_tag( $id, $_POST['t_name'] );
+    Storage::instance()->content = userloggedin() ? update_tag( $id, $_POST['t_name'] ) : template('login');
 });
 ################################################################ tags admin routes end

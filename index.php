@@ -25,10 +25,10 @@ Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
 Storage::instance()->content = template('home');
 
-require_once DIR . 'application/default_routes.php';
-require_once DIR . 'application/tags_routes.php';
-require_once DIR . 'application/menu_routes.php';
-require_once DIR . 'application/news_routes.php';
+require_once DIR . 'application/routes/default_routes.php';
+require_once DIR . 'application/routes/tags_routes.php';
+require_once DIR . 'application/routes/menu_routes.php';
+require_once DIR . 'application/routes/news_routes.php';
 
 Slim::run();
 

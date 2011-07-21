@@ -3,11 +3,15 @@
 Slim::get('/admin/menu/', function(){
     if(userloggedin())
 	Storage::instance()->content = template('admin/menu/all_records');
+    else
+	Storage::instance()->content = template('login');
 });
 
 Slim::get('/admin/menu/new/', function(){
     if(userloggedin())
 	Storage::instance()->content = template('admin/menu/new');
+    else
+	Storage::instance()->content = template('login');
 });
 
 Slim::get('/admin/menu/:id/', function($id){
@@ -19,6 +23,8 @@ Slim::get('/admin/menu/:id/', function($id){
 	$result = $statement->fetch(PDO::FETCH_ASSOC);
 	Storage::instance()->content = template('admin/menu/edit', array('id' => $id, 'result' => $result));
     }
+    else
+	Storage::instance()->content = template('login');
 });
 
 Slim::get('/admin/menu/:id/delete/', function($id){
@@ -32,6 +38,8 @@ Slim::get('/admin/menu/:id/delete/', function($id){
 		invalid data <br />
 		<a href=\"" . href("admin/menu") . "\">Back</a>
 	    ";
+    else
+	Storage::instance()->content = template('login');
 });
 
 
@@ -44,6 +52,8 @@ Slim::post('/admin/menu/create/', function(){
 		invalid data <br />
 		<a href=\"" . href("admin/menu") . "\">Back</a>
 	    ";
+    else
+	Storage::instance()->content = template('login');
 });
 
 Slim::post('/admin/menu/:id/update/', function($id){
@@ -57,5 +67,7 @@ Slim::post('/admin/menu/:id/update/', function($id){
 		invalid data <br />
 		<a href=\"" . href("admin/menu") . "\">Back</a>
 	    ";
+    else
+	Storage::instance()->content = template('login');
 });
 ################################################################ Menu admin routes end
