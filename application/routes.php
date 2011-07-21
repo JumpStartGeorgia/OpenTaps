@@ -16,6 +16,7 @@ Slim::get('/login', function(){
     ));
 });
 
+//places management
 Slim::get('/places',function(){
 	if(isset($_GET['id'])){
 		if(strlen($_GET['id'])!=0){
@@ -47,6 +48,7 @@ Slim::post('/places',function(){
 	
 });
 
+//donors
 Slim::get('/donors',function(){
 	$sql = "SELECT * FROM donors;";
 	$results = fetch_db($sql);
@@ -54,7 +56,6 @@ Slim::get('/donors',function(){
 		'donors' => $results
 	));
 });
-
 Slim::get('/donor/:id', function($id){
 	$sql = "SELECT * FROM donors WHERE id = '$id' LIMIT 1;";
 	$result = fetch_db($sql);
@@ -62,13 +63,13 @@ Slim::get('/donor/:id', function($id){
 		'donor' => $result[0]
 	));
 });
-
 Slim::get('/donor/:id/delete', function($id){
 	$sql = "DELETE FROM donors WHERE id = {$id} LIMIT 1;";
 	Storage::instance()->db->exec($sql);
 	Slim::redirect('donors');
 });
 
+//organizations 
 Slim::get('/organization/:id',function($id){
 	$sql = "SELECT * FROM organizations WHERE id='$id' LIMIT 1;";
 	$result = fetch_db($sql);
@@ -76,7 +77,6 @@ Slim::get('/organization/:id',function($id){
 		'organization' => $result[0]
 	));
 });
-
 Slim::get('/organizations',function(){
 	$sql = "SELECT * FROM organizations";
 	$results = fetch_db($sql); 
@@ -85,6 +85,7 @@ Slim::get('/organizations',function(){
         ));
 });
 
+//organization management
 Slim::get('/orgmanagement',function(){
 	$sql = "SELECT * FROM organizations";
 	$results = fetch_db($sql);
@@ -94,9 +95,8 @@ Slim::get('/orgmanagement',function(){
 });
 Slim::get('/orgmanagement/:id/delete',function($id){
 	if(isset($id)) delete_organization($id);
-	Slim::redirect(href('orgmanagement'));
+	Slim::redirect(href('index.php/orgmanagement'));
 });
-
 Slim::post('/orgmanagement',function(){
 	if(isset($_POST['org_name']) && isset($_POST['org_desc']) && !isset($_POST['org_id'])  ):
 			add_organization($_POST['org_name'],$_POST['org_desc']);
@@ -107,25 +107,40 @@ Slim::post('/orgmanagement',function(){
 	
 });
 
+//donor management
 Slim::post('/donmanagement',function(){
             if(isset($_POST['don_name']) && isset($_POST['don_desc']) && !isset($_POST['don_id']))
 			add_donor($_POST['don_name'],$_POST['don_desc']);
-	   else if(isset($_POST['don_name']) && isset($_POST['don_desc']) && isset($_POST['don_id']))
+	    else if(isset($_POST['don_name']) && isset($_POST['don_desc']) && isset($_POST['don_id']))
 			edit_donor($_POST['don_id'],$_POST['don_name'],$_POST['don_desc']);
-		
-	
-	Storage::instance()->content = template('donmanagement');
+		Slim::redirect(href('index.php/donmanagement'));
 });
 Slim::get('/donmanagement',function(){
-        	if(isset($_GET['id'])){
-		if(strlen($_GET['id'])!=0){
-			if(is_numeric($_GET['id'])){
-				delete_donor($_GET['id']);
-			}
-		}
-    	}
-	unset($_GET['id']);
-        Storage::instance()->content = template('donmanagement');
+	$sql = "SELECT * FROM donors";
+	$results = fetch_db($sql);
+	Storage::instance()->content = template('donmanagement',array(
+		'donors' => $results
+	));
+});
+Slim::get('/donmanagement/:id/delete',function($id){
+	if(isset($id)) delete_donor($id);
+	Slim::redirect(href('index.php/donmanagement'));
+});
+
+//project management
+Slim::get('/projmanagement/',function(){
+	$sql = "SELECT * FROM projects";
+	$results = fetch_db($sql);
+	Storage::instance()->content = template('projectmanagement',array(
+		'projects' => $results
+	));
+});
+Slim::get('/projmanagement/:id/delete',function(){
+	if(isset($id)){
+		delete_from_db('projects',$id);
+		delete_from_db('projects_data',$id)
+	}
+	Slim::redirect(href('index.php/projmanagement'));
 });
 
 

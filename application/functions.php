@@ -29,9 +29,12 @@ function fetch_db($sql)
 
 
 function add_place($lon,$lat){
-	$sql = "INSERT INTO places(longitude,latitude) VALUES('$lon','$lat')";
+	$sql = "INSERT INTO places(longitude,latitude) VALUES(:lon,:lat)";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':lon' => $lon,
+		':lat' => $lat
+	));
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
 }
 
@@ -45,16 +48,22 @@ function list_places(){
 }
 
 function edit_place($id,$lon,$lat){
-	$sql = "UPDATE places SET longitude='$lon',latitude='$lat' WHERE id='$id' ";
+	$sql = "UPDATE places SET longitude=:lon,latitude=:lat WHERE id=:id ";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':lon' => $lon,
+		':lat' => $lat,
+		':id' => $id
+	));
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
 }
 
 function delete_place($id){
-	$sql = "DELETE FROM places WHERE id='$id'";
+	$sql = "DELETE FROM places WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':id' => $id
+	));
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
 }
 
@@ -63,22 +72,46 @@ function is_admin()
 	return (isset($_SESSION['username']) AND !empty($_SESSION['username']));
 }
 
-function delete_donor($id){
-	$sql = "DELETE FROM donors WHERE id='$id'";
+//--------------------------------------------------------------
+function delete_from_db($table,$id){
+	$sql = "DELETE * FROM :table WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':table' => $table,
+		':id' => $id
+	));
+}
+
+function add_to_db($table,$table_fields,$values){
+	$sql = "INSERT INTO :table(:table_fields[0])";
+}
+//------------------------------------------------------------------
+
+function delete_donor($id){
+	$sql = "DELETE FROM donors WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
 }
 
 function add_donor($don_name,$don_desc){
-	$sql = "INSERT INTO donors(don_name,don_description) VALUES('".$don_name."','".$don_desc."')";
+	$sql = "INSERT INTO donors(don_name,don_description) VALUES(:don_name,:don_desc)";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':don_name' => $don_name,
+		':don_desc' => $don_desc
+	));
 }
 
 function edit_donor($don_id,$don_name,$don_desc){
-	$sql = "UPDATE donors SET don_name='$don_name',don_description='$don_desc' WHERE id='$don_id'";
+	$sql = "UPDATE donors SET don_name=:don_name,don_description=:don_desc WHERE id=:don_id";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':don_name' => $don_name,
+		':don_desc' => $don_desc,
+		':don_id' => $don_id
+	));
 }
 
 
@@ -94,21 +127,30 @@ function show_organization($id){
 }
 
 function delete_organization($id){
-	$sql = "DELETE FROM organizations WHERE id='$id'";
+	$sql = "DELETE FROM organizations WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':id' => $id
+	));
 }
 
 function add_organization($org_name,$org_desc){
-	$sql = "INSERT INTO organizations(org_name,org_description) VALUES('$org_name','$org_desc')";
+	$sql = "INSERT INTO organizations (org_name,org_description) VALUES(:org_name,:org_desc)";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':org_name' => $org_name,
+		':org_desc' => $org_desc
+	));
 }
 
 function edit_organization($org_id,$org_name,$org_desc){
-	$sql = "UPDATE organizations SET org_name='$org_name',org_description='$org_desc' WHERE id='$org_id'";
+	$sql = "UPDATE organizations SET org_name=:org_name,org_description=:org_description WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':org_name' => $org_name,
+		':org_description' => $org_desc,
+		':id' => $org_id
+	));
 }
 
 
