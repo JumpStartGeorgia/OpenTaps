@@ -70,7 +70,7 @@
 						   '<?php echo 	$organization['org_name']; ?>',
 						   '<?php echo $organization['org_description']; ?>'
 						   )">edit</a></td>
-			<td><a href="<?php echo href("index.php/orgmanagement/{$organization['id']}/delete"); ?>">delete</a></td>
+			<td><a href="<?php echo href("/orgmanagement/{$organization['id']}/delete"); ?>">delete</a></td>
 		</tr>
 		
 		<?php $idx++; ?>

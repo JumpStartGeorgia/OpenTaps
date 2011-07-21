@@ -70,7 +70,7 @@
 						   '<?php echo 	$donor['don_name']; ?>',
 						   '<?php echo $donor['don_description']; ?>'
 						   )">edit</a></td>
-			<td><a href="<?php echo href("index.php/donmanagement/{$donor['id']}/delete"); ?>">delete</a></td>
+			<td><a href="<?php echo href("/donmanagement/{$donor['id']}/delete"); ?>">delete</a></td>
 		</tr>
 		
 		<?php $idx++; ?>
