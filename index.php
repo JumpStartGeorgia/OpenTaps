@@ -1,16 +1,20 @@
 <?php
+<<<<<<< HEAD
 session_start();
 
+=======
+>>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 define('DIR', getcwd() . '/');
 define('URL', 'http://www.localhost.com/OpenTaps/');
+
+error_reporting(E_ALL);
 
 require_once DIR . 'application/storage.php';
 Storage::instance()->config = require DIR . 'application/config.php';
 require_once DIR . 'application/functions.php';
-
 try
 {
-    Storage::instance()->db = new PDO('mysql:dbname=opentaps;host=127.0.0.1', config('db_user'), config('db_pass'));
+    Storage::instance()->db = new PDO('mysql:dbname=opentaps;host=localhost', config('db_user'), config('db_pass'));
 }
 catch (PDOException $exception)
 {
@@ -33,3 +37,4 @@ require_once DIR . 'application/routes/news_routes.php';
 Slim::run();
 
 echo template('layout');
+

@@ -270,6 +270,8 @@ div.bottom3 img{
   margin-top:-5px;
 }
 
+
+
 .maxItemInactive{
 	width:25px;
 	height:20px;
@@ -279,6 +281,7 @@ div.bottom3 img{
 	margin-left:20px;
 	cursor:pointer;
 }
+	
 .minItemInactive{
 	width:25px;
 	height:20px;
@@ -297,6 +300,7 @@ div.bottom3 img{
 	margin-left:845px;
 	cursor:pointer;
 }
+
 .setsItemInactive{
 	width:25px;
 	height:20px;

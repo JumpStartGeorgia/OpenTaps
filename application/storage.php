@@ -30,6 +30,11 @@ class Storage
         return TRUE;
     }
 
+    public function __isset($name)
+    {
+        return (array_key_exists($name, $this->_storage));
+    }
+
     private function _sanitize($key)
     {
         return trim((string) $key);

@@ -19,6 +19,7 @@ function news_out(m,i)
   m.style.backgroundColor = "#FFF";
 }
 
+<<<<<<< HEAD
 $(function()
 {
     var menu = $('#menu'),
@@ -32,6 +33,8 @@ $(function()
         $(this).children('div').slideToggle(100);
     });
 });
+=======
+>>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 function hideOthers(div_hide,div_show){
 			var div_all = div_hide.concat(div_show);
 		for(var i=0;i<div_all.length;i++){
@@ -39,7 +42,11 @@ function hideOthers(div_hide,div_show){
 			else document.getElementById(div_all[i]).style.display = 'block';
 		}
 }
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 function showedit(id,lon,lat){
 	
 		if(document.getElementById(id).style.height == "60px"){
@@ -76,7 +83,11 @@ function showedit(id,lon,lat){
 		edit_button.setAttribute("value","Refactor");
 		
 		edit_div.setAttribute("id",parseInt(id)+453475345);
+<<<<<<< HEAD
 		edit_div.setAttribute("style","margin-top:5px;border:1px solid #000;width:300px;height:70px;");
+=======
+		edit_div.setAttribute("style","margin-top:5px;border:1px solid #000;width:250px;height:130px;");
+>>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 		
 		edit_div.appendChild(edit_form);
 		edit_form.appendChild(edit_hidden);
@@ -85,7 +96,10 @@ function showedit(id,lon,lat){
 		edit_form.appendChild(edit_br);
 		edit_form.appendChild(edit_label1);
 		edit_form.appendChild(edit_text1);
+<<<<<<< HEAD
 		edit_form.appendChild(edit_br);
+=======
+>>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 		edit_form.appendChild(edit_button);
 		
 		document.getElementById(id).appendChild(edit_div);
