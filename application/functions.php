@@ -14,7 +14,6 @@ function config($item)
     return isset(Storage::instance()->config[$item]) ? Storage::instance()->config[$item] : FALSE;
 }
 
-<<<<<<< HEAD
 function href($segments = NULL)
 {
     return URL . ltrim($segments, '/') . "/";
@@ -35,7 +34,7 @@ function authenticate($username, $password)
 
 function userloggedin()
 {
-    return (isset($_SESSION['id']) && isset($_SESSION['username']));
+    return (isset($_SESSION['id']) && isset($_SESSION['username']) && !empty($_SESSION['username']));
 }
 
 								### MENU MANAGEMENT
@@ -248,6 +247,42 @@ function read_tags($tag_id = false)
     return $statement->fetchAll();    
 }
 
+function read_tag_connector($field, $id)
+{
+    if($field != "don" && $field != "proj" && $field != "org")
+        return array();
+
+    $sql = "SELECT tag_id FROM tag_connector WHERE ".$field."_id = ".$id;
+    $statement = Storage::instance()->db->prepare($sql);
+    $statement->execute();
+    $r = $statement->fetchAll();
+    $result = array();
+    foreach($r as $s)
+    {
+        $result[] = $s['tag_id'];
+    }
+    return $result;
+}
+function add_tag_connector($field, $f_id, $tag_ids)
+{
+    if($field != "don" && $field != "proj" && $field != "org")
+        return false;
+
+    foreach($tag_ids as $tag_id)
+    {
+        $sql = "INSERT INTO  `opentaps`.`tag_connector` (`".$field."_id`, `tag_id`) VALUES(:f_id, :tag_id)";
+        $statement = Storage::instance()->db->prepare($sql);
+        $exec = $statement->execute(array(
+ 	    ':f_id' => $f_id,
+ 	    ':tag_id' => $tag_id
+        ));
+        if(!$exec)
+            return false;
+    }
+
+    return true;
+}
+
 function add_tag($name)
 {
     $back = "<br /><a href=\"" . href("admin/tags/new") . "\">Back</a>";
@@ -303,12 +338,12 @@ function delete_tag($id)
 
 
 						################################ IRAKLI'S FUNCTIONS
-function fetch_db($sql){
+function fetch_db($sql)
+{
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
 	$result = $statement->fetchAll();
-	if(count($result) != 0)	return $result;
-	else return array();
+	return empty($result) ? array() : $result;
 }
 
 function add_place($lon,$lat){
@@ -318,55 +353,27 @@ function add_place($lon,$lat){
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."places'>";
 }
 
-function list_places(){
-	$results = fetch_db("SELECT * FROM places");
-=======
-function href($uri)
-{
-	return URL . trim($uri, '/');
-}
-
-function fetch_db($sql)
-{
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-	$result = $statement->fetchAll();
-	return empty($result) ? array() : $result;
-}
-
-
-function add_place($lon,$lat){
-	$sql = "INSERT INTO places(longitude,latitude) VALUES('$lon','$lat')";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
-}
 
 function list_places(){
 	$sql = "SELECT * FROM places";
 	$results = fetch_db($sql);
->>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 	if(count($results) == 0) echo "<h2>No places</h2>";
 	else foreach($results as $result){
 		echo "<br /><div id='".$result['id']."' style='background-color:#CCC;border:1px solid #000;width:300px;height:60px;'><p align='left'><font size='2pt'>Longitude:".$result['longitude']."<br />Latitude:".$result['latitude']."</font></p><p align='right'><font size='2pt'><a href='javascript:showedit(".$result['id'].",".$result['longitude'].",".$result['latitude'].");'>edit</a>&nbsp;<a href='?id=".$result['id']."'>delete</a></font></p></div>";
 	}
 }
 
-<<<<<<< HEAD
-=======
 function edit_place($id,$lon,$lat){
 	$sql = "UPDATE places SET longitude='$lon',latitude='$lat' WHERE id='$id' ";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
-	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
+	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."places'>";
 }
 
->>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 function delete_place($id){
 	$sql = "DELETE FROM places WHERE id='$id'";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
-<<<<<<< HEAD
 	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."places'>";
 }
 
@@ -387,49 +394,27 @@ function list_organizations(){
 	}
 }
 
-function edit_place($id,$lon,$lat){
-	$sql = "UPDATE places SET longitude='$lon',latitude='$lat' WHERE id='$id' ";
+function delete_from_db($table,$id){
+	$sql = "DELETE * FROM :table WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."places'>";
-=======
-	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."index.php/places'>";
+	$statement->execute(array(
+		':table' => $table,
+		':id' => $id
+	));
 }
 
-function is_admin()
-{
-	return (isset($_SESSION['username']) AND !empty($_SESSION['username']));
+function add_to_db($table,$table_fields,$values){
+	$sql = "INSERT INTO :table(:table_fields[0])";
 }
-
-function delete_donor($id){
-	$sql = "DELETE FROM donors WHERE id='$id'";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-}
-
-function add_donor($don_name,$don_desc){
-	$sql = "INSERT INTO donors(don_name,don_description) VALUES('".$don_name."','".$don_desc."')";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-}
-
-function edit_donor($don_id,$don_name,$don_desc){
-	$sql = "UPDATE donors SET don_name='$don_name',don_description='$don_desc' WHERE id='$don_id'";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-}
-
-
 
 
 function show_organization($id){
-	$sql = "SELECT * FROM organizations WHERE id='$id'";
+    $sql = "SELECT * FROM organizations WHERE id='$id'";
     $results = fetch_db();
     foreach($results as $result){
         echo "<div><center><h2>".$result['org_name']."</h2></center></div>";
         echo "<div><blockquote>".$result['org_description']."</blockquote></div>";
     }
->>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 }
 
 function delete_organization($id){
@@ -449,8 +434,92 @@ function edit_organization($org_id,$org_name,$org_desc){
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
 }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> 9015394620aca5f81778a8764afedc7dce890948
+
+//donors
+
+function read_donors($donors_id = false)
+{
+    if($donors_id)
+    {
+        $sql = "SELECT * FROM donors WHERE id = :id";
+        $statement = Storage::instance()->db->prepare($sql);
+        $statement->execute(array(':id' => $donors_id));
+        return $statement->fetch(PDO::FETCH_ASSOC);    
+    }
+
+    $sql = "SELECT * FROM donors";
+    $statement = Storage::instance()->db->prepare($sql);
+    $statement->execute();
+    return $statement->fetchAll();    
+}
+
+
+function add_donors($name, $descr, $tag_ids)
+{
+    $back = "<br /><a href=\"" . href("admin/donors/new") . "\">Back</a>";
+
+    if( strlen($name) < 2 )
+	return "name too short".$back;
+
+    $sql = "INSERT INTO  `opentaps`.`donors` (`don_name`, `don_desc`) VALUES(:name, :descr)";
+    $statement = Storage::instance()->db->prepare($sql);
+
+    $exec = $statement->execute(array(
+ 	':name' => $name,
+ 	':descr' => $descr
+    ));
+
+    if(!add_tag_connector('don', Storage::instance()->db->lastInsertId(), $tag_ids))
+        return "tag connection error";
+
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/donors") . "' />";
+    return ($exec) ? $metarefresh : "couldn't insert into database".$back;
+}
+
+function update_donors($id, $name, $descr, $tag_ids)
+{
+    $back = "<br /><a href=\"" . href("admin/donors/".$id) . "\">Back</a>";
+
+    if( strlen($name) < 2 || !is_numeric($id) )
+	return "name too short or invalid id" . $back;
+
+    $sql = "UPDATE `donors` SET  `don_name` =  :name, `don_desc` =  :descr WHERE  `donors`.`id` =:id";
+    $statement = Storage::instance()->db->prepare($sql);
+
+    $exec = $statement->execute(array(
+        ':id' => $id,
+ 	':name' => $name,
+ 	':descr' => $descr
+    ));
+
+    $sql = "DELETE FROM tag_connector where don_id = :id";
+    $statement = Storage::instance()->db->prepare($sql);
+
+    $delete = $statement->execute(array(':id' => $id));
+
+    if(!add_tag_connector('don', $id, $tag_ids) OR !$delete)
+        return "tag connection error";
+
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/donors") . "' />";
+    return ($exec) ? $metarefresh : "couldn't update record/database error" . $back;
+}
+
+function delete_donors($id)
+{
+    if( !is_numeric($id) )
+	return "invalid id";
+
+    $sql = "DELETE FROM `opentaps`.`donors` WHERE  `donors`.`id` =:id";
+    $statement = Storage::instance()->db->prepare($sql);
+
+    $exec = $statement->execute(array(':id' => $id));
+
+    $sql = "DELETE FROM tag_connector where don_id = :id";
+    $statement = Storage::instance()->db->prepare($sql);
+    $delete = $statement->execute(array(':id' => $id));
+
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/donors") . "' />";
+    return ($exec) ? $metarefresh : "couldn't delete record/database error";
+}

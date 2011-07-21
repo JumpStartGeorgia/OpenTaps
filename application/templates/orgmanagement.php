@@ -2,21 +2,28 @@
 <div>
 <script type="text/javascript">
 	function show_org_edit(id,org_name,org_desc){
-		document.getElementById("add_org").innerHTML = "<font size='2pt'>Edit Organization<a style='margin-left:130px;' href=''>switch to add mode</a></font>";
-		document.getElementById("org_form").getElementsByTagName("input")[1].value = "Edit";
-		document.getElementById("org_form").style.display = "block";
-		document.getElementsByName("org_name")[0].value = org_name;
-		document.getElementsByTagName("textarea")[0].value = org_desc;
-		var hid_inp = document.createElement("input");
-		hid_inp.setAttribute("type","hidden");
-		hid_inp.setAttribute("value",id);
-		hid_inp.setAttribute("name","org_id");
-		document.getElementById("org_form").getElementsByTagName("form")[0].insertBefore(hid_inp,document.getElementById("org_form").getElementsByTagName("form")[0].firstChild);
+		document.getElementById('org_form').style.display = "none";
+		document.getElementById('editorg_form').getElementsByTagName('input')[0].value = id;
+		document.getElementById('editorg_form').getElementsByTagName('input')[1].value = org_name;
+		document.getElementById('editorg_form').getElementsByTagName('textarea')[0].value = org_desc;
+		document.getElementById('edit_org').style.display = "block";
+	}
+	function showhide(div,div1){
+			var hdiv = document.getElementById(div);
+			var hdiv1 = document.getElementById(div1);
+		if(hdiv.style.display == "none"){
+		hdiv.style.display = "block";	
+		hdiv1.style.display = "none";
+		}
+		else{
+		hdiv.style.display = "none";
+		//hdiv1.style.display = "block";
+		}
 	}
 </script>
 <div>Organizations</a></div>
-<div style="border:1px solid #000;width:400px;">
-	<div id="add_org" style="background-color:#CCC;cursor:default;"><font size="2pt">Add Organization</font></div>
+<div id="addorg_tot" style="border:1px solid #000;width:400px;">
+	<div id="add_org" style="background-color:#CCC;cursor:default;" onclick="showhide('org_form','editorg_form')"><font size="2pt">Add Organization</font></div>
 	<div id="org_form" style="overflow:hidden;display:none;">
 	<br />
 		<form action="" method="POST">
@@ -28,13 +35,20 @@
 	</div>
 </div>
 
-<<<<<<< HEAD
-<div style="border:0px solid #000;width:500px;height:auto;overflow:auto;">
-	<table border="0px" style="font-size:9pt;">
-	<tr><td><center></div></center></td><td><center>Organization</center></td><td><center>Description</center></td></tr>
-	<?php list_organizations(); ?>
-	</table>
-=======
+<div id="edit_org" style="border:1px solid #000;width:400px;display:none;">
+	<div style="background-color:#CCC;cursor:default;" onclick="showhide('editorg_form','org_form')"><font size="2pt">Edit Organization</font></div>
+	<div id="editorg_form" style="overflow:hidden;">
+	<br />
+		<form action="" method="POST">
+		<input type="hidden" name="org_id"/>
+		Organization name:<input type="text" name="org_name"/>
+		<p align="top">Organization description:</p><textarea style="resize:none;" name="org_desc" rows="4" cols="50"></textarea><br />
+		<input type="submit" value="Edit"/>
+		</form>
+		<br />
+	</div>
+</div>
+
 <div style="border:0px solid #000;width:500px;height:auto;">
 
 	<?php if(empty($organizations)):?>
@@ -52,10 +66,11 @@
 			<td><?php echo $idx; ?></td>
 			<td><?php echo $organization['org_name']; ?></td>
 			<td><?php echo $organization['org_description'];?></td>
-			<td><a href="show_org_edit('<?php echo $organization['id']; ?>',
-						   '<?php echo $organization['org_name']; ?>',
+			<td><a href="javascript:show_org_edit('<?php echo $organization['id']; ?>',
+						   '<?php echo 	$organization['org_name']; ?>',
 						   '<?php echo $organization['org_description']; ?>'
 						   )">edit</a></td>
+			<td><a href='<?php echo href('orgmanagement-new/'.$organization['id']) ?>'>edit tags</a></td>
 			<td><a href="<?php echo href("orgmanagement/{$organization['id']}/delete"); ?>">delete</a></td>
 		</tr>
 		
@@ -63,15 +78,6 @@
 	<?php endforeach;?>
 	</table>
 	<?php endif;?>
->>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 </div>
 </div>
 </center>
-
-<script type="text/javascript">
-	document.getElementById("add_org").onclick = function(){
-		if(document.getElementById("org_form").style.display == "none")
-		document.getElementById("org_form").style.display = "block";
-		else document.getElementById("org_form").style.display = "none";
-	};
-</script>

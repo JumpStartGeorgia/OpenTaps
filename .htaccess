@@ -1,10 +1,3 @@
-<<<<<<< HEAD
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [QSA,L]
-=======
-#RewriteEngine On
-#RewriteBase /
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteRule ^(.*)$ index.php [QSA,L]
->>>>>>> 9015394620aca5f81778a8764afedc7dce890948

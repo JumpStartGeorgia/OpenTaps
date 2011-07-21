@@ -1,9 +1,6 @@
 <?php
-<<<<<<< HEAD
 session_start();
 
-=======
->>>>>>> 9015394620aca5f81778a8764afedc7dce890948
 define('DIR', getcwd() . '/');
 define('URL', 'http://www.localhost.com/OpenTaps/');
 
@@ -30,6 +27,7 @@ Storage::instance()->viewmenu = template('menu');
 Storage::instance()->content = template('home');
 
 require_once DIR . 'application/routes/default_routes.php';
+require_once DIR . 'application/routes/irakli_routes.php';
 require_once DIR . 'application/routes/tags_routes.php';
 require_once DIR . 'application/routes/menu_routes.php';
 require_once DIR . 'application/routes/news_routes.php';
@@ -37,4 +35,3 @@ require_once DIR . 'application/routes/news_routes.php';
 Slim::run();
 
 echo template('layout');
-

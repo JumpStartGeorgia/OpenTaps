@@ -3,9 +3,11 @@
 }
 
 body {
-  margin-top:25px;
+  margin-top:0px;
   color: #333;
-  padding-bottom:25px;font-size:100.01%;
+  padding-bottom:25px;
+  font-size:100.01%;
+  background-attachment:fixed;
 }
 
 body, div.header_right, div.projects_organization, div.news{
@@ -62,10 +64,10 @@ div.menu ul li{
 div.menu ul li a{
   display:block;
   height:26px;
-  padding:10px 12px 0 12px;
+  padding:10px 10px 0 10px;
   text-decoration:none;
   color:#00AFF2;
-  font-size:1.0em;
+  font-size:13px;
   font-family:Arial;
 }
 div.menu ul li a:hover, div.menu ul li:hover{
@@ -125,9 +127,16 @@ div.search input.submit{
   border:0px;
 }
 
+div.after_menu{
+  border-bottom:1px dotted #A6A6A6;
+  width:100%;
+  float:left;
+}
+
 div.middle{
   height:350px;
   border:1px dotted #A6A6A6;
+  border-top:0;
   margin-top:37px;
   margin-bottom:35px;
 }
