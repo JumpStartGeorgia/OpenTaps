@@ -61,15 +61,24 @@
 
 	<script type="text/javascript">
 	    var places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>];
+	    var places_id = [],k=24;
+	    for(var i=0,len=places.length;i<len;i++){
+	    	places_id.push("OL_Icon_"+k);
+	    	k+=4;
+	    }
 	</script>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/g.pie.js"></script>
-                                                                                        <script type="text/javascript" src="<?php echo URL ?>js/g.bar.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
+     	<script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
+     	<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
+     	<script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>
+     	<script type="text/javascript" src="<?php echo URL ?>js/g.pie.js"></script>
+     	<script type="text/javascript" src="<?php echo URL ?>js/g.bar.js"></script>
+     	<script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
+     	
+       
+     
+        
         <script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
 	
     </body>
