@@ -3,7 +3,7 @@ Slim::get('/', function(){
 
 });
 
-Slim::get('/page/:short_name', function($short_name){
+Slim::get('/page/:short_name/', function($short_name){
     Storage::instance()->content = $short_name;
 });
 ################################################################ Login routes start
@@ -24,7 +24,7 @@ Slim::post('/login/', function(){
 	Storage::instance()->content = template('login', array('alert' => 'Incorrect Username/Password'));
 });
 
-Slim::get('/logout', function(){
+Slim::get('/logout/', function(){
     session_destroy();
 });
 ################################################################ Login routes end

@@ -1,6 +1,63 @@
 function init(){
 	map_init();
 	chart_init();
+	configure_marker();
+        configure_marker_animation();        
+}
+
+function configure_marker(){
+	for(var i=0,len=places_id.length;i<len;i++){
+		var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
+		marker_img_handle.src = "http://localhost/OpenTaps/images/marker.png";
+		marker_img_handle.style.width = "20px";
+		marker_img_handle.style.height = "20px";
+	}
+}
+
+function configure_marker_animation(){
+	for(var i=0,len=places_id.length;i<len;i++){
+	   	var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
+	    		marker_img_handle.setAttribute("onmouseover","marker_animate(this.id)");
+	    		marker_img_handle.setAttribute("onmouseout","marker_animate_back(this.id)");
+	    		
+	    	}
+}
+
+$(function()
+{
+    var menu = $('#menu'),   minimum_submenu_width = 144;
+    menu.children('li').hover(function(){
+        $(this).children('ul.submenu').slideToggle(100);
+        $(this).find('li').width($(this).width());
+    });
+
+     $('.admin').hover(function(){
+        $(this).children('div').slideToggle(100);
+    });
+});
+
+
+function marker_animate(id){
+	//console.log(document.getElementById(id).style.width);
+	if(document.getElementById(id).style.width == "20px")
+	if(document.getElementById(id).style.height == "20px")
+	$("#"+id).animate({"margin-top":"-15px","margin-left":"-15px","width":"200px","height":"200px"},570);	
+}	
+function marker_animate_back(id){
+	if(document.getElementById(id).style.width == "200px")
+	if( document.getElementById(id).style.height == "200px")
+	$("#"+id).animate({"margin-top":"0px","margin-left":"0px","width":"20px","height":"20px"},570);
+}
+function menu_over(m)
+{
+  m.style.backgroundColor = "#5FCCF3";
+  m.style.color = "#FFFFFF";
+}
+
+function menu_out(m)
+{
+  m.style.backgroundColor = "#FFFFFF";
+  m.style.color = "#01AEF0";
 }
 
 function news_over(m,i)
@@ -19,18 +76,6 @@ function news_out(m,i)
   m.style.backgroundColor = "#FFF";
 }
 
-$(function()
-{
-    var menu = $('#menu'),   minimum_submenu_width = 144;
-    menu.children('li').hover(function(){
-        $(this).children('ul.submenu').slideToggle(100);
-        $(this).find('li').width($(this).width());
-    });
-
-     $('.admin').hover(function(){
-        $(this).children('div').slideToggle(100);
-    });
-});
 function hideOthers(div_hide,div_show){
 			var div_all = div_hide.concat(div_show);
 		for(var i=0;i<div_all.length;i++){
@@ -38,7 +83,7 @@ function hideOthers(div_hide,div_show){
 			else document.getElementById(div_all[i]).style.display = 'block';
 		}
 }
-
+	
 function showedit(id,lon,lat){
 	
 		if(document.getElementById(id).style.height == "60px"){
@@ -75,7 +120,6 @@ function showedit(id,lon,lat){
 		edit_button.setAttribute("value","Refactor");
 		
 		edit_div.setAttribute("id",parseInt(id)+453475345);
-		edit_div.setAttribute("style","margin-top:5px;border:1px solid #000;width:300px;height:70px;");
 		edit_div.setAttribute("style","margin-top:5px;border:1px solid #000;width:250px;height:130px;");
 		
 		edit_div.appendChild(edit_form);
@@ -85,7 +129,6 @@ function showedit(id,lon,lat){
 		edit_form.appendChild(edit_br);
 		edit_form.appendChild(edit_label1);
 		edit_form.appendChild(edit_text1);
-		edit_form.appendChild(edit_br);
 		edit_form.appendChild(edit_button);
 		
 		document.getElementById(id).appendChild(edit_div);

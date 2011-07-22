@@ -346,14 +346,16 @@ function fetch_db($sql)
 	return empty($result) ? array() : $result;
 }
 
+//place management actions
 function add_place($lon,$lat){
-	$sql = "INSERT INTO places(longitude,latitude) VALUES('$lon','$lat')";
+	$sql = "INSERT INTO places(longitude,latitude) VALUES(:lon,:lat)";
 	$statement = Storage::instance()->db->prepare($sql);
-	$exec = $statement->execute();
-	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."places'>";
+	$statement->execute(array(
+		':lon' => $lon,
+		':lat' => $lat
+	));
+	Slim::redirect(href('/places'));
 }
-
-
 function list_places(){
 	$sql = "SELECT * FROM places";
 	$results = fetch_db($sql);
@@ -362,77 +364,52 @@ function list_places(){
 		echo "<br /><div id='".$result['id']."' style='background-color:#CCC;border:1px solid #000;width:300px;height:60px;'><p align='left'><font size='2pt'>Longitude:".$result['longitude']."<br />Latitude:".$result['latitude']."</font></p><p align='right'><font size='2pt'><a href='javascript:showedit(".$result['id'].",".$result['longitude'].",".$result['latitude'].");'>edit</a>&nbsp;<a href='?id=".$result['id']."'>delete</a></font></p></div>";
 	}
 }
-
 function edit_place($id,$lon,$lat){
-	$sql = "UPDATE places SET longitude='$lon',latitude='$lat' WHERE id='$id' ";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."places'>";
-}
-
-function delete_place($id){
-	$sql = "DELETE FROM places WHERE id='$id'";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-	echo "<META HTTP-EQUIV='Refresh' Content='0; URL=".URL."places'>";
-}
-
-
-function list_organizations(){
-	$i=0;
-	$results = fetch_db("SELECT * FROM organizations");
-	if(count($results) == 0)echo "<h2>No organizations</h2>";
-	else foreach($results as $result){
-		$i++;
-		echo "<tr>
-			<td><div style='border:1px solid #000;'>".$i."</div></td>
-			<td><div style='border:1px solid #000;'>".$result['org_name']."</div></td>
-			<td><div style='border:1px solid #000;'>".$result['org_description']."</div></td>
-			<td><div style='border:1px solid #000;'><a href='javascript:show_org_edit(".$result['id'].",&#39;".$result['org_name']."&#39;,&#39;".$result['org_description']."&#39;);'>Edit</a></div></td>
-			<td><div style='border:1px solid #000;'><a href='?id=".$result['id']."'>Delete</a></div></td>
-		</tr>";	
-	}
-}
-
-function delete_from_db($table,$id){
-	$sql = "DELETE * FROM :table WHERE id=:id";
+	$sql = "UPDATE places SET longitude=:lon,latitude=:lat WHERE id=:id ";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
-		':table' => $table,
+		':lon' => $lon,
+		':lat' => $lat,
+		':id' => $id
+	));
+	Slim::redirect(href('/places'));
+}
+function delete_place($id){
+	$sql = "DELETE FROM places WHERE id=:id LIMIT 1;";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+	Slim::redirect(href('/places'));
+}
+
+
+//organization management actions
+function delete_organization($id){
+	$sql = "DELETE FROM organizations WHERE id=:id LIMIT 1;";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
 		':id' => $id
 	));
 }
 
-function add_to_db($table,$table_fields,$values){
-	$sql = "INSERT INTO :table(:table_fields[0])";
-}
-
-
-function show_organization($id){
-    $sql = "SELECT * FROM organizations WHERE id='$id'";
-    $results = fetch_db();
-    foreach($results as $result){
-        echo "<div><center><h2>".$result['org_name']."</h2></center></div>";
-        echo "<div><blockquote>".$result['org_description']."</blockquote></div>";
-    }
-}
-
-function delete_organization($id){
-	$sql = "DELETE FROM organizations WHERE id='$id'";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
-}
-
 function add_organization($org_name,$org_desc){
-	$sql = "INSERT INTO organizations(org_name,org_description) VALUES('$org_name','$org_desc')";
+	$sql = "INSERT INTO organizations (org_name,org_description) VALUES(:org_name,:org_desc)";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':org_name' => $org_name,
+		':org_desc' => $org_desc
+	));
 }
 
 function edit_organization($org_id,$org_name,$org_desc){
-	$sql = "UPDATE organizations SET org_name='$org_name',org_description='$org_desc' WHERE id='$org_id'";
+	$sql = "UPDATE organizations SET org_name=:org_name,org_description=:org_description WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute();
+	$statement->execute(array(
+		':org_name' => $org_name,
+		':org_description' => $org_desc,
+		':id' => $org_id
+	));
 }
 
 
@@ -522,4 +499,38 @@ function delete_donors($id)
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/donors") . "' />";
     return ($exec) ? $metarefresh : "couldn't delete record/database error";
+}
+
+
+//project management options
+function delete_project($id){
+	$sql = "DELETE FROM projects WHERE id=:id LIMIT 1;";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+}
+function delete_project_data($id){
+	$sql = "DELETE FROM projects_data WHERE project_id=:id LIMIT 1;";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+}
+function add_project($name,$desc){
+	$sql = "INSERT INTO projects(title,description) VALUES(:title,:desc)";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':title' => $name,
+		':desc' => $desc
+	));
+}
+function edit_project($id,$name,$desc){
+	$sql = "UPDATE projects SET title=:title,description=:desc WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':title' => $name,
+		':desc' => $desc,
+		':id' => $id
+	));
 }

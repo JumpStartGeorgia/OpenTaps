@@ -86,7 +86,7 @@ div.projects_organization, div.news, div.spacer{
 
 div.menu ul.submenu{
   list-style-type: none;
-  z-index:9999;
+  z-index:9999999999;
   position:absolute;
   display:none;
 }
@@ -133,12 +133,28 @@ div.after_menu{
   float:left;
 }
 
-div.middle{
+div#map{
   height:350px;
+  width:100%;
   border:1px dotted #A6A6A6;
+  border-bottom:1px dotted #A6A6A6;
   border-top:0;
-  margin-top:37px;
-  margin-bottom:35px;
+}
+div#map:before{
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+div.menu:after{
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
 }
 
 div.projects_organization{
@@ -233,6 +249,7 @@ div.more_news{
   width:100%;
   float:left;
   min-height:120px;
+  margin-top:30px;
   margin-bottom:100px;
   padding:0;
 }
