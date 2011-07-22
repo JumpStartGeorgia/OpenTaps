@@ -100,7 +100,10 @@ function makeMarker(){
     var markers = new OpenLayers.Layer.Markers( "OpenTaps::Markers" );
     map.addLayer(markers);
     for(var i=0;i<places.length;i++){
-    	markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(places[i][1],places[i][2])));
+    var size = new OpenLayers.Size(20,20);
+    var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
+    var ico = new OpenLayers.Icon("http://localhost/OpenTaps/images/marker.png",size,offset)
+    	markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(places[i][1],places[i][2]),ico));
     }
 }
 

@@ -1,18 +1,9 @@
 function init(){
 	map_init();
 	chart_init();
-	configure_marker();
-        configure_marker_animation();        
+	configure_marker_animation();        
 }
 
-function configure_marker(){
-	for(var i=0,len=places_id.length;i<len;i++){
-		var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
-		marker_img_handle.src = "http://localhost/OpenTaps/images/marker.png";
-		marker_img_handle.style.width = "20px";
-		marker_img_handle.style.height = "20px";
-	}
-}
 
 function configure_marker_animation(){
 	for(var i=0,len=places_id.length;i<len;i++){
