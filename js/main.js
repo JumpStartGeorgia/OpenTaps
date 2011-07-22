@@ -44,8 +44,8 @@ function marker_animate(id){
 	$("#"+id).animate({"margin-top":"-15px","margin-left":"-15px","width":"200px","height":"200px"},570);	
 }	
 function marker_animate_back(id){
-	if(document.getElementById(id).style.width == "200px")
-	if( document.getElementById(id).style.height == "200px")
+	//if(document.getElementById(id).style.width == "200px")
+	//if( document.getElementById(id).style.height == "200px")
 	$("#"+id).animate({"margin-top":"0px","margin-left":"0px","width":"20px","height":"20px"},570);
 }
 function menu_over(m)
