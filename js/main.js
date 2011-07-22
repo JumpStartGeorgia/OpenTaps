@@ -1,6 +1,43 @@
 function init(){
 	map_init();
 	chart_init();
+	
+	configure_marker();
+	
+        configure_marker_animation();
+       	 
+	    	
+        
+}
+
+function configure_marker(){
+	for(var i=0,len=places_id.length;i<len;i++){
+		var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
+		marker_img_handle.src = "../images/marker.png";
+		marker_img_handle.style.width = "20px";
+		marker_img_handle.style.height = "20px";
+	}
+}
+
+function configure_marker_animation(){
+	for(var i=0,len=places_id.length;i<len;i++){
+	   	var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
+	    		marker_img_handle.setAttribute("onmouseover","marker_animate(this.id)");
+	    		marker_img_handle.setAttribute("onmouseout","marker_animate_back(this.id)");
+	    		
+	    	}
+}
+
+function marker_animate(id){
+	//console.log(document.getElementById(id).style.width);
+	if(document.getElementById(id).style.width == "20px")
+	if(document.getElementById(id).style.height == "20px")
+	$("#"+id).animate({"margin-top":"-15px","margin-left":"-15px","width":"200px","height":"200px"},570);	
+}	
+function marker_animate_back(id){
+	if(document.getElementById(id).style.width == "200px")
+	if( document.getElementById(id).style.height == "200px")
+	$("#"+id).animate({"margin-top":"0px","margin-left":"0px","width":"20px","height":"20px"},570);
 }
 function menu_over(m)
 {
