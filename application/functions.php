@@ -106,11 +106,9 @@ function read_news($limit = false, $news_id = false)
     }
     else
     {
-	$sql = ( $limit ) ? "SELECT * FROM news ORDER BY published_at DESC LIMIT ".$limit
-	                  : "SELECT * FROM news ORDER BY published_at DESC";
-	$arr = ( $limit ) ? array(':limit' => $limit) : null;
+	$sql = "SELECT * FROM news ORDER BY published_at DESC" . ($limit ? " LIMIT ".$limit : NULL);
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute($arr);
+	$statement->execute();
     }
     return $statement->fetchAll();
 }

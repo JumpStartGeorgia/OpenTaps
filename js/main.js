@@ -14,6 +14,11 @@ function configure_marker_animation(){
 	    	}
 }
 
+function show_menu_img(img)
+{
+	document.getElementById('menu_img').src = img;
+}
+
 $(function()
 {
     var menu = $('#menu'),   minimum_submenu_width = 144;
