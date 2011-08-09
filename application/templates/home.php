@@ -34,8 +34,8 @@
 	<?php
     for ($idx = 2, $num = count($news_all); $idx < $num; $idx++):
         ?>
-  			<div onmouseover="show_menu_img(<?php echo $news_all[$i]['image'] ?>);">
-  				<?php echo $news_all[$i]['title']; ?>
+  			<div onmouseover="show_menu_img(<?php echo $news_all[$idx]['image'] ?>);">
+  				<?php echo $news_all[$idx]['title']; ?>
   			</div>
         <?php
     endfor;
