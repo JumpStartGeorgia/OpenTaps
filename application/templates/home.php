@@ -29,19 +29,28 @@
     endfor;
 	?>
 	<div class="news_each_others">
-  	<div class="news_each_menu_image" id="menu_img"></div>
+  	<img src="http://localhost.com/OpenTaps/uploads/593276screenshot_opentaps.png" id="menu_img" width="120px" height="130px"/>
   		<div class="news_each_menu">
 	<?php
     for ($idx = 2, $num = count($news_all); $idx < $num; $idx++):
+    			if($news_all[$idx]['category'] == 'project'): 
+  			 	$color = 'rgb(11%,76%,100%);'; 
+  			 elseif($news_all[$idx]['category'] == 'media'): 
+  			 	$color = 'rgb(51%,87%,100%);';
+  			 else:  
+  			 	$color = 'rgb(85%,96%,100%);';
+  			 endif; 
         ?>
-  			<div onmouseover="show_menu_img(<?php echo $news_all[$idx]['image'] ?>);">
-  				<?php echo $news_all[$idx]['title']; ?>
+        		
+  			<div style="border-right:5px solid <?php echo $color; ?>"
+  			  onmouseover="show_menu_img('<?php echo URL.$news_all[$idx]['image'] ?>',this);" onmouseout="show_menu_img(this)">
+  				<p><&nbsp;&nbsp; <?php echo $news_all[$idx]['title']; ?></p>
   			</div>
         <?php
     endfor;
   	?>
   		</div>
-  </div>
+  	</div>
   <?php
 ?>
     <div class='more_news'><a href='<?php echo URL . "news"; ?>'>▸ ALL NEWS</a></div>

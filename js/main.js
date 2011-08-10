@@ -5,6 +5,7 @@ function init(){
 }
 
 
+
 function configure_marker_animation(){
 	for(var i=0,len=places_id.length;i<len;i++){
 	   	var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
@@ -14,9 +15,10 @@ function configure_marker_animation(){
 	    	}
 }
 
-function show_menu_img(img)
+function show_menu_img(img,this_handle)
 {
 	document.getElementById('menu_img').src = img;
+	//this_handle.style.background = "url('images/bg.jpg')";
 }
 
 $(function()

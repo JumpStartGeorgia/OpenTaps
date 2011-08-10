@@ -96,7 +96,7 @@ function delete_menu($id)
    return ($exec) ? true : false;
 }
 								### NEWS MANAGEMENT
-function read_news($limit = false, $news_id = false)
+function read_news($limit = false,$from = 0,$news_id = false)
 {
     if($news_id)
     {
@@ -106,7 +106,7 @@ function read_news($limit = false, $news_id = false)
     }
     else
     {
-	$sql = "SELECT * FROM news ORDER BY published_at DESC" . ($limit ? " LIMIT ".$limit : NULL);
+	$sql = "SELECT * FROM news ORDER BY published_at DESC" . ($limit ? " LIMIT " . $from . "," . $limit : NULL);
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
     }

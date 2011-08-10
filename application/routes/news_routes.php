@@ -5,6 +5,12 @@ Slim::get('/news/', function(){
     Storage::instance()->content = template('news', array('news_all' => read_news(FALSE)));
 });
 
+Slim::get('/news/:from/',function($from){
+	Storage::instance()->content = template('news',array(
+		'from' => $from
+	));
+});
+
 
 
 ################################################################ News show routes end

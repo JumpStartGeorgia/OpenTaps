@@ -4,8 +4,8 @@ pieLegend = ["%% - text1","%% - text2","%% - text3","%% - text4","%% - text5", "
 var r = Raphael("chart");
 function chart_init(){
 		if(document.getElementById('chart').value != ""){
-      			// pieChart();
-        		barChart();
+      			 pieChart();
+        		//barChart();
 		}
 }
 
