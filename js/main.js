@@ -14,19 +14,6 @@ function configure_marker_animation(){
 	    	}
 }
 
-$(function()
-{
-    var menu = $('#menu'),   minimum_submenu_width = 144;
-    menu.children('li').hover(function(){
-        $(this).children('ul.submenu').slideToggle(100);
-        $(this).find('li').width($(this).width());
-    });
-
-     $('.admin').hover(function(){
-        $(this).children('div').slideToggle(100);
-    });
-});
-
 
 function marker_animate(id){
 	//console.log(document.getElementById(id).style.width);
@@ -39,17 +26,7 @@ function marker_animate_back(id){
 	//if( document.getElementById(id).style.height == "200px")
 	$("#"+id).animate({"margin-top":"0px","margin-left":"0px","width":"20px","height":"20px"},570);
 }
-function menu_over(m)
-{
-  m.style.backgroundColor = "#5FCCF3";
-  m.style.color = "#FFFFFF";
-}
 
-function menu_out(m)
-{
-  m.style.backgroundColor = "#FFFFFF";
-  m.style.color = "#01AEF0";
-}
 
 function news_over(m,i)
 {
@@ -129,3 +106,10 @@ function showedit(id,lon,lat){
 		}
 		
 }
+
+$(function()
+{
+     $('.admin').hover(function(){
+        $(this).children('div').slideToggle(100);
+    });
+});

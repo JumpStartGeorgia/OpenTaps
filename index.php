@@ -24,6 +24,7 @@ Slim::init();
 Storage::instance()->title = 'Home Page';
 Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
+Storage::instance()->viewsubmenu = template('submenu', array('submenus' => read_submenu()));
 Storage::instance()->content = template('home');
 
 require_once DIR . 'application/routes/default_routes.php';

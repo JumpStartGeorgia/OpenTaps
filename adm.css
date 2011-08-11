@@ -1,11 +1,43 @@
-div.showtables a{
+div#showtables
+{
+	width:750px;
+	font-family:Arial;
+}
+
+#showtables table
+{
+	width:100%;
+}
+
+#showtables h3
+{
+	font-size:15px;
+	color:#565656;
+}
+
+#showtables ul
+{
+	list-style-type:none;
+	margin:0;padding:0;
+}
+
+#showtables ul li
+{
+	margin:0;padding:0;
+	width:155px;
+}
+
+div#showtables a
+{
   display:block;
-  height:23px;
+  font-size:13px;
+  height:18px;
   color:#00AFF2;
-  text-align:center;
+  padding:3px;
+  padding-left:10px;
   text-decoration:none;
 }
-div.showtables a:hover{
+div#showtables a:hover{
   background-color:#00AFF2;
   color:white;
 }

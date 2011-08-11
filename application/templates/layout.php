@@ -36,6 +36,8 @@
                     </form>
                 </div>
             </div>
+
+	    <div id='submenu'><?php echo Storage::instance()->viewsubmenu ?></div>
 		
 	    <div class='after_menu'></div>
 
@@ -78,5 +80,6 @@
         <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/menu.js"></script>
     </body>
 </html>

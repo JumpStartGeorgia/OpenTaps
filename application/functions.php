@@ -45,6 +45,22 @@ function read_menu($parent_id = 0, $lang = null)
     $statement->execute(array(':parent_id' => $parent_id));
     return $statement->fetchAll();    
 }
+function has_submenu($menuid)
+{
+    $sql = "SELECT id FROM menu WHERE parent_id = '".$menuid."'";
+    $statement = Storage::instance()->db->prepare($sql);
+    $statement->execute();
+    $a = $statement->fetchAll();  
+    return (count($a) > 0);
+}
+function read_submenu()
+{
+    $sql = "SELECT id,name,short_name,parent_id FROM menu WHERE parent_id != '0' ORDER BY parent_id,id";
+    $statement = Storage::instance()->db->prepare($sql);
+    $statement->execute();
+    return $statement->fetchAll();    
+}
+
 
 function add_menu($name, $short_name, $parent_id)
 {
