@@ -344,8 +344,9 @@ function fetch_db($sql)
 	return empty($result) ? array() : $result;
 }
 
+
 //place management actions
-function add_place($lon,$lat){
+/*function add_place($lon,$lat){
 	$sql = "INSERT INTO places(longitude,latitude) VALUES(:lon,:lat)";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
@@ -353,24 +354,29 @@ function add_place($lon,$lat){
 		':lat' => $lat
 	));
 	Slim::redirect(href('/places'));
-}
-function list_places(){
-	$sql = "SELECT * FROM places";
-	$results = fetch_db($sql);
-	if(count($results) == 0) echo "<h2>No places</h2>";
-	else foreach($results as $result){
-		echo "<br /><div id='".$result['id']."' style='background-color:#CCC;border:1px solid #000;width:300px;height:60px;'><p align='left'><font size='2pt'>Longitude:".$result['longitude']."<br />Latitude:".$result['latitude']."</font></p><p align='right'><font size='2pt'><a href='javascript:showedit(".$result['id'].",".$result['longitude'].",".$result['latitude'].");'>edit</a>&nbsp;<a href='?id=".$result['id']."'>delete</a></font></p></div>";
-	}
-}
-function edit_place($id,$lon,$lat){
-	$sql = "UPDATE places SET longitude=:lon,latitude=:lat WHERE id=:id ";
+}*/
+function add_place($lon,$lat,$place_name,$region,$raion){
+	$sql = "INSERT INTO places (longitude,latitude,name,region_id,raion_id) VALUES(:lon,:lat,:name,:region,:raion)";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':lon' => $lon,
 		':lat' => $lat,
+		':name' => $place_name,
+		':region' => $region,
+		':raion' => $raion
+	));
+}
+function edit_place($id,$lon,$lat,$place_name,$region,$raion){
+	$sql = "UPDATE places SET longitude=:lon,latitude=:lat,name=:place_name,region_id=:region,raion_id=:raion WHERE id=:id ";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':lon' => $lon,
+		':lat' => $lat,
+		':place_name' => $place_name,
+		':region' => $region,
+		':raion' => $raion,
 		':id' => $id
 	));
-	Slim::redirect(href('/places'));
 }
 function delete_place($id){
 	$sql = "DELETE FROM places WHERE id=:id LIMIT 1;";
@@ -378,7 +384,6 @@ function delete_place($id){
 	$statement->execute(array(
 		':id' => $id
 	));
-	Slim::redirect(href('/places'));
 }
 
 

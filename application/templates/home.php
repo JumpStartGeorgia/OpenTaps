@@ -18,7 +18,7 @@
 <div class='news_body'>
 
 <?php
-  $news_all = read_news(7);
+  $news_all = read_news(6);
     for ($idx = 0; $idx < 2; $idx++):
         ?>
            <div class="news_each_main">          	

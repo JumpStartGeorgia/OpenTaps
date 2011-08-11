@@ -6,45 +6,113 @@ foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ']';
 Storage::instance()->js_places = $js_places;
 
-//places management
+/*======================================	places management 	====================================*/
 Slim::get('/admin/places/',function(){
+	Slim::redirect(href('/admin/places/add'));
+});	
+Slim::get('/admin/places/add/',function(){
     if(userloggedin())
     {
-	if(isset($_GET['id'])){
-		if(strlen($_GET['id'])!=0){
-			if(is_numeric($_GET['id'])){
-				delete_place($_GET['id']);
-			}
-		}	
-	}
-	Storage::instance()->content = template('places');
+		$sql_regions = 'SELECT * FROM regions';
+		$sql_raions = 'SELECT * FROM raions';
+	Storage::instance()->content = template('places',array(
+		'regions' => fetch_db($sql_regions),
+		'raions' => fetch_db($sql_raions),
+		'places' => 'add'
+	));
     }
     else
 	Storage::instance()->content = template('login');
-});	
-Slim::post('/admin/places/',function(){
+});
+Slim::post('/admin/places/add/',function(){
     if(userloggedin())
     {
-	if(isset($_POST['lon']) && isset($_POST['lat'])){
-		if(strlen($_POST['lon'])!=0 && strlen($_POST['lat'])!=0){
-			if(is_numeric($_POST['lon']) && is_numeric($_POST['lat'])){
-				add_place($_POST['lon'],$_POST['lat']);
-			}
-		}
-		
+	if(isset($_POST['region']) && !empty($_POST['region']) && isset($_POST['raion']) && !empty($_POST['raion']) && isset($_POST['place_name']) && !empty($_POST['place_name']) && isset($_POST['lon']) && !empty($_POST['lon']) && isset($_POST['lat']) && !empty($_POST['lat'])){
+		add_place($_POST['lon'],$_POST['lat'],$_POST['place_name'],$_POST['region'],$_POST['raion']);
 	}
-	else if(isset($_POST['lon_edit']) && isset($_POST['lat_edit']) && isset($_POST['id_edit'])){
-		if(strlen($_POST['lon_edit'])!=0 && strlen($_POST['lat_edit'])!=0 && strlen($_POST['id_edit'])!=0){
-			if(is_numeric($_POST['id_edit']) && is_numeric($_POST['lon_edit']) && is_numeric($_POST['lat_edit'])){
-				edit_place($_POST['id_edit'],$_POST['lon_edit'],$_POST['lat_edit']);
-			}
-		}
-	}
-	Storage::instance()->content = template('places');
+	Slim::redirect(href('admin/places/add'));
     }
     else
 	Storage::instance()->content = template('login');
 	
+});
+Slim::get('/admin/places/list/',function(){
+	if(userloggedin())
+	{
+		Storage::instance()->content = template('places',array(
+			'places' => 'list'
+		));
+	}
+	else Storage::instance()->content = template('login');
+});
+
+Slim::get('/admin/places/list/:id/delete/',function($id){
+	if(userloggedin()){
+		if(isset($id) && !empty($id))
+			delete_place($id);
+			
+		Slim::redirect(href('admin/places/list'));
+	}
+	else Storage::instance()->content = template('login');	
+});
+Slim::post('/admin/places/list/',function(){
+	if(userloggedin()){
+		if(isset($_POST['id']) && !empty($_POST['id']))
+			edit_place($_POST['id'],$_POST['lon'],$_POST['lat'],$_POST['place_name'],$_POST['region'],$_POST['raion']);
+		Slim::redirect(href('admin/places/list'));
+	}
+	else Storage::instance()->content = template('login');
+});
+Slim::get('/admin/places/list/:id/edit/',function($id){
+	if(userloggedin()){
+		if(isset($id) && !empty($id)){
+			$sql = "SELECT * FROM places WHERE id=$id";
+			$sql_regions = 'SELECT * FROM regions';
+			$sql_raions = 'SELECT * FROM raions';
+			$result = fetch_db($sql);
+			Storage::instance()->content = template('places',array(
+				'id' => $id,
+				'places' => 'edit',
+				'place_name' => $result[0]['name'],
+				'place_lon' => $result[0]['longitude'],
+				'place_lat' => $result[0]['latitude'],
+				'regions' => fetch_db($sql_regions),
+				'raions' => fetch_db($sql_raions)
+			));
+		}
+	}
+	else Storage::instance()->content = template('login');	
+});
+
+/*====================================================		region management	======================================*/
+Slim::get('/admin/regions/',function(){
+	if(userloggedin()){
+		$sql_regions = 'SELECT * FROM regions';
+		$sql_raions = 'SELECT * FROM raions';
+		Storage::instance()->content = template('regions',array(
+			'regions' => fetch_db($sql_regions),
+			'raions' => fetch_db($sql_raions)
+		));		
+	}
+	else Storage::instance()->content = template('login');
+});
+
+Slim::post('/admin/regions/',function(){
+	if(userloggedin()){
+		$type_id = $_POST['raion'];
+		$type_region_id = $_POST['region'];
+		$sql_raion_data = "SELECT * FROM region_raion_data WHERE type='raion' AND type_id='$type_id'"; 
+		$sql_regions = 'SELECT * FROM regions';
+		$sql_raions = 'SELECT * FROM raions';
+		Storage::instance()->content = template('regions',array(
+			'raion_data' => fetch_db($sql_raion_data),
+			'regions' => fetch_db($sql_regions),
+			'raions' => fetch_db($sql_raions),
+			'raion_id' => $type_id,
+			'region_id' => $type_region_id
+		));
+	}
+	else Storage::instance()->content = template('login');
 });
 
 

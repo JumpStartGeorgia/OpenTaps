@@ -57,12 +57,15 @@
   endforeach;
   ?>
   <center>
+  <div>
   <?php if($from-4 >= 0):
   	$from_back = $from-4;?>
   <a href="<?php echo URL.'news/'.$from_back; ?>/"><img style="cursor:pointer;" width="15px" height="15px" src="<?php echo URL; ?>images/back_news.jpg"/></a>
-  
   <?php
   endif;
+  ?>
+  	
+  <?php
   for($i=0,$len=  ($count%4 == 0 ?  intval($count/4) :  intval($count/4)+1)  ;$i<$len;$i++):
   	?>
   		<a href="<?php echo URL.'news/'.$i*4 ?>" style="color:#CCC;text-decoration:none;">
@@ -83,6 +86,7 @@
   ?>
   <a href="<?php echo URL.'news/'.$from_next; ?>/"><img style="padding-top:7px;cursor:pointer;" width="15px" height="15px" src="<?php echo URL; ?>images/next_news.jpg"/></a>
   <?php endif; ?>
+  </div>
   </center>
 	
 
