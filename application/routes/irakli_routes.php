@@ -99,22 +99,44 @@ Slim::get('/admin/regions/',function(){
 
 Slim::post('/admin/regions/',function(){
 	if(userloggedin()){
-		$type_id = $_POST['raion'];
-		$type_region_id = $_POST['region'];
-		$sql_raion_data = "SELECT * FROM region_raion_data WHERE type='raion' AND type_id='$type_id'"; 
 		$sql_regions = 'SELECT * FROM regions';
 		$sql_raions = 'SELECT * FROM raions';
-		Storage::instance()->content = template('regions',array(
-			'raion_data' => fetch_db($sql_raion_data),
-			'regions' => fetch_db($sql_regions),
-			'raions' => fetch_db($sql_raions),
-			'raion_id' => $type_id,
-			'region_id' => $type_region_id
-		));
+		if(isset($_POST['region']) && !empty($_POST['region']) && isset($_POST['raion']) && !empty($_POST['raion'])){
+			$type_id = $_POST['raion'];
+			$type_region_id = $_POST['region'];
+			$sql_raion_data = "SELECT * FROM region_raion_data WHERE type='raion' AND type_id='$type_id'"; 
+			Storage::instance()->content = template('regions',array(
+				'raion_data' => fetch_db($sql_raion_data),
+				'regions' => fetch_db($sql_regions),
+				'raions' => fetch_db($sql_raions),
+				'raion_id' => $type_id,
+				'region_id' => $type_region_id
+			));
+		}
+		else{
+			Storage::instance()->content = template('regions',array(
+				'regions' => fetch_db($sql_regions),
+				'raions' => fetch_db($sql_raions),
+				'raion_id' => (isset($_POST['raion']) && !empty($_POST['raion'])) ? $_POST['raion'] : NULL,
+				'region_id' => (isset($_POST['region']) && !empty($_POST['region'])) ? $_POST['region'] : NULL
+			));
+		}
+		
 	}
 	else Storage::instance()->content = template('login');
 });
 
+Slim::get('/admin/regions/:id/delete/',function($id){
+	if(userloggedin()){
+		if(isset($id) && !empty($id))
+			delete_region_raion_data($id);
+		Slim::redirect(href('admin/regions'));
+	}
+	else Storage::instance()->content = template('login');
+});
+Slim::get('/admin/regions/:id/edit',function(){
+
+});
 
 //donors
 Slim::get('/donors/',function(){

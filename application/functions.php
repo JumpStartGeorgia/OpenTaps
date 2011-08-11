@@ -386,6 +386,15 @@ function delete_place($id){
 	));
 }
 
+/*===================================================	region and raion data management	===============================*/
+function delete_region_raion_data($id)
+{
+	$sql = "DELETE FROM region_raion_data WHERE id=:id";	
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+}
 
 //organization management actions
 function delete_organization($id){

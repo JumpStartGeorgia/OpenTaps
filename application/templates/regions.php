@@ -37,7 +37,8 @@
 						<tr>
 							<td><center><?php echo $raion_singular_data['field_name']; ?></center></td>
 							<td><center><?php echo $raion_singular_data['field_value']; ?></center></td>
-							<td><center><a href="/<?php echo $raion_singular_data['id']; ?>/delete"><button>delete</button></a></center></td>
+							<td style="border:0px;"><center><a href="<?php echo URL; ?>admin/regions/<?php echo $raion_singular_data['id']; ?>/delete"><button>delete</button></a></center></td>
+							<td style="border:0px;"><center><a href="<?php echo URL; ?>admin/regions/<?php echo $raion_singular_data['id']; ?>/edit"><button>edit</button></a></center></td>
 						</tr>
 					<?php endforeach;?>		
 				</table>
