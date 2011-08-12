@@ -42,7 +42,7 @@
             <div id="map">
             </div>
 
-	    <div class='content'>
+	    <div id='content' class="clearfix">
               <?php echo Storage::instance()->content ?>
             </div>
 

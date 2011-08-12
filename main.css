@@ -113,6 +113,42 @@ div.menu ul.submenu li a{
   color:white;
 }
 
+.clearfix:after {
+}
+ 
+.clearfix {
+	width:100%;
+ 	min-height:120px;
+ 	margin-top:30px;
+  	margin-bottom:100px;
+  	padding:0;
+}
+
+table#raion_info td {
+	border:1px dashed #000;
+	padding-top:5px;
+	padding-bottom:5px;
+}
+td.raion_options {
+	float:right;
+	width:150px;
+}
+table#raion_info {
+	width:300px;
+	float:left;
+	margin-top:50px;
+	margin-left:50px;
+	margin-bottom:30px;
+}
+table#raion_info a {
+	float:left;
+	padding-left:10px;
+	padding-bottom:3px;
+}
+table#raion_info button {
+	width:50px;
+}
+
 div.search{
   float:right;
   border-left:1px solid grey;
@@ -312,14 +348,7 @@ div.more_news{
   cursor:pointer;
 }
 
-.content{
-  width:100%;
-  float:left;
-  min-height:120px;
-  margin-top:30px;
-  margin-bottom:100px;
-  padding:0;
-}
+
 
 hr.bottom{
   width:950px;

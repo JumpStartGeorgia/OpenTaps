@@ -367,7 +367,7 @@ function add_place($lon,$lat,$place_name,$region,$raion){
 	));
 }
 function edit_place($id,$lon,$lat,$place_name,$region,$raion){
-	$sql = "UPDATE places SET longitude=:lon,latitude=:lat,name=:place_name,region_id=:region,raion_id=:raion WHERE id=:id ";
+	$sql = "UPDATE places SET longitude=:lon,latitude=:lat,name=:place_name,region_id=:region,raion_id=:raion WHERE id=:id LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':lon' => $lon,
@@ -386,12 +386,37 @@ function delete_place($id){
 	));
 }
 
+
 /*===================================================	region and raion data management	===============================*/
 function delete_region_raion_data($id)
 {
-	$sql = "DELETE FROM region_raion_data WHERE id=:id";	
+	$sql = "DELETE FROM region_raion_data WHERE id=:id LIMIT 1;";	
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
+		':id' => $id
+	));
+}
+function add_region_raion_data($type,$type_id,$parameter,$value)
+{
+	$sql = "INSERT INTO region_raion_data(type,type_id,field_name,field_value) VALUES(:type,:type_id,:parameter,:value)";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':type' => $type,
+		':type_id' => $type_id,
+		':parameter' => $parameter,
+		':value' => $value
+	));
+}
+
+function edit_region_raion_data($id,$type,$type_id,$parameter,$value)
+{
+	$sql = "UPDATE region_raion_data SET type=:type,type_id=:type_id,field_name=:field_name,field_value=:field_value WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':type' => $type,
+		':type_id' => $type_id,
+		':field_name' => $parameter,
+		':field_value' => $value,
 		':id' => $id
 	));
 }
