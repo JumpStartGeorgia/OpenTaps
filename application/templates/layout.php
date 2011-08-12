@@ -37,12 +37,13 @@
                 </div>
             </div>
 
-	    <div id='submenu'><?php echo Storage::instance()->viewsubmenu ?></div>
-		
+	    <div id="submenu"><?php echo Storage::instance()->viewsubmenu ?></div>
+
 	    <div class='after_menu'></div>
 
-            <div id="map">
-            </div>
+	    <?php if (Storage::instance()->show_map): ?>
+                <div id="map"></div>
+            <?php endif; ?>
 
 	    <div class='content'>
               <?php echo Storage::instance()->content ?>

@@ -4,27 +4,32 @@ $(function()
 
     var dmenu = $('#menu .dropdownmenu');
     dmenu.click(function(){
-    	submenu.children().slideUp("fast");
-    	$(this).parent().children().css("border", "0");
-    	var d = submenu.find("#sub_" + $(this).attr('id'));
-	d.slideToggle("fast");
-	d.parent().css("margin-top", "-1px");
-	$(this).css({"border-left" : "1px dotted #a6a6a6", "border-right" : "1px dotted #a6a6a6", 'border-bottom' : '1px solid #fff'});
-	clicked = true;
+    	var t = $(this);
+    	var o = $('#override_border');
+    	submenu.children().slideUp("normal");
+    	t.parent().children().css("border", "0");
+    	var d = submenu.find("#sub_" + t.attr('id'));
+	d.stop().slideToggle("fast");
+        o.stop().show().css({
+        	"left" : t.position().left,
+        	"top" : t.position().top + t.height() + 1,
+        	"width" : t.width() + 1,
+        	"height" : 1,
+       	});
+	t.css({"border-left" : "1px dotted #a6a6a6", "border-right" : "1px dotted #a6a6a6", 'border-bottom' : '1px solid #fff'});
 	return false;
     });
 
 });
 
-
 function menu_over(m)
 {
-  m.style.backgroundColor = "#5FCCF3";
-  m.style.color = "#FFFFFF";
+	m.style.backgroundColor = "#5FCCF3";
+	m.style.color = "#FFFFFF";
 }
 
 function menu_out(m)
 {
-  m.style.backgroundColor = "#FFFFFF";
-  m.style.color = "#01AEF0";
+	m.style.backgroundColor = "#FFFFFF";
+	m.style.color = "#01AEF0";
 }

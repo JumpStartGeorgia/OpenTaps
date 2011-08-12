@@ -1,37 +1,22 @@
-<?php
-    $submenus = read_submenu();
+<?php foreach ($submenus AS $parent_id => $items): ?>
 
-    $s = "<div style='display:none'>";
-    $s.=  "<table>";
-    $s.=     "<tr>";
+<div id="sub_<?php echo $parent_id ?>" class="submenu">
+    <table><tr><?php
+        $idx = 0;
+        $num = count($items);
+        foreach ($items AS $item):
+            $breakable = ($idx % 6 == 5);
 
-    $old_parent_id = NULL;
+ 	    $last_row = ($idx >= ($num - ($num % 6) - 6 ));
 
-    $i = 0;
+	    echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
+	    		<a href="' . href('page/' . $item['id']) . '">' . $item['name'] . '</a>
+	    	  </td>';
+	    $breakable AND print '</tr><tr>';
+	    $idx++;
+        endforeach;
+    ?></tr></table>
+</div>
+<div id='override_border'></div>
+<?php endforeach; ?>
 
-    foreach($submenus as $submenu)
-    {
-    	if($old_parent_id != $submenu['parent_id'])
-    	    $s.= "
-	    	    	</tr>
-	    	     </table>
-	    	    </div>
-	    	    <div id='sub_".$submenu['parent_id']."' class='submenu'>
-    	    	     <table>
-	            	<tr>";
-	else
-	    $i ++;
-	$s.= "
-	    <td>
-		<a href='" . href('page/' . $submenu['id']) . "'>" . ucfirst($submenu['name']) . "</a>
-	    </td>
-	";
-	$s.= ($i % 6 == 1) ? "</tr><tr>" : NULL;
-	$old_parent_id = $submenu['parent_id'];
-    }
-
-    $s.=     "</tr>";
-    $s.=  "</table>";
-    $s.= "</div>";
-
-    echo $s;

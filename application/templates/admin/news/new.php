@@ -14,7 +14,7 @@
   	    <textarea name='n_body' id='nbody' cols='70' rows='5'></textarea>
   	    <br /><br />
 
-  	    <input type='submit' value='Submit' onclick='
+  	    <input type='submit' style='width:90px;' value='Submit' onclick='
   	    	return document.getElementById("ntitle").value != "" && document.getElementById("nbody").value != ""
   	    	' />
   	    <br /><br />

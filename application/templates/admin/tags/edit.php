@@ -6,7 +6,7 @@
   	    <br />
   	    <input name='t_name' id='tname' type='text' value="<?php echo $result['name']; ?>" />
   	    <br /><br />
-  	    <input type='submit' value='Submit' />
+  	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />
   	</form>
 

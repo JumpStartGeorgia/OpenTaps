@@ -20,7 +20,7 @@
   echo "
   	    </select>
             <br /><br />
-  	    <input type='submit' value='Submit' />
+  	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />
   	</form>
 

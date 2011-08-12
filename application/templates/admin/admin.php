@@ -38,20 +38,14 @@
 			</ul>
 		</td>
 		<td>
-			<h3>Donors Management</h3>
+			<h3>Projects Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/donors/new") ?>">Add Donor</a></li>
-				<li><a href="<?php echo href("admin/donors") ?>">Donors listing</a></li>
+				<li><a href="<?php echo href("admin/projects/new") ?>">Add Project</a></li>
+				<li><a href="<?php echo href("admin/projects") ?>">Projects listing</a></li>
 			</ul>
 		</td>
 	</tr>
 	<tr>
-		<td>
-			<h3>Projects Management</h3>
-			<ul>
-				<li><a href="<?php echo href("admin/projmanagement") ?>">Projects</a></li>
-			</ul>
-		</td>
 		<td>
 			<h3>Organisations Management</h3>
 			<ul>

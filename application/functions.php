@@ -55,10 +55,14 @@ function has_submenu($menuid)
 }
 function read_submenu()
 {
-    $sql = "SELECT id,name,short_name,parent_id FROM menu WHERE parent_id != '0' ORDER BY parent_id,id";
+    $sql = "SELECT id,name,short_name,parent_id FROM menu WHERE parent_id != 0 ORDER BY parent_id,id;";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute();
-    return $statement->fetchAll();    
+    $items = $statement->fetchAll();
+    $submenus = array();
+    foreach ($items AS $item)
+    	$submenus[$item['parent_id']][] = $item;
+    return $submenus;
 }
 
 
@@ -430,123 +434,214 @@ function edit_organization($org_id,$org_name,$org_desc){
 
 
 
-//donors
+//projects
 
-function read_donors($donors_id = false)
+
+function read_projects($project_id = false)
 {
-    if($donors_id)
+    if($project_id)
     {
-        $sql = "SELECT * FROM donors WHERE id = :id";
+        $sql = "SELECT * FROM projects WHERE id = :id";
         $statement = Storage::instance()->db->prepare($sql);
-        $statement->execute(array(':id' => $donors_id));
+        $statement->execute(array(':id' => $project_id));
         return $statement->fetch(PDO::FETCH_ASSOC);    
     }
 
-    $sql = "SELECT * FROM donors";
+    $sql = "SELECT * FROM projects ORDER BY start_at";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute();
     return $statement->fetchAll();    
 }
 
 
-function add_donors($name, $descr, $tag_ids)
+function add_project($title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids)
 {
-    $back = "<br /><a href=\"" . href("admin/donors/new") . "\">Back</a>";
+    $back = "<br /><a href=\"" . href("admin/projects/new") . "\">Back</a>";
 
-    if( strlen($name) < 2 )
-	return "name too short".$back;
+    $fields = array();
+    $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
+    $fields[] = ( strlen($desc) < 4 ) ? 'description' : NULL;
+    $fields[] = ( strlen($budget) < 4 ) ? 'budget' : NULL;
+    $fields[] = ( strlen($district) < 4 ) ? 'district' : NULL;
+    $fields[] = ( strlen($city) < 4 ) ? 'city' : NULL;
+    $fields[] = ( strlen($grantee) < 4 ) ? 'grantee' : NULL;
+    $fields[] = ( strlen($sector) < 4 ) ? 'sector' : NULL;
+    $fields[] = ( strlen($start_at) < 4 ) ? 'start_at' : NULL;
+    $fields[] = ( strlen($end_at) < 4 ) ? 'end_at' : NULL;
+    $fields[] = ( strlen($info) < 4 ) ? 'info' : NULL;
 
-    $sql = "INSERT INTO  `opentaps`.`donors` (`don_name`, `don_desc`) VALUES(:name, :descr)";
+    $f = implode(", ", $fields);
+
+    if ( count($fields) > 0 )
+    	return $f . " too short" . $back;
+
+    $sql = "
+    	INSERT INTO `opentaps`.`projects` (
+    		title,
+    		description,
+    		budget,
+    		district,
+    		city,
+    		grantee,
+    		sector,
+    		start_at,
+    		end_at,
+    		info
+    	)
+    	VALUES(
+    		:title,
+    		:description,
+    		:budget,
+    		:district,
+    		:city,
+    		:grantee,
+    		:sector,
+    		:start_at,
+    		:end_at,
+    		:info
+    	);
+    ";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
- 	':name' => $name,
- 	':descr' => $descr
+	':title' => $title,
+    	':description' => $desc,
+    	':budget' => $budget,
+    	':district' => $district,
+    	':city' => $city,
+    	':grantee' => $grantee,
+    	':sector' => $sector,
+    	':start_at' => $start_at,
+    	':end_at' => $end_at,
+    	':info' => $info
     ));
 
-    if(!add_tag_connector('don', Storage::instance()->db->lastInsertId(), $tag_ids))
+    if(!add_tag_connector('proj', Storage::instance()->db->lastInsertId(), $tag_ids))
         return "tag connection error";
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/donors") . "' />";
-    return ($exec) ? $metarefresh : "couldn't insert into database".$back;
+    if($exec)
+    	Slim::redirect(href("admin/projects"));
+    else
+    	return "couldn't insert record/database error";
+    
 }
 
-function update_donors($id, $name, $descr, $tag_ids)
+function update_project($id, $title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids)
 {
-    $back = "<br /><a href=\"" . href("admin/donors/".$id) . "\">Back</a>";
+    $back = "<br /><a href=\"" . href("admin/projects/".$id) . "\">Back</a>";
 
-    if( strlen($name) < 2 || !is_numeric($id) )
-	return "name too short or invalid id" . $back;
+    $fields = array();
+    $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
+    $fields[] = ( strlen($desc) < 4 ) ? 'description' : NULL;
+    $fields[] = ( strlen($budget) < 4 ) ? 'budget' : NULL;
+    $fields[] = ( strlen($district) < 4 ) ? 'district' : NULL;
+    $fields[] = ( strlen($city) < 4 ) ? 'city' : NULL;
+    $fields[] = ( strlen($grantee) < 4 ) ? 'grantee' : NULL;
+    $fields[] = ( strlen($sector) < 4 ) ? 'sector' : NULL;
+    $fields[] = ( strlen($start_at) < 4 ) ? 'start_at' : NULL;
+    $fields[] = ( strlen($end_at) < 4 ) ? 'end_at' : NULL;
+    $fields[] = ( strlen($info) < 4 ) ? 'info' : NULL;
 
-    $sql = "UPDATE `donors` SET  `don_name` =  :name, `don_desc` =  :descr WHERE  `donors`.`id` =:id";
+    $f = implode(", ", array_values($fields));
+
+    if ( count($fields) > 0 )
+    	return $f . " too short" . $back;
+
+    $sql = "
+    	UPDATE `projects` SET
+    		title = :title,
+    		description = :description,
+    		budget = :budget,
+    		district = :district,
+    		city = :city,
+    		grantee = :grantee,
+    		sector = :sector,
+    		start_at = :start_at,
+    		end_at = :end_at,
+    		info = :info
+    	WHERE
+    		`projects`.`id` =:id;
+    ";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
-        ':id' => $id,
- 	':name' => $name,
- 	':descr' => $descr
+    	':id' => $id,
+	':title' => $title,
+    	':description' => $desc,
+    	':budget' => $budget,
+    	':district' => $district,
+    	':city' => $city,
+    	':grantee' => $grantee,
+    	':sector' => $sector,
+    	':start_at' => $start_at,
+    	':end_at' => $end_at,
+    	':info' => $info
     ));
 
-    $sql = "DELETE FROM tag_connector where don_id = :id";
+    $sql = "DELETE FROM tag_connector where proj_id = :id";
     $statement = Storage::instance()->db->prepare($sql);
 
     $delete = $statement->execute(array(':id' => $id));
 
-    if(!add_tag_connector('don', $id, $tag_ids) OR !$delete)
+    if(!add_tag_connector('proj', $id, $tag_ids) OR !$delete)
         return "tag connection error";
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/donors") . "' />";
-    return ($exec) ? $metarefresh : "couldn't update record/database error" . $back;
+    if($exec)
+    	Slim::redirect(href("admin/projects"));
+    else
+    	return "couldn't update record/database error";
 }
 
-function delete_donors($id)
+function delete_project($id)
 {
     if( !is_numeric($id) )
 	return "invalid id";
 
-    $sql = "DELETE FROM `opentaps`.`donors` WHERE  `donors`.`id` =:id";
+    $sql = "DELETE FROM `opentaps`.`projects` WHERE  `projects`.`id` = :id";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(':id' => $id));
 
-    $sql = "DELETE FROM tag_connector where don_id = :id";
+    $sql = "DELETE FROM tag_connector where proj_id = :id";
     $statement = Storage::instance()->db->prepare($sql);
     $delete = $statement->execute(array(':id' => $id));
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/donors") . "' />";
-    return ($exec) ? $metarefresh : "couldn't delete record/database error";
+    delete_project_data($id);
+
+    if($exec)
+    	Slim::redirect(href("admin/projects"));
+    else
+    	return "couldn't delete record/database error";
 }
 
+function read_project_data($id)
+{
+	$query = "SELECT * FROM projects_data WHERE project_id = :id;";
+	$query = Storage::instance()->db->prepare($query);
+	$query->execute(array(':id' => $id));
+	$query = $query->fetchAll();
+	empty($query) AND $query = array();
+	return $query;
+}
 
-//project management options
-function delete_project($id){
-	$sql = "DELETE FROM projects WHERE id=:id LIMIT 1;";
+function delete_project_data($id)
+{
+	$sql = "DELETE FROM projects_data WHERE project_id = :id;";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':id' => $id
-	));
+	$statement->execute(array(':id' => $id));
 }
-function delete_project_data($id){
-	$sql = "DELETE FROM projects_data WHERE project_id=:id LIMIT 1;";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':id' => $id
-	));
-}
-function add_project($name,$desc){
-	$sql = "INSERT INTO projects(title,description) VALUES(:title,:desc)";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':title' => $name,
-		':desc' => $desc
-	));
-}
-function edit_project($id,$name,$desc){
-	$sql = "UPDATE projects SET title=:title,description=:desc WHERE id=:id";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':title' => $name,
-		':desc' => $desc,
-		':id' => $id
-	));
+
+function add_project_data($project_id, $key, $value)
+{
+	for ( $i = 0, $c = count($key); $i < $c; $i ++ )
+	{
+	    if ( !empty($key[$i]) && !empty($value[$i]) )
+	    {
+		echo $sql = "
+		 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_id`) VALUES (:key, :value, :project_id);
+		";
+		$statement = Storage::instance()->db->prepare($sql);
+		$statement->execute(array(':project_id' => $project_id, ':key' => $key[$i], ':value' => $value[$i]));
+	    }
+	}
 }

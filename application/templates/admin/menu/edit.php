@@ -33,7 +33,7 @@
     echo "  <input type='hidden' value='0' name='m_parent_id' />";
 
   echo "
-  	    <input type='submit' value='Submit' />
+  	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />
   	</form>
 

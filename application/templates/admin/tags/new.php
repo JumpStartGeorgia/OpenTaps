@@ -3,7 +3,7 @@
   	    <br />
   	    <input name='t_name' id='tname' type='text' />
   	    <br /><br />
-  	    <input type='submit' value='Submit' />
+  	    <input type='submit' style='width:90px;' value='Submit' />
   	</form>
 
         <br /><br />

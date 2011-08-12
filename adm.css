@@ -11,7 +11,7 @@ div#showtables
 
 #showtables h3
 {
-	font-size:15px;
+	font-size:14px;
 	color:#565656;
 }
 
@@ -30,7 +30,7 @@ div#showtables
 div#showtables a
 {
   display:block;
-  font-size:13px;
+  font-size:12px;
   height:18px;
   color:#00AFF2;
   padding:3px;
@@ -47,7 +47,7 @@ div.panel{
   border-top:1px solid grey;
   padding:0;
   color:white;
-  font-size:17px;
+  font-size:15px;
 }
 
 div.titlepanel{
@@ -74,7 +74,6 @@ div.panel a{
 
 div.panel a:hover{
   color:black;
-  font-size:18px;
 }
 
 div.record{
@@ -83,7 +82,7 @@ div.record{
   padding:5px; 
   border-bottom:1px solid grey;
   background-color:#5FCCF3;
-  font-size:15px;
+  font-size:14px;
   font-family:Arial;
 }
 div.record:hover{
