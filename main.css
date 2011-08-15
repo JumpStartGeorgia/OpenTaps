@@ -344,10 +344,10 @@ div.more_news{
 	font-size: 13px;
 	border-bottom: 1px dotted #a6a6a6;
 }
-.data_block .value
-{
-	padding: 10px 17px 10px 17px;
-}
+.data_block .value{ 	padding: 10px 17px 10px 17px; }
+#charts{ float: left; width: 673px; }
+#charts div{ float: left; width: 168px; }
+#charts 
 /*			END				*/
 
 
