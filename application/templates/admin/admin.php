@@ -52,6 +52,13 @@
 				<li><a href="<?php echo href("admin/orgmanagement") ?>">Organisations</a></li>
 			</ul>
 		</td>
+		<td>
+			<h3>Regions Management</h3>
+			<ul>
+				<li><a href="<?php echo href("admin/regions") ?>">Regions</a></li>
+				<li><a href="<?php echo href("admin/regions/add") ?>">Add Regiom</a></li>
+			</ul>
+		</td>
 	</tr>
     </table>
 </div>

@@ -217,17 +217,71 @@ div.news img{
   vertical-align:middle;
   float:left;
 }
+/* 			IRAKLI HERE 		*/
+div.chartall{ 
+  width:263px;
+  height:300px;
+  border:1px dotted #A6A6A6;
+  border-top:0px;
+  margin-right:1px;
+}
+div.chart{ border:1px dotted #a6a6a6; border-top:0; min-height:220px; float:left; width: 293px; }
+div.chartall{ 	float:right; }
 
-div.news span{
-  float:left;
-  padding-top:6px;
+div.chart svg{ margin-left:-10px; }
+div.chart svg:after{ content:"."; display:block; height:1; clear:both; }
+
+
+
+div.news_body,div.newsall_body{
+	width:572px;
+	color:#565656;
+	font-size:13px;
+	font-family:Arial;
+	border:1px dotted #A6A6A6;
+	border-top:0px;
 }
 
-div.chart{
-  margin-top:40px;
-  width:301px;
-  height:410px;
+div.news_body{ float:right; }
+div.newsall_body{ float:left; border:0px; }
+
+div.news_body hr{ margin-top:20px;  border:1px solid #CCC; border-top:1px solid #909090; }
+div.news_each_main/*, div.news_each_with_bg*/{
+	float:left;
+	padding-left:27px;
+	padding-top:20px;
+	padding-right:27px;
+	width:210px;
+	height:151px;
+}
+div.news_each_main p{ margin-top:-25%; color:#FFF; font-size:10pt; }
+div.news_each_main img{ width:210px; height:151px; border-right:7px solid #4CBEFF; }
+div.news_each_others{
+	border:0px solid #000;
+	width:459px;
+	height:150px;
+	position:relative;
+	margin-top:180px;
+	margin-left:27px;
+	background-image:url('images/bg.jpg');
+}
+div.news_each_menu { position:absolute; top:0px; right:0px; }
+div.news_each_menu div{
+	border-top:4px solid #CCC;
+	width:400px;
+	height:30px;
+	float:right;
+	background-color:#FFF;
+}
+/*			HERE			*/
+
+
+
+
+
+/*div.news span{
   float:left;
+  padding-top:6px;
 }
 
 div.news_body{
@@ -244,9 +298,7 @@ div.news_body hr{
   border:1px solid #CCC;
   border-top:1px solid #909090;
 }
-div.news_body hr, div.news_body{
-  width:531px;
-}
+
 div.news_each, div.news_each_with_bg{
   min-height:70px;
   padding:12px 6px 10px 5px;
@@ -281,7 +333,7 @@ div.more_news{
   cursor:hand;
   cursor:pointer;
 }
-
+*/
 .content{
   width:100%;
   float:left;
