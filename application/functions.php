@@ -450,6 +450,14 @@ function edit_organization($org_id,$org_name,$org_desc){
 }
 
 
+/*===================================================	User Ragion Display	===============================*/
+function region_total_budget($region_id)
+{
+	$total_budget = fetch_db("SELECT SUM(budget) AS total_budget FROM projects WHERE region_id = $region_id;");
+	$total_budget = number_format($total_budget[0]['total_budget']);
+	
+	return $total_budget;	
+}
 
 //donors
 

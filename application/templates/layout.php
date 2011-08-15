@@ -38,10 +38,11 @@
             </div>
 		
 	    <div class='after_menu'></div>
-
-            <div id="map">
-            </div>
-
+		
+		<?php if( Storage::instance()->content_name != 'regions' ): ?>
+       		     <div id="map">
+        	     </div>
+		<?php endif; ?>
 	    <div id='content' class="clearfix">
               <?php echo Storage::instance()->content ?>
             </div>

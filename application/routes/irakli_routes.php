@@ -89,7 +89,7 @@ Slim::get('/admin/regions/',function(){
 	if(userloggedin()){
 		$sql_regions = 'SELECT * FROM regions';
 		$sql_raions = 'SELECT * FROM raions';
-		Storage::instance()->content = template('regions',array(
+		Storage::instance()->content = template('regions-management',array(
 			'regions' => fetch_db($sql_regions),
 			'raions' => fetch_db($sql_raions)
 		));		
@@ -114,7 +114,7 @@ Slim::post('/admin/regions/',function(){
 			));
 		}
 		else{
-			Storage::instance()->content = template('regions',array(
+			Storage::instance()->content = template('regions-management',array(
 				'regions' => fetch_db($sql_regions),
 				'raions' => fetch_db($sql_raions),
 				'raion_id' => (isset($_POST['raion']) AND !empty($_POST['raion'])) ? $_POST['raion'] : NULL,
@@ -207,6 +207,16 @@ Slim::post('/admin/regions/add/',function(){
 		}
 	}
 	else Storage::instance()->content = template('login');
+});
+
+/*=================================================================== 	User Regions Display	=============================================*/
+Slim::get('/regions/:region_id',function($region_id){
+	$total_budget = region_total_budget($region_id);
+	Storage::instance()->content_name = 'regions';
+	Storage::instance()->content = template('regions',array(
+		'total_budget' => $total_budget	
+	));
+	
 });
 
 /*====================================================================	donors	===========================================================*/
