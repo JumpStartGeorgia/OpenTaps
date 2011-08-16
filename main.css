@@ -397,9 +397,9 @@ div.more_news{
 	border-bottom: 1px dotted #a6a6a6;
 }
 .data_block .value{ 	padding: 10px 17px 10px 17px; }
-#charts{ float: left; width: 673px; }
-#charts div{ float: left; width: 168px; }
-#charts 
+#charts { float: left; width: 673px; }
+#charts .title { color: #808080; font-size:15px }
+#charts div img{ float:left; clear: both }
 /*			END				*/
 
 

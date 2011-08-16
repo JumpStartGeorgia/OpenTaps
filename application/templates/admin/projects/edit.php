@@ -56,13 +56,22 @@
   	    <br />
   	    <select name='p_tags[]' id='ptags' multiple='multiple'>
   	      <?php
-  	        foreach($all_tags as $tag)
-  	        {
-  	            echo $selected = (in_array($tag['id'], $this_tags)) ? "selected='selected'" : NULL;
-  	            ?>
-  	            <option value="<?php echo $tag['id'] ?>"<?php echo $selected ?>><?php echo $tag['name'] ?></option>
-  	            <?php
-  	        }
+  	        foreach($all_tags as $tag):
+  	            $selected = (in_array($tag['id'], $this_tags)) ? "selected='selected'" : NULL;
+  	            ?><option value="<?php echo $tag['id'] ?>" <?php echo $selected ?>><?php echo $tag['name'] ?></option><?php
+  	        endforeach;
+  	      ?>
+  	    </select>
+  	    <br /><br />
+
+  	    <label for='porgs'>Organizations: (hold down Ctrl to select multiple)</label>
+  	    <br />
+  	    <select name='p_orgs[]' id='porgs' multiple='multiple'>
+  	      <?php
+  	        foreach($organizations as $org):
+  	            $selected = (in_array($org['id'], $this_orgs)) ? "selected='selected'" : NULL;
+  	            ?><option <?php echo $selected ?> value="<?php echo $org['id'] ?>"><?php echo $org['org_name'] ?></option><?php
+  	        endforeach;
   	      ?>
   	    </select>
   	    <br /><br />

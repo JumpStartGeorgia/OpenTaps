@@ -19,6 +19,11 @@ function href($segments = NULL)
     return URL . ltrim($segments, '/') . "/";
 }
 
+function db()
+{
+    return Storage::instance()->db;
+}
+
 function authenticate($username, $password)
 {
     $sql = "SELECT id, username FROM users WHERE username = :username AND password = :password";
@@ -283,18 +288,17 @@ function read_tag_connector($field, $id)
 }
 function add_tag_connector($field, $f_id, $tag_ids)
 {
-    if($field != "don" && $field != "proj" && $field != "org")
-        return false;
+    if ( $field != "news" AND $field != "proj" AND $field != "org" )
+        exit("incorrect field");
 
-    foreach($tag_ids as $tag_id)
+    empty($tag_ids) AND exit("tag ids are empty");
+
+    foreach ( $tag_ids as $tag_id )
     {
-        $sql = "INSERT INTO  `opentaps`.`tag_connector` (`".$field."_id`, `tag_id`) VALUES(:f_id, :tag_id)";
+        $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_id`, `".$field."_id`) VALUES (:tag_id, :f_id);";
         $statement = Storage::instance()->db->prepare($sql);
-        $exec = $statement->execute(array(
- 	    ':f_id' => $f_id,
- 	    ':tag_id' => $tag_id
-        ));
-        if(!$exec)
+        $exec = $statement->execute(array(':f_id' => $f_id, ':tag_id' => $tag_id));
+        if ( !$exec )
             return false;
     }
 
@@ -499,7 +503,7 @@ function read_projects($project_id = false)
 }
 
 
-function add_project($title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids)
+function add_project($title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new") . "\">Back</a>";
 
@@ -516,6 +520,13 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     $fields[] = ( strlen($info) < 4 ) ? 'info' : NULL;
 
     $f = implode(", ", $fields);
+
+    $fields_new = array();
+    foreach ( $fields as $field )
+    	if ( $field != NULL )
+    		$fields_new[] = $field;
+
+    $fields = $fields_new;
 
     if ( count($fields) > 0 )
     	return $f . " too short" . $back;
@@ -561,17 +572,26 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     	':info' => $info
     ));
 
-    if(!add_tag_connector('proj', Storage::instance()->db->lastInsertId(), $tag_ids))
+    $last_insert_id = Storage::instance()->db->lastInsertId();
+
+    foreach ( $org_ids as $org_id )
+    {
+	$query = "INSERT INTO `project_organizations` ( project_id, organization_id ) VALUES( :project_id, :organization_id );";
+	$query = Storage::instance()->db->prepare($query);
+	$query = $query->execute(array(':project_id' => $last_insert_id, ':organization_id' => $org_id));
+    }
+
+    if ( !add_tag_connector('proj', $last_insert_id, $tag_ids) )
         return "tag connection error";
 
-    if($exec)
+    if ( $exec )
     	Slim::redirect(href("admin/projects"));
     else
     	return "couldn't insert record/database error";
     
 }
 
-function update_project($id, $title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids)
+function update_project($id, $title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids)
 {
     $back = "<br /><a href=\"" . href("admin/projects/".$id) . "\">Back</a>";
 
@@ -587,13 +607,22 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     $fields[] = ( strlen($end_at) < 4 ) ? 'end_at' : NULL;
     $fields[] = ( strlen($info) < 4 ) ? 'info' : NULL;
 
+    $fields_new = array();
+    foreach ( $fields as $field )
+    	if ( $field != NULL )
+    		$fields_new[] = $field;
+
+    $fields = $fields_new;
+
     $f = implode(", ", array_values($fields));
 
     if ( count($fields) > 0 )
     	return $f . " too short" . $back;
 
     $sql = "
-    	UPDATE `projects` SET
+    	UPDATE
+    		`projects`
+    	SET
     		title = :title,
     		description = :description,
     		budget = :budget,
@@ -606,6 +635,14 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     		info = :info
     	WHERE
     		`projects`.`id` =:id;
+    	DELETE FROM
+    		project_organizations
+    	WHERE
+    		project_id = :id;
+    	DELETE FROM
+    		tag_connector
+    	WHERE
+    		proj_id = :id;
     ";
     $statement = Storage::instance()->db->prepare($sql);
 
@@ -623,15 +660,25 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     	':info' => $info
     ));
 
-    $sql = "DELETE FROM tag_connector where proj_id = :id";
-    $statement = Storage::instance()->db->prepare($sql);
+    if (!empty($org_ids))
+    {
+    	$insert_rows = array();
+    	$insert_rows_data['proj_id'] = $id;
+        foreach ($org_ids AS $org_id)
+        {
+            $var_org_id = "org_{$org_id}_id";
+            $insert_rows[] = "(:{$var_org_id}, :proj_id)";
+            $insert_rows_data[$var_org_id] = $org_id;
+        }
+        $sql = 'INSERT INTO project_organizations (organization_id, project_id) VALUES ' . implode(', ', $insert_rows) . ';';
+        $statement = db()->prepare($sql);
+	$result = $statement->execute($insert_rows_data);
+    }
 
-    $delete = $statement->execute(array(':id' => $id));
-
-    if(!add_tag_connector('proj', $id, $tag_ids) OR !$delete)
+    if ( !add_tag_connector('proj', $id, $tag_ids) )
         return "tag connection error";
 
-    if($exec)
+    if ( $exec )
     	Slim::redirect(href("admin/projects"));
     else
     	return "couldn't update record/database error";
@@ -642,18 +689,17 @@ function delete_project($id)
     if( !is_numeric($id) )
 	return "invalid id";
 
-    $sql = "DELETE FROM `opentaps`.`projects` WHERE  `projects`.`id` = :id";
-    $statement = Storage::instance()->db->prepare($sql);
-
-    $exec = $statement->execute(array(':id' => $id));
-
-    $sql = "DELETE FROM tag_connector where proj_id = :id";
+    $sql = "
+    		DELETE FROM `projects` WHERE  `projects`.`id` = :id;
+    		DELETE FROM tag_connector where proj_id = :id;
+		DELETE FROM project_organizations WHERE project_id = :id;
+	   ";
     $statement = Storage::instance()->db->prepare($sql);
     $delete = $statement->execute(array(':id' => $id));
 
     delete_project_data($id);
 
-    if($exec)
+    if ( $delete )
     	Slim::redirect(href("admin/projects"));
     else
     	return "couldn't delete record/database error";
@@ -689,4 +735,15 @@ function add_project_data($project_id, $key, $value)
 		$statement->execute(array(':project_id' => $project_id, ':key' => $key[$i], ':value' => $value[$i]));
 	    }
 	}
+}
+
+function ceil_by_10($number)
+{
+	if ($number % 10 == 0)
+		return $number;
+	return $number + (10 - ($number % 10));
+}
+function floor_by_10($number)
+{
+	return floor($number / 10) * 10;
 }

@@ -54,12 +54,20 @@
   	    <br />
   	    <select name='p_tags[]' id='ptags' multiple='multiple'>
   	      <?php
-  	        foreach($all_tags as $tag)
-  	        {
-  	            ?>
-  	            <option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option>
-  	            <?php
-  	        }
+  	        foreach($all_tags as $tag):
+  	            ?><option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option><?php
+  	        endforeach;
+  	      ?>
+  	    </select>
+  	    <br /><br />
+
+ 	    <label for='porgs'>Organizations: (hold down Ctrl to select multiple)</label>
+  	    <br />
+  	    <select name='p_orgs[]' id='porgs' multiple='multiple'>
+  	      <?php
+  	        foreach($organizations as $org):
+  	            ?><option value="<?php echo $org['id'] ?>"><?php echo $org['org_name'] ?></option><?php
+  	        endforeach;
   	      ?>
   	    </select>
   	    <br /><br />

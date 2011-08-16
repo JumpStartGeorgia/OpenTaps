@@ -17,17 +17,38 @@ Slim::get('/admin/projects/', function(){
 });
 
 Slim::get('/admin/projects/new/', function(){
-    Storage::instance()->content = userloggedin() ? template('admin/projects/new', array('all_tags' => read_tags())) : template('login');
+    $query = "SELECT * FROM organizations;";
+    $orgs = fetch_db($query);
+    Storage::instance()->content = userloggedin()
+    	? template('admin/projects/new', array('all_tags' => read_tags(), 'organizations' => $orgs))
+    	: template('login');
 });
 
 Slim::get('/admin/projects/:id/', function($id){
-    Storage::instance()->content = userloggedin()
-    	? template('admin/projects/edit', array(
-    			'project' => read_projects($id),
-    			'all_tags' => read_tags(),
-    			'this_tags' => read_tag_connector('proj', $id)
-    			))
-    	: template('login');
+    if ( userloggedin() )
+    {
+	$query = "SELECT * FROM organizations;";
+	$orgs = fetch_db($query);
+
+	$query = "SELECT organization_id FROM project_organizations WHERE project_id = :id";
+	$query = Storage::instance()->db->prepare($query);
+	$query->execute(array(':id' => $id));
+	$result = $query->fetchAll();
+	$this_orgs = array();
+	foreach($result as $s)
+		$this_orgs[] = $s['organization_id'];
+	
+	Storage::instance()->content = template('admin/projects/edit', array
+	(
+		'project' => read_projects($id),
+		'all_tags' => read_tags(),
+		'this_tags' => read_tag_connector('proj', $id),
+		'this_orgs' => $this_orgs,
+		'organizations' => $orgs
+	));
+    }
+    else
+    	Storage::instance()->content = template('login');
 });
 
 Slim::get('/admin/projects/:id/delete/', function($id){
@@ -36,6 +57,7 @@ Slim::get('/admin/projects/:id/delete/', function($id){
 
 Slim::post('/admin/projects/create/', function(){
     empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+    empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array();
     Storage::instance()->content = userloggedin()
 	    ? add_project(
         	$_POST['p_title'],
@@ -48,13 +70,15 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
         	$_POST['p_info'],
-        	$_POST['p_tags']
+        	$_POST['p_tags'],
+        	$_POST['p_orgs']
        	     )
 	   : template('login');
 });
 
 Slim::post('/admin/projects/:id/update/', function($id){
     empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+    empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array(NULL);
     Storage::instance()->content = userloggedin()
 	    ? update_project(
 	    	$id,
@@ -68,7 +92,8 @@ Slim::post('/admin/projects/:id/update/', function($id){
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
         	$_POST['p_info'],
-        	$_POST['p_tags']
+        	$_POST['p_tags'],
+        	$_POST['p_orgs']
        	     )
 	   : template('login');
 });
