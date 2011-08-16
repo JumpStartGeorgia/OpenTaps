@@ -84,8 +84,8 @@
 <?php endforeach; ?>
 
 <?php
-	$indexes = array(123,423,534,343,777);
-	$months = array('dasdas1', 'dasdsa2', 'dsadas3','rame4','asd5');
+	$indexes = $v;
+	$months = $names;
 	$titles = array(NULL, 'ORGANISATIONS', 'PROJECT BUDGET', 'PROJECT', 'PROJECT BUDGET');
 ?>
     </div>
@@ -99,8 +99,8 @@
 				'cht' => 'pc',
 				'chs' => '165x222',
 				'chco' => '0000FF',
-				'chd' => 't:' . implode(',', $indexes),
-				'chdl' => implode('|', $months),
+				'chd' => 't:' . implode(',', $indexes[1]),
+				'chdl' => implode('|', $months[1]),
 				'chdlp' => 'bv'
                         )));
                         ?>" width="165" height="222" alt="" />

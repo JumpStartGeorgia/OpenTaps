@@ -3,7 +3,36 @@
 ################################################################ projects view
 Slim::get('/project/:id/', function($id){
 	Storage::instance()->show_map = FALSE;
-    	Storage::instance()->content = template('project', array('project' => read_projects($id), 'data' => read_project_data($id)));
+	$sql = "
+		SELECT
+			organizations.org_name
+		FROM 
+			`project_organizations`
+		INNER JOIN
+			`organizations`
+		ON
+			(`project_organizations`.`organization_id` = `organizations`.`id`)
+		WHERE
+			project_id = :id;
+	";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $id));
+
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+	$v = array();
+	$names = array();
+	foreach ( $results as $r )
+	{
+		$v[1][] = 1;
+		$names[1][] = $r['org_name'];
+	}
+
+    	Storage::instance()->content = template('project', array(
+    		'project' => read_projects($id),
+    		'data' => read_project_data($id),
+    		'names' => $names,
+    		'v' => $v
+    	));
 });
 
 
