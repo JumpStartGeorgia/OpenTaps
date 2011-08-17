@@ -3,39 +3,78 @@
 ################################################################ projects view
 Slim::get('/project/:id/', function($id){
 	Storage::instance()->show_map = FALSE;
-	$sql = "
-		SELECT
-			organizations.org_name
-		FROM 
-			`project_organizations`
-		INNER JOIN
-			`organizations`
-		ON
-			(`project_organizations`.`organization_id` = `organizations`.`id`)
-		WHERE
-			project_id = :id;
-	";
+	$sql = "SELECT budget FROM `projects`";
 	$query = db()->prepare($sql);
-	$query->execute(array(':id' => $id));
+	$query->execute();
 
-	$results = $query->fetchAll(PDO::FETCH_ASSOC);
-	$v = array();
-	$names = array();
-	foreach ( $results as $r )
-	{
-		$v[1][] = 1;
-		$names[1][] = $r['org_name'];
-	}
+	list($values, $names) = get_project_chart_data($id);
+
+	$real_values[1] = $values[1];
+	$real_values[2] = $query->fetchAll(PDO::FETCH_ASSOC);
 
     	Storage::instance()->content = template('project', array(
     		'project' => read_projects($id),
     		'data' => read_project_data($id),
     		'names' => $names,
-    		'v' => $v
+    		'values' => $values,
+    		'real_values' => $real_values
     	));
 });
 
 
+Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
+{
+        $name = substr(sha1(uniqid(TRUE) . time() . rand()), 0, 5) . '_' . str_replace(' ', '_', strtolower($name)) . '.' . $type;
+
+	switch ($type)
+	{
+	    case 'png':
+        	$headers = array(
+        		'Content-Type' => 'image/png',
+        		'Content-Disposition' => 'attachment; filename=' . $name
+        	);
+        	foreach ($headers AS $key => $value)
+		    header("{$key}: {$value}");
+
+		$file = fopen(base64_decode($data), 'r');
+		fpassthru($file);
+		fclose($file);	        
+	        break;
+	    case 'csv':
+
+        	$headers = array(
+        		'Content-Type' => 'text/csv',
+        		'Content-Disposition' => 'attachment; filename=' . $name
+        	);
+        	foreach ($headers AS $key => $value)
+		    header("{$key}: {$value}");
+
+                $data = unserialize(base64_decode($data));
+
+		$list = array();
+		$list[0] = $data['names'];
+		foreach ( $data['values'] as $value )
+			$list[1][] = empty($value['budget']) ? $value : $value['budget'];
+
+		$fp = fopen(DIR . 'uploads/' . $name, 'w');
+
+		foreach ($list as $fields)
+		    fputcsv($fp, $fields);
+
+		fclose($fp);
+
+		$file = fopen(DIR . 'uploads/' . $name, 'r');
+		fpassthru($file);
+		fclose($file);
+
+		unlink(DIR . 'uploads/' . $name);
+
+	        break;
+	}
+
+	exit;	
+}
+);
 
 
 ################################################################ projects admin routes start

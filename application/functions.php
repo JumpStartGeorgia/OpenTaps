@@ -737,6 +737,85 @@ function add_project_data($project_id, $key, $value)
 	}
 }
 
+function get_project_chart_data($id)
+{
+	//$result = array();
+	$v = array();
+	$names = array();
+
+	$sql = "
+		SELECT
+			organizations.org_name
+		FROM 
+			`project_organizations`
+		INNER JOIN
+			`organizations`
+		ON
+			(`project_organizations`.`organization_id` = `organizations`.`id`)
+		WHERE
+			project_id = :id;
+	";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $id));
+
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	foreach ( $results as $r )
+	{
+		$v[1][] = 1;
+		$names[1][] = str_replace(" ", "+", $r['org_name']);
+	}
+
+
+	$sql = "
+		SELECT
+			budget, title
+		FROM 
+			`projects`
+	";
+	$query = db()->prepare($sql);
+	$query->execute();
+
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$b = FALSE;
+
+	foreach ( $results as $r )
+	{
+		$i = $v[2][] = (integer) str_replace("$", "", str_replace(",", "", $r['budget']));
+		$b OR $b = ( $i > 100 );
+		$names[2][] = str_replace(" ", "+", $r['title']);
+	}
+
+	if ( $b )
+	{
+		$max = max($v[2]);
+		$depth = 0;
+		while ( $max > 100 ):
+			$max = $max / 100;
+			$depth ++;
+		endwhile;
+		for ( $i = 0, $n = count($v[2]); $i < $n; $i ++  )
+			for ( $j = 0; $j < $depth; $j ++ )
+				$v[2][$i] = $v[2][$i] / 100;
+	}
+
+	return array($v, $names);
+}
+/*function down_to_range($n, $range = 100)
+{
+	if ( $n > $range )
+		return down_to_range($n / $range, $range);
+	else
+		return $n;
+}*/
+
+
+
+
+
+
+
 function ceil_by_10($number)
 {
 	if ($number % 10 == 0)

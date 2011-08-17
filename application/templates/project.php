@@ -83,29 +83,52 @@
 
 <?php endforeach; ?>
 
+    </div>
+
 <?php
-	$indexes = $v;
+	$indexes = $values;
 	$months = $names;
 	$titles = array(NULL, 'ORGANISATIONS', 'PROJECT BUDGET', 'PROJECT', 'PROJECT BUDGET');
 ?>
-    </div>
 
     <div id='charts'>
-<? for ( $i = 1; $i <= 4; $i ++ ): ?>
+<?php
+   $width = 165;
+   $defh = 203.875;
+   for ( $i = 1; $i <= 2; $i ++ ):
+	$height = $defh + count($names[$i]) * 18.125;
+	$h = round($height);
+	$src = "http://chart.googleapis.com/chart?".
+		urldecode(http_build_query(array(
+			'cht' => 'pc',
+			'chs' => $width.'x'.$h,
+			'chco' => '0000FF',
+			'chd' => 't:' . implode(',', $values[$i]),
+			'chdl' => implode('|', $names[$i]),
+			'chdlp' => 'bv'
+		)))."";
+		
+$download_png = href("export/png/".base64_encode(str_replace($width."x".$h, (2*$width)."x".(round(2*$height)), $src))."/".$titles[$i]);
+$download_csv = href("export/csv/".base64_encode(serialize(array(
+    'names' => $names[$i],
+    'values' => $real_values[$i]
+)))."/".$titles[$i]);
+
+?>
 	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">
-		<div class="title" style='display:block; text-align:center;'><?php echo $titles[$i] ?></div>
-		<img style="margin-top: 5px" src="http://chart.googleapis.com/chart?<?php
-			echo urldecode(http_build_query(array(
-				'cht' => 'pc',
-				'chs' => '165x222',
-				'chco' => '0000FF',
-				'chd' => 't:' . implode(',', $indexes[1]),
-				'chdl' => implode('|', $months[1]),
-				'chdlp' => 'bv'
-                        )));
-                        ?>" width="165" height="222" alt="" />
+		<div class="title group" style='display:block; text-align:center;'>
+			<?php echo $titles[$i] ?>
+		</div>
+		<div class='export group'>
+                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
+                	<a href='<?php echo $download_csv ?>'>CSV</a>
+		</div>
+		<img src="<?php echo $src; ?>"
+		     width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
 	</div>
+
 <? endfor; ?>
+
     </div>
 
 </div>

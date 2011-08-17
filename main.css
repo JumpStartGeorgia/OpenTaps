@@ -399,7 +399,11 @@ div.more_news{
 .data_block .value{ 	padding: 10px 17px 10px 17px; }
 #charts { float: left; width: 673px; }
 #charts .title { color: #808080; font-size:15px }
-#charts div img{ float:left; clear: both }
+#charts div img{ clear: both; }
+#charts div img:after{ clear: both; }
+.export{ width: auto; margin-left: auto; margin-right: auto; text-align: center; margin-top: 5px; }
+.export a{ color:grey; text-decoration:none; }
+.export a:hover{ color: black; text-decoration: underline; }
 /*			END				*/
 
 
