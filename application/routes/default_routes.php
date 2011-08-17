@@ -1,4 +1,5 @@
 <?php
+
 Slim::get('/', function(){
 
 });

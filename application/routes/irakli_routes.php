@@ -5,7 +5,7 @@ $js_places = array();
 foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ']';
 Storage::instance()->js_places = $js_places;
-
+Storage::instance()->show_map = TRUE;
 /*======================================	places management 	====================================*/
 Slim::get('/admin/places/',function(){
 	Slim::redirect(href('/admin/places/add'));
@@ -85,11 +85,11 @@ Slim::get('/admin/places/list/:id/edit/',function($id){
 });
 
 /*====================================================		region management	======================================*/
-Slim::get('/admin/regions/',function(){
+/*Slim::get('/admin/regions/',function(){
 	if(userloggedin()){
 		$sql_regions = 'SELECT * FROM regions';
 		$sql_raions = 'SELECT * FROM raions';
-		Storage::instance()->content = template('regions-management',array(
+		Storage::instance()->content = template('admin/regions/all_records',array(
 			'regions' => fetch_db($sql_regions),
 			'raions' => fetch_db($sql_raions)
 		));		
@@ -140,18 +140,18 @@ Slim::get('/admin/regions/:id/edit/',function($id){
 				$sql_regions = 'SELECT * FROM regions';
 				$sql_raions = 'SELECT * FROM raions';
 				
-				/*=======	raion id	 ==========*/
+				/*=======	raion id	 ==========*\/
 				$sql_raion_region_edit = "SELECT * FROM region_raion_data WHERE id='$id' LIMIT 1;";
 				$raion_region_edit = fetch_db($sql_raion_region_edit);
 				$raion_region_edit = $raion_region_edit[0];
 				$raion_region_edit_id = $raion_region_edit['type_id'];
 				
-				/*=======	rain	==========*/
+				/*=======	rain	==========*\/
 				$sql_raion_edit = "SELECT * FROM raions WHERE id='$raion_region_edit_id' LIMIT 1;";
 				$raion_edit = fetch_db($sql_raion_edit);
 				$raion_edit = $raion_edit[0];
 				
-				/*=======	region	==========*/
+				/*=======	region	==========*\/
 				$region_id = $raion_edit['region_id'];
 				$sql_region_edit = "SELECT * FROM regions WHERE id='$region_id' LIMIT 1;";
 				$region_edit = fetch_db($sql_region_edit);
@@ -183,7 +183,7 @@ Slim::post('/admin/regions/:id/edit',function(){
 	}
 	else Storage::instance()->content = template('login');
 });
-Slim::get('/admin/regions/add/',function(){
+Slim::get('/admin/regions/add',function(){
 	if(userloggedin()){
 		$sql_regions = 'SELECT * FROM regions';
 		$sql_raions = 'SELECT * FROM raions';
@@ -207,7 +207,101 @@ Slim::post('/admin/regions/add/',function(){
 		}
 	}
 	else Storage::instance()->content = template('login');
+});*/
+
+
+
+
+################################################################ projects view
+Slim::get('/region/:id/', function($id){
+	Storage::instance()->show_map = FALSE;
+	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_id='$id'";
+    	Storage::instance()->content = template('region', array(
+    		'region' => get_region($id),
+    		'region_cordinates' => fetch_db($sql_region_cordinates),
+    		'region_budget' => region_total_budget($id)
+    	));
 });
+
+
+
+
+/*========================================================		Admin Regions		===============================================*/
+Slim::get('/admin/regions/', function(){
+	$sql_regions = 'SELECT * FROM regions';
+    Storage::instance()->content = userloggedin()
+    	? template('admin/regions/all_records', array('regions' => fetch_db($sql_regions)))
+    	: template('login');
+});
+
+Slim::get('/admin/regions/new/', function(){
+    Storage::instance()->content = userloggedin() ? template('admin/regions/new', array('all_tags' => read_tags())) : template('login');
+});
+
+Slim::get('/admin/regions/:id/', function($id){
+    Storage::instance()->content = userloggedin()
+    	? template('admin/regions/edit', array(
+    			'region' => get_region($id),
+    			'all_tags' => read_tags()
+    			))
+    	: template('login');
+});
+
+Slim::get('/admin/regions/:id/delete/', function($id){
+     if(userloggedin()) {
+     	delete_region($id) ;
+     	Slim::redirect(href('admin/regions'));
+     }
+     else Storage::instance()->content = template('login');
+});
+
+Slim::post('/admin/regions/create/', function(){
+   // empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+   if(userloggedin()){
+	     add_region(
+        	$_POST['p_name'],
+        	$_POST['p_reg_info'],
+        	$_POST['p_reg_projects_info'],
+        	$_POST['p_city'],
+        	$_POST['p_population'],
+        	$_POST['p_squares'],
+        	$_POST['p_settlement'],
+        	$_POST['p_villages'],
+        	$_POST['p_districts']
+       	     );
+       	     Slim::redirect(href('admin/regions'));
+       	}
+	else Storage::instance()->content = template('login');
+	
+});
+
+Slim::post('/admin/regions/:id/update/', function($id){
+    empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+   if(userloggedin()){
+	     update_region(
+	    	$id,
+        	$_POST['p_name'],
+        	$_POST['p_reg_info'],
+        	$_POST['p_reg_projects_info'],
+        	$_POST['p_city'],
+        	$_POST['p_population'],
+        	$_POST['p_squares'],
+        	$_POST['p_settlement'],
+        	$_POST['p_villages'],
+        	$_POST['p_districts']
+       	     );
+       	     Slim::redirect(href('admin/regions'));
+       	     }
+	   else Storage::instance()->content = template('login');
+});
+
+
+
+
+
+
+
+
 
 /*=================================================================== 	User Regions Display	=============================================*/
 Slim::get('/regions/:region_id',function($region_id){
@@ -253,76 +347,76 @@ Slim::get('/organizations/',function(){
 });
 
 
-//organization management
-Slim::get('/admin/orgmanagement/',function(){
-    if(userloggedin())
-    {
-	$sql = "SELECT * FROM organizations";
-	$results = fetch_db($sql);
-	Storage::instance()->content = template('orgmanagement',array(
-		'organizations' => $results
-	));
-    }
-    else
-	Storage::instance()->content = template('login');
-});
-Slim::get('/admin/orgmanagement/:id/delete/',function($id){
-    if(userloggedin())
-    {
-	if(isset($id)) delete_organization($id);
-	Slim::redirect(href('admin/orgmanagement'));
-    }
-    else
-	Storage::instance()->content = template('login');
-});
-Slim::post('/admin/orgmanagement/',function(){
-    if(userloggedin())
-    {
-	if(isset($_POST['org_name']) && isset($_POST['org_desc']) && !isset($_POST['org_id'])  )
-			add_organization($_POST['org_name'],$_POST['org_desc']);
-	elseif(isset($_POST['org_name']) && isset($_POST['org_desc']) && isset($_POST['org_id']) )
-			edit_organization($_POST['org_id'],$_POST['org_name'],$_POST['org_desc']);
-	Slim::redirect(href('admin/orgmanagement'));
-    }
-    else
-	Storage::instance()->content = template('login');
+/*=====================================================		Admin Organizations	  ==================================================*/
+Slim::get('/admin/organizations/', function(){
+	$sql_organizations = 'SELECT * FROM organizations';
+    Storage::instance()->content = userloggedin()
+    	? template('admin/organizations/all_records', array('organizations' => fetch_db($sql_organizations)))
+    	: template('login');
 });
 
-Slim::get('/admin/orgmanagement-new/:id/',function($id){
-    if(userloggedin())
-    {
-	$sql = "SELECT tag_id FROM tag_connector WHERE org_id = :id";
-        $statement = Storage::instance()->db->prepare($sql);
-        $statement->execute(array(':id' => $id));
-        $r = $statement->fetchAll();
-        $tags = array();
-        foreach($r as $res)
-        {
-          $tags[] = $res['tag_id'];
-        }
-        //if(empty($tags)) $rags = array();
-        Storage::instance()->content = template('orgmanagement-new', array(
-            'all_tags' => read_tags(),
-            'this_tags' => $tags,
-            'id' => $id
-        ));
-    }
-    else
-	Storage::instance()->content = template('login');
+Slim::get('/admin/organizations/new/', function(){
+    Storage::instance()->content = userloggedin() ? template('admin/organizations/new', array('all_tags' => read_tags())) : template('login');
 });
 
-Slim::post('/admin/orgmanagement-new/:id/update/',function($id){
-    if(userloggedin())
-    {
-	$sql = "DELETE FROM tag_connector where org_id = :id";
-        $statement = Storage::instance()->db->prepare($sql);
-        $delete = $statement->execute(array(':id' => $id));
-        add_tag_connector('org', $id, $_POST['o_tags']);
-        Slim::redirect(href('admin/orgmanagement'));
-    }
-    else
-	Storage::instance()->content = template('login');
+Slim::get('/admin/organizations/:id/', function($id){
+    Storage::instance()->content = userloggedin()
+    	? template('admin/organizations/edit', array(
+    			'organization' => get_organization($id),
+    			'all_tags' => read_tags()
+    			))
+    	: template('login');
 });
+
+Slim::get('/admin/organizations/:id/delete/', function($id){
+     if(userloggedin()) {
+     	delete_organization($id) ;
+     	Slim::redirect(href('admin/organizations'));
+     }
+     else Storage::instance()->content = template('login');
+});
+
+Slim::post('/admin/organizations/create/', function(){
+   // empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+   if(userloggedin()){
+	     add_organization(
+        	$_POST['p_name'],
+        	$_POST['p_org_info'],
+        	$_POST['p_org_projects_info'],
+        	$_POST['p_city_town'],
+        	$_POST['p_district'],
+        	$_POST['p_grante'],
+        	/*$_POST['p_donors'],*/
+        	$_POST['p_sector']
+       	     );
+       	     Slim::redirect(href('admin/organizations'));
+       	}
+	else Storage::instance()->content = template('login');
+	
+});
+
+Slim::post('/admin/organizations/:id/update/', function($id){
+    empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+   if(userloggedin()){
+	     update_region(
+	    	$id,
+        	$_POST['p_name'],
+        	$_POST['p_reg_info'],
+        	$_POST['p_reg_projects_info'],
+        	$_POST['p_city'],
+        	$_POST['p_population'],
+        	$_POST['p_squares'],
+        	$_POST['p_settlement'],
+        	$_POST['p_villages'],
+        	$_POST['p_districts']
+       	     );
+       	     Slim::redirect(href('admin/organizations'));
+       	     }
+	   else Storage::instance()->content = template('login');
+});
+
+
+
 
 ################################################################ donors admin routes start
 Slim::get('/admin/donors/', function(){

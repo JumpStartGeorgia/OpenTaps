@@ -387,7 +387,7 @@ function delete_place($id){
 }
 
 
-/*===================================================	region and raion data management	===============================*/
+/*===================================================	region and raion data management	===============================*\/
 function delete_region_raion_data($id)
 {
 	$sql = "DELETE FROM region_raion_data WHERE id=:id LIMIT 1;";	
@@ -419,9 +419,70 @@ function edit_region_raion_data($id,$type,$type_id,$parameter,$value)
 		':field_value' => $value,
 		':id' => $id
 	));
+}*/
+
+
+/*=======================================================	Admin Regions 	============================================================*/
+function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
+{
+	$sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts) 
+				VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts)";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':name' => $name,
+		':region_info' => $region_info,
+		':region_projects' => $region_projects_info,
+		':city' => $city,
+		':population' => $population,
+		':squares' => $squares,
+		':settlement' => $settlement,
+		':villages' => $villages,
+		':districts' => $districts
+	));
+	
+
 }
 
-//organization management actions
+function delete_region($id)
+{
+	$sql = "DELETE FROM regions WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+
+}
+
+function get_region($id)
+{
+	$sql = "SELECT * FROM regions WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+	return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
+function update_region($id,$name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
+{
+$sql = "UPDATE regions SET name=:name,region_info=:region_info,projects_info=:region_projects,city=:city,population=:population,square_meters=:squares,
+			settlement=:settlement,villages=:villages,districts=:districts";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':name' => $name,
+		':region_info' => $region_info,
+		':region_projects' => $region_projects_info,
+		':city' => $city,
+		':population' => $population,
+		':squares' => $squares,
+		':settlement' => $settlement,
+		':villages' => $villages,
+		':districts' => $districts
+	));
+
+}
+
+/*================================================	Admin Organizations	============================================*/
 function delete_organization($id){
 	$sql = "DELETE FROM organizations WHERE id=:id LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
@@ -430,12 +491,18 @@ function delete_organization($id){
 	));
 }
 
-function add_organization($org_name,$org_desc){
-	$sql = "INSERT INTO organizations (org_name,org_description) VALUES(:org_name,:org_desc)";
+function add_organization($name,$description,$projects_info,$city_town,$district,$grante,$sector){
+	$sql = "INSERT INTO organizations (name,description,district,city_town,grante,sector,projects_info) 
+					VALUES(:name,:description,:projects_info,:city_town,:district,:grante,:sector)";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
-		':org_name' => $org_name,
-		':org_desc' => $org_desc
+		':name' => $name,
+		':description' => $description,
+		':projects_info' => $projects_info,
+		':city_town' => $city_town,
+		':district' => $district,
+		':grante' => $grante,
+		':sector' => $sector
 	));
 }
 
@@ -446,6 +513,14 @@ function edit_organization($org_id,$org_name,$org_desc){
 		':org_name' => $org_name,
 		':org_description' => $org_desc,
 		':id' => $org_id
+	));
+}
+function get_organization($id)
+{
+	$sql = "SELECT * FROM organizations WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
 	));
 }
 

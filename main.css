@@ -456,3 +456,66 @@ div.bottom3 img{
 	margin-left:905px;
 	cursor:pointer;
 }
+
+/*			PROJECTS			*/
+#project_content
+{
+	font-size:12px;
+	font-family:arial;
+}
+#project_details
+{
+	float:left;
+	width:386px;
+	min-height:244px;
+	border-right:1px dotted #a6a6a6;
+	border-bottom:1px dotted #a6a6a6;
+}
+#project_description
+{
+	margin-top:30px;
+	text-align:justify;
+}
+#project_description div{ margin-bottom: 21px; margin-top: 6px; }
+#project_description p{ font-weight: bold; font-size: 19px; }
+#project_budget
+{
+	background: #4cbeff;
+	height:55px;
+	border-bottom :1px dotted #a6a6a6;
+	padding-left:16px;
+	padding-top: 10px;
+	color: rgba(255,255,255, .9);
+}
+.project_details_line
+{
+	min-height: 21px;
+	border-bottom: 1px dotted #a6a6a6;
+	padding-top: 4px;
+}
+.project_details_line div{ float:left; }
+.line_left{ width: 135px; padding-left: 16px; }
+.data_block
+{
+	width:240px;
+	min-height:45px;
+	border: 1px dotted #a6a6a6;
+	margin-bottom:10px;
+	text-align:justify;
+}
+.data_block .key
+{
+	background: #4cbeff;
+	color: rgba(255,255,255,.9);
+	padding:10px 0px 10px 17px;
+	font-size: 13px;
+	border-bottom: 1px dotted #a6a6a6;
+}
+.data_block .value{ 	padding: 10px 17px 10px 17px; }
+#charts{ float: left; width: 673px; }
+#charts div{ float: left; width: 168px; }
+#charts 
+/*			END				*/
+
+
+div.region_right {  }

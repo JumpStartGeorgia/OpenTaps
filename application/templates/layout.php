@@ -8,6 +8,18 @@
         <meta charset="utf-8"/>
     </head>
     <body onload="init()">
+    	<script type="text/javascript">
+    		var region_map_boundsLeft = false;
+		var region_map_boundsRight = false;
+		var region_map_boundsTop = false;
+		var region_map_boundsBottom = false;
+		var region_map_zoom = false;
+		var region_map_maxzoomout = false;
+		var region_map_longitude = false;
+		var region_map_latitude = false;
+		var region_make_def_markers = true;
+		var region_show_def_buttons = true;
+	</script>
         <div class='main'>
 
             <div class='header'>
@@ -39,7 +51,7 @@
 		
 	    <div class='after_menu'></div>
 		
-		<?php if( Storage::instance()->content_name != 'regions' ): ?>
+		<?php if( Storage::instance()->show_map ): ?>
        		     <div id="map">
         	     </div>
 		<?php endif; ?>
@@ -79,5 +91,8 @@
         <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
+	
+	
+
     </body>
 </html>
