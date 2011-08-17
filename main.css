@@ -468,6 +468,7 @@ div.bottom3 img{
 	float:left;
 	width:386px;
 	min-height:244px;
+	border-top:1px dotted #a6a6a6;
 	border-right:1px dotted #a6a6a6;
 	border-bottom:1px dotted #a6a6a6;
 }

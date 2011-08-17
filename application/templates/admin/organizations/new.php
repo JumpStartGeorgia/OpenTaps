@@ -39,8 +39,14 @@
   	    <br />
   	    <input name='p_sector' id='psector' type='text' />
   	    <br /><br />
+  	    
+  	    <label for='plogo'>Logo: </label>
+  	    <br />
+  	    <input name='p_logo' id='plogo' type='file' />
+  	    <br /><br />
+  	    
 
-  	   <!-- <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
+  	    <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
   	    <br />
   	    <select name='p_tags[]' id='ptags' multiple='multiple'>
   	      <?php
@@ -51,7 +57,7 @@
   	            <?php
   	        }
   	      ?>
-  	    </select>-->
+  	    </select>
   	    <br /><br />
 
   	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />

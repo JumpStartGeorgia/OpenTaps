@@ -13,7 +13,7 @@
 			var region_map_longitude = <?php echo isset($region_cordinates[0]) ? $region_cordinates[0]['longitude'] : 'false'; ?>;
 			var region_map_latitude = <?php echo isset($region_cordinates[0]) ? $region_cordinates[0]['latitude'] : 'false'; ?>;
 		</script>
-		<div id='map' style='width:282px;height:244px;float:left;'></div>
+		<div id='map' style='width:282px;border:1px dotted #a6a6a6;height:244px;float:left;'></div>
 		
 		<div id='project_details'>
 			<div id='project_budget'>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 	</div>
-
+		
 	<div id='project_description'>
 		<p><?php echo $region['name']; ?></p>
 		<div><?php echo $region['region_info']; ?></div>

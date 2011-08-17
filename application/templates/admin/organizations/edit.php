@@ -1,7 +1,8 @@
 <?php
+	print_r($all_tags);exit;
   $action = href("admin/organizations/" . $organization['id'] . "/update");
 ?>
-    	<form action='<? echo $action; ?>' method='post'>
+    	<form action='<? echo $action; ?>' method='post' enctype="multipart/form-data">
   	   <label for='pname'>Name: </label>
   	    <br />
   	    <input name='p_name' id='pname' type='text' value="<?php echo $organization['name']; ?>" />
@@ -44,18 +45,22 @@
   	    <input name='p_sector' id='psector' type='text' value="<?php echo $organization['sector']; ?>" />
   	    <br /><br />
 
-  	   <!-- <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
+	    <label for='plogo'>Logo: </label>
+  	    <br />
+  	    <input name='p_logo' id='plogo' type='file' />
+  	    <br /><br />
+  	    <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
   	    <br />
   	    <select name='p_tags[]' id='ptags' multiple='multiple'>
   	      <?php
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['id'] ?>" <?php echo ($tag['org_id'] == $organization['id']) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
-  	    </select>-->
+  	    </select>
   	    <br /><br />
 
   	    <input type='submit' style='width:90px;' value='Submit' onclick='return document.getElementById("ptitle").value != ""' />
