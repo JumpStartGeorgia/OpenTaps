@@ -3,10 +3,7 @@
   <strong>PROJECTS ORGANIZATION</strong>
 </div>
 
-<div class='spacer'>
-</div>
-
-<div class='news'>
+<div class='news group'>
     <span><strong>NEWS</strong></span>
 </div>
 
@@ -15,7 +12,7 @@
 </div>
 
 
-<div class='news_body'>
+<div class='news_body group'>
 
 <?php
   $news_all = read_news(6);

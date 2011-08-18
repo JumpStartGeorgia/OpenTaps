@@ -20,7 +20,7 @@
 	</script>
     </head>
     <body onload="init()">
-        <div class='main'>
+        <div class='main group'>
 
             <div class='header'>
                 <a href = "<? echo URL ?>">
@@ -57,24 +57,32 @@
                 <div id="map"></div>
             <?php endif; ?>
 
-	    <div class='content'>
+	    <div class='content group'>
               <?php echo Storage::instance()->content ?>
             </div>
 
-            <br/><br/>
-            
-            <hr class='bottom' />
-
-            <div class='bottom'>
-                © 2011 OPEN TAPS. &nbsp;&nbsp; Designed and developed by <a href='http://jumpstart.ge/'>Jumpstart Georgia</a>
-            </div>
-            <div class='bottom1'>Donate | About Us | Report</div>
-            <div class='bottom2'>GEORGIAN WATER PROJECT </div>
-            <div class='bottom3'><img src='<?php echo URL ?>images/connect_fb.jpg' />
-                &nbsp;CONNECT HERE&nbsp; <img src='<?php echo URL ?>images/connect.jpg' />
-            </div>
+            <div class='bottom group'>
+                <div class='bottom0'>
+		    © 2011 OPEN TAPS. &nbsp;&nbsp; Designed and developed by
+		    <a href='http://jumpstart.ge/'>Jumpstart Georgia</a>
+		</div>
+	        <div class='bottom1'>Donate | About Us | Report</div>
+	        <div class='bottom2'>GEORGIAN WATER PROJECT </div>
+	        <div class='bottom3'>
+	            <img src='<?php echo URL ?>images/connect_fb.jpg' />
+	            &nbsp;CONNECT HERE&nbsp; <img src='<?php echo URL ?>images/connect.jpg' />
+	        </div>
+	    </div>
 
         </div>
+
+
+
+
+
+
+
+
 
 	<script type="text/javascript">
 	    var places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>];
