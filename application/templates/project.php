@@ -86,8 +86,6 @@
     </div>
 
 <?php
-	$indexes = $values;
-	$months = $names;
 	$titles = array(NULL, 'ORGANISATIONS', 'PROJECT BUDGET', 'PROJECT', 'PROJECT BUDGET');
 ?>
 

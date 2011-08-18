@@ -446,34 +446,6 @@ function edit_region_raion_data($id,$type,$type_id,$parameter,$value)
 }
 
 
-//organization management actions
-function delete_organization($id){
-	$sql = "DELETE FROM organizations WHERE id=:id LIMIT 1;";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':id' => $id
-	));
-}
-
-function add_organization($org_name,$org_desc){
-	$sql = "INSERT INTO organizations (org_name,org_description) VALUES(:org_name,:org_desc)";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':org_name' => $org_name,
-		':org_desc' => $org_desc
-	));
-}
-
-function edit_organization($org_id,$org_name,$org_desc){
-	$sql = "UPDATE organizations SET org_name=:org_name,org_description=:org_description WHERE id=:id";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':org_name' => $org_name,
-		':org_description' => $org_desc,
-		':id' => $org_id
-	));
-}
-
 /*===================================================	User Region Display	===============================*/
 function region_total_budget($region_id)
 {
@@ -745,7 +717,7 @@ function get_project_chart_data($id)
 
 	$sql = "
 		SELECT
-			organizations.org_name
+			organizations.name
 		FROM 
 			`project_organizations`
 		INNER JOIN
@@ -763,7 +735,7 @@ function get_project_chart_data($id)
 	foreach ( $results as $r )
 	{
 		$v[1][] = 1;
-		$names[1][] = str_replace(" ", "+", $r['org_name']);
+		$names[1][] = str_replace(" ", "+", $r['name']);
 	}
 
 
@@ -815,14 +787,174 @@ function get_project_chart_data($id)
 
 
 
-
-function ceil_by_10($number)
+/*================================================	Admin Organizations	============================================*/
+function get_organization($id)
 {
-	if ($number % 10 == 0)
-		return $number;
-	return $number + (10 - ($number % 10));
+	$sql = "SELECT * FROM organizations WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+	return $statement->fetch(PDO::FETCH_ASSOC);
 }
-function floor_by_10($number)
+
+function delete_organization($id)
 {
-	return floor($number / 10) * 10;
+	$org = get_organization($id);
+	$sql = "DELETE FROM organizations WHERE id=:id LIMIT 1;";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+	unlink($org['logo']);
+}
+
+function add_organization($name,$description,$projects_info,$city_town,$district,$grante,$sector,$tags,$file)
+{
+	if(count($file) > 0)
+	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){
+		$logo_destination = DIR.'uploads/organization_photos/';
+		$logo_name = mt_rand(0,100000000).time().$file['p_logo']['name'];
+		upload_files($file,$logo_destination,array(
+			$logo_name
+		));
+		$logo = $logo_destination.$logo_name;
+	}
+	else{
+		$logo = NULL;
+	}
+	
+	
+	$sql = "INSERT INTO organizations (name,description,district,city_town,grante,sector,projects_info,logo) 
+					VALUES(:name,:description,:projects_info,:city_town,:district,:grante,:sector,:logo)";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':name' => $name,
+		':description' => $description,
+		':projects_info' => $projects_info,
+		':city_town' => $city_town,
+		':district' => $district,
+		':grante' => $grante,
+		':sector' => $sector,
+		':logo' => $logo
+	));
+	
+	add_tag_connector('org',Storage::instance()->db->lastInsertId(),$tags);
+}
+
+function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file)
+{
+	$org = get_organization($id);
+	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){	
+		$logo_destination = DIR.'uploads/organization_photos/';
+		$logo_name = mt_rand(0,100000000).time().$file['p_logo']['name'];
+		upload_files($file,$logo_destination,array(
+			$logo_name
+		));
+		$logo = $logo_destination.$logo_name;
+		unlink($org['logo']);
+	}
+	else{
+		
+		$logo = $org['logo'];
+	}
+	
+	
+	$sql = "UPDATE organizations SET name=:name,description=:info,district=:district,city_town=:city_town,
+					grante=:grante,sector=:sector,projects_info=:projects_info,logo=:logo WHERE id=:id LIMIT 1;";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':name' => $name,
+		':info' => $info,
+		':district' => $district,
+		':city_town' => $city_town,
+		':grante' => $grante,
+		':sector' => $sector,
+		':projects_info' => $projects_info,
+		':id' => $id,
+		':logo' => $logo
+	));
+}
+
+/*===================================================	  Organizations Fontpage	===============================*/
+function organization_total_budget($organization_id)
+{
+	/*$sql = "
+		SELECT
+			projects.budget
+		FROM 
+			`project_organizations`
+		INNER JOIN
+			`projects`
+		ON
+			(`project_organizations`.`organization_id` = `organizations`.`id`)
+		WHERE
+			organization_id = :id;
+	";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $organization_id));
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);*/
+	return 0;
+}
+
+function get_organization_chart_data($id)
+{
+	//$result = array();
+	$v = array();
+	$names = array();
+
+	$sql = "
+		SELECT
+			projects.title,
+			projects.budget
+		FROM 
+			`project_organizations`
+		INNER JOIN
+			`projects`
+		ON
+			(`project_organizations`.`project_id` = `projects`.`id`)
+		WHERE
+			organization_id = :id;
+	";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $id));
+
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$b = FALSE;
+
+	foreach ( $results as $r )
+	{
+		$i = $v[1][] = str_replace("$", "", str_replace(",", "", $r['budget']));
+		$b OR $b = ( $i > 100 );
+		$names[1][] = str_replace(" ", "+", $r['title']);
+	}
+
+	if ( $b )
+	{
+		$max = max($v[1]);
+		$depth = 0;
+		while ( $max > 100 ):
+			$max = $max / 100;
+			$depth ++;
+		endwhile;
+		for ( $i = 0, $n = count($v[1]); $i < $n; $i ++  )
+			for ( $j = 0; $j < $depth; $j ++ )
+				$v[1][$i] = $v[1][$i] / 100;
+	}
+
+	/*$sql = "
+		SELECT
+			budget, title
+		FROM 
+			`projects`
+	";
+	$query = db()->prepare($sql);
+	$query->execute();
+
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	*/
+
+	return array($v, $names);
 }
