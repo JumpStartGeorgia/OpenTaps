@@ -80,7 +80,7 @@ function setUpPanControls(){
 		slideFactor:50
 	});
 		
-	return [keyboard_def,filters,sets,tags]; 
+	return [keyboard_def,filters];//,sets,tags]; 
 }
 
 function stopZoomOut(){
@@ -106,13 +106,12 @@ function buthoverEffect(but_class){
 
 function addMarkerLayer(layer_name)
 {
-     markers = new OpenLayers.Layer.Markers( layer_name );
+    markers = new OpenLayers.Layer.Markers( layer_name );
     map.addLayer(markers);
 }
 
 function makeMarker(img_source,img_width,img_height,lon,lat)
 {
-	
     var size = new OpenLayers.Size(img_width,img_height);
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
     var ico = new OpenLayers.Icon(img_source,size,offset);
@@ -136,7 +135,7 @@ function map_init()
 	
 	 var deven = new OpenLayers.Layer.OSM("English", "http://a.tile.mapspot.ge/ndi_en/${z}/${x}/${y}.png", {numZoomLevels: 19}, {isBaseLayer:true});
 	var devka = new OpenLayers.Layer.OSM("Georgian", "http://a.tile.mapspot.ge/ndi_ka/${z}/${x}/${y}.png", {numZoomLevels: 19}, {isBaseLayer:false});
-	
+	var vector_layer = new OpenLayers.Layer.Vector("Boxes");
 	/*var mapspot_layer = new OpenLayers.Layer.TMS(
 			"MapSpot",
 			"http://tile.mapspot.ge/new_en/",
@@ -226,7 +225,10 @@ function map_init()
 			var hover_control_classes = ["maxItemInactive","minItemInactive","filtersItemInactive","setsItemInactive","tagsItemInactive"];
 			for(var i=0,len = hover_control_classes.length;i<len;i++)
 				buthoverEffect(hover_control_classes[i]);
+				
 		}
 	}
 	map.setCenter(new OpenLayers.LonLat(map_confs.lon,map_confs.lat));
+	
+	
 }

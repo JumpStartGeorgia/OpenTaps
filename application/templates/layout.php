@@ -54,7 +54,13 @@
 	    <div class='after_menu'></div>
 
 	    <?php if (Storage::instance()->show_map): ?>
-                <div id="map"></div>
+	    	<div style="position: relative; border: 1px solid maroon">
+	                <div id="map"></div>
+        	        
+        	        <div style="z-index:5000;position:absolute; border:1px solid #000;width:100px;height:100px;background-color:#000;right: 20px;top:50px;">
+        	        	
+        	        </div>
+        	</div>
             <?php endif; ?>
 
 	    <div class='content'>
