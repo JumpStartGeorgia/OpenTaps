@@ -36,7 +36,7 @@ Slim::get('/organization/:id/',function($id){
 });
 
 
-/*=====================================================	Admin Organizations =================================================*/
+/*=====================================================	Admin Organizations	  ==================================================*/
 Slim::get('/admin/organizations/', function(){
 	$sql_organizations = 'SELECT * FROM organizations';
     Storage::instance()->content = userloggedin()
@@ -61,6 +61,7 @@ Slim::get('/admin/organizations/:id/', function($id){
 Slim::get('/admin/organizations/:id/delete/', function($id){
      if(userloggedin()) {
      	delete_organization($id) ;
+     	fetch_db("DELETE FROM tag_connector WHERE org_id=$id");
      	Slim::redirect(href('admin/organizations'));
      }
      else Storage::instance()->content = template('login');

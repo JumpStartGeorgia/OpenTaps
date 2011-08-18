@@ -1,56 +1,52 @@
-  	<form method='post' enctype="multipart/form-data" action='<?php echo href("admin/projects/create"); ?>'>
-  	    <label for='ptitle'>Title: </label>
+  	<form method='post' enctype="multipart/form-data" action='<?php echo href("admin/regions/create"); ?>'>
+  	    <label for='pname'>Name: </label>
   	    <br />
-  	    <input name='p_title' id='ptitle' type='text' />
+  	    <input name='p_name' id='pname' type='text' />
   	    <br /><br />
 
-  	    <label for='pdesc'>Description: </label>
+  	    <label for='preg_info'>Region Info: </label>
   	    <br />
-  	    <textarea name='p_desc' id='pdesc' cols='30' rows='3'></textarea>
-  	    <br />
-
-  	    <label for='pinfo'>Project info: </label>
-  	    <br />
-  	    <textarea name='p_info' id='pinfo' cols='30' rows='3'></textarea>
+  	    <textarea name='p_reg_info' id='preg_info' cols='30' rows='3'></textarea>
   	    <br />
 
-  	    <label for='pbudget'>Budget: </label>
+  	    <label for='preg_projects_info'>Region Projects info: </label>
   	    <br />
-  	    <input name='p_budget' id='pbudget' type='text' />
-  	    <br /><br />
+  	    <textarea name='p_reg_projects_info' id='preg_projects_info' cols='30' rows='3'></textarea>
+  	    <br />
 
-  	    <label for='pdistrict'>District: </label>
-  	    <br />
-  	    <input name='p_district' id='pdistrict' type='text' />
-  	    <br /><br />
 
   	    <label for='pcity'>City: </label>
   	    <br />
   	    <input name='p_city' id='pcity' type='text' />
   	    <br /><br />
 
-  	    <label for='pgrantee'>Grantee: </label>
+  	    <label for='ppopulation'>Population: </label>
   	    <br />
-  	    <input name='p_grantee' id='pgrantee' type='text' />
+  	    <input name='p_population' id='ppopulation' type='text' />
   	    <br /><br />
 
-  	    <label for='psector'>Sector: </label>
+  	    <label for='psquares'>Square Meters: </label>
   	    <br />
-  	    <input name='p_sector' id='psector' type='text' />
+  	    <input name='p_squares' id='psquares' type='text' />
   	    <br /><br />
 
-  	    <label for='pstart_at'>Start at: (yyyy-mm-dd) </label>
+  	    <label for='psettlements'>Settlement: </label>
   	    <br />
-  	    <input name='p_start_at' id='pstart_at' type='text' />
+  	    <input name='p_settlement' id='psettlement' type='text' />
   	    <br /><br />
 
-  	    <label for='pend_at'>End at: (yyyy-mm-dd) </label>
+  	    <label for='pvillages'>Villages </label>
   	    <br />
-  	    <input name='p_end_at' id='pend_at' type='text' />
+  	    <input name='p_villages' id='pvillages' type='text' />
+  	    <br /><br />
+
+  	    <label for='pdisrtricts'>Districts </label>
+  	    <br />
+  	    <input name='p_districts' id='pdistricts' type='text' />
   	    <br /><br />
 
 
-  	    <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
+  	   <!-- <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
   	    <br />
   	    <select name='p_tags[]' id='ptags' multiple='multiple'>
   	      <?php
@@ -61,11 +57,11 @@
   	            <?php
   	        }
   	      ?>
-  	    </select>
+  	    </select>-->
   	    <br /><br />
 
   	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects"); ?>">Back</a>
+  	<a href="<?php echo href("admin/regions"); ?>">Back</a>

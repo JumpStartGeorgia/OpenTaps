@@ -39,7 +39,7 @@
 					<?php echo $organization['grante']; ?>
 				</div>
 			</div>
-			<div class='project_details_line'>
+			<div class='project_details_line' style='border-bottom:0px;'>
 				<div class='line_left'>
 					Sector :
 				</div>
@@ -59,14 +59,14 @@
 		<div><?php echo $organization['projects_info']; ?></div>
 	</div>
     </div>
-    <div style="float:right;width:240px;border:0px solid #000;" >
+    <div style="float:right;width:240px;border:0px solid #a6a6a6;" >
     	<div class="organization_right">
-			<div style="border:1px dotted #000;width:100%;height:40px;background-color:rgb(30%,75%,100%);border-bottom:0px;">
+			<div style="border:1px dotted #a6a6a6;width:100%;height:40px;background-color:rgb(30%,75%,100%);border-top:0px;border-bottom:0px;">
 				<p style="float:left;margin-top:12px;margin-left:20px;color:#FFF;font-size:11pt;font-weight:bold;font-family:arial;">ORGANIZATION PROJECTS</p>
 				<!--<p style="float:right;margin-top:12px;margin-right:25px;"><a href="projects" style="text-decoration:none;color:#FFF;font-size:7.5pt;">►View All</a></p>-->
 			</div>				
 			
-				<div style="width:100%;height:35px;border:1px dotted #000;">
+				<div style="width:100%;height:35px;border:1px dotted #a6a6a6;">
 					<p style="foat:left;margin-left:7px;margin-top:5px;"><img src="" /></p>
 					<p style="float:left;margin-left:40px;margin-top:-16px;">sdfsdf</p>
 				</div>
@@ -84,11 +84,11 @@
 				    
 				</div>
 				<br/><br/><br/>
-			<div style="border:1px dotted #000;width:100%;height:40px;background-color:rgb(30%,75%,100%);border-bottom:0px;">
+			<div style="border:1px dotted #a6a6a6;width:100%;height:40px;background-color:rgb(30%,75%,100%);border-bottom:0px;">
 				<p style="float:left;margin-top:12px;margin-left:20px;color:#FFF;font-size:11pt;font-weight:bold;font-family:arial;">TAG CLOUD</p>
 				<!--<p style="float:right;margin-top:12px;margin-right:25px;"><a href="projects" style="text-decoration:none;color:#FFF;font-size:7.5pt;">►View All</a></p>-->
 			</div>
-				<div style="width:100%;height:250px;border:1px dotted #000;">
+				<div style="width:100%;height:250px;border:1px dotted #a6a6a6;">
 					<p style="margin-top:15px;margin-left:10px;font-weight:bold;">sdkfjhsdfhdsf</p>
 					<p style="margin-top:10px;">
 						<blockquote style="margin-left:10px;width:210px;">
@@ -101,10 +101,7 @@
    	</div>
     	
     </div>
-
-
-
-
+  
 
 
     <div id='charts'>
@@ -148,6 +145,7 @@ $download_csv = href("export/csv/".base64_encode(serialize(array(
 <? endfor; ?>
 
     </div>
+
 
 
 </div>

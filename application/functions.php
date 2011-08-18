@@ -367,18 +367,91 @@ function fetch_db($sql)
 	$result = $statement->fetchAll();
 	return empty($result) ? array() : $result;
 }
+function upload_files($files_data, $file_destination, $files_names = NULL, $restrictions = NULL)
+{
+    if (count($files_data) > 0)
+    {
+        $i = 0;
+        foreach ($files_data AS $file)
+        {
+            $file_size = true;
+            $file_name = true;
+            $file_type = true;
+            if ($restrictions != NULL AND is_array($restrictions) AND count($restrictions) > 0)
+            {
+                if (array_key_exists('size', $restrictions) AND is_array($restrictions['size']))
+                {
+                    $sizes = $restrictions['size'];
+                    if (is_string($sizes[0]))
+                        switch (trim($sizes[0]))
+                        {
+                            case '=':
+                                {
+                                    if ($file['size'] != $sizes[1])
+                                        $file_size = false;
+                                }
+                                break;
+                            case '>':
+                                {
+                                    if ($file['size'] <= $sizes[1])
+                                        $file_size = false;
+                                }
+                                break;
+                            case '<':
+                                {
+                                    if ($file['size'] >= $sizes[1])
+                                        $file_size = false;
+                                }
+                                break;
+                            case '<=':
+                                {
+                                    if ($file['size'] > $sizes[1])
+                                        $file_size = false;
+                                }
+                                break;
+                            case '>=':
+                                {
+                                    if ($file['size'] < $sizes[1])
+                                        $file_size = false;
+                                }
+                                break;
+                            default:
+                                $file_size = true;
+                        }
+                }
+                if (array_key_exists('name', $restrictions) AND is_array($restrictions['name']))
+                {
+                    $names = $restrictions['name'];
+                    if (in_array($file['name'], $names))
+                    {
+                        $file_name = false;
+                    }
+                }
+                if (array_key_exists('type', $restrictions) AND is_array($restrictions['type']))
+                {
+                    $types = $restrictions['type'];
+                    if (in_array($file['type'], $types))
+                    {
+                        $file_type = false;
+                    }
+                }
+            }
+	
+            if ($file_type AND $file_name AND $file_size AND $file['error'] == 0)
+            {
+            	
+            	
+               move_uploaded_file($file['tmp_name'],( (substr($file_destination, strlen(trim($file_destination)) - 1) == '/' OR substr($file_destination, strlen(trim($file_destination)) - 1) == '\\') ? trim($file_destination) : trim($file_destination) . '/' ) . basename(( isset($files_names[$i]) AND !empty($files_names[$i]) ) ? trim($files_names[$i]) : trim($file['name']) ) );
+               
+            }
+            $i++;
+        }
+    }
+    else
+        return false;
+}
 
 
-//place management actions
-/*function add_place($lon,$lat){
-	$sql = "INSERT INTO places(longitude,latitude) VALUES(:lon,:lat)";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':lon' => $lon,
-		':lat' => $lat
-	));
-	Slim::redirect(href('/places'));
-}*/
 function add_place($lon,$lat,$place_name,$region,$raion){
 	$sql = "INSERT INTO places (longitude,latitude,name,region_id,raion_id) VALUES(:lon,:lat,:name,:region,:raion)";
 	$statement = Storage::instance()->db->prepare($sql);
@@ -411,42 +484,70 @@ function delete_place($id){
 }
 
 
-/*===================================================	region and raion data management	===============================*/
-function delete_region_raion_data($id)
+/*=======================================================Admin Regions 	============================================================*/
+function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
 {
-	$sql = "DELETE FROM region_raion_data WHERE id=:id LIMIT 1;";	
+	$sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts) 
+				VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts)";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':name' => $name,
+		':region_info' => $region_info,
+		':region_projects' => $region_projects_info,
+		':city' => $city,
+		':population' => $population,
+		':squares' => $squares,
+		':settlement' => $settlement,
+		':villages' => $villages,
+		':districts' => $districts
+	));
+	
+
+}
+
+function delete_region($id)
+{
+	$sql = "DELETE FROM regions WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
 	));
-}
-function add_region_raion_data($type,$type_id,$parameter,$value)
-{
-	$sql = "INSERT INTO region_raion_data(type,type_id,field_name,field_value) VALUES(:type,:type_id,:parameter,:value)";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':type' => $type,
-		':type_id' => $type_id,
-		':parameter' => $parameter,
-		':value' => $value
-	));
+
 }
 
-function edit_region_raion_data($id,$type,$type_id,$parameter,$value)
+function get_region($id)
 {
-	$sql = "UPDATE region_raion_data SET type=:type,type_id=:type_id,field_name=:field_name,field_value=:field_value WHERE id=:id";
+	$sql = "SELECT * FROM regions WHERE id=:id";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
-		':type' => $type,
-		':type_id' => $type_id,
-		':field_name' => $parameter,
-		':field_value' => $value,
 		':id' => $id
 	));
+	return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
+function update_region($id,$name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
+{
+$sql = "UPDATE regions SET name=:name,region_info=:region_info,projects_info=:region_projects,city=:city,population=:population,square_meters=:squares,
+			settlement=:settlement,villages=:villages,districts=:districts WHERE id=:id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id,
+		':name' => $name,
+		':region_info' => $region_info,
+		':region_projects' => $region_projects_info,
+		':city' => $city,
+		':population' => $population,
+		':squares' => $squares,
+		':settlement' => $settlement,
+		':villages' => $villages,
+		':districts' => $districts
+	));
+
 }
 
 
-/*===================================================	User Region Display	===============================*/
+
+/*===================================================	  Regions Fontpage	===============================*/
 function region_total_budget($region_id)
 {
 	$total_budget = fetch_db("SELECT SUM(budget) AS total_budget FROM projects WHERE region_id = $region_id;");
@@ -798,20 +899,20 @@ function get_organization($id)
 	return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
-function delete_organization($id)
-{
+function delete_organization($id){
 	$org = get_organization($id);
 	$sql = "DELETE FROM organizations WHERE id=:id LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
 	));
-	unlink($org['logo']);
+	if( file_exists($org['logo']) )
+		unlink($org['logo']);
 }
 
 function add_organization($name,$description,$projects_info,$city_town,$district,$grante,$sector,$tags,$file)
 {
-	if(count($file) > 0)
+		if(count($file) > 0)
 	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){
 		$logo_destination = DIR.'uploads/organization_photos/';
 		$logo_name = mt_rand(0,100000000).time().$file['p_logo']['name'];
@@ -823,7 +924,7 @@ function add_organization($name,$description,$projects_info,$city_town,$district
 	else{
 		$logo = NULL;
 	}
-	
+
 	
 	$sql = "INSERT INTO organizations (name,description,district,city_town,grante,sector,projects_info,logo) 
 					VALUES(:name,:description,:projects_info,:city_town,:district,:grante,:sector,:logo)";
@@ -842,8 +943,7 @@ function add_organization($name,$description,$projects_info,$city_town,$district
 	add_tag_connector('org',Storage::instance()->db->lastInsertId(),$tags);
 }
 
-function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file)
-{
+function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file){
 	$org = get_organization($id);
 	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){	
 		$logo_destination = DIR.'uploads/organization_photos/';
@@ -852,7 +952,8 @@ function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$
 			$logo_name
 		));
 		$logo = $logo_destination.$logo_name;
-		unlink($org['logo']);
+		if( file_exists($org['logo']) )
+			($org['logo']);
 	}
 	else{
 		

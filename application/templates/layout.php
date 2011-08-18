@@ -6,6 +6,18 @@
         <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
         <link href="<?php echo URL ?>adm.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8"/>
+    	<script type="text/javascript">
+    		var region_map_boundsLeft = false;
+		var region_map_boundsRight = false;
+		var region_map_boundsTop = false;
+		var region_map_boundsBottom = false;
+		var region_map_zoom = false;
+		var region_map_maxzoomout = false;
+		var region_map_longitude = false;
+		var region_map_latitude = false;
+		var region_make_def_markers = true;
+		var region_show_def_buttons = true;
+	</script>
     </head>
     <body onload="init()">
         <div class='main'>

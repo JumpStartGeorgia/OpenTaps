@@ -49,14 +49,15 @@
 		<td>
 			<h3>Organisations Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/orgmanagement") ?>">Organisations</a></li>
+				<li><a href="<?php echo href("admin/organizations") ?>">Organisations</a></li>
+				<li><a href="<?php echo href("admin/organizations/new") ?>">Add organisation</a></li>
 			</ul>
 		</td>
 		<td>
 			<h3>Regions Management</h3>
 			<ul>
 				<li><a href="<?php echo href("admin/regions") ?>">Regions</a></li>
-				<li><a href="<?php echo href("admin/regions/add") ?>">Add Regiom</a></li>
+				<li><a href="<?php echo href("admin/regions/add") ?>">Add Region</a></li>
 			</ul>
 		</td>
 	</tr>
