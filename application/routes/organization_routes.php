@@ -40,7 +40,8 @@ Slim::get('/admin/organizations/:id/', function($id){
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/edit', array(
     			'organization' => get_organization($id),
-    			'all_tags' => read_tags()
+    			'all_tags' => read_tags(),
+    			'org_tags' => read_tag_connector('org',$id)
     			))
     	: template('login');
 });
@@ -48,6 +49,7 @@ Slim::get('/admin/organizations/:id/', function($id){
 Slim::get('/admin/organizations/:id/delete/', function($id){
      if(userloggedin()) {
      	delete_organization($id) ;
+     	fetch_db("DELETE FROM tag_connector WHERE org_id=$id");
      	Slim::redirect(href('admin/organizations'));
      }
      else Storage::instance()->content = template('login');
@@ -88,6 +90,7 @@ Slim::post('/admin/organizations/:id/update/', function($id){
         	$_POST['p_sector'],
         	$_FILES
        	     );
+       	     fetch_db("DELETE FROM tag_connector WHERE org_id=$id");
        	     add_tag_connector('org',$id,$_POST['p_tags']);
        	     Slim::redirect(href('admin/organizations'));
        	     }

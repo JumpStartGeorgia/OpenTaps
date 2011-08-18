@@ -13,6 +13,20 @@
   	    <br />
   	    <textarea name='n_body' id='nbody' cols='70' rows='5'></textarea>
   	    <br /><br />
+  	    
+  	    <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
+  	    <br />
+  	    <select name='p_tags[]' id='ptags' multiple='multiple'>
+  	      <?php
+  	        foreach($all_tags as $tag)
+  	        {
+  	            ?>
+  	            <option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option>
+  	            <?php
+  	        }
+  	      ?>
+  	    </select>
+  	    <br /><br />
 
   	    <input type='submit' value='Submit' onclick='
   	    	return document.getElementById("ntitle").value != "" && document.getElementById("nbody").value != ""

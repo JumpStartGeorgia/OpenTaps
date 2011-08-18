@@ -1,5 +1,4 @@
 <?php
-	print_r($all_tags);exit;
   $action = href("admin/organizations/" . $organization['id'] . "/update");
 ?>
     	<form action='<? echo $action; ?>' method='post' enctype="multipart/form-data">
@@ -56,7 +55,7 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>" <?php echo ($tag['org_id'] == $organization['id']) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['id'],$org_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>

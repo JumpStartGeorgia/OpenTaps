@@ -21,19 +21,25 @@ Slim::get('/admin/news/', function(){
 });
 
 Slim::get('/admin/news/new/', function(){
-    Storage::instance()->content = userloggedin() ? template('admin/news/new') : template('login');
+    Storage::instance()->content = userloggedin() ? template('admin/news/new',array('all_tags' => read_tags())) : template('login');
 });
 
 Slim::get('/admin/news/:id/', function($id){
     Storage::instance()->content = userloggedin()
-    	? template('admin/news/edit', array('news' => read_news(false, $id)))
+    	? template('admin/news/edit', array(
+    		'news' => read_news(false, $id),
+    		'all_tags' => read_tags(),
+    		'news_tags' => read_tag_connector('news',$id)
+    	))
     	: template('login');
 });
 
 Slim::get('/admin/news/:id/delete/', function($id){
     if(userloggedin())
-      if( delete_news($id) )
+      if( delete_news($id) ){
+      	fetch_db("DELETE FROM tag_connector WHERE news_id=$id");
 	Slim::redirect(href('admin/news'));
+	}
       else
 	Storage::instance()->content = "
 		invalid data <br />
@@ -52,7 +58,7 @@ Slim::post('/admin/news/create/', function(){
       	  "size" => $_FILES['n_file']['size'],
       	  "tmp_name" => $_FILES['n_file']['tmp_name']
       );
-      Storage::instance()->content = add_news( $_POST['n_title'], $_POST['n_body'], $filedata );
+      Storage::instance()->content = add_news( $_POST['n_title'], $_POST['n_body'], $filedata ,$_POST['p_tags']);
     }
     else
 	Storage::instance()->content = template('login');
@@ -67,7 +73,8 @@ Slim::post('/admin/news/:id/update/', function($id){
       	  "size" => $_FILES['n_file']['size'],
       	  "tmp_name" => $_FILES['n_file']['tmp_name']
       );
-      Storage::instance()->content = update_news( $id, $_POST['n_title'], $_POST['n_body'], $filedata );
+      Storage::instance()->content = update_news( $id, $_POST['n_title'], $_POST['n_body'], $filedata ,$_POST['p_tags']);
+      
     }
     else
 	Storage::instance()->content = template('login');

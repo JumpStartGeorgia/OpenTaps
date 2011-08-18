@@ -113,7 +113,7 @@ function read_news($limit = false,$from = 0,$news_id = false)
     return $statement->fetchAll();
 }
 
-function add_news($title, $body, $filedata)
+function add_news($title, $body, $filedata,$tags)
 {
     if( strlen($title) < 3 || strlen($body) < 11 )
 	return "either title or body is too short";
@@ -131,12 +131,13 @@ function add_news($title, $body, $filedata)
  	':published_at' => date("Y-m-d H:i"),
  	':image' => $up
     ));
-
+    
+	add_tag_connector('news',Storage::instance()->db->lastInsertId(),$tags);
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
     return ($exec) ? $metarefresh : "couldn't insert into database";
 }
 
-function update_news($id, $title, $body, $filedata)
+function update_news($id, $title, $body, $filedata,$tags)
 {
     if( strlen($title) < 3 || strlen($body) < 11 || !is_numeric($id) )
 	return "either title or body is too short, or invalid id";
@@ -167,7 +168,8 @@ function update_news($id, $title, $body, $filedata)
     
     $statement = Storage::instance()->db->prepare($sql);
     $exec = $statement->execute($data);
-
+	fetch_db("DELETE FROM tag_connector WHERE news_id=$id");
+	add_tag_connector('news',$id,$tags);
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
     return ($exec) ? $metarefresh : "couldn't update record/database error";
 }
@@ -247,7 +249,7 @@ function read_tags($tag_id = false)
 
 function read_tag_connector($field, $id)
 {
-    if($field != "don" && $field != "proj" && $field != "org")
+    if($field != "news" && $field != "proj" && $field != "org")
         return array();
 
     $sql = "SELECT tag_id FROM tag_connector WHERE ".$field."_id = ".$id;
@@ -263,7 +265,7 @@ function read_tag_connector($field, $id)
 }
 function add_tag_connector($field, $f_id, $tag_ids)
 {
-    if($field != "don" && $field != "proj" && $field != "org")
+    if($field != "news" && $field != "proj" && $field != "org")
         return false;
 
     foreach($tag_ids as $tag_id)
