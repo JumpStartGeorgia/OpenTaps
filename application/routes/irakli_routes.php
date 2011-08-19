@@ -3,8 +3,9 @@
 $places = fetch_db("SELECT * FROM places");
 $js_places = array();
 foreach ($places as $place)
-	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ']';
+	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ',' . $place['project_id'] . ',' . $place['pollution_id'] .']';
 Storage::instance()->js_places = $js_places;
+
 
 /*======================================	places management 	====================================*/
 Slim::get('/admin/places/',function(){
