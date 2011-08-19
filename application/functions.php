@@ -1044,18 +1044,79 @@ function get_organization_chart_data($id)
 				$v[1][$i] = $v[1][$i] / 100;
 	}
 
-	/*$sql = "
-		SELECT
-			budget, title
-		FROM 
-			`projects`
-	";
+	$sql = "SELECT projects.start_at FROM project_organizations
+		INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
+		WHERE organization_id = :id ORDER BY start_at LIMIT 0,1;";
 	$query = db()->prepare($sql);
-	$query->execute();
+	$query->execute(array(':id' => $id));
+	$first = $query->fetch(PDO::FETCH_ASSOC);
+	$first_year = substr($first['start_at'], 0, 4);
 
-	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+	$sql = "SELECT projects.end_at FROM project_organizations
+		INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
+		WHERE organization_id = :id ORDER BY end_at DESC LIMIT 0,1;";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $id));
+	$last = $query->fetch(PDO::FETCH_ASSOC);
+	$last_year = substr($last['end_at'], 0, 4);
 
-	*/
+	$budgets = array();
+	$names[2] = array();
 
+	$b = FALSE;
+
+	for($i = $first_year; $i <= $last_year; $i ++):
+		$names[2][] = $i;
+
+		$sql = "SELECT projects.budget,projects.end_at,projects.start_at FROM project_organizations
+			INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
+			WHERE organization_id = :id AND projects.start_at <= :start;";
+		$query = db()->prepare($sql);
+		$query->execute(array(':id' => $id, ':start' => $i . "-12-31"));
+		$fetch = $query->fetchAll(PDO::FETCH_ASSOC);
+		if ( empty($fetch) )
+			continue;
+
+		$budgets[$i] = 0;
+
+		foreach( $fetch as $project ):
+			if(strtotime($project['end_at']) < strtotime($i."-01-01"))
+				continue;
+			if(strtotime($project['start_at']) >= strtotime($i."-01-01"))
+				$start = $project['start_at'];
+			else
+				$start = $i . "-01-01";
+			$end = (strtotime($project['end_at']) < strtotime($i."-12-31")) ? $project['end_at'] : ($i."-12-31");
+			$budgets[$i] +=	(dateDiff($start, $end) + 1) / (dateDiff($project['start_at'], $project['end_at']) + 1)
+					* $project['budget'];
+		endforeach;
+
+		$b = ($budgets[$i] > 100);
+	endfor;
+
+	$v[2] = $budgets;
+
+	if ( $b ):
+		$max = max($v[2]);
+		$depth = 0;
+		while ( $max > 100 ):
+			$max = $max / 100;
+			$depth ++;
+		endwhile;
+		for ( $i = $first_year; $i <= $last_year; $i ++  ):
+			for ( $j = 0; $j < $depth; $j ++ )
+				$v[2][$i] = $v[2][$i] / 90;
+			$v[2][$i] *= 20;
+		endfor;
+	endif;
+print_r($v[2]);
 	return array($v, $names);
+}
+
+function dateDiff($start, $end)
+{
+	$start_ts = strtotime($start);
+	$end_ts = strtotime($end);
+	$diff = $end_ts - $start_ts;
+	return round($diff / 86400);
 }

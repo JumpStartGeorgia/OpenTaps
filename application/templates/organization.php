@@ -105,7 +105,7 @@
 
 
     <div id='charts'>
-<?php
+<?php												//PIE
    $width = 165;
    $defh = 203.875;
 
@@ -122,7 +122,7 @@
 			'chdl' => implode('|', $names[$i]),
 			'chdlp' => 'bv'
 		)))."";
-		
+
 $download_png = href("export/png/".base64_encode(str_replace($width."x".$h, (2*$width)."x".(round(2*$height)), $src))."/".$titles[$i]);
 $download_csv = href("export/csv/".base64_encode(serialize(array(
     'names' => $names[$i],
@@ -142,7 +142,51 @@ $download_csv = href("export/csv/".base64_encode(serialize(array(
 		     width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
 	</div>
 
+<?php endfor; ?>
+
+<?php										//COLUMN
+
+
+   $width = 265;
+   $height = 240;
+
+   for ( $i = 2; $i <= 2; $i ++ ):
+	$src = "http://chart.googleapis.com/chart?".
+		urldecode(http_build_query(array(
+			'chxt' => 'x',
+			'cht' => 'bvs',
+			'chs' => $width.'x'.$height,
+			'chco' => '0000FF',
+			'chd' => 't:' . implode(',', $values[$i]),
+			'chbh' => '13,17',
+			'chxl' => '0:|'.implode('|', $names[$i]),
+			'chds' => '0,150'
+		)))."";
+
+$download_png = href("export/png/".base64_encode(str_replace($width."x".$height, (2*$width)."x".(2*$height), $src))."/".$titles[$i]);
+$download_csv = href("export/csv/".base64_encode(serialize(array(
+    'names' => $names[$i],
+    'values' => $real_values[$i]
+)))."/".$titles[$i]);
+
+?>
+	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">
+		<div class="title group" style='display:block; text-align:center;'>
+			<?php echo $titles[$i] ?>
+		</div>
+		<div class='export group'>
+                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
+                	<a href='<?php echo $download_csv ?>'>CSV</a>
+		</div>
+		<img src="<?php echo $src; ?>"
+		     width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
+	</div>
+
 <? endfor; ?>
+
+
+
+
 
     </div>
 
