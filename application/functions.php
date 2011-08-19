@@ -1110,7 +1110,7 @@ function get_organization_chart_data($id)
 			$v[2][$i] *= 20;
 		endfor;
 	endif;
-print_r($v[2]);
+
 	return array($v, $names);
 }
 
