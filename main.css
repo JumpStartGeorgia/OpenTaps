@@ -251,36 +251,46 @@ div.bottom3 img{ vertical-align:middle; margin-top:-6px; }
 
 
 
-.maxItemInactive{
+div.maxItemInactive{
+	position:absolute;
+	float:left;
 	width:25px;
 	height:20px;
 	background: url("images/max.jpg");
 	opacity:.5;
-	margin-top:20px;
-	margin-left:20px;
+	top:15px;
+	left:50px;
 	cursor:pointer;
 }
 	
-.minItemInactive{
+div.minItemInactive{
+	position:absolute;
+	float:left;
 	width:25px;
 	height:20px;
 	background:url("images/min.jpg");
 	opacity:.5;
-	margin-top:-20px;
-	margin-left:50px;
+	top:15px;
+	left:15px;
 	cursor:pointer;
 }
-.filtersItemInactive{
-	width:25px;
+div.filtersItemInactive{
+	float:right;
+	position:absolute;
+	left:850px;
+	top:15px;
+	width:65px;
+	font-size:10pt;
+	color:#FFF;
 	height:20px;
-	background:url("images/filters.jpg");
+	background-image:url("images/filter.gif");
+	background-repeat:no-repeat;
 	opacity:.5;
-	margin-top:-20px;
-	margin-left:845px;
 	cursor:pointer;
 }
 
-.setsItemInactive{
+div.setsItemInactive{
+	background-repeat:no-repeat;
 	width:25px;
 	height:20px;
 	background:url("images/sets.jpg");
@@ -289,7 +299,7 @@ div.bottom3 img{ vertical-align:middle; margin-top:-6px; }
 	margin-left:875px;
 	cursor:pointer;
 }
-.tagsItemInactive{
+div.tagsItemInactive{
 	width:25px;
 	height:20px;
 	background:url("images/tags.jpg");

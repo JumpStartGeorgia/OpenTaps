@@ -16,7 +16,7 @@
 
 <?php
   $news_all = read_news(6);
-    for ($idx = 0; $idx < 2; $idx++):
+    for ($idx = 0; $idx < (count($news_all) >= 2 ? 2 : count($news_all) ); $idx++):
         ?>
            <div class="news_each_main">          	
            	<img src="<?php echo (substr($news_all[$idx]['image'], 0, 4) == "http") ? $news_all[$idx]['image'] : URL.$news_all[$idx]['image']; ?>"/>

@@ -46,7 +46,17 @@ function setUpPanControls(){
 		stopZoomOut();
 	};	
 	var filter_button = function(){
-		alert("filters");
+		//alert("filters");
+		if( $("#map_menu").css('height') != "305px"){
+			$("#map_menu").css('visibility','visible').animate({'height':'305px'},500);
+		}
+		else{
+		 	$("#map_menu").animate({'height':'0px'},500,function(){
+		 		$(this).css('visibility','hidden');
+		 	});
+		 	
+		}
+		
 	};
 	var set_button = function(){
 		alert("sets");
@@ -80,7 +90,7 @@ function setUpPanControls(){
 		slideFactor:50
 	});
 		
-	return [keyboard_def,filters,sets,tags]; 
+	return [keyboard_def,filters];//,sets,tags]; 
 }
 
 function stopZoomOut(){
@@ -106,13 +116,12 @@ function buthoverEffect(but_class){
 
 function addMarkerLayer(layer_name)
 {
-     markers = new OpenLayers.Layer.Markers( layer_name );
+    markers = new OpenLayers.Layer.Markers( layer_name );
     map.addLayer(markers);
 }
 
 function makeMarker(img_source,img_width,img_height,lon,lat)
 {
-	
     var size = new OpenLayers.Size(img_width,img_height);
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
     var ico = new OpenLayers.Icon(img_source,size,offset);
@@ -120,6 +129,76 @@ function makeMarker(img_source,img_width,img_height,lon,lat)
 }
 
 
+function map_menu_filter_over( ths,filter_text )
+{
+	$('#' + ths).css('background-color','#FFF');
+	$('#filter_text_' + filter_text).css('font-weight','bold');
+}
+
+function map_menu_filter_out( ths,filter_text )
+{
+	$('#' + ths).css('background-color','#F5F5F5');
+	$('#filter_text_' + filter_text).css('font-weight','normal');
+}
+
+function display_filter_markers( filter )
+{
+	switch( filter )
+	{
+		case 'filter_checkbox_projects':
+		{
+				
+			for(var i=0;i<places.length;i++){
+				if( places[i][3] > 0 ){
+					makeMarker("http://localhost/OpenTaps/images/project.gif",20,20,places[i][1],places[i][2]);
+				}
+			}
+		
+		}
+		break;
+		case 'filter_checkbox_water_pollution':
+		{
+			for(var i=0;i<places.length;i++){
+				if(places[i][4] > 0){
+					makeMarker("http://localhost/OpenTaps/images/water-pollution.gif",20,20,places[i][1],places[i][2]);
+				}	
+			}
+		}
+		break;	
+	}
+
+}
+
+function check_filter_checkboxes()
+{
+
+	var filter_checkboxes = document.getElementById('map_menu').getElementsByTagName('input');
+
+
+	for(var i=0,len=filter_checkboxes.length;i<len;i++)
+	{
+		if( $("#"+filter_checkboxes[i].id).attr('checked') == "checked")
+			display_filter_markers(filter_checkboxes[i].id);
+	}
+
+}
+
+function map_menu_filter_click( checkbox_text )
+{
+
+	if( $('#filter_checkbox_' + checkbox_text).attr('checked') ){
+		$('#filter_checkbox_' + checkbox_text).removeAttr('checked');
+		map.removeLayer(markers);
+		addMarkerLayer("Marker Layer");
+		check_filter_checkboxes();
+	}
+	else{
+		$('#filter_checkbox_' + checkbox_text).attr('checked','checked');
+		map.removeLayer(markers);
+		addMarkerLayer("Marker Layer");
+		check_filter_checkboxes();
+	}
+}
 
 
 
@@ -136,7 +215,7 @@ function map_init()
 	
 	 var deven = new OpenLayers.Layer.OSM("English", "http://a.tile.mapspot.ge/ndi_en/${z}/${x}/${y}.png", {numZoomLevels: 19}, {isBaseLayer:true});
 	var devka = new OpenLayers.Layer.OSM("Georgian", "http://a.tile.mapspot.ge/ndi_ka/${z}/${x}/${y}.png", {numZoomLevels: 19}, {isBaseLayer:false});
-	
+	var vector_layer = new OpenLayers.Layer.Vector("Boxes");
 	/*var mapspot_layer = new OpenLayers.Layer.TMS(
 			"MapSpot",
 			"http://tile.mapspot.ge/new_en/",
@@ -219,14 +298,18 @@ function map_init()
 			makeMarker("http://localhost/OpenTaps/images/marker.png",20,20,map_confs.lon,map_confs.lat);
 		}
 			
-	map.addControls([panel,nav]);//,new OpenLayers.Control.MousePosition()]);
+	map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);
 	map.zoomTo(map_confs.zoom);
 	if( map_confs.show_default_buttons ){
 		new function (){
 			var hover_control_classes = ["maxItemInactive","minItemInactive","filtersItemInactive","setsItemInactive","tagsItemInactive"];
 			for(var i=0,len = hover_control_classes.length;i<len;i++)
 				buthoverEffect(hover_control_classes[i]);
+				
 		}
 	}
 	map.setCenter(new OpenLayers.LonLat(map_confs.lon,map_confs.lat));
+	
 }
+
+
