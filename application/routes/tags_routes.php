@@ -5,11 +5,51 @@ Slim::get('/tags/', function(){
     Storage::instance()->content = template('tags', array('limit' => false));
 });
 
-Slim::get('/tag/:name/', function($name){
-    $query = "SELECT * FROM tags";
+Slim::get('/tag/:def/:name/', function($def, $name){
+     switch( $def ):
+        default:
+            $prefix = "proj";
+            $table = "projects";
+            break;
+    	case "project":
+    	    $prefix = "proj";
+    	    $table = "projects";
+    	    break;
+    	case "news":
+    	    $prefix = "news";
+    	    $table = "news";
+    	    break;
+    	case "organization":
+    	    $prefix = "org";
+    	    $table = "organizations";
+    	    break;
+    endswitch;
+
+    $query = "SELECT id FROM tags WHERE name = :name";
     $query = db()->prepare($query);
     $query->execute(array(':name' => $name));
-    Storage::instance()->content = template('tags', array('limit' => false));
+    $id = $query->fetch(PDO::FETCH_ASSOC);
+    $id = $id['id'];
+
+    $query = "
+    		SELECT
+    			".$table.".*
+    		FROM
+    			tag_connector
+    		INNER JOIN
+    			".$table."
+    		ON
+    			tag_connector.".$prefix."_id = ".$table.".id
+    		WHERE
+    			tag_connector.tag_id = :id;
+    	     ";
+    $query = db()->prepare($query);
+    $query->execute(array(':id' => $id));
+    $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    
+
+    Storage::instance()->content = template('tags', array('results' => $result, 'def' => $table, 'tag_name' => $name));
 });
 
 ################################################################ tags show routes end

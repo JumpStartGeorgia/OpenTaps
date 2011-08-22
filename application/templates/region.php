@@ -17,7 +17,7 @@
 		
 		<div id='project_details' style='height:244px;'>
 			<div id='project_budget'>
-				<p>Overall Project Budget</p>
+				<p>Overall Region Budget</p>
 				<p style='font-size:27px;color:#FFF;'><?php echo $region_budget ?></p>
 			</div>
 			<div class='project_details_line'>

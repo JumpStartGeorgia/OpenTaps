@@ -92,7 +92,7 @@
 		    <?php
 			foreach($tags as $tag):
 				echo 
-					"<a href='".href('tag/' . $tag['name'])."'>" .
+					"<a href='".href('tag/organization/' . $tag['name'])."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;

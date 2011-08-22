@@ -153,7 +153,6 @@
 
 	<script type="text/javascript">
 	    var places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>];
-	    alert(places);
 	    var places_id = [],k=24;
 	    for(var i=0,len=places.length;i<len;i++){
 	    	places_id.push("OL_Icon_"+k);

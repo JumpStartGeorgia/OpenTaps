@@ -1,47 +1,63 @@
 <div id='tag_content'>
     <div id='left_list'>
     	<div class='group headers'>
-    	    <div class='headers_left'>NEWS</div>
+    	    <div class='headers_left'>TAGS</div>
     	    <div class='headers_right'>SORT BY ▾</div>
     	</div>
 
     	<div class='group' id='titletype'>
-    	    <div id='titletype_left'>TITLE</div>
-    	    <div id='titletype_right'>
-    	    	<span style='color: #9b9b9b'>Type of News: </span>
-    	    	<span class='newstypebg1'></span> Project 
-    	    	<span class='newstypebg2'></span> Media
-    	    	<span class='newstypebg3'></span> Pro Media
+    	    <div id='titletype_left'>
+    	    <?php $def = strtoupper($def); ?>
+    	    	<a href='<?php echo href('tag/project/' . $tag_name) ?>'
+    	    		class='choosedef<?php ($def == "PROJECTS") AND print("_selected") ?>'>PROJECTS
+    	    	</a>
+    	    	<a href='<?php echo href('tag/organization/' . $tag_name) ?>'
+    	    		class='choosedef<?php ($def == "ORGANIZATIONS") AND print("_selected") ?>'>ORGANIZATIONS
+    	    	</a>
+    	    	<a href='<?php echo href('tag/news/' . $tag_name) ?>'
+    	    		class='choosedef<?php ($def == "NEWS") AND print("_selected") ?>'>NEWS
+    	    	</a>
     	    </div>
     	</div>
 
     	<div id='internal_container' class='group'>
-    	    <div class='content_each group'>
-	    	<div class='content_each_left' style='border-right: 7px solid #d9f5ff'><!--83ddff 19c1ff-->
-	    	    <div class='content_each_title'>Just an empty space</div>
+	<?php foreach( $results as $index => $result ): ?>
+    	    <div class='content_each group <?php ($index % 2 == 0) AND print("with_bg"); ?>'>
+<?php
+	$rem = $index % 3;
+	switch($rem):
+		case 1:
+		    $color = "#83ddff";
+		    break;
+		case 2:
+		    $color = "#d9f5ff";
+		    break;
+		case 0:
+		    $color = "#19c1ff";
+		    break;
+	endswitch;
+?>
+	    	<div class='content_each_left' style='border-right: 7px solid <?php echo $color ?>'>
+	    	    <div class='content_each_title'><?php echo (empty($result['name'])) ? $result['title'] : $result['name']; ?></div>
 	    	    <div class='content_each_body'>
-	    	    	Just an empty space. With some color in it (probably not blue but any other color that will be in the logo).
-	    	    	 However, important updates.
+	    	    	<?php
+	    	    	    $body = (empty($result['body'])) ? $result['description'] : $result['body'];
+	    	    	    (strlen($body) > 200) AND $body = substr($body, 0, 200) . "...";
+	    	    	    echo $body;
+	    	    	?>
 	    	    </div>
 	    	</div>
     		<div class='content_each_right'>
-    		    <div image></div>
-    		    <div date></div>
+    		    <div style='padding:4px;padding-top:25px;font-size:10px;text-align:center;'>
+    		    	<?php
+    		    	    empty($result['start_at']) OR print($result['start_at'] . "<br/>-<br/>" . $result['end_at']);
+    		    	    empty($result['published_at']) OR print($result['published_at']);
+    		    	    (!empty($result['district']) AND empty($result['start_at'])) AND print($result['district']);
+    		    	?>
+    		    </div>
     		</div>
     	    </div>
-    	    <div class='content_each group with_bg'>
-	    	<div class='content_each_left' style='border-right: 7px solid #83ddff'><!--d9f5ff 19c1ff-->
-	    	    <div class='content_each_title'>Just an empty space</div>
-	    	    <div class='content_each_body'>
-	    	    	Just an empty space. With some color in it (probably not blue but any other color that will be in the logo).
-	    	    	 However, important updates.
-	    	    </div>
-	    	</div>
-    		<div class='content_each_right'>
-    		    <div image></div>
-    		    <div date></div>
-    		</div>
-    	    </div>
+    	<?php endforeach; ?>
     	</div>
 
     	<div id='pages'>

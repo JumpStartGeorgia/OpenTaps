@@ -6,7 +6,7 @@
 		<div id='project_details'>
 			<div id='project_budget'>
 				<p>Overall Project Budget</p>
-				<p style='font-size:27px;color:#FFF;'><?php echo $project['budget'] ?></p>
+				<p style='font-size:27px;color:#FFF;'><?php echo number_format($project['budget']) ?></p>
 			</div>
 			<div class='project_details_line'>
 				<div class='line_left'>
@@ -91,7 +91,7 @@
 		    <?php
 			foreach($tags as $tag):
 				echo 
-					"<a href='".href('tag/' . $tag['name'])."'>" .
+					"<a href='".href('tag/project/' . $tag['name'])."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;

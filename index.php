@@ -8,6 +8,7 @@ error_reporting(E_ALL);
 
 require_once DIR . 'application/storage.php';
 Storage::instance()->config = require DIR . 'application/config.php';
+require_once DIR . 'application/firephp/fb.php';
 require_once DIR . 'application/functions.php';
 try
 {
@@ -24,7 +25,11 @@ Slim::init();
 Storage::instance()->title = 'Home Page';
 Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
-Storage::instance()->viewsubmenu = template('submenu', array('submenus' => read_submenu()));
+$sql_organizations = 'SELECT * FROM organizations';
+Storage::instance()->viewsubmenu = template('submenu', array(
+	'submenus' => read_submenu(),
+	'projects' => read_projects(),
+	'organizations' => fetch_db($sql_organizations)));
 Storage::instance()->content = template('home');
 Storage::instance()->show_map = TRUE;
 

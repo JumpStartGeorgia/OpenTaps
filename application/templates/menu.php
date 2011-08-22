@@ -2,6 +2,23 @@
 
   $span = " <span style='font-size:10px;'>▾</span>";
 
+?>
+
+  <li class='dropdownmenu' id='projects_dropdown'>
+      <a href="<?php echo href('page/'); ?>">
+	  <?php echo strtoupper('projects') .$span ?>
+      </a>
+  </li>
+
+  <li class='dropdownmenu' id='organizations_dropdown'>
+      <a href="<?php echo href('page/'); ?>">
+	  <?php echo strtoupper('organizations') .$span ?>
+      </a>
+  </li>
+
+
+<?php
+
   foreach(Storage::instance()->menu as $menu)
   {
 	$has = has_submenu($menu['id']);

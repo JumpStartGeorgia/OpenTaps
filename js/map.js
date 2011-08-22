@@ -59,10 +59,10 @@ function setUpPanControls(){
 		
 	};
 	var set_button = function(){
-		alert("sets");
+		//alert("sets");
 	};
 	var tag_button = function(){
-		alert("tags");
+		//alert("tags");
 	};
 	if(map_confs.show_default_buttons){
 		maximize = new OpenLayers.Control.Button({
@@ -100,6 +100,7 @@ function stopZoomOut(){
 }
 
 function buthoverEffect(but_class){
+/*
 		document.getElementsByClassName(but_class)[0].onmouseover = function(){
 			this.style.opacity = 1;
 		}
@@ -112,6 +113,7 @@ function buthoverEffect(but_class){
 		document.getElementsByClassName(but_class)[0].onmouseout = function(){
 			this.style.opacity = 0.5;	
 		}
+		*/
 }
 
 function addMarkerLayer(layer_name)

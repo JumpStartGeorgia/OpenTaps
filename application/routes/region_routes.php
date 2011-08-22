@@ -1,5 +1,5 @@
 <?php
-/*=================================================================== 	    	Regions Fontpage		=============================================*/
+/*=================================================================== Regions Fontpage=============================================*/
 Slim::get('/region/:id/', function($id){
 	Storage::instance()->show_map = FALSE;
 	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_id='$id'";
@@ -13,7 +13,7 @@ Slim::get('/region/:id/', function($id){
 
 
 
-/*========================================================		Admin Regions		===============================================*/
+/*========================================================Admin Regions===============================================*/
 Slim::get('/admin/regions/', function(){
 	$sql_regions = 'SELECT * FROM regions';
     Storage::instance()->content = userloggedin()

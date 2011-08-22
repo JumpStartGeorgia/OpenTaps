@@ -49,8 +49,9 @@ div.menu ul li a
 	color:#565656;
 	font-size:13px;
 	font-family:Arial;
+	outline: 0;
 }
-div.menu ul li a:hover, div.menu ul li:hover{ color:white; background-color:#5FCCF3; }
+div.menu ul li a:hover, div.menu ul li:hover{ color:white; background-color:#5FCCF3; outline: 0 }
 
 div.projects_organization, div.news, div.spacer
 {
@@ -68,7 +69,7 @@ div#submenu{  }
 #submenu div.submenu table{ width:100%; }
 #submenu div.submenu td
 {
-	width:112px;
+	width:149px;
 	float:left;
 	margin-left:17px;
 	margin-right:17px;
@@ -243,6 +244,7 @@ div.news_each_menu div
 
 /*=======================		TAGS		==========================*/
 #tag_content{ margin-top: 25px; font-family: arial; }
+#tag_content a{ text-decoration: none; color: #565656; }
 #left_list, #right_list{ min-height: 100px; }
 #left_list{ width: 640px; float: left; }
 .headers{ width: 100%; background: #0cb5f6; height: 39px; color: #fff; }
@@ -251,6 +253,9 @@ div.news_each_menu div
 #titletype{ width: 100%; border-bottom: 1px solid #d1d1d1; }
 #titletype_left{ float: left; padding:11px; padding-left: 17px; font-size: 12px; }
 #titletype_right{ float: right; font-size: 11px; padding: 11px; padding-right: 2px; }
+.choosedef, .choosedef_selected{ padding: 5px; display: inline-block; border: 1px solid transparent; }
+.choosedef:hover, .choosedef_selected{ border: 1px solid #a6a6a6; border-bottom:1px solid #E0E0E0; border-right:1px solid #F0F0F0;
+	-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; background: #F0F0F0; }
 .newstypebg1, .newstypebg2, .newstypebg3{ display: inline-block; width: 6px; height: 6px; }
 .newstypebg1{ background: #19c1ff; } .newstypebg2{ background: #83ddff; } .newstypebg3{ background: #d9f5ff; }
 #internal_container{ width: 100%; min-height: 96px; margin-bottom: 10px; }
@@ -261,7 +266,7 @@ div.news_each_menu div
 .content_each_body{ font-size: 12px; margin-top: 5px; }
 .content_each_right{ float: right; width: 69px; min-height: 79px; height:100%; }
 #pages{ text-align: center; font-size: 12px; word-spacing: 2px; }
-.prevnext{ text-decoration: none; color: #565656; display: inline-block; background: url('images/bg.jpg'); padding-top: 1px; width: 22px; height: 21px; }
+.prevnext{ display: inline-block; background: url('images/bg.jpg'); padding-top: 1px; width: 22px; height: 21px; }
 .prevnext:hover{ color: #000; }
 
 #right_list{ width: 255px; float: right; border-right:1px solid transparent; }

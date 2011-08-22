@@ -1,10 +1,11 @@
 function init(){
 	map_init();
 	chart_init();
-	configure_marker_animation();        
+	//configure_marker_animation();        
 }
 
 
+/*
 function configure_marker_animation(){
 	for(var i=0,len=places_id.length;i<len;i++){
 	   	var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
@@ -13,6 +14,7 @@ function configure_marker_animation(){
 	    		
 	    	}
 }
+*/
 
 
 function marker_animate(id){

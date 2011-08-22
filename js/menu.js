@@ -10,7 +10,7 @@ $(function()
     	t.parent().children().css("border", "0");
     	var d = submenu.find("#sub_" + t.attr('id'));
 	d.stop().slideToggle("fast");
-        o.stop().show().css({
+	o.stop().show().css({
         	"left" : t.position().left,
         	"top" : t.position().top + t.height() + 1,
         	"width" : t.width() + 1,
@@ -22,14 +22,3 @@ $(function()
 
 });
 
-function menu_over(m)
-{
-	m.style.backgroundColor = "#5FCCF3";
-	m.style.color = "#FFFFFF";
-}
-
-function menu_out(m)
-{
-	m.style.backgroundColor = "#FFFFFF";
-	m.style.color = "#01AEF0";
-}
