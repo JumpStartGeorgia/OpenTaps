@@ -227,6 +227,8 @@ div.news_each_menu div
 	border-bottom: 1px dotted #a6a6a6;
 }
 .data_block .value{ 	padding: 10px 17px 10px 17px; }
+.data_block .value a{ color: #565656; text-decoration: none; }
+.data_block .value a:hover{ text-decoration: underline; }
 #charts { float: left; width: 673px; }
 #charts .title { color: #808080; font-size:15px }
 #charts div img{ clear: both; }
@@ -235,6 +237,41 @@ div.news_each_menu div
 .export a{ color:grey; text-decoration:none; }
 .export a:hover{ color: black; text-decoration: underline; }
 /*			END				*/
+
+
+
+
+/*=======================		TAGS		==========================*/
+#tag_content{ margin-top: 25px; font-family: arial; }
+#left_list, #right_list{ min-height: 100px; }
+#left_list{ width: 640px; float: left; }
+.headers{ width: 100%; background: #0cb5f6; height: 39px; color: #fff; }
+.headers_left{ float: left; padding-top: 10px; padding-left: 17px; font-size:16px; }
+.headers_right{ float: right; padding-top: 12px; padding-right: 13px; font-size:11px; }
+#titletype{ width: 100%; border-bottom: 1px solid #d1d1d1; }
+#titletype_left{ float: left; padding:11px; padding-left: 17px; font-size: 12px; }
+#titletype_right{ float: right; font-size: 11px; padding: 11px; padding-right: 2px; }
+.newstypebg1, .newstypebg2, .newstypebg3{ display: inline-block; width: 6px; height: 6px; }
+.newstypebg1{ background: #19c1ff; } .newstypebg2{ background: #83ddff; } .newstypebg3{ background: #d9f5ff; }
+#internal_container{ width: 100%; min-height: 96px; margin-bottom: 10px; }
+.content_each{ width: 100%; }
+.with_bg{ background: url('images/bg.jpg'); }
+.content_each_left{ float: left; width: 509px; padding: 17px 40px 22px 15px; }
+.content_each_title{ color: #01adef; font-size: 15px; }
+.content_each_body{ font-size: 12px; margin-top: 5px; }
+.content_each_right{ float: right; width: 69px; min-height: 79px; height:100%; }
+#pages{ text-align: center; font-size: 12px; word-spacing: 2px; }
+.prevnext{ text-decoration: none; color: #565656; display: inline-block; background: url('images/bg.jpg'); padding-top: 1px; width: 22px; height: 21px; }
+.prevnext:hover{ color: #000; }
+
+#right_list{ width: 255px; float: right; border-right:1px solid transparent; }
+.right_box{ width: 100%; }
+.right_box_title{ width: 100%; padding-top: 9px; padding-left: 20px; }
+.right_box_content{  border:1px dotted #a6a6a6; border-top: 0; padding: 10px; }
+
+
+/*=======================		END		==========================*/
+
 
 
 div.bottom{ width:950px; margin-top:55px; border-top:2px solid #ccc; padding-top:4px; }

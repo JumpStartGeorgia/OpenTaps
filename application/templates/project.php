@@ -83,6 +83,23 @@
 
 <?php endforeach; ?>
 
+	<div class='data_block group'>
+		<div class='key'>
+			TAG CLOUD
+		</div>
+		<div class='value' style='line-height:25px;'>
+		    <?php
+			foreach($tags as $tag):
+				echo 
+					"<a href='".href('tag/' . $tag['name'])."'>" .
+						$tag['name'] . " (" . $tag['total_tags'] . ")".
+					"</a><br />"
+				;
+			endforeach;
+		    ?>
+		</div>
+	</div>
+
     </div>
 
 <?php
@@ -107,10 +124,7 @@
 		)))."";
 		
 $download_png = href("export/png/".base64_encode(str_replace($width."x".$h, (2*$width)."x".(round(2*$height)), $src))."/".$titles[$i]);
-$download_csv = href("export/csv/".base64_encode(serialize(array(
-    'names' => $names[$i],
-    'values' => $real_values[$i]
-)))."/".$titles[$i]);
+$download_csv = href("export/csv/".base64_encode(serialize(array('names' => $names[$i],'values' => $real_values[$i])))."/".$titles[$i]);
 
 ?>
 	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">

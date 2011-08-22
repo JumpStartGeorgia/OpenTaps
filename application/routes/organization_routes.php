@@ -26,12 +26,18 @@ Slim::get('/organization/:id/',function($id){
 	$real_values[1] = $values[1];
 	//$real_values[2] = $query->fetchAll(PDO::FETCH_ASSOC);
 
+	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags FROM tags";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
     	Storage::instance()->content = template('organization', array(
     		'organization' => get_organization($id),
     		'organization_budget' => organization_total_budget($id),
     		'values' => $values,
     		'names' => $names,
-    		'real_values' => $values
+    		'real_values' => $values,
+    		'tags' => $tags
     	));
 });
 

@@ -5,6 +5,13 @@ Slim::get('/tags/', function(){
     Storage::instance()->content = template('tags', array('limit' => false));
 });
 
+Slim::get('/tag/:name/', function($name){
+    $query = "SELECT * FROM tags";
+    $query = db()->prepare($query);
+    $query->execute(array(':name' => $name));
+    Storage::instance()->content = template('tags', array('limit' => false));
+});
+
 ################################################################ tags show routes end
 
 ################################################################ tags admin routes start

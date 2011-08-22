@@ -70,7 +70,19 @@
   	      <?php
   	        foreach($organizations as $org):
   	            $selected = (in_array($org['id'], $this_orgs)) ? "selected='selected'" : NULL;
-  	            ?><option <?php echo $selected ?> value="<?php echo $org['id'] ?>"><?php echo $org['org_name'] ?></option><?php
+  	            ?><option <?php echo $selected ?> value="<?php echo $org['id'] ?>"><?php echo $org['name'] ?></option><?php
+  	        endforeach;
+  	      ?>
+  	    </select>
+  	    <br /><br />
+
+  	    <label for='ptypes'>Project Types: (hold down Ctrl to select multiple)</label>
+  	    <br />
+  	    <select name='p_type' id='ptypes'>
+  	      <?php
+  	        foreach($project_types as $type):
+  	            $selected = ( $type == $project['type'] ) ? "selected='selected'" : NULL;
+  	            ?><option <?php echo $selected ?> value="<?php echo $type ?>"><?php echo $type ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>

@@ -12,12 +12,18 @@ Slim::get('/project/:id/', function($id){
 	$real_values[1] = $values[1];
 	$real_values[2] = $query->fetchAll(PDO::FETCH_ASSOC);
 
+	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags FROM tags";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
     	Storage::instance()->content = template('project', array(
     		'project' => read_projects($id),
     		'data' => read_project_data($id),
     		'names' => $names,
     		'values' => $values,
-    		'real_values' => $real_values
+    		'real_values' => $real_values,
+    		'tags' => $tags
     	));
 });
 
@@ -88,7 +94,11 @@ Slim::get('/admin/projects/new/', function(){
     $query = "SELECT * FROM organizations;";
     $orgs = fetch_db($query);
     Storage::instance()->content = userloggedin()
-    	? template('admin/projects/new', array('all_tags' => read_tags(), 'organizations' => $orgs))
+    	? template('admin/projects/new', array(
+    		'all_tags' => read_tags(),
+    		'organizations' => $orgs,
+    		'project_types' => config('project_types')
+    	 ))
     	: template('login');
 });
 
@@ -105,14 +115,15 @@ Slim::get('/admin/projects/:id/', function($id){
 	$this_orgs = array();
 	foreach($result as $s)
 		$this_orgs[] = $s['organization_id'];
-	
+
 	Storage::instance()->content = template('admin/projects/edit', array
 	(
 		'project' => read_projects($id),
 		'all_tags' => read_tags(),
 		'this_tags' => read_tag_connector('proj', $id),
 		'this_orgs' => $this_orgs,
-		'organizations' => $orgs
+		'organizations' => $orgs,
+		'project_types' => config('project_types')
 	));
     }
     else
@@ -139,7 +150,8 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_end_at'],
         	$_POST['p_info'],
         	$_POST['p_tags'],
-        	$_POST['p_orgs']
+        	$_POST['p_orgs'],
+        	$_POST['p_type']
        	     )
 	   : template('login');
 });
@@ -161,7 +173,8 @@ Slim::post('/admin/projects/:id/update/', function($id){
         	$_POST['p_end_at'],
         	$_POST['p_info'],
         	$_POST['p_tags'],
-        	$_POST['p_orgs']
+        	$_POST['p_orgs'],
+        	$_POST['p_type']
        	     )
 	   : template('login');
 });

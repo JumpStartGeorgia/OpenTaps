@@ -66,7 +66,18 @@
   	    <select name='p_orgs[]' id='porgs' multiple='multiple'>
   	      <?php
   	        foreach($organizations as $org):
-  	            ?><option value="<?php echo $org['id'] ?>"><?php echo $org['org_name'] ?></option><?php
+  	            ?><option value="<?php echo $org['id'] ?>"><?php echo $org['name'] ?></option><?php
+  	        endforeach;
+  	      ?>
+  	    </select>
+  	    <br /><br />
+
+ 	    <label for='porgs'>Project Types: (hold down Ctrl to select multiple)</label>
+  	    <br />
+  	    <select name='p_type' id='ptypes'>
+  	      <?php
+  	        foreach($project_types as $type):
+  	            ?><option value="<?php echo $type ?>"><?php echo $type ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>

@@ -577,7 +577,7 @@ function read_projects($project_id = false)
 }
 
 
-function add_project($title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids)
+function add_project($title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new") . "\">Back</a>";
 
@@ -616,7 +616,8 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     		sector,
     		start_at,
     		end_at,
-    		info
+    		info,
+    		type
     	)
     	VALUES(
     		:title,
@@ -628,7 +629,8 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     		:sector,
     		:start_at,
     		:end_at,
-    		:info
+    		:info,
+    		:type
     	);
     ";
     $statement = Storage::instance()->db->prepare($sql);
@@ -643,7 +645,8 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     	':sector' => $sector,
     	':start_at' => $start_at,
     	':end_at' => $end_at,
-    	':info' => $info
+    	':info' => $info,
+    	':type' => $type
     ));
 
     $last_insert_id = Storage::instance()->db->lastInsertId();
@@ -655,8 +658,16 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
 	$query = $query->execute(array(':project_id' => $last_insert_id, ':organization_id' => $org_id));
     }
 
-    if ( !add_tag_connector('proj', $last_insert_id, $tag_ids) )
-        return "tag connection error";
+    /*foreach ( $types as $type )
+    {
+	$query = "INSERT INTO `projects_types` ( project_id, type ) VALUES( :project_id, :type );";
+	$query = Storage::instance()->db->prepare($query);
+	$query = $query->execute(array(':project_id' => $last_insert_id, ':type' => $type));
+    }*/
+
+    if( !empty($tag_ids) )
+	    if ( !add_tag_connector('proj', $last_insert_id, $tag_ids) )
+		return "tag connection error";
 
     if ( $exec )
     	Slim::redirect(href("admin/projects"));
@@ -665,7 +676,7 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     
 }
 
-function update_project($id, $title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids)
+function update_project($id, $title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/".$id) . "\">Back</a>";
 
@@ -706,7 +717,8 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     		sector = :sector,
     		start_at = :start_at,
     		end_at = :end_at,
-    		info = :info
+    		info = :info,
+    		type = :type
     	WHERE
     		`projects`.`id` =:id;
     	DELETE FROM
@@ -717,6 +729,10 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     		tag_connector
     	WHERE
     		proj_id = :id;
+    	DELETE FROM
+    		projects_types
+    	WHERE
+    		project_id = :id;
     ";
     $statement = Storage::instance()->db->prepare($sql);
 
@@ -731,7 +747,8 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     	':sector' => $sector,
     	':start_at' => $start_at,
     	':end_at' => $end_at,
-    	':info' => $info
+    	':info' => $info,
+    	':type' => $type
     ));
 
     if (!empty($org_ids))
@@ -749,8 +766,16 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
 	$result = $statement->execute($insert_rows_data);
     }
 
-    if ( !add_tag_connector('proj', $id, $tag_ids) )
-        return "tag connection error";
+    /*if (!empty($types))
+    	foreach ( $types as $type ):
+		$query = "INSERT INTO `projects_types` ( project_id, type ) VALUES( :project_id, :type );";
+		$query = Storage::instance()->db->prepare($query);
+		$query = $query->execute(array(':project_id' => $id, ':type' => $type));
+   	 endforeach;*/
+
+    if( !empty($tag_ids) )
+    	if ( !add_tag_connector('proj', $id, $tag_ids) )
+	        return "tag connection error";
 
     if ( $exec )
     	Slim::redirect(href("admin/projects"));

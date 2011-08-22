@@ -83,21 +83,23 @@
 					</blockquote>
 				    
 				</div>
-				<br/><br/><br/>
-			<div style="border:1px dotted #a6a6a6;width:100%;height:40px;background-color:rgb(30%,75%,100%);border-bottom:0px;">
-				<p style="float:left;margin-top:12px;margin-left:20px;color:#FFF;font-size:11pt;font-weight:bold;font-family:arial;">TAG CLOUD</p>
-				<!--<p style="float:right;margin-top:12px;margin-right:25px;"><a href="projects" style="text-decoration:none;color:#FFF;font-size:7.5pt;">►View All</a></p>-->
-			</div>
-				<div style="width:100%;height:250px;border:1px dotted #a6a6a6;">
-					<p style="margin-top:15px;margin-left:10px;font-weight:bold;">sdkfjhsdfhdsf</p>
-					<p style="margin-top:10px;">
-						<blockquote style="margin-left:10px;width:210px;">
-							This is a long quotation.
-							 This is a long quotation. This 
-							 is a long quotation. This is a long quotation. This is a long quotation.
-						</blockquote>
-					</p>
-				</div>
+				<br /><br />
+	<div class='data_block group'>
+		<div class='key'>
+			TAG CLOUD
+		</div>
+		<div class='value' style='line-height:25px;'>
+		    <?php
+			foreach($tags as $tag):
+				echo 
+					"<a href='".href('tag/' . $tag['name'])."'>" .
+						$tag['name'] . " (" . $tag['total_tags'] . ")".
+					"</a><br />"
+				;
+			endforeach;
+		    ?>
+		</div>
+	</div>
    	</div>
     	
     </div>
@@ -147,10 +149,12 @@ $download_csv = href("export/csv/".base64_encode(serialize(array(
 <?php										//COLUMN
 
 
-   $width = 265;
+   $defwidth = 265;
+   $width = 10;
    $height = 240;
 
    for ( $i = 2; $i <= 2; $i ++ ):
+   	$width += count($values[$i]) * 30;
 	$src = "http://chart.googleapis.com/chart?".
 		urldecode(http_build_query(array(
 			'chxt' => 'x',
