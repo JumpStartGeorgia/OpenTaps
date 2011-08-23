@@ -886,6 +886,8 @@ function get_project_chart_data($id)
 		$names[2][] = str_replace(" ", "+", $r['title']);
 	}
 
+	$real_values[2] = $v[2];
+
 	if ( $b )
 	{
 		$max = max($v[2]);
@@ -899,7 +901,7 @@ function get_project_chart_data($id)
 				$v[2][$i] = $v[2][$i] / 100;
 	}
 
-	return array($v, $names);
+	return array($v, $names, $real_values);
 }
 /*function down_to_range($n, $range = 100)
 {
@@ -1057,6 +1059,8 @@ function get_organization_chart_data($id)
 		$names[1][] = str_replace(" ", "+", $r['title']);
 	}
 
+	$real_values[1] = $v[1];
+
 	if ( $b )
 	{
 		$max = max($v[1]);
@@ -1120,7 +1124,7 @@ function get_organization_chart_data($id)
 		$b = ($budgets[$i] > 100);
 	endfor;
 
-	$v[2] = $budgets;
+	$real_values[2] = $v[2] = $budgets;
 
 	if ( $b ):
 		$max = max($v[2]);
@@ -1136,8 +1140,164 @@ function get_organization_chart_data($id)
 		endfor;
 	endif;
 
-	return array($v, $names);
+	return array($v, $names, $real_values);
 }
+
+function get_region_chart_data($id)
+{
+	//$result = array();
+	$v = array();
+	$names = array();
+
+
+
+	/*=========================		PIE 1		=============================*/
+	$sql = "SELECT title,budget FROM projects WHERE region_id = :id;";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $id));
+
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$b = FALSE;
+
+	foreach ( $results as $r )
+	{
+		$i = $v[1][] = str_replace("$", "", str_replace(",", "", $r['budget']));
+		$b OR $b = ( $i > 100 );
+		$names[1][] = str_replace(" ", "+", $r['title']);
+	}
+
+	$real_values[1] = $v[1];
+
+	if ( $b )
+	{
+		$max = max($v[1]);
+		$depth = 0;
+		while ( $max > 100 ):
+			$max = $max / 100;
+			$depth ++;
+		endwhile;
+		for ( $i = 0, $n = count($v[1]); $i < $n; $i ++  )
+			for ( $j = 0; $j < $depth; $j ++ )
+				$v[1][$i] = $v[1][$i] / 100;
+	}
+
+
+
+
+	/*=========================		COLUMN 1		=============================*/
+
+	$sql = "SELECT start_at FROM projects WHERE region_id = :id ORDER BY start_at LIMIT 0,1;";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $id));
+	$first = $query->fetch(PDO::FETCH_ASSOC);
+	$first_year = substr($first['start_at'], 0, 4);
+
+	$sql = "SELECT end_at FROM projects WHERE region_id = :id ORDER BY end_at DESC LIMIT 0,1;";
+	$query = db()->prepare($sql);
+	$query->execute(array(':id' => $id));
+	$last = $query->fetch(PDO::FETCH_ASSOC);
+	$last_year = substr($last['end_at'], 0, 4);
+
+	$budgets = array();
+	$names[2] = array();
+
+	$b = FALSE;
+
+	for($i = $first_year; $i <= $last_year; $i ++):
+		$names[2][] = $i;
+
+		$sql = "SELECT budget,end_at,start_at FROM projects WHERE region_id = :id AND start_at <= :start;";
+		$query = db()->prepare($sql);
+		$query->execute(array(':id' => $id, ':start' => $i . "-12-31"));
+		$fetch = $query->fetchAll(PDO::FETCH_ASSOC);
+		if ( empty($fetch) )
+			continue;
+
+		$budgets[$i] = 0;
+
+		foreach( $fetch as $project ):
+			if(strtotime($project['end_at']) < strtotime($i."-01-01"))
+				continue;
+			if(strtotime($project['start_at']) >= strtotime($i."-01-01"))
+				$start = $project['start_at'];
+			else
+				$start = $i . "-01-01";
+			$end = (strtotime($project['end_at']) < strtotime($i."-12-31")) ? $project['end_at'] : ($i."-12-31");
+			$budgets[$i] +=	(dateDiff($start, $end) + 1) / (dateDiff($project['start_at'], $project['end_at']) + 1)
+					* $project['budget'];
+		endforeach;
+
+		$b = ($budgets[$i] > 100);
+	endfor;
+
+	$real_values[2] = $v[2] = $budgets;
+
+	if ( $b ):
+		$max = max($v[2]);
+		$depth = 0;
+		while ( $max > 100 ):
+			$max = $max / 100;
+			$depth ++;
+		endwhile;
+		for ( $i = $first_year; $i <= $last_year; $i ++  ):
+			for ( $j = 0; $j < $depth; $j ++ )
+				$v[2][$i] = $v[2][$i] / 90;
+			$v[2][$i] *= 20;
+		endfor;
+	endif;
+
+
+	/*=========================		PIE 2		=============================*/
+	$query = "SELECT p.budget, p.title, o.name
+		  FROM organizations AS o
+		  INNER JOIN project_organizations AS po
+		  ON po.organization_id = o.id
+		  INNER JOIN projects AS p
+		  ON p.id = po.project_id AND p.region_id = :id
+		  ORDER BY o.name
+		";
+	$query = db()->prepare($query);
+	$query->execute(array(':id' => $id));
+	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$names[3] = array();
+	$v[3] = array();
+	$grouped = array();
+	$b = FALSE;
+	foreach($results as $result)
+	{
+		if (!isset($grouped[$result['name']]['budget']) OR empty($grouped[$result['name']]['budget']))
+			$grouped[$result['name']]['budget'] = $result['budget'];
+	        else
+		        $grouped[$result['name']]['budget'] += $result['budget'];
+		$b = ($grouped[$result['name']]['budget'] > 100);
+		//$grouped[$result['name']]['projects'][] = array('title' => $result['title'], 'budget' => $result['budget']);
+		in_array($result['name'], $names[3]) OR $names[3][] = $result['name'];
+	}
+
+	foreach($grouped as $budget)
+		$v[3][] = $budget['budget'];
+
+	$real_values[3] = $v[3];
+
+	if ( $b )
+	{
+		$max = max($v[3]);
+		$depth = 0;
+		while ( $max > 100 ):
+			$max = $max / 100;
+			$depth ++;
+		endwhile;
+		for ( $i = 0, $n = count($v[3]); $i < $n; $i ++  )
+			for ( $j = 0; $j < $depth; $j ++ )
+				$v[3][$i] = $v[3][$i] / 100;
+	}
+
+
+	return array($v, $names, $real_values);
+}
+
 
 function dateDiff($start, $end)
 {

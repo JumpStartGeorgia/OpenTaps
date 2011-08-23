@@ -3,10 +3,16 @@
 Slim::get('/region/:id/', function($id){
 	Storage::instance()->show_map = FALSE;
 	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_id='$id'";
+
+	list($values, $names, $real_values) = get_region_chart_data($id);
+
     	Storage::instance()->content = template('region', array(
     		'region' => get_region($id),
     		'region_cordinates' => fetch_db($sql_region_cordinates),
-    		'region_budget' => region_total_budget($id)
+    		'region_budget' => region_total_budget($id),
+    		'values' => $values,
+    		'names' => $names,
+    		'real_values' => $real_values,
     	));
 });
 

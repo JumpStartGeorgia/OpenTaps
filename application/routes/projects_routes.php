@@ -7,10 +7,7 @@ Slim::get('/project/:id/', function($id){
 	$query = db()->prepare($sql);
 	$query->execute();
 
-	list($values, $names) = get_project_chart_data($id);
-
-	$real_values[1] = $values[1];
-	$real_values[2] = $query->fetchAll(PDO::FETCH_ASSOC);
+	list($values, $names, $real_values) = get_project_chart_data($id);
 
 	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags FROM tags";
 	$query = db()->prepare($query);
@@ -42,12 +39,11 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
         	foreach ($headers AS $key => $value)
 		    header("{$key}: {$value}");
 
-		$file = fopen(base64_decode($data), 'r');
+		$file = fopen(str_replace(' ', '_', base64_decode($data)), 'r');
 		fpassthru($file);
 		fclose($file);	        
 	        break;
 	    case 'csv':
-
         	$headers = array(
         		'Content-Type' => 'text/csv',
         		'Content-Disposition' => 'attachment; filename=' . $name
@@ -59,8 +55,9 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 
 		$list = array();
 		$list[0] = $data['names'];
-		foreach ( $data['values'] as $value )
-			$list[1][] = empty($value['budget']) ? $value : $value['budget'];
+		//foreach ( $data['values'] as $key => $value )
+		//	$list[1][] = empty($value['budget']) ? $value : $value['budget'];
+		$list[1] = $data['values'];
 
 		$fp = fopen(DIR . 'uploads/' . $name, 'w');
 

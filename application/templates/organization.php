@@ -107,7 +107,7 @@
 
 
     <div id='charts'>
-<?php												//PIE
+<?php												//PIE 1
    $width = 165;
    $defh = 203.875;
 
@@ -146,7 +146,7 @@ $download_csv = href("export/csv/".base64_encode(serialize(array(
 
 <?php endfor; ?>
 
-<?php										//COLUMN
+<?php										//COLUMN 1
 
 
    $defwidth = 265;
@@ -167,11 +167,11 @@ $download_csv = href("export/csv/".base64_encode(serialize(array(
 			'chds' => '0,150'
 		)))."";
 
-$download_png = href("export/png/".base64_encode(str_replace($width."x".$height, (2*$width)."x".(2*$height), $src))."/".$titles[$i]);
-$download_csv = href("export/csv/".base64_encode(serialize(array(
-    'names' => $names[$i],
-    'values' => $real_values[$i]
-)))."/".$titles[$i]);
+$dw = round(1.5 * $width);
+$dh = round(1.5 * $height);
+
+$download_png = href("export/png/".base64_encode(str_replace($width."x".$height, $dw."x".$dh, $src))."/".$titles[$i]);
+$download_csv = href("export/csv/".base64_encode(serialize(array('names' => $names[$i],'values' => $real_values[$i])))."/".$titles[$i]);
 
 ?>
 	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">
@@ -183,7 +183,7 @@ $download_csv = href("export/csv/".base64_encode(serialize(array(
                 	<a href='<?php echo $download_csv ?>'>CSV</a>
 		</div>
 		<img src="<?php echo $src; ?>"
-		     width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
+		     width="<?php echo $width ?>px" height="<?php echo $height ?>px" alt="" />
 	</div>
 
 <? endfor; ?>

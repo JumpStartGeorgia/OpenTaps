@@ -78,6 +78,133 @@
 		<p>INFO ON PROJECTS</p>
 		<div><?php echo $region['projects_info']; ?></div>
 	</div>
+
+
+
+
+
+
+
+<?php												//PIE 1
+   $width = 165;
+   $defh = 203.875;
+
+   $titles = array(NULL, 'PROJECTS BUDGET', 'PROJECTS BUDGET (by year)', 'ORGANIZATIONS BUDGET', 'ORGANIZATIONS BUDGET (by year)');
+   for ( $i = 1; $i <= 1; $i ++ ):
+	$height = $defh + count($names[$i]) * 18.125;
+	$h = round($height);
+	$src = "http://chart.googleapis.com/chart?".
+		urldecode(http_build_query(array(
+			'cht' => 'pc',
+			'chs' => $width.'x'.$h,
+			'chco' => '0000FF',
+			'chd' => 't:' . implode(',', $values[$i]),
+			'chdl' => implode('|', $names[$i]),
+			'chdlp' => 'bv'
+		)))."";
+
+$download_png = href("export/png/".base64_encode(str_replace($width."x".$h, (2*$width)."x".(round(2*$height)), $src))."/".$titles[$i]);
+$download_csv = href("export/csv/".base64_encode(serialize(array('names' => $names[$i],'values' => $real_values[$i])))."/".$titles[$i]);
+
+?>
+	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">
+		<div class="title group" style='display:block; text-align:center;'>
+			<?php echo $titles[$i] ?>
+		</div>
+		<div class='export group'>
+                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
+                	<a href='<?php echo $download_csv ?>'>CSV</a>
+		</div>
+		<img src="<?php echo $src; ?>" width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
+	</div>
+
+<?php endfor; ?>
+
+
+<?php										//COLUMN 1
+
+
+   $defwidth = 265;
+   $width = 10;
+   $height = 240;
+
+   for ( $i = 2; $i <= 2; $i ++ ):
+   	$width += count($values[$i]) * 30;
+	$src = "http://chart.googleapis.com/chart?".
+		urldecode(http_build_query(array(
+			'chxt' => 'x',
+			'cht' => 'bvs',
+			'chs' => $width.'x'.$height,
+			'chco' => '0000FF',
+			'chd' => 't:' . implode(',', $values[$i]),
+			'chbh' => '13,17',
+			'chxl' => '0:|'.implode('|', $names[$i]),
+			'chds' => '0,150'
+		)))."";
+
+$dw = round(1.5 * $width);
+$dh = round(1.5 * $height);
+
+$download_png = href("export/png/".base64_encode(str_replace($width."x".$height, $dw."x".$dh, $src))."/".$titles[$i]);
+$download_csv = href("export/csv/".base64_encode(serialize(array('names' => $names[$i],'values' => $real_values[$i])))."/".$titles[$i]);
+
+?>
+	<div id="chart_div_<?php echo $i ?>" style="float: left; margin-right: 5px" class='group'>
+		<div class="title group" style='display:block; width:180px; text-align:center;'>
+			<?php echo $titles[$i] ?>
+		</div>
+		<div class='export group'>
+                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
+                	<a href='<?php echo $download_csv ?>'>CSV</a>
+		</div>
+		<img src="<?php echo $src; ?>" width="<?php echo $width ?>px" height="<?php echo $height ?>px" alt="" />
+	</div>
+
+<? endfor; ?>
+
+
+
+
+
+
+
+<?php												//PIE 2
+   $width = 165;
+   $defh = 203.875;
+
+   for ( $i = 3; $i <= 3; $i ++ ):
+	$height = $defh + count($names[$i]) * 18.125;
+	$h = round($height);
+	$src = "http://chart.googleapis.com/chart?".
+		urldecode(http_build_query(array(
+			'cht' => 'pc',
+			'chs' => $width.'x'.$h,
+			'chco' => '0000FF',
+			'chd' => 't:' . implode(',', $values[$i]),
+			'chdl' => implode('|', $names[$i]),
+			'chdlp' => 'bv'
+		)))."";
+
+$download_png = href("export/png/".base64_encode(str_replace($width."x".$h, (2*$width)."x".(round(2*$height)), $src))."/".$titles[$i]);
+$download_csv = href("export/csv/".base64_encode(serialize(array('names' => $names[$i],'values' => $real_values[$i])))."/".$titles[$i]);
+
+?>
+	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px;">
+		<div class="title group" style='display:block; text-align:center;'>
+			<?php echo $titles[$i] ?>
+		</div>
+		<div class='export group'>
+                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
+                	<a href='<?php echo $download_csv ?>'>CSV</a>
+		</div>
+		<img src="<?php echo $src; ?>" width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
+	</div>
+
+<?php endfor; ?>
+
+
+
+
     </div>
     <div style="float:right;width:240px;border:0px solid #a6a6a6;" >
     	<div class="region_right">
@@ -106,7 +233,8 @@
 					</p>
 				</div>
    	</div>
-    	
+
+
     </div>
   
 
