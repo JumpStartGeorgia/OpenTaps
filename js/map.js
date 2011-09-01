@@ -114,20 +114,26 @@ function buthoverEffect(but_class){
 		}
 		*/
 }
-
+var k = null;
 function addMarkerLayer(layer_name)
 {
     markers = new OpenLayers.Layer.Markers( layer_name );
     map.addLayer(markers);
 }
-
-function makeMarker(img_source,img_width,img_height,lon,lat)
+var marker_id = null;
+function makeMarker(img_source,img_width,img_height,lon,lat,id)
 {
     var size = new OpenLayers.Size(img_width,img_height);
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
     var ico = new OpenLayers.Icon(img_source,size,offset);
     var marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),ico);
-    
+    marker.events.register('click', marker, function(e){
+    		 marker_id = id;
+    		 marker_animate(e.target.id);	 
+    });
+    marker.events.register('mouseout',marker,function(e){
+    	marker_animate_back(e.target.id);
+    });
     markers.addMarker(marker);
 }
 
@@ -185,7 +191,7 @@ function display_filter_markers( filter )
 				if( places[i][3] > 0 ){
 					if( projects[i+1][2] < projects[0][0]  ){
 					 var img = "images/project.gif";
-					 makeMarker(img,20,20,places[i][1],places[i][2]);
+					 makeMarker(img,20,20,places[i][1],places[i][2],places[i][3]);
 					}
 				}
 			}
@@ -199,7 +205,7 @@ function display_filter_markers( filter )
 				if( places[i][3] > 0 ){
 					if( projects[i+1][1] < projects[0][0] && projects[i+1][2] > projects[0][0]  ){
 					 var img = "images/project-current.gif";
-					 makeMarker(img,20,20,places[i][1],places[i][2]);
+					 makeMarker(img,20,20,places[i][1],places[i][2],places[i][3]);
 					}
 				}
 			}
@@ -213,7 +219,7 @@ function display_filter_markers( filter )
 				if( places[i][3] > 0 ){
 					if(  projects[i+1][1] > projects[0][0] ){
 					 var img = "images/project-scheduled.gif";
-					 makeMarker(img,20,20,places[i][1],places[i][2]);
+					 makeMarker(img,20,20,places[i][1],places[i][2],places[i][3]);
 					}
 				}
 			}
@@ -223,7 +229,7 @@ function display_filter_markers( filter )
 		{
 			for(var i=0;i<places.length;i++){
 				if(places[i][4] > 0){
-					makeMarker("images/water-pollution.gif",20,20,places[i][1],places[i][2]);
+					makeMarker("images/water-pollution.gif",20,20,places[i][1],places[i][2],places[i][3]);
 				}	
 			}
 		}
@@ -259,7 +265,7 @@ function map_menu_filter_click( checkbox_text )
 		map.removeLayer(markers);
 		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
-		configure_marker_animation();
+		
 	}
 	else{
 		
@@ -274,9 +280,7 @@ function map_menu_filter_click( checkbox_text )
 		map.removeLayer(markers);
 		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
-		configure_marker_animation();
 	}
-	configure_marker_animation();
 }
 
 
@@ -373,9 +377,9 @@ function map_init()
 			makeMarker("images/marker.png",20,20,places[i][1],places[i][2]);
 			}
 		}
-		else{
+		/*else{
 			makeMarker("images/marker.png",20,20,map_confs.lon,map_confs.lat);
-		}
+		}*/
 			
 	map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);
 	map.zoomTo(map_confs.zoom);

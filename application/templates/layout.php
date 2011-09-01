@@ -15,7 +15,7 @@
 		var region_map_maxzoomout = false;
 		var region_map_longitude = false;
 		var region_map_latitude = false;
-		var region_make_def_markers = true;
+		var region_make_def_markers = false;
 		var region_show_def_buttons = true;
 	</script>
     </head>
