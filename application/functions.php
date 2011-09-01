@@ -861,7 +861,7 @@ function get_project_chart_data($id)
 
 	foreach ( $results as $r )
 	{
-		$v[1][] = 1;
+		$real_values[1][] = $v[1][] = 1;
 		$names[1][] = str_replace(" ", "+", $r['name']);
 	}
 
@@ -1008,22 +1008,21 @@ function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$
 /*===================================================	  Organizations Fontpage	===============================*/
 function organization_total_budget($organization_id)
 {
-	/*$sql = "
-		SELECT
-			projects.budget
+	$sql = "SELECT
+			SUM(projects.budget) AS total_budget
 		FROM 
 			`project_organizations`
-		INNER JOIN
+		JOIN
 			`projects`
 		ON
-			(`project_organizations`.`organization_id` = `organizations`.`id`)
+			(`project_organizations`.`project_id` = `projects`.`id`)
 		WHERE
 			organization_id = :id;
 	";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $organization_id));
-	$results = $query->fetchAll(PDO::FETCH_ASSOC);*/
-	return 0;
+	$result = $query->fetch(PDO::FETCH_ASSOC);
+	return number_format($result['total_budget']);
 }
 
 function get_organization_chart_data($id)
