@@ -6,6 +6,11 @@ foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ',' . $place['project_id'] . ',' . $place['pollution_id'] .']';
 Storage::instance()->js_places = $js_places;
 
+$projects = fetch_db("SELECT * FROM projects");
+$js_projects[] = '[ new Date("' . date('Y-m-d') . '").getTime() ]';
+foreach($projects as $project)
+	$js_projects[] = '[' . $project['id'] . ', new Date("' . $project['start_at'] . '").getTime() , new Date("' . $project['end_at'] . '").getTime() , "'. $project['title'] .'", "'. $project['grantee'] .'", "'. $project['budget'] .'", "'. $project['city'] .'"]';
+Storage::instance()->js_projects = $js_projects;
 
 /*======================================	places management 	====================================*/
 Slim::get('/admin/places/',function(){

@@ -34,7 +34,7 @@ function get_osm_url (bounds)
     if (url instanceof Array) 
 			{
       		url = this.selectUrl(path, url);
-    		}
+    		};
     return url + path;
 }
 
@@ -46,9 +46,8 @@ function setUpPanControls(){
 		stopZoomOut();
 	};	
 	var filter_button = function(){
-		//alert("filters");
-		if( $("#map_menu").css('height') != "305px"){
-			$("#map_menu").css('visibility','visible').animate({'height':'305px'},500);
+		if( $("#map_menu").css('height') != "160px"){
+			$("#map_menu").css('visibility','visible').animate({'height':'161px'},500);
 		}
 		else{
 		 	$("#map_menu").animate({'height':'0px'},500,function(){
@@ -127,42 +126,104 @@ function makeMarker(img_source,img_width,img_height,lon,lat)
     var size = new OpenLayers.Size(img_width,img_height);
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
     var ico = new OpenLayers.Icon(img_source,size,offset);
-    markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),ico));
+    var marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),ico);
+    
+    markers.addMarker(marker);
 }
 
-
+var timeout = null;
 function map_menu_filter_over( ths,filter_text )
 {
 	$('#' + ths).css('background-color','#FFF');
 	$('#filter_text_' + filter_text).css('font-weight','bold');
+	if( filter_text === 'projects' || filter_text === 'projects_completed' || filter_text === 'projects_current' || filter_text === 'projects_scheduled' ){
+		window.clearTimeout(timeout);
+		timeout=null;
+		$('#map_submenu_' + filter_text).css('visibility','visible');
+	}
 }
 
 function map_menu_filter_out( ths,filter_text )
 {
 	$('#' + ths).css('background-color','#F5F5F5');
 	$('#filter_text_' + filter_text).css('font-weight','normal');
+	if( filter_text === 'projects' || filter_text === 'projects_completed' || filter_text === 'projects_current' || filter_text === 'projects_scheduled' ) 				timeout = window.setTimeout(function(){
+					$('#map_submenu_projects').css('visibility','hidden');
+				},1000);
 }
 
 function display_filter_markers( filter )
 {
+	
 	switch( filter )
 	{
-		case 'filter_checkbox_projects':
+		/*case 'filter_checkbox_projects':
 		{
+			
 				
 			for(var i=0;i<places.length;i++){
+			
 				if( places[i][3] > 0 ){
-					makeMarker("http://localhost/OpenTaps/images/project.gif",20,20,places[i][1],places[i][2]);
+					var img = null;
+					if( projects[i+1][2] < projects[0][0]  )
+					 img = "images/project.gif";
+					else if( projects[i+1][1] > projects[0][0] )
+					 img = "images/project-scheduled.gif";
+					else if( projects[i+1][1] < projects[0][0] && projects[i+1][2] > projects[0][0] )
+					 img = "images/project-current.gif";
+					makeMarker(img,20,20,places[i][1],places[i][2]);
 				}
 			}
 		
+		}
+		break;*/
+		case 'filter_checkbox_projects_completed':
+		{
+		
+			for(var i=0;i<places.length;i++){
+			
+				if( places[i][3] > 0 ){
+					if( projects[i+1][2] < projects[0][0]  ){
+					 var img = "images/project.gif";
+					 makeMarker(img,20,20,places[i][1],places[i][2]);
+					}
+				}
+			}
+		}
+		break;
+		case 'filter_checkbox_projects_current':
+		{
+		
+			for(var i=0;i<places.length;i++){
+			
+				if( places[i][3] > 0 ){
+					if( projects[i+1][1] < projects[0][0] && projects[i+1][2] > projects[0][0]  ){
+					 var img = "images/project-current.gif";
+					 makeMarker(img,20,20,places[i][1],places[i][2]);
+					}
+				}
+			}
+		}
+		break;
+		case 'filter_checkbox_projects_scheduled':
+		{
+		
+			for(var i=0;i<places.length;i++){
+			
+				if( places[i][3] > 0 ){
+					if(  projects[i+1][1] > projects[0][0] ){
+					 var img = "images/project-scheduled.gif";
+					 makeMarker(img,20,20,places[i][1],places[i][2]);
+					}
+				}
+			}
 		}
 		break;
 		case 'filter_checkbox_water_pollution':
 		{
 			for(var i=0;i<places.length;i++){
 				if(places[i][4] > 0){
-					makeMarker("http://localhost/OpenTaps/images/water-pollution.gif",20,20,places[i][1],places[i][2]);
+					makeMarker("images/water-pollution.gif",20,20,places[i][1],places[i][2]);
 				}	
 			}
 		}
@@ -174,7 +235,7 @@ function display_filter_markers( filter )
 function check_filter_checkboxes()
 {
 
-	var filter_checkboxes = document.getElementById('map_menu').getElementsByTagName('input');
+	var filter_checkboxes = document.getElementById('map_and_menus').getElementsByTagName('input');
 
 
 	for(var i=0,len=filter_checkboxes.length;i<len;i++)
@@ -187,19 +248,35 @@ function check_filter_checkboxes()
 
 function map_menu_filter_click( checkbox_text )
 {
-
 	if( $('#filter_checkbox_' + checkbox_text).attr('checked') ){
+		
 		$('#filter_checkbox_' + checkbox_text).removeAttr('checked');
+			if(checkbox_text === 'projects'){
+				$('#filter_checkbox_projects_completed').removeAttr('checked');
+				$('#filter_checkbox_projects_current').removeAttr('checked');
+				$('#filter_checkbox_projects_scheduled').removeAttr('checked');
+			}
 		map.removeLayer(markers);
 		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
+		configure_marker_animation();
 	}
 	else{
+		
 		$('#filter_checkbox_' + checkbox_text).attr('checked','checked');
+			if(checkbox_text === 'projects'){
+				$('#filter_checkbox_projects_completed').attr('checked','checked');
+				$('#filter_checkbox_projects_current').attr('checked','checked');
+				$('#filter_checkbox_projects_scheduled').attr('checked','checked');								
+			}
+			if( checkbox_text === 'projects_completed' || checkbox_text === 'projects_current' || checkbox_text === 'projects_scheduled')
+				$('#filter_checkbox_projects').attr('checked','checked');
 		map.removeLayer(markers);
 		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
+		configure_marker_animation();
 	}
+	configure_marker_animation();
 }
 
 
@@ -293,11 +370,11 @@ function map_init()
 	
 	if(	map_confs.make_default_markers	  ){
 		for(var i=0;i<places.length;i++){
-			makeMarker("http://localhost/OpenTaps/images/marker.png",20,20,places[i][1],places[i][2]);
+			makeMarker("images/marker.png",20,20,places[i][1],places[i][2]);
 			}
 		}
 		else{
-			makeMarker("http://localhost/OpenTaps/images/marker.png",20,20,map_confs.lon,map_confs.lat);
+			makeMarker("images/marker.png",20,20,map_confs.lon,map_confs.lat);
 		}
 			
 	map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);

@@ -1,32 +1,70 @@
+
+
 function init(){
 	map_init();
 	chart_init();
-	//configure_marker_animation();        
+	configure_marker_animation();        
 }
 
+String.prototype.reverse = function(){
+	splitext = this.split("");
+	revertext = splitext.reverse();
+	reversed = revertext.join("");
+	return reversed;
+}
 
-/*
 function configure_marker_animation(){
+	    var	places_id = [];
+	    var marker_last_div = $(document.getElementById('OpenLayers.Map_2_OpenLayers_Container')).children('div:last').attr('id').reverse();
+	    var k = parseInt(String(marker_last_div).substring(0,marker_last_div.search('_')).reverse())+2;
+	    for(var i=0,len=places.length;i<len;i++){
+	    	places_id.push("OL_Icon_"+k);
+	    	k+=4;
+	    }
 	for(var i=0,len=places_id.length;i<len;i++){
 	   	var marker_img_handle = document.getElementById(places_id[i]).getElementsByTagName('img')[0];
-	    		marker_img_handle.setAttribute("onmouseover","marker_animate(this.id)");
+	    		marker_img_handle.setAttribute("onclick","marker_animate(this.id)");
 	    		marker_img_handle.setAttribute("onmouseout","marker_animate_back(this.id)");
 	    		
 	    	}
 }
-*/
 
 
+var img_src  = null;
+var clicked = false;
+console.log(projects);
 function marker_animate(id){
 	//console.log(document.getElementById(id).style.width);
-	if(document.getElementById(id).style.width == "20px")
-	if(document.getElementById(id).style.height == "20px")
-	$("#"+id).animate({"margin-top":"-15px","margin-left":"-15px","width":"200px","height":"200px"},570);	
+	if(!clicked){
+		img_src = $("#"+id).attr('src');
+		clicked = true;
+		$("#"+id).attr('src','images/marker.png');
+		$("#"+id).animate({"margin-top":"-15px","margin-left":"-15px","width":"250px","height":"240px"},570,function(){
+			var parent = this.parentNode;
+			$(parent).css('position','relative');
+			var content = [];
+			
+			content.push("<p>ika</p>");
+			
+			var content_div = document.createElement('div');
+			$(content_div).css({
+				'position' : 'absolute',
+				'top' : '90px',
+				'left' : '10px'
+			});
+			content_div.innerHTML = content.join('');
+			parent.insertBefore(content_div, this);
+		});	
+	}
 }	
 function marker_animate_back(id){
 	//if(document.getElementById(id).style.width == "200px")
 	//if( document.getElementById(id).style.height == "200px")
-	$("#"+id).animate({"margin-top":"0px","margin-left":"0px","width":"20px","height":"20px"},570);
+	if(clicked)
+	$("#"+id).animate({"margin-top":"0px","margin-left":"0px","width":"23px","height":"23px"},570,function(){
+		$("#"+id).attr('src',img_src);
+		clicked = false;
+	});
 }
 
 
