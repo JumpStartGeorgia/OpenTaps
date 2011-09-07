@@ -614,7 +614,7 @@ function read_projects($project_id = false)
 {
     if($project_id)
     {
-        $sql = "SELECT * FROM projects WHERE id = :id";
+        $sql = "SELECT p.* FROM projects p INNER JOIN regions r ON p.region_id = r.id WHERE p.id = :id";
         $statement = Storage::instance()->db->prepare($sql);
         $statement->execute(array(':id' => $project_id));
         return $statement->fetch(PDO::FETCH_ASSOC);    
@@ -627,7 +627,7 @@ function read_projects($project_id = false)
 }
 
 
-function add_project($title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
+function add_project($title, $desc, $budget, $region_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new") . "\">Back</a>";
 
@@ -635,7 +635,6 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
     $fields[] = ( strlen($desc) < 4 ) ? 'description' : NULL;
     $fields[] = ( strlen($budget) < 4 ) ? 'budget' : NULL;
-    $fields[] = ( strlen($district) < 4 ) ? 'district' : NULL;
     $fields[] = ( strlen($city) < 4 ) ? 'city' : NULL;
     $fields[] = ( strlen($grantee) < 4 ) ? 'grantee' : NULL;
     $fields[] = ( strlen($sector) < 4 ) ? 'sector' : NULL;
@@ -660,7 +659,7 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     		title,
     		description,
     		budget,
-    		district,
+    		region_id,
     		city,
     		grantee,
     		sector,
@@ -673,7 +672,7 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     		:title,
     		:description,
     		:budget,
-    		:district,
+    		:region_id,
     		:city,
     		:grantee,
     		:sector,
@@ -686,10 +685,10 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
-	':title' => $title,
+    	':title' => $title,
     	':description' => $desc,
     	':budget' => $budget,
-    	':district' => $district,
+    	':region_id' => $region_id,
     	':city' => $city,
     	':grantee' => $grantee,
     	':sector' => $sector,
@@ -708,12 +707,6 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
 	$query = $query->execute(array(':project_id' => $last_insert_id, ':organization_id' => $org_id));
     }
 
-    /*foreach ( $types as $type )
-    {
-	$query = "INSERT INTO `projects_types` ( project_id, type ) VALUES( :project_id, :type );";
-	$query = Storage::instance()->db->prepare($query);
-	$query = $query->execute(array(':project_id' => $last_insert_id, ':type' => $type));
-    }*/
 
     if( !empty($tag_ids) )
 	    if ( !add_tag_connector('proj', $last_insert_id, $tag_ids) )
@@ -726,7 +719,7 @@ function add_project($title, $desc, $budget, $district, $city, $grantee, $sector
     
 }
 
-function update_project($id, $title, $desc, $budget, $district, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
+function update_project($id, $title, $desc, $budget, $region_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/".$id) . "\">Back</a>";
 
@@ -734,7 +727,7 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
     $fields[] = ( strlen($desc) < 4 ) ? 'description' : NULL;
     $fields[] = ( strlen($budget) < 4 ) ? 'budget' : NULL;
-    $fields[] = ( strlen($district) < 4 ) ? 'district' : NULL;
+
     $fields[] = ( strlen($city) < 4 ) ? 'city' : NULL;
     $fields[] = ( strlen($grantee) < 4 ) ? 'grantee' : NULL;
     $fields[] = ( strlen($sector) < 4 ) ? 'sector' : NULL;
@@ -761,7 +754,7 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     		title = :title,
     		description = :description,
     		budget = :budget,
-    		district = :district,
+            region_id = :region_id,
     		city = :city,
     		grantee = :grantee,
     		sector = :sector,
@@ -779,19 +772,15 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
     		tag_connector
     	WHERE
     		proj_id = :id;
-    	DELETE FROM
-    		projects_types
-    	WHERE
-    		project_id = :id;
     ";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
     	':id' => $id,
-	':title' => $title,
+    	':title' => $title,
     	':description' => $desc,
     	':budget' => $budget,
-    	':district' => $district,
+    	':region_id' => $region_id,
     	':city' => $city,
     	':grantee' => $grantee,
     	':sector' => $sector,
@@ -816,12 +805,6 @@ function update_project($id, $title, $desc, $budget, $district, $city, $grantee,
 	$result = $statement->execute($insert_rows_data);
     }
 
-    /*if (!empty($types))
-    	foreach ( $types as $type ):
-		$query = "INSERT INTO `projects_types` ( project_id, type ) VALUES( :project_id, :type );";
-		$query = Storage::instance()->db->prepare($query);
-		$query = $query->execute(array(':project_id' => $id, ':type' => $type));
-   	 endforeach;*/
 
     if( !empty($tag_ids) )
     	if ( !add_tag_connector('proj', $id, $tag_ids) )
@@ -840,7 +823,7 @@ function delete_project($id)
 
     $sql = "
     		DELETE FROM `projects` WHERE  `projects`.`id` = :id;
-    		DELETE FROM tag_connector where proj_id = :id;
+    		DELETE FROM tag_connector WHERE proj_id = :id;
 		DELETE FROM project_organizations WHERE project_id = :id;
 	   ";
     $statement = Storage::instance()->db->prepare($sql);
@@ -866,9 +849,10 @@ function read_project_data($id)
 
 function delete_project_data($id)
 {
+
 	$sql = "DELETE FROM projects_data WHERE project_id = :id;";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(':id' => $id));
+	$statement->execute(array(':id'=>$id));
 }
 
 function add_project_data($project_id, $key, $value)

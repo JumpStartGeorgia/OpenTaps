@@ -1,4 +1,5 @@
 <?php
+
   $action = href("admin/projects/" . $project['id'] . "/update");
 ?>
     	<form action='<? echo $action; ?>' method='post'>
@@ -22,10 +23,18 @@
   	    <input name='p_budget' id='pbudget' type='text' value="<?php echo $project['budget'] ?>" />
   	    <br /><br />
 
-  	    <label for='pdistrict'>District: </label>
+        
+  	    <label for='pregion'>Regions: </label>
   	    <br />
-  	    <input name='p_district' id='pdistrict' type='text' value="<?php echo $project['district'] ?>" />
-  	    <br /><br />
+  	    <select name='p_region' id='pregion'>
+  	      <?php
+      foreach($regions as $region):
+  	            $selected = ($region['id'] == $project['region_id']) ? "selected='selected'" : NULL;
+  	            ?><option value="<?php echo $region['id'] ?>" <?php echo $selected ?>><?php echo $region['name'] ?></option><?php
+  	        endforeach;
+  	      ?>
+  	    </select>
+  	    <br /><br />      
 
   	    <label for='pcity'>City: </label>
   	    <br />

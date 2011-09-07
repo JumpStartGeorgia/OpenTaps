@@ -15,4 +15,4 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects/" . $id) ?>">Back</a>
+  	<a href="<?php echo href("admin/projects") ?>">Back</a>
