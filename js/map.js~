@@ -295,7 +295,8 @@ function check_filter_checkboxes()
 
 function map_menu_filter_click( checkbox_text )
 {
-	
+	map.removeLayer(markers);
+		addMarkerLayer("Marker Layer");
 	if( $('#filter_checkbox_' + checkbox_text).attr('checked') ){
 		
 		$('#filter_checkbox_' + checkbox_text).removeAttr('checked');
@@ -304,8 +305,6 @@ function map_menu_filter_click( checkbox_text )
 				$('#filter_checkbox_projects_current').removeAttr('checked');
 				$('#filter_checkbox_projects_scheduled').removeAttr('checked');
 			}
-			map.removeLayer(markers);
-		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
 		for( var i in map.popups ){
 			map.removePopup(map.popups[i]);
@@ -323,8 +322,6 @@ function map_menu_filter_click( checkbox_text )
 			}
 			if( checkbox_text === 'projects_completed' || checkbox_text === 'projects_current' || checkbox_text === 'projects_scheduled')
 				$('#filter_checkbox_projects').attr('checked','checked');
-				map.removeLayer(markers);
-		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
 	}
 }

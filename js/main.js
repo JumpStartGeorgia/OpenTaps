@@ -3,7 +3,6 @@
 function init(){
 	map_init();
 	chart_init();
-	//configure_marker_animation();        
 }
 
 String.prototype.reverse = function(){
@@ -15,6 +14,7 @@ String.prototype.reverse = function(){
 
 
 var img_src  = "";
+var img_style = "";
 var click_done = false;
 console.log(projects);
 
@@ -26,39 +26,66 @@ function getArray(){
 		
 }
 
-function marker_animate(id){
-	if(click_done == false){
-		img_src = $("#"+id).attr('src');
-		$("#"+id).attr('src','images/marker.png');
-		$("#"+id).animate({"margin-top":"-15px","margin-left":"-15px","width":"250px","height":"240px"},570,function(){
-			var parent = this.parentNode;
-			$(parent).css('position','relative');
-			getArray();
-			
-			var content = [];
-			
-			content.push("<p>ika</p>");
-			
-			var content_div = document.createElement('div');
-			$(content_div).css({
-				'position' : 'absolute',
-				'top' : '90px',
-				'left' : '10px'
-			});
-			content_div.innerHTML = content.join('');
-			parent.insertBefore(content_div, this);
-			click_done = true;	
-		});
+function show_data(i)
+{
+var content = [];
+		content.push("<center><p><font style='color:#FFF;font-family:arial;font-size:12pt;'>"+projects[i][3]+"</font></p>");
+                content.push("<hr style='height:1px;width:180px;border:0px;border-top:1px dotted #FFF;'/>");
+                content.push("<p><font style='color:#000;font-size:9pt;'>Grantee:</font>&nbsp;<font style='font-size:10pt;color:#FFF;'>"+projects[i][4]+"</font></p>");
+                content.push("<p><font style='color:#000;font-size:9pt;'>Budget:</font>&nbsp;<font style='font-size:10pt;color:#FFF;'>"+projects[i][5]+"</font></p>");
+                content.push("<p><font style='color:#000;font-size:9pt;'>City/Town:</font>&nbsp;<font style='font-size:10pt;color:#FFF;'>"+projects[i][6]+"</font></p>");
+                content.push("<p><font style='font-size:10pt;color:#FFF;'>"+projects[i][1].getMonth()+"."+projects[i][1].getDate()+"."+projects[i][1].getFullYear()+" - "+projects[i][2].getMonth()+"."+projects[i][2].getDate()+"."+projects[i][2].getFullYear()+"</font></p>");
+                content.push("</center>");
+      return content.join('');
+}
+
+var click_done = false;
+function marker_animate(id, lon, lat,i)
+{
+	if (click_done == false)
+	{
+            click_done = true;
+	    
+	    img = $('#' + id).css('cursor', 'pointer'),
+	    img_src = img.attr('src'),
+	    img_style = img.attr('style');
+            img.attr('src', 'images/marker.png');
+            img.css('z-index', '99999').animate({
+                'cursor': 'normal',
+                'top': '-105px',
+                'left': '-110px',
+                'width': '250px',
+                'height': '240px'
+            }, 'normal', function()
+            {
+               
+
+                //console.log(  show_data(i) );
+                make_popup({
+                    'lon': lon,
+                    'lat': lat
+                }, {
+                    'width': 200,
+                    'height':120
+                },  show_data(i+1));	       
+                
+                $(this).parent().parent().parent().children('div:last').css({
+                		'top' : '-=60px',
+                		'left' : '-=100px'
+                	});
+            });
 	}
 }	
 function marker_animate_back(id){
 	//if(document.getElementById(id).style.width == "200px")
 	//if( document.getElementById(id).style.height == "200px")
-	if(click_done == true)
-	$("#"+id).animate({"margin-top":"0px","margin-left":"0px","width":"23px","height":"23px"},570,function(){
-		$("#"+id).attr('src',img_src);
-		click_done = false;
-	});
+	if(click_done == true){
+		$("#"+id).animate({"top":"0px","left":"0px","width":"20px","height":"20px"},570,function(){
+			$(this).attr('style',img_style);
+			$(this).attr('src',img_src);
+			click_done = false;		
+		});
+	}
 }
 
 

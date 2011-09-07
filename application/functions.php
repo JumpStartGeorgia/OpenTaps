@@ -557,6 +557,56 @@ function region_total_budget($region_id)
 	return $total_budget;	
 }
 
+
+
+
+/*===========================   Users Admin     ============================*/
+function delete_user($id)
+{
+    $sql = "DELETE FROM users WHERE id=:id LIMIT 1;";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+           ':id' => $id
+           ));
+}
+
+function add_user($post)
+{
+    if( isset($post['u_name']) && isset($post['u_pass']) ){
+        $sql = "INSERT INTO users(username,password) VALUES(:username,:password)";
+        $stmt = Storage::instance()->db->prepare($sql);
+        $stmt->execute(array(
+                           ':username' => $post['u_name'],
+                           ':password' => hash('sha1',$post['u_pass'])
+                           ));
+    }
+}
+
+function get_user($id)
+{
+    $sql = "SELECT * FROM users WHERE id=:id LIMIT 1;";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+                        ':id' => $id
+                       ));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return empty($result) ? array() : $result;
+}
+
+function update_user($id,$post)
+{
+    if( isset($post['u_name']) ){
+    $sql = "UPDATE users SET username=:username,password=:password WHERE id=:id";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+                       ':username' => $post['u_name'],
+                       ':password' => hash('sha1',$post['u_pass']),
+                       ':id' => $id 
+                       ));
+    }
+}
+
+
 //projects
 
 
