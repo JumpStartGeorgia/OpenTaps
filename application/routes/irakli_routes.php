@@ -1,14 +1,16 @@
 <?php
 
-$places = fetch_db("SELECT * FROM places");
+/*$places = fetch_db("SELECT * FROM places");
 $js_places = array();
 foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ',' . $place['project_id'] . ',' . $place['pollution_id'] .']';
-Storage::instance()->js_places = $js_places;
-$projects = fetch_db("SELECT * FROM projects");
+Storage::instance()->js_places = $js_places;*/
+
+$projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_id = pl.id");
+//exit(print_r($projects));
 $js_projects[] = '[ new Date("' . date('Y-m-d') . '") ]';
 foreach($projects as $project)
-	$js_projects[] = '[' . $project['id'] . ', new Date("' . $project['start_at'] . '") , new Date("' . $project['end_at'] . '") , "'. $project['title'] .'", "'. $project['grantee'] .'", "'. $project['budget'] .'", "'. $project['city'] .'","'. $project['type'] .'"]';
+	$js_projects[] = '[' . $project['id'] . ', new Date("' . $project['start_at'] . '") , new Date("' . $project['end_at'] . '") , "'. $project['title'] .'", "'. $project['grantee'] .'", "'. $project['budget'] .'", "'. $project['city'] .'","'. $project['type'] .'","'.$project['longitude'] .'","'.$project['latitude'] .'"]';
 Storage::instance()->js_projects = $js_projects;
 
 $years_sql = "
@@ -31,16 +33,14 @@ foreach ($years_res AS $years)
 }
 Storage::instance()->js_years = array_unique($years_storage);
 
-$type_sql = "SELECT DISTINCT p.type FROM projects p WHERE p.type!='' ";
-$types = fetch_db($type_sql);
 $types_tmp = array();
-$type_img = array('Water Pollution' => 'water-pollution.gif','Sewage' => 'sewage.gif');
-foreach( $types as $type ){
-	if(isset($type_img[$type['type']])){
-		$types_tmp[] = array($type['type'],$type_img[$type['type']]);
+$type_img = array('Water Pollution' => 'water-pollution.gif','Sewage' => 'sewage.gif','Water Supply' => 'water-supply.gif','Irrigation' => 'irrigation.gif','Water Quality' => 'water-quality.gif','Water Accidents' => 'water-accidents.gif');
+foreach( config('project_types') as $type ){
+	if(isset($type_img[$type])){
+		$types_tmp[] = array($type,$type_img[$type]);
 	}
 	else{
-		$types_tmp[] = array($type['type']);
+		$types_tmp[] = array($type);
 	}
 }
 $types = $types_tmp;
