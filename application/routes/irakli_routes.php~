@@ -47,88 +47,6 @@ $types = $types_tmp;
 unset($types_tmp);
 Storage::instance()->js_types = $types;
 
-/*======================================	places management 	====================================*/
-Slim::get('/admin/places/',function(){
-	Slim::redirect(href('/admin/places/add'));
-});	
-Slim::get('/admin/places/add/',function(){
-    if(userloggedin())
-    {
-		$sql_regions = 'SELECT * FROM regions';
-		$sql_raions = 'SELECT * FROM raions';
-	Storage::instance()->content = template('places',array(
-		'regions' => fetch_db($sql_regions),
-		'raions' => fetch_db($sql_raions),
-		'places' => 'add'
-	));
-    }
-    else
-	Storage::instance()->content = template('login');
-});
-Slim::post('/admin/places/add/',function(){
-    if(userloggedin())
-    {
-	if(isset($_POST['region']) && !empty($_POST['region']) && isset($_POST['raion']) && !empty($_POST['raion']) && isset($_POST['place_name']) && !empty($_POST['place_name']) && isset($_POST['lon']) && !empty($_POST['lon']) && isset($_POST['lat']) && !empty($_POST['lat'])){
-		add_place($_POST['lon'],$_POST['lat'],$_POST['place_name'],$_POST['region'],$_POST['raion']);
-	}
-	Slim::redirect(href('admin/places/add'));
-    }
-    else
-	Storage::instance()->content = template('login');
-	
-});
-Slim::get('/admin/places/list/',function(){
-	if(userloggedin())
-	{
-		Storage::instance()->content = template('places',array(
-			'places' => 'list'
-		));
-	}
-	else Storage::instance()->content = template('login');
-});
-
-Slim::get('/admin/places/list/:id/delete/',function($id){
-	if(userloggedin()){
-		if(isset($id) && !empty($id))
-			delete_place($id);
-			
-		Slim::redirect(href('admin/places/list'));
-	}
-	else Storage::instance()->content = template('login');	
-});
-Slim::post('/admin/places/list/',function(){
-	if(userloggedin()){
-		if(isset($_POST['id']) && !empty($_POST['id']))
-			edit_place($_POST['id'],$_POST['lon'],$_POST['lat'],$_POST['place_name'],$_POST['region'],$_POST['raion']);
-		Slim::redirect(href('admin/places/list'));
-	}
-	else Storage::instance()->content = template('login');
-});
-Slim::get('/admin/places/list/:id/edit/',function($id){
-	if(userloggedin()){
-		if(isset($id) && !empty($id)){
-			$sql = "SELECT * FROM places WHERE id=$id";
-			$sql_regions = 'SELECT * FROM regions';
-			$sql_raions = 'SELECT * FROM raions';
-			$result = fetch_db($sql);
-			Storage::instance()->content = template('places',array(
-				'id' => $id,
-				'places' => 'edit',
-				'place_name' => $result[0]['name'],
-				'place_lon' => $result[0]['longitude'],
-				'place_lat' => $result[0]['latitude'],
-				'regions' => fetch_db($sql_regions),
-				'raions' => fetch_db($sql_raions)
-			));
-		}
-	}
-	else Storage::instance()->content = template('login');	
-});
-
-
-
-
-
 
 
 /*=====================================================	donors===========================================================*/
@@ -150,7 +68,9 @@ Slim::get('/donors/donor/:id/', function($id){
 
 require_once DIR.'application/routes/organization_routes.php';
 
-reuqire_once DIR.'application/routes/users_routes.php';
+require_once DIR.'application/routes/users_routes.php';
+
+require_once DIR.'application/routes/places_routes.php';
 
 ################################################################ donors admin routes start
 Slim::get('/admin/donors/', function(){

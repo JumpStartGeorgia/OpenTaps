@@ -92,12 +92,14 @@ Slim::get('/admin/projects/new/', function(){
     $orgs = fetch_db($query);
     $regions_query = "SELECT * FROM regions";
     $regions = fetch_db($regions_query);
+    $sql_places = "SELECT * FROM places";
     Storage::instance()->content = userloggedin()
     	? template('admin/projects/new', array(
     		'all_tags' => read_tags(),
     		'organizations' => $orgs,
             'regions' => $regions,
-    		'project_types' => config('project_types')
+    		'project_types' => config('project_types'),
+            'places' => fetch_db($sql_places)
     	 ))
     	: template('login');
 });
@@ -116,18 +118,21 @@ Slim::get('/admin/projects/:id/', function($id){
 	foreach($result as $s)
 		$this_orgs[] = $s['organization_id'];
 
-    
+
     $regions_query = "SELECT * FROM regions";
     $regions = fetch_db($regions_query);
-    
+
+    $sql_places = "SELECT * FROM places";
+    $places = fetch_db($sql_places);
 	Storage::instance()->content = template('admin/projects/edit', array
 	(
-		'project' => read_projects($id),
+		'project' =>  read_projects($id),
 		'all_tags' => read_tags(),
 		'this_tags' => read_tag_connector('proj', $id),
 		'this_orgs' => $this_orgs,
 		'organizations' => $orgs,
         'regions' => $regions,
+        'places' => $places,
 		'project_types' => config('project_types')
 	));
     }
@@ -146,7 +151,8 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_title'],
         	$_POST['p_desc'],
         	$_POST['p_budget'],
-        	$_POST['p_region'],
+/*        	$_POST['p_region'],*/
+            $_POST['p_place'],
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],
@@ -169,7 +175,8 @@ Slim::post('/admin/projects/:id/update/', function($id){
         	$_POST['p_title'],
         	$_POST['p_desc'],
         	$_POST['p_budget'],
-        	$_POST['p_region'],
+/*        	$_POST['p_region'],*/
+            $_POST['p_place'],
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],

@@ -24,7 +24,7 @@
   	    <br /><br />
 
         
-  	    <label for='pregion'>Regions: </label>
+  	    <!--<label for='pregion'>Regions: </label>
   	    <br />
   	    <select name='p_region' id='pregion'>
   	      <?php
@@ -34,8 +34,20 @@
   	        endforeach;
   	      ?>
   	    </select>
-  	    <br /><br />      
+  	    <br /><br />-->
 
+        <label for='pplace'>Place: </label>
+  	    <br />
+  	    <select name='p_place' id='pplace'>
+  	      <?php
+      foreach($places as $place):
+  	            $selected = ($place['id'] == $project['place_id']) ? "selected='selected'" : NULL;
+  	            ?><option value="<?php echo $place['id'] ?>" <?php echo $selected ?>><?php echo $place['name'] ?></option><?php
+  	        endforeach;
+  	      ?>
+  	    </select>
+  	    <br /><br />
+        
   	    <label for='pcity'>City: </label>
   	    <br />
   	    <input name='p_city' id='pcity' type='text' value="<?php echo $project['city'] ?>" />

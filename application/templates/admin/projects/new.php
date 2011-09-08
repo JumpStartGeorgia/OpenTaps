@@ -19,7 +19,7 @@
   	    <input name='p_budget' id='pbudget' type='text' />
   	    <br /><br />
 
-  	    <label for='pregions'>Region:</label>
+  	   <!-- <label for='pregions'>Region:</label>
   	    <br />
   	    <select name='p_region' id='pregions'>
   	      <?php
@@ -28,7 +28,19 @@
   	        endforeach;
   	      ?>
   	    </select>
+  	    <br /><br />-->
+
+        <label for='pplace'>Place:</label>
+  	    <br />
+  	    <select name='p_place' id='pplace'>
+  	      <?php
+  	        foreach($places as $place):
+  	            ?><option value="<?php echo $place['id'] ?>"><?php echo $place['name'] ?></option><?php
+  	        endforeach;
+  	      ?>
+  	    </select>
   	    <br /><br />
+
 
   	    <label for='pcity'>City: </label>
   	    <br />

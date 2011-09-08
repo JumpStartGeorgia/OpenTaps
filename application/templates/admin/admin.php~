@@ -34,7 +34,7 @@
 		<td>
 			<h3>Places Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/places/new") ?>">Add place</a></li>
+				<li><a href="<?php echo href("admin/places/new") ?>">Add place</li>
 				<li><a href="<?php echo href("admin/places") ?>">Places</a></li>
 			</ul>
 		</td>

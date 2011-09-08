@@ -3,15 +3,15 @@
   	<div class='panel'>
   ";
 
-  $tags = read_tags();
-  foreach($tags as $tag)
+
+  foreach($places as $place)
   {
-      $link_edit = href("admin/tags/". $tag['id']);
-      $link_del = href("admin/tags/". $tag['id'] . '/delete');
+      $link_edit = href("admin/places/". $place['id']);
+      $link_del = href("admin/places/". $place['id'] . '/delete');
 
       echo "
 		<div class='record'>
-		  <div class='rleft'> " . $tag['name'] . "</div>
+		  <div class='rleft'> " . $place['name'] . "</div>
 		  <div class='rright'>
 		      <a href=\"" . $link_edit . "\">Edit</a>
 		      <a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>
@@ -22,7 +22,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/tags/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/places/new") . "\">New Record</a>
   		</div>
   	</div>
   ";

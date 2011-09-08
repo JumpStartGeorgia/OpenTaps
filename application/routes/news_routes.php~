@@ -14,18 +14,14 @@ Slim::get('/admin/news/', function(){
     Storage::instance()->content = userloggedin() ? template('admin/news/all_records') : template('login');
 });
 
-Slim::get('/admin/news/new/', function()
-{
-	if (!userloggedin())
-	{
-		Storage::instance()->content = template('login');
-		exit;
-	}
-    Storage::instance()->content =  template('admin/news/new',array(
-        'all_tags' => read_tags()
-    ));
-}
-);
+Slim::get('/admin/news/new/', function(){
+        Storage::instance()->content =  template('admin/news/new',array(
+            'all_tags' => read_tags()
+        ));
+        //if( userloggedin() ){
+        //}
+        //else Storage::instance()->content = template('login');
+});
 
 Slim::get('/admin/news/:id/', function($id){
     Storage::instance()->content = userloggedin()

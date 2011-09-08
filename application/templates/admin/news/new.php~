@@ -21,7 +21,7 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['id'], $all_tags)) ? "selected = 'selected'" : NULL; ?>><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['id'] ?>" <?php echo ( in_array($tag['id'],$news_tags)  ) ? "selected = 'selected'" : NULL; ?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
