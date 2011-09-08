@@ -25,4 +25,4 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects/" . $data[0]['project_id']); ?>">Back</a>
+  	<a href="<?php echo href("admin/projects"); ?>">Back</a>

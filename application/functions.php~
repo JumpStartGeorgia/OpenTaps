@@ -618,8 +618,7 @@ function read_projects($project_id = false)
 {
     if($project_id)
     {
-/*        $sql = "SELECT p.* FROM projects p INNER JOIN regions r ON p.region_id = r.id WHERE p.id = :id";*/
-        $sql = "SELECT p.* FROM projects p WHERE p.id=:id";
+        $sql = "SELECT p.* FROM projects p INNER JOIN regions r ON p.region_id = r.id WHERE p.id = :id";
         $statement = Storage::instance()->db->prepare($sql);
         $statement->execute(array(':id' => $project_id));
         return $statement->fetch(PDO::FETCH_ASSOC);    
@@ -632,7 +631,7 @@ function read_projects($project_id = false)
 }
 
 
-function add_project($title, $desc, $budget, /*$region_id*/$place_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
+function add_project($title, $desc, $budget, $region_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new") . "\">Back</a>";
 
@@ -671,8 +670,7 @@ function add_project($title, $desc, $budget, /*$region_id*/$place_id, $city, $gr
     		start_at,
     		end_at,
     		info,
-    		type,
-            place_id
+    		type
     	)
     	VALUES(
     		:title,
@@ -685,8 +683,7 @@ function add_project($title, $desc, $budget, /*$region_id*/$place_id, $city, $gr
     		:start_at,
     		:end_at,
     		:info,
-    		:type,
-            :place_id
+    		:type
     	);
     ";
     $statement = Storage::instance()->db->prepare($sql);
@@ -695,15 +692,14 @@ function add_project($title, $desc, $budget, /*$region_id*/$place_id, $city, $gr
     	':title' => $title,
     	':description' => $desc,
     	':budget' => $budget,
-    	':region_id' => 0,//$region_id,
+    	':region_id' => $region_id,
     	':city' => $city,
     	':grantee' => $grantee,
     	':sector' => $sector,
     	':start_at' => $start_at,
     	':end_at' => $end_at,
     	':info' => $info,
-    	':type' => $type,
-        ':place_id' => $place_id
+    	':type' => $type
     ));
 
     $last_insert_id = Storage::instance()->db->lastInsertId();
@@ -727,7 +723,7 @@ function add_project($title, $desc, $budget, /*$region_id*/$place_id, $city, $gr
     
 }
 
-function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
+function update_project($id, $title, $desc, $budget, $region_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/".$id) . "\">Back</a>";
 
@@ -769,8 +765,7 @@ function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $c
     		start_at = :start_at,
     		end_at = :end_at,
     		info = :info,
-    		type = :type,
-            place_id=:place_id
+    		type = :type
     	WHERE
     		`projects`.`id` =:id;
     	DELETE FROM
@@ -789,15 +784,14 @@ function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $c
     	':title' => $title,
     	':description' => $desc,
     	':budget' => $budget,
-    	':region_id' => 0,//$region_id,
+    	':region_id' => $region_id,
     	':city' => $city,
     	':grantee' => $grantee,
     	':sector' => $sector,
     	':start_at' => $start_at,
     	':end_at' => $end_at,
     	':info' => $info,
-    	':type' => $type,
-        ':place_id' => $place_id
+    	':type' => $type
     ));
 
     if (!empty($org_ids))

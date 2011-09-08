@@ -18,9 +18,14 @@ Slim::get('/admin/news/', function()
 
 Slim::get('/admin/news/new/', function()
         {
-            Storage::instance()->content = userloggedin() ? template('admin/news/new', array(
-                        'all_tags' => read_tags()
-                    )) : template('login');
+            if (!userloggedin())
+            {
+                Storage::instance()->content = template('login');
+                exit;
+            }
+            Storage::instance()->content = template('admin/news/new', array(
+                'all_tags' => read_tags()
+                    ));
         }
 );
 
