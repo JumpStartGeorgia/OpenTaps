@@ -2,7 +2,7 @@
 session_start();
 
 define('DIR', getcwd() . '/');
-define('URL', 'http://localhost.com/OpenTaps/');
+define('URL', 'http://www.localhost.com/opentaps/');
 
 error_reporting(E_ALL);
 
