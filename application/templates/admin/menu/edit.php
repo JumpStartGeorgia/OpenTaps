@@ -10,6 +10,14 @@
   	    <br />
   	    <input name='m_short_name' id='mshortname' type='text' value=\"" . $result['short_name'] . "\" />
   	    <br /><br />
+        <label for='mtitle'>Title:</label>
+        <br />
+        <input type='text' value='". $result['title'] ."' name='m_title' id='mtitle'/>
+        <br /><br />
+        <label for='mtext'>Text:</label>
+        <br />
+        <textarea name='m_text' id='mtext'>". $result['text'] ."</textarea>
+        <br /><br  />
   ";
   if($result['parent_id'] != 0)
   {
@@ -33,6 +41,15 @@
     echo "  <input type='hidden' value='0' name='m_parent_id' />";
 
   echo "
+        <input type='checkbox' ";
+echo $result['hide'] == 0 ? "checked" : NULL;
+    echo " name='m_hide' id='mhide'/>
+        <label for='mhide'>Hidden</label>&nbsp;&nbsp;
+        <input type='checkbox'";
+echo $result['footer'] == 0 ? "checked" : NULL;
+echo " name='m_footer' id='mfooter'/>
+        <label for='mfooter'>Footer</label>
+        <br /><br />
   	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />
   	</form>

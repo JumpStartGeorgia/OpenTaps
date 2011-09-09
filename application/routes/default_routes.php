@@ -4,7 +4,10 @@ Slim::get('/', function(){
 });
 
 Slim::get('/page/:short_name/', function($short_name){
-    Storage::instance()->content = $short_name;
+        if( is_string($short_name) ){
+            Storage::instance()->content = template('menu_text', get_menu($short_name));
+        }
+
 });
 ################################################################ Login routes start
 Slim::get('/login/', function(){
