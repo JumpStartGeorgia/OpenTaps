@@ -2,10 +2,10 @@
     <div style='float:left;width:673px;'>
 	<div class='group'>
 		<script type="text/javascript">
-			/*var region_map_boundsLeft = 4550479.3343998;
+			var region_map_boundsLeft = 4550479.3343998;
 			var region_map_boundsRight = 4722921.2701802;
 			var region_map_boundsTop = 5183901.869223;
-			var region_map_boundsBottom = 5034696.790037;*/
+			var region_map_boundsBottom = 5034696.790037;
 			var region_map_zoom = false;
 			var region_make_def_markers = false;
 			var region_show_def_buttons = false;

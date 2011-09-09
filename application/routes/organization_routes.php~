@@ -29,13 +29,13 @@ Slim::get('/organization/:id/',function($id){
 
 
     	Storage::instance()->content = template('organization', array(
-    		'organization' => get_organization($id),
-    		'organization_budget' => organization_total_budget($id),
-    		'values' => $values,
-    		'names' => $names,
-    		'real_values' => $real_values,
-    		'tags' => $tags,
-			'projects' => get_organization_projects($id)
+//    		'organization' => get_organization($id),
+  //  		'organization_budget' => organization_total_budget($id),
+    //		'values' => $values,
+    	//	'names' => $names,
+    		//'real_values' => $real_values,
+    		//'tags' => $tags,
+			//'projects' => get_organization_projects($id)
     	));
     	
 });

@@ -258,6 +258,8 @@
         	        
         	        
         	</div>
+        	
+        	<div class="group" style="height: 1.5em; display: block"></div>
             <?php endif; ?>
 
 	    <div class='content group'>

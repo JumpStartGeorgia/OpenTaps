@@ -70,37 +70,55 @@ function read_submenu()
     return $submenus;
 }
 
+function get_menu($short_name)
+{
+    $sql = "SELECT * FROM menu WHERE short_name = :short_name LIMIT 1;";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+            ':short_name' => $short_name
+         ));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return empty($result) ? array() : $result;
+}
 
-function add_menu($name, $short_name, $parent_id)
+function add_menu($name, $short_name, $parent_id, $title, $text, $hide, $footer)
 {
     if( strlen($name) < 2 )
 	return false;
 
-    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_id`, `name`, `short_name`) VALUES(:parent_id, :name, :short_name)";
+    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_id`, `name`, `short_name`, title, text, hide, footer) VALUES(:parent_id, :name, :short_name, :title, :text, :hide, :footer)";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
  	':name' => $name,
  	':short_name' => $short_name,
- 	':parent_id' => $parent_id
+ 	':parent_id' => $parent_id,
+    ':title' => $title,
+    ':text' => $text,
+    ':hide' => $hide,
+    ':footer' => $footer
     ));
 
     return ($exec) ? true : false;
 }
 
-function update_menu($id, $name, $short_name, $parent_id)
+function update_menu($id, $name, $short_name, $parent_id, $title, $text, $hide, $footer)
 {
     if( strlen($name) < 2 || !is_numeric($id) )
 	return false;
 
-    $sql = "UPDATE `menu` SET  `parent_id` =  :parent_id, `short_name` =  :short_name, `name` =  :name WHERE  `menu`.`id` =:id";
+    $sql = "UPDATE `menu` SET  `parent_id` =  :parent_id, `short_name` =  :short_name, `name` =  :name, title=:title, text=:text, hide=:hide, footer=:footer  WHERE  `menu`.`id` =:id";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
  	':id' => $id,
  	':short_name' => $short_name,
  	':name' => $name,
- 	':parent_id' => $parent_id
+ 	':parent_id' => $parent_id,
+    ':title' => $title,
+    ':text' => $text,
+    ':hide' => $hide,
+    ':footer' => $footer
     ));
 
     return ($exec) ? true : false;
@@ -618,10 +636,15 @@ function read_projects($project_id = false)
 {
     if($project_id)
     {
-        $sql = "SELECT p.* FROM projects p INNER JOIN regions r ON p.region_id = r.id WHERE p.id = :id";
+/*        $sql = "SELECT p.* FROM projects p INNER JOIN regions r ON p.region_id = r.id WHERE p.id = :id";*/
+        $sql = "SELECT p.*,pl.longitude,pl.latitude,r.name region_name,r.id region_id  FROM projects p 
+        		    INNER JOIN places pl ON p.id = pl.project_id 
+        		    INNER JOIN regions r ON p.region_id = r.id 
+					 WHERE p.id=:id";
         $statement = Storage::instance()->db->prepare($sql);
         $statement->execute(array(':id' => $project_id));
-        return $statement->fetch(PDO::FETCH_ASSOC);    
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return empty($result) ? array() : $result;    
     }
 
     $sql = "SELECT * FROM projects ORDER BY start_at";
@@ -631,7 +654,7 @@ function read_projects($project_id = false)
 }
 
 
-function add_project($title, $desc, $budget, $region_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
+function add_project($title, $desc, $budget, /*$region_id*/$place_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new") . "\">Back</a>";
 
@@ -670,7 +693,8 @@ function add_project($title, $desc, $budget, $region_id, $city, $grantee, $secto
     		start_at,
     		end_at,
     		info,
-    		type
+    		type,
+            place_id
     	)
     	VALUES(
     		:title,
@@ -683,7 +707,8 @@ function add_project($title, $desc, $budget, $region_id, $city, $grantee, $secto
     		:start_at,
     		:end_at,
     		:info,
-    		:type
+    		:type,
+            :place_id
     	);
     ";
     $statement = Storage::instance()->db->prepare($sql);
@@ -692,14 +717,15 @@ function add_project($title, $desc, $budget, $region_id, $city, $grantee, $secto
     	':title' => $title,
     	':description' => $desc,
     	':budget' => $budget,
-    	':region_id' => $region_id,
+    	':region_id' => 0,//$region_id,
     	':city' => $city,
     	':grantee' => $grantee,
     	':sector' => $sector,
     	':start_at' => $start_at,
     	':end_at' => $end_at,
     	':info' => $info,
-    	':type' => $type
+    	':type' => $type,
+        ':place_id' => $place_id
     ));
 
     $last_insert_id = Storage::instance()->db->lastInsertId();
@@ -723,7 +749,7 @@ function add_project($title, $desc, $budget, $region_id, $city, $grantee, $secto
     
 }
 
-function update_project($id, $title, $desc, $budget, $region_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
+function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_ids, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/".$id) . "\">Back</a>";
 
@@ -765,7 +791,8 @@ function update_project($id, $title, $desc, $budget, $region_id, $city, $grantee
     		start_at = :start_at,
     		end_at = :end_at,
     		info = :info,
-    		type = :type
+    		type = :type,
+            place_id=:place_id
     	WHERE
     		`projects`.`id` =:id;
     	DELETE FROM
@@ -784,14 +811,15 @@ function update_project($id, $title, $desc, $budget, $region_id, $city, $grantee
     	':title' => $title,
     	':description' => $desc,
     	':budget' => $budget,
-    	':region_id' => $region_id,
+    	':region_id' => 0,//$region_id,
     	':city' => $city,
     	':grantee' => $grantee,
     	':sector' => $sector,
     	':start_at' => $start_at,
     	':end_at' => $end_at,
     	':info' => $info,
-    	':type' => $type
+    	':type' => $type,
+        ':place_id' => $place_id
     ));
 
     if (!empty($org_ids))
@@ -958,11 +986,25 @@ function get_project_chart_data($id)
 /*================================================	Admin Organizations	============================================*/
 function get_organization($id)
 {
-	$sql = "SELECT * FROM organizations WHERE id=:id";
+	$sql = "SELECT * FROM organizations WHERE id = :id LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
 	));
+	return $statement->fetch(PDO::FETCH_ASSOC);
+}
+
+function get_organization_projects($id)
+{
+	$sql = "SELECT p.id,p.title FROM projects AS p 
+				INNER JOIN project_organizations AS po ON p.id = po.project_id
+				INNER JOIN organizations AS o ON o.id = po.organization_id
+				WHERE o.id = :id";
+	$statement = Storage::instance()->db->prepare($sql);
+	$statement->execute(array(
+		':id' => $id
+	));
+	
 	return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
@@ -1075,11 +1117,11 @@ function get_organization_chart_data($id)
 			projects.title,
 			projects.budget
 		FROM 
-			`project_organizations`
+			project_organizations
 		INNER JOIN
-			`projects`
+			projects
 		ON
-			(`project_organizations`.`project_id` = `projects`.`id`)
+			(project_organizations.project_id = projects.id)
 		WHERE
 			organization_id = :id;
 	";
@@ -1088,6 +1130,8 @@ function get_organization_chart_data($id)
 
 	$results = $query->fetchAll(PDO::FETCH_ASSOC);
 
+//    print_r($results);exit;
+    
 	$b = FALSE;
 
 	foreach ( $results as $r )
@@ -1097,7 +1141,10 @@ function get_organization_chart_data($id)
 		$names[1][] = str_replace(" ", "+", $r['title']);
 	}
 
-	$real_values[1] = $v[1];
+    //  print_r($v);exit;
+
+    	$real_values[1] = $v[1];
+
 
 	if ( $b )
 	{

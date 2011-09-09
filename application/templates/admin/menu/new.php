@@ -9,6 +9,14 @@
   	    <br />
   	    <input name='m_short_name' id='mshortname' type='text' />
   	    <br /><br />
+        <label for='mtitle'>Title:</label>
+        <br />
+        <input type='text' name='m_title' id='mtitle'/>
+        <br /><br />
+        <label for='mtext'>Text:</label>
+        <br />
+        <textarea name='m_text' id='mtext'></textarea>
+        <br /><br />
   	    Parent: 
   	    <select name='m_parent_id'>
   	        <option selected value='0'>None</option>
@@ -20,6 +28,11 @@
   echo "
   	    </select>
             <br /><br />
+        <input type='checkbox' name='m_hide' id='mhide'/>
+        <label for='mhide'>Hidden</label>&nbsp;&nbsp;
+        <input type='checkbox' id='mfooter'  name='m_footer'/>
+        <label for='mfooter'>Footer</label>
+        <br /></br >
   	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />
   	</form>

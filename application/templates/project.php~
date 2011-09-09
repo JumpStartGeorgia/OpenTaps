@@ -36,7 +36,7 @@
 					Region :
 				</div>
 				<div>
-					<a style="text-decoration:underline;color:#565656;" href="<?php echo URL.'region/'.$project['region_id']; ?>">	<?php echo $project['region_name']; ?> </a>
+					<a style="text-decoration:none;color:#565656;" href="<?php echo URL.'region/'.$project['region_id']; ?>">	<?php echo $project['region_name']; ?> </a>
 				</div>
 			</div>
 			<div class='project_details_line'>
