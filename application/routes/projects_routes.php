@@ -119,11 +119,11 @@ Slim::get('/admin/projects/:id/', function($id){
 		$this_orgs[] = $s['organization_id'];
 
 
-    $regions_query = "SELECT * FROM regions";
-    $regions = fetch_db($regions_query);
+	$regions_query = "SELECT * FROM regions";
+	$regions = fetch_db($regions_query);
 
-    $sql_places = "SELECT * FROM places";
-    $places = fetch_db($sql_places);
+	$sql_places = "SELECT * FROM places";
+	$places = fetch_db($sql_places);
 	Storage::instance()->content = template('admin/projects/edit', array
 	(
 		'project' =>  read_projects($id),
@@ -131,12 +131,13 @@ Slim::get('/admin/projects/:id/', function($id){
 		'this_tags' => read_tag_connector('proj', $id),
 		'this_orgs' => $this_orgs,
 		'organizations' => $orgs,
-        'regions' => $regions,
-        'places' => $places,
+        	'regions' => $regions,
+        	'places' => $places,
 		'project_types' => config('project_types')
 	));
     }
-    else   	Storage::instance()->content = template('login');
+    else
+	Storage::instance()->content = template('login');
 });
 
 Slim::get('/admin/projects/:id/delete/', function($id){
