@@ -194,6 +194,17 @@ function map_menu_filter_over( ths,filter_text )
 		timeout=null;
 		$('#map_submenu_' + filter_text).css('visibility','visible');
 	}
+	else if( filter_text === 'news' ){
+		 if( filter_text === 'news' ){
+		$('#map_and_menus').children('div').each(function(){
+			if( $(this).attr('id').indexOf('map_submenu') == 0 ){
+				$(this).css('visibility','hidden');
+			}
+		});
+        }
+		window.clearTimeout(timeout);
+		timeout=null;
+	}
 	else if( filter_text === 'date' || !isNaN(filter_text) ){
         if( filter_text === 'date'){
 		$('#map_and_menus').children('div').each(function(){
