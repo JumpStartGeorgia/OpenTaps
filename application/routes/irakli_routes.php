@@ -6,8 +6,12 @@ foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ',' . $place['project_id'] . ',' . $place['pollution_id'] .']';
 Storage::instance()->js_places = $js_places;*/
 
+$news = fetch_db("SELECT n.*,p.longitude,p.latitude FROM news n INNER JOIN places p ON n.place_id = p.id");
+foreach( $news as $new )
+    $js_news[] = '[' . $new['id'] . ',' . $new['longitude'] . ',' . $new['latitude'] .',"' . $new['title'] . '", new Date("' . $new['published_at'] . '") ]';
+Storage::instance()->js_news = $js_news;
+
 $projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_id = pl.id");
-//exit(print_r($projects));
 $js_projects[] = '[ new Date("' . date('Y-m-d') . '") ]';
 foreach($projects as $project)
 	$js_projects[] = '[' . $project['id'] . ', new Date("' . $project['start_at'] . '") , new Date("' . $project['end_at'] . '") , "'. $project['title'] .'", "'. $project['grantee'] .'", "'. $project['budget'] .'", "'. $project['city'] .'","'. $project['type'] .'","'.$project['longitude'] .'","'.$project['latitude'] .'"]';
