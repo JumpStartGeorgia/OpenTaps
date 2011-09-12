@@ -573,7 +573,8 @@ $sql = "UPDATE regions SET name=:name,region_info=:region_info,projects_info=:re
 /*===================================================	  Regions Fontpage	===============================*/
 function region_total_budget($region_id)
 {
-	$total_budget = fetch_db("SELECT SUM(budget) AS total_budget FROM projects WHERE region_id = $region_id;");
+	$total_budget = fetch_db("SELECT SUM(budget) AS total_budget FROM projects
+			LEFT JOIN places ON projects.place_id = places.id WHERE places.region_id = $region_id;");
 	$total_budget = number_format($total_budget[0]['total_budget']);
 
 	return $total_budget;	
@@ -637,14 +638,24 @@ function read_projects($project_id = false)
     if($project_id)
     {
 /*        $sql = "SELECT p.* FROM projects p INNER JOIN regions r ON p.region_id = r.id WHERE p.id = :id";*/
-        $sql = "SELECT p.*,pl.longitude,pl.latitude,r.name region_name,r.id region_id  FROM projects p 
-        		    INNER JOIN places pl ON p.id = pl.project_id 
-        		    INNER JOIN regions r ON p.region_id = r.id 
-					 WHERE p.id=:id";
+        $sql = "
+        SELECT
+            p.*,
+            pl.longitude,
+            pl.latitude,
+            r.name AS region_name,
+            r.id AS region_id
+        FROM projects AS p
+        LEFT JOIN places AS pl
+            ON p.place_id = pl.id
+        LEFT JOIN regions AS r
+            ON pl.region_id = r.id
+        WHERE p.id = :id
+        ;";
         $statement = Storage::instance()->db->prepare($sql);
         $statement->execute(array(':id' => $project_id));
         $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return empty($result) ? array() : $result;    
+        return empty($result) ? array() : $result;
     }
 
     $sql = "SELECT * FROM projects ORDER BY start_at";
@@ -1130,7 +1141,7 @@ function get_organization_chart_data($id)
 
 	$results = $query->fetchAll(PDO::FETCH_ASSOC);
 
-//    print_r($results);exit;
+    //  print_r($results);exit;
     
 	$b = FALSE;
 
@@ -1237,7 +1248,11 @@ function get_region_chart_data($id)
 
 
 	/*=========================		PIE 1		=============================*/
-	$sql = "SELECT title,budget FROM projects WHERE region_id = :id;";
+	$sql = "
+		SELECT title,budget FROM projects
+		LEFT JOIN places ON projects.place_id = places.id
+		WHERE places.region_id = :id LIMIT 0,1
+	;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
 
@@ -1248,7 +1263,7 @@ function get_region_chart_data($id)
 	foreach ( $results as $r )
 	{
 		$i = $v[1][] = str_replace("$", "", str_replace(",", "", $r['budget']));
-		$b OR $b = ( $i > 100 );
+		$b OR $b = ($i > 100);
 		$names[1][] = str_replace(" ", "+", $r['title']);
 	}
 
@@ -1272,13 +1287,15 @@ function get_region_chart_data($id)
 
 	/*=========================		COLUMN 1		=============================*/
 
-	$sql = "SELECT start_at FROM projects WHERE region_id = :id ORDER BY start_at LIMIT 0,1;";
+	$sql = "SELECT start_at FROM projects LEFT JOIN places ON projects.place_id = places.id
+		WHERE places.region_id = :id ORDER BY start_at LIMIT 0,1;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
 	$first = $query->fetch(PDO::FETCH_ASSOC);
 	$first_year = substr($first['start_at'], 0, 4);
 
-	$sql = "SELECT end_at FROM projects WHERE region_id = :id ORDER BY end_at DESC LIMIT 0,1;";
+	$sql = "SELECT end_at FROM projects LEFT JOIN places ON projects.place_id = places.id
+		WHERE places.region_id = :id ORDER BY end_at DESC LIMIT 0,1;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
 	$last = $query->fetch(PDO::FETCH_ASSOC);
@@ -1292,7 +1309,8 @@ function get_region_chart_data($id)
 	for($i = $first_year; $i <= $last_year; $i ++):
 		$names[2][] = $i;
 
-		$sql = "SELECT budget,end_at,start_at FROM projects WHERE region_id = :id AND start_at <= :start;";
+		$sql = "SELECT budget,end_at,start_at FROM projects LEFT JOIN places ON projects.place_id = places.id
+		WHERE places.region_id = :id AND start_at <= :start;";
 		$query = db()->prepare($sql);
 		$query->execute(array(':id' => $id, ':start' => $i . "-12-31"));
 		$fetch = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -1339,7 +1357,10 @@ function get_region_chart_data($id)
 		  INNER JOIN project_organizations AS po
 		  ON po.organization_id = o.id
 		  INNER JOIN projects AS p
-		  ON p.id = po.project_id AND p.region_id = :id
+		  ON p.id = po.project_id
+		  LEFT JOIN places
+		  ON p.place_id = places.id
+		  WHERE places.region_id = :id
 		  ORDER BY o.name
 		";
 	$query = db()->prepare($query);

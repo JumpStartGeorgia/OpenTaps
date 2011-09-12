@@ -62,10 +62,10 @@
 		<div><?php echo $organization['projects_info']; ?></div>
 		<p>PROJECT LISTING</p>
 		
-			<table style="width:100px;margin-left:0px;margin-bottom:30px;float:left;">
+			<table style="margin-left:0px;margin-bottom:30px;float:left;">
 				<?php foreach($projects AS $project): ?>
 				<tr>	
-					<td><a href="<?php echo URL.'project/'.$project['id']; ?>"><font style="font-family:arial;font-size:11pt;text-decoration:none;color:#656565;"><?php echo $project['title']; ?></font></a></td>
+					<td><a style='text-decoration:underline;' href="<?php echo URL.'project/'.$project['id']; ?>"><font style="font-family:arial;color:#656565;"><?php echo $project['title']; ?></font></a></td>
 				</tr>			
 				<?php endforeach; ?>
 			</table>		

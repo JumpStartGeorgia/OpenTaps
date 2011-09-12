@@ -97,7 +97,7 @@
   	    </select>
   	    <br /><br />
 
-  	    <label for='ptypes'>Project Types: (hold down Ctrl to select multiple)</label>
+  	    <label for='ptypes'>Project Type:</label>
   	    <br />
   	    <select name='p_type' id='ptypes'>
   	      <?php
