@@ -184,6 +184,9 @@ div.news_each_menu div
 
 
 
+#region_link{ text-decoration:none;color:#4CBEFF; }
+#region_link:hover{ text-decoration:underline; }
+
 
 
 
