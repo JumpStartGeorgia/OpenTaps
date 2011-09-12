@@ -10,5 +10,6 @@ return array(
     	'Irrigation',
     	'Water Quality',
     	'Water Accidents'
-    )
+    ),
+    'tags_on_single_page' => 15
 );

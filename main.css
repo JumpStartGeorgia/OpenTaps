@@ -184,13 +184,11 @@ div.news_each_menu div
 
 
 
-#region_link{ text-decoration:none;color:#4CBEFF; }
-#region_link:hover{ text-decoration:underline; }
+#region_link{ text-decoration: none; color: #4CBEFF; }
+#region_link:hover{ text-decoration: underline; }
 
 
-
-
-.content{ width: 932px; /*float:left;*/ min-height: 120px; margin-top: 0px; padding: 0; }
+.content{ width: 932px; min-height: 120px; margin-top: 0px; padding: 0; }
 
 
 
