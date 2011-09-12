@@ -20,6 +20,7 @@
 		var region_map_latitude = false;
 		var region_make_def_markers = false;
 		var region_show_def_buttons = true;
+		var region_marker_click = true;
 	</script>
     </head>
     <body onload="init()">
@@ -258,6 +259,8 @@
         	        
         	        
         	</div>
+        	
+        	<div class="group" style="height: 1.5em; display: block"></div>
             <?php endif; ?>
 
 	    <div class='content group'>

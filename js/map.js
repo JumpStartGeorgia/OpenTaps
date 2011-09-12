@@ -15,6 +15,7 @@ var map_confs = {"boundsLeft": region_map_boundsLeft != false ? region_map_bound
 		"show_default_buttons": region_show_def_buttons == false ? region_show_def_buttons : true,
 		"marker_click" : region_marker_click == false ? region_marker_click : true 
 		};
+		
 var mapspot_confs = {"boundsLeft":38.704833984374,
 		     "boundsBottom":-45.120849609376,
 		     "boundsRight":49.141845703124,
@@ -150,7 +151,7 @@ function makeMarker(img_source,img_width,img_height,lon,lat,id,i)
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
     var ico = new OpenLayers.Icon(img_source,size,offset);
     var marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),ico);
-    	if( map_confs.region_marker_click ){
+    	if( map_confs.marker_click ){
     marker.events.register('click', marker, function(e){
     		 marker_id = id;
     		 marker_animate(e.target.id, lon, lat,i);	
@@ -498,7 +499,7 @@ function map_init()
 			makeMarker("../../images/marker.png",20,20,map_confs.lon,map_confs.lat);
 		}
 			
-	map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);
+	map.addControls([panel,nav/*,new OpenLayers.Control.MousePosition()*/]);
 	map.zoomTo(map_confs.zoom);
 	if( map_confs.show_default_buttons ){
 		new function (){
@@ -508,8 +509,8 @@ function map_init()
 				
 		}
 	}
-		console.log(map_confs.lon);
-			console.log(map_confs.lat);
+	//	console.log(map_confs.lon);
+//			console.log(map_confs.lat);
 	map.setCenter(new OpenLayers.LonLat(map_confs.lon,map_confs.lat));
 	
 }
