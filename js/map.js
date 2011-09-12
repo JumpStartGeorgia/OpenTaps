@@ -490,14 +490,14 @@ function map_init()
 	map.addLayers([deven,devka]);//[mapspot_layer]);
 	addMarkerLayer("Marker Layer");
 	
-	if(	map_confs.make_default_markers	  ){
+	if(	map_confs.make_default_markers	  )//{
 		for(var i=0;i<places.length;i++){
 			makeMarker("images/marker.png",20,20,places[i][1],places[i][2]);
 			}
-		}
+		/*}
 		else{
 			makeMarker("../../images/marker.png",20,20,map_confs.lon,map_confs.lat);
-		}
+		}*/
 			
 	map.addControls([panel,nav/*,new OpenLayers.Control.MousePosition()*/]);
 	map.zoomTo(map_confs.zoom);
