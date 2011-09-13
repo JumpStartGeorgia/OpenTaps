@@ -106,7 +106,7 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     $query->execute(array(':id' => $id));
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
-    $total_pages = ($total - $total % $tosp) / $tosp + 1;
+    $total_pages = ($total <= $tosp) ? 1 : ($total - $total % $tosp) / $tosp;
     ($page > $total_pages) AND die('invalid page');
 
     $query = "
@@ -120,7 +120,7 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     			tag_connector." . $prefix . "_id = " . $table . ".id
     		WHERE
     			tag_connector.tag_id = :id
-    		LIMIT " . ($tosp * $page - $tosp). ", ." . $tosp . ";
+    		LIMIT " . ($tosp * $page - $tosp). ", " . $tosp . ";
     	     ";
     $query = db()->prepare($query);
     $query->execute(array(':id' => $id));

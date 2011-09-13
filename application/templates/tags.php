@@ -57,28 +57,31 @@
     		    </div>
     		</div>
     	    </div>
-    	<?php endforeach; ?>
+    	<?php endforeach;?>
     	</div>
 
+<?php if ($total_pages > 1): ?>
     	<div id='pages'>
     	    <?php if ($current_page > 1): ?>
-    	    	<a href='<?php /* echo URL::site("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1) . "/") */ ?>' class='prevnext'><</a>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1)) ?>' class='prevnext'><</a>
     	    <?php endif; ?>
     	    <?php
     	    for ($page = 1; $page <= $total_pages; $page ++):
     	      if ($page != $current_page): ?>
-    	    	<a href='<?php /* echo URL::site("tag/" . $def . "/" . $tag_name . "/" . $page . "/") */ ?>'>
-    	    		<?php echo $page; ($total_pages == $page) OR print("|"); ?>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . $page) ?>'>
+    	    		<?php echo $page; ($total_pages == $page) OR print(" |"); ?>
     	    	</a>
     	    <?php
     	      else:
-		echo $page; ($total_pages == $page) OR print("|");
+		echo $page; ($total_pages == $page) OR print(" |");
     	      endif;
     	    endfor;
     	    if ($current_page < $total_pages): ?>
-    	    	<a href='<?php /* echo URL::site("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1) . "/") */ ?>' class='prevnext'>></a>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1)) ?>' class='prevnext'>></a>
     	    <?php endif; ?>
     	</div>
+<?php endif; ?>
+
     </div>
 
     <div id='right_list'>
