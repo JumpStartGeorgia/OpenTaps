@@ -1,5 +1,6 @@
 <?php
 
+
 ################################################################ News show routes start
 
 Slim::get('/news/', function()
@@ -17,7 +18,7 @@ Slim::get('/admin/news/', function()
 );
 
 Slim::get('/admin/news/new/', function()
-<<<<<<< HEAD
+
         {
             if (!userloggedin())
             {
@@ -25,17 +26,18 @@ Slim::get('/admin/news/new/', function()
                 exit;
             }
             Storage::instance()->content = template('admin/news/new', array(
-                'all_tags' => read_tags()
+                                                        'all_tags' => read_tags(),
+                                                        'places' => fetch_db('SELECT * FROM places')
                     ));
         }
 );
 
-Slim::get('/admin/news/:id/', function($id)
+/*Slim::get('/admin/news/:id/', function($id)
         {
             Storage::instance()->content = userloggedin() ? template('admin/news/edit', array('news' => read_news(false, $id), 'all_tags' => read_tags(), 'news_tags' => read_tag_connector('news', $id))) : template('login');
         }
 );
-=======
+
 {
 	if (!userloggedin())
 	{
@@ -47,7 +49,7 @@ Slim::get('/admin/news/:id/', function($id)
         'all_tags' => read_tags()
     ));
 }
-);
+);*/
 
 Slim::get('/admin/news/:id/', function($id){
     Storage::instance()->content = userloggedin()
@@ -59,7 +61,7 @@ Slim::get('/admin/news/:id/', function($id){
                        ))
     	: template('login');
 });
->>>>>>> live-ika
+
 
 Slim::get('/admin/news/:id/delete/', function($id)
         {
@@ -76,7 +78,7 @@ Slim::get('/admin/news/:id/delete/', function($id)
         }
 );
 
-<<<<<<< HEAD
+/*
 Slim::post('/admin/news/create/', function()
         {
             if (userloggedin())
@@ -92,9 +94,9 @@ Slim::post('/admin/news/create/', function()
             else
                 Storage::instance()->content = template('login');
         }
-);
+        );*/
 
-Slim::post('/admin/news/:id/update/', function($id)
+/*Slim::post('/admin/news/:id/update/', function($id)
         {
             if (userloggedin())
             {
@@ -109,8 +111,8 @@ Slim::post('/admin/news/:id/update/', function($id)
             else
                 Storage::instance()->content = template('login');
         }
-);
-=======
+);*/
+
 Slim::post('/admin/news/create/', function(){
     if(userloggedin())
     {
@@ -140,5 +142,7 @@ Slim::post('/admin/news/:id/update/', function($id){
     else
 	Storage::instance()->content = template('login');
 });
->>>>>>> live-ika
+
 ################################################################ News admin routes end
+
+

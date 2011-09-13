@@ -36,10 +36,15 @@ Storage::instance()->show_map = TRUE;
 require_once DIR . 'application/routes/default_routes.php';
 require_once DIR . 'application/routes/irakli_routes.php';
 require_once DIR . 'application/routes/projects_routes.php';
+
 require_once DIR . 'application/routes/organization_routes.php';
+
 require_once DIR . 'application/routes/tags_routes.php';
+
 require_once DIR . 'application/routes/menu_routes.php';
+
 require_once DIR . 'application/routes/news_routes.php';
+
 require_once DIR . 'application/routes/region_routes.php';
 
 Slim::run();
