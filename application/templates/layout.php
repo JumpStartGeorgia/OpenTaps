@@ -269,23 +269,29 @@ console.log(news[0]);
               <?php echo Storage::instance()->content ?>
             </div>
 
+
+	    <div id="bot-container" class="group" style="position: relative; width: 950px; margin-top: 55px">
+		<div id="about-us" class="group">
+<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+		</div>
+		<div id="contact-us" class="group">
+<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+		</div>
+	    </div>
+
+
             <div class='bottom group'>
-                <div class='bottom0'>
-		    © 2011 OPEN TAPS. &nbsp;&nbsp; Designed and developed by
+                <div class='bottom1'>
+		    © 2011 OPEN TAPS. &nbsp; Designed and developed by
 		    <a href='http://jumpstart.ge/'>Jumpstart Georgia</a>
 		</div>
-	        <div class='bottom1'>Donate | About Us | Report</div>
-	        <div class='bottom2'>GEORGIAN WATER PROJECT </div>
-	        <div class='bottom3'>
-	            <img src='<?php echo URL ?>images/connect_fb.jpg' />
-	            &nbsp;CONNECT HERE&nbsp; <img src='<?php echo URL ?>images/connect.jpg' />
+	        <div class="bottom2">
+	            <span id="about_us_button">ABOUT US</span> &nbsp;&nbsp;|&nbsp;&nbsp;
+	            <span id="contact_us_button">CONTACT US</span>
 	        </div>
 	    </div>
 
         </div>
-
-
-
 
 
 
@@ -302,5 +308,7 @@ console.log(news[0]);
 	<script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/menu.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/bottom_toggles.js"></script>
     </body>
 </html>

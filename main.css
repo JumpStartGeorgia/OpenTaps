@@ -279,17 +279,18 @@ div.news_each_menu div
 
 
 
-div.bottom{ width:950px; margin-top:55px; border-top:2px solid #ccc; padding-top:4px; }
-div.bottom0, div.bottom1, div.bottom2, div.bottom3{ float:left; font-size:0.7em; font-family:arial; color:grey; }
-div.bottom0{ margin-left:30px; }
+div.bottom{ width:950px; border-top:2px solid #ccc; padding-top: 5px; }
+div.bottom1, div.bottom2{ float:left; font-size:0.7em; font-family: arial; color:grey; }
+div.bottom1{ margin-left: 1px; }
+
+#about_us_button, #contact_us_button{ cursor: pointer; }
+#about-us, #contact-us { display: none; position: absolute; left: 0; bottom: 0 }
 
 div.bottom a{ color:grey; text-decoration:none; }
 div.bottom a:hover{ text-decoration:underline; color:black; }
 
-div.bottom2{ margin-left:55px; color:#909090; }
-div.bottom3{ float:right; vertical-align:middle; }
-
-div.bottom3 img{ vertical-align:middle; margin-top:-6px; }
+div.bottom2{ float:right; margin-right: 2px; font-size: 10px; }
+div.bottom2 img{ vertical-align:middle; margin-top:-6px; }
 
 
 
