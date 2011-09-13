@@ -4,9 +4,101 @@
 ################################################################ News show routes start
 
 Slim::get('/news/', function()
-        {
-            Storage::instance()->content = template('news', array('news_all' => read_news(FALSE)));
-        }
+    {
+	$nosp = config('news_on_single_page');
+
+	$query = "  SELECT COUNT(id) AS total FROM news";
+	$query = db()->prepare($query);
+	$query->execute(array());
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+
+	$query = "SELECT tags.name,
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+		  FROM tag_connector
+		  JOIN tags ON tag_connector.tag_id = tags.id
+		  JOIN news ON tag_connector.news_id = news.id;";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	Storage::instance()->content = template('news', array(
+		'news_all' => read_news_one_page(0, $nosp),
+    		'current_page' => 1,
+    		'total_pages' => $total_pages,
+    		'this_type' => NULL,
+    		'tags' => $tags
+	));
+    }
+);
+
+Slim::get('/news/page/:page/', function($page)
+    {
+	($page > 0) OR die('invalid page');
+	$nosp = config('news_on_single_page');
+
+	$query = "  SELECT COUNT(id) AS total FROM news";
+	$query = db()->prepare($query);
+	$query->execute(array());
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+	($page > $total_pages) AND die('invalid page');
+
+	Storage::instance()->content = template('news', array(
+		'news_all' => read_news_one_page(($nosp * $page - $nosp), $nosp),
+    		'current_page' => $page,
+    		'total_pages' => $total_pages,
+    		'this_type' => NULL
+	));
+    }
+);
+
+Slim::get('/news/type/:type/', function($type)
+    {
+	in_array($type, config('news_types')) OR die('invalid news type');
+
+	$nosp = config('news_on_single_page');
+
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type";
+	$query = db()->prepare($query);
+	$query->execute(array(':type' => $type));
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+
+	Storage::instance()->content = template('news', array(
+		'news_all' => read_news_one_page(0, $nosp, $type),
+    		'current_page' => 1,
+    		'total_pages' => $total_pages,
+    		'this_type' => $type
+	));
+    }
+);
+
+Slim::get('/news/type/:type/:page/', function($type, $page)
+    {
+	($page > 0) OR die('invalid page');
+	in_array($type, config('news_types')) OR die('invalid news type');
+
+	$nosp = config('news_on_single_page');
+
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type";
+	$query = db()->prepare($query);
+	$query->execute(array(':type' => $type));
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+	($page > $total_pages) AND die('invalid page');
+
+	Storage::instance()->content = template('news', array(
+		'news_all' => read_news_one_page(($nosp * $page - $nosp), $nosp, $type),
+    		'current_page' => $page,
+    		'total_pages' => $total_pages,
+    		'this_type' => $type
+	));
+    }
 );
 
 ################################################################ News show routes end
