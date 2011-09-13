@@ -120,7 +120,7 @@ console.log(news[0]);
         	        	<img style="position:absolute;right:5px;top:8px;" src="<?php echo URL.'images/left_arrow.gif'; ?>" width="15px" height="15px"/>
         	        </div>
         	        <div id="filter_news" onclick="map_menu_filter_click('news');" onmouseover="map_menu_filter_over(this.id,'news');" onmouseout="map_menu_filter_out(this.id,'news');" style="position:absolute;z-index:5000;border-top:1px dotted #A6A6A6;width:170px;height:27px;background-color:#F5F5F5;top:53px;">
-        	         <input id="filter_checkbox_news" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" />
+        	         <input id="filter_checkbox_news" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" onclick="map_menu_filter_click('news')"/>
         	        	<img style="position:absolute;left:25px;top:2px;float:left;" src="<?php echo URL.'images/news.gif'; ?>"/>
         	        	<p style="position:absolute;left:55px;top:4px;float:left;"><font id="filter_text_news" size="1pt">News</font></p>
         	        	<!--<img style="position:absolute;right:5px;top:8px;" src="<?php echo URL.'images/left_arrow.gif'; ?>" width="15px" height="15px"/>-->
@@ -144,17 +144,17 @@ console.log(news[0]);
         	        
         	        <div id="map_submenu_projects" style="position:absolute;top:40px;right:195px;z-index:6000;width:180px;height:0px;visibility:hidden;">
         	        <div id="filter_projects_completed" onclick="map_menu_filter_click('projects_completed');" onmouseover="map_menu_filter_over(this.id,'projects_completed');" onmouseout="map_menu_filter_out(this.id,'projects_completed');" style="z-index:5000;border:0px solid #000;width:180px;height:27px;background-color:#F5F5F5;">
-        	        	<input id="filter_checkbox_projects_completed" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" />
+        	        	<input id="filter_checkbox_projects_completed" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" onclick="map_menu_filter_click('projects_completed')"/>
         	        	<img style="position:absolute;left:25px;top:2px;float:left;" src="<?php echo URL.'images/project.gif'; ?>"/>
         	        	<p style="position:absolute;left:55px;top:4px;float:left;"><font id="filter_text_projects_completed" size="1pt">Completed</font></p>
         	        </div>
         	        <div id="filter_projects_current" onclick="map_menu_filter_click('projects_current');" onmouseover="map_menu_filter_over(this.id,'projects_current');" onmouseout="map_menu_filter_out(this.id,'projects_current');" style="position:absolute;z-index:5000;border-top:1px dotted #A6A6A6;width:180px;height:27px;background-color:#F5F5F5;top:27px;">
-        	        	<input id="filter_checkbox_projects_current" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" />
+        	        	<input id="filter_checkbox_projects_current" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" onclick="map_menu_filter_click('projects_current')"/>
         	        	<img style="position:absolute;left:25px;top:2px;float:left;" src="<?php echo URL.'images/project-current.gif'; ?>"/>
         	        	<p style="position:absolute;left:55px;top:4px;float:left;"><font id="filter_text_projects_current" size="1pt">Current</font></p>
         	        </div>
         	        <div id="filter_projects_scheduled" onclick="map_menu_filter_click('projects_scheduled');" onmouseover="map_menu_filter_over(this.id,'projects_scheduled');" onmouseout="map_menu_filter_out(this.id,'projects_scheduled');" style="position:absolute;z-index:5000;border-top:1px dotted #A6A6A6;width:180px;height:27px;background-color:#F5F5F5;top:55px;">
-        	        	<input id="filter_checkbox_projects_scheduled" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" />
+        	        	<input id="filter_checkbox_projects_scheduled" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" onclick="map_menu_filter_click('projects_scheduled')" />
         	        	<img style="position:absolute;left:25px;top:2px;float:left;" src="<?php echo URL.'images/project-scheduled.gif'; ?>"/>
         	        	<p style="position:absolute;left:55px;top:4px;float:left;"><font id="filter_text_projects_scheduled" size="1pt">Scheduled</font></p>
         	        </div>
@@ -218,7 +218,7 @@ console.log(news[0]);
         	        foreach( $years_1 as $year ):  
         	        	?>
         	        <div id="filter_date_<?php echo $year; ?>" onclick="map_menu_filter_click('<?php echo $year; ?>');" onmouseover="map_menu_filter_over(this.id,'<?php echo $year; ?>');" onmouseout="map_menu_filter_out(this.id,'<?php echo $year; ?>');" style="position:absolute;z-index:5000;border-top:<?php echo ($i!=count($years_1)-1) ? 1 : 0; ?>px dotted #A6A6A6;width:180px;height:20px;background-color:#F5F5F5;top:<?php echo  $top; ?>px;">
-        	        	<input id="filter_checkbox_<?php echo $year; ?>" style="position:absolute;top:5px;left:5px;float:left;" type="checkbox" />
+        	        	<input id="filter_checkbox_<?php echo $year; ?>" style="position:absolute;top:5px;left:5px;float:left;" type="checkbox" onclick="map_menu_filter_click('<?php echo $year; ?>')"/>
         	        	<p style="position:absolute;left:20px;top:1px;float:left;"><font id="filter_text_<?php echo $year; ?>" size="1pt"><?php echo $year; ?></font></p>
         	        </div>
         	        <?php
@@ -235,7 +235,7 @@ console.log(news[0]);
         	        foreach( $years_2 as $year ):  
         	        	?>
         	        <div id="filter_date_<?php echo $year; ?>" onclick="map_menu_filter_click('<?php echo $year; ?>');" onmouseover="map_menu_filter_over(this.id,'<?php echo $year; ?>');" onmouseout="map_menu_filter_out(this.id,'<?php echo $year; ?>');" style="position:absolute;z-index:5000;border-top:<?php echo ($i!=count($years_2)-1) ? 1 : 0; ?>px dotted #A6A6A6;width:180px;height:20px;background-color:#F5F5F5;top:<?php echo  $top; ?>px;">
-        	        	<input id="filter_checkbox_<?php echo $year; ?>" style="position:absolute;top:5px;left:5px;float:left;" type="checkbox" />
+        	        	<input id="filter_checkbox_<?php echo $year; ?>" style="position:absolute;top:5px;left:5px;float:left;" type="checkbox" onclick="map_menu_filter_click('<?php echo $year; ?>')"/>
         	        	<p style="position:absolute;left:20px;top:1px;float:left;"><font id="filter_text_<?php echo $year; ?>" size="1pt"><?php echo $year; ?></font></p>
         	        </div>
         	        <?php

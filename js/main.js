@@ -1,5 +1,4 @@
 
-
 function init(){
 	map_init();
 	chart_init();
@@ -40,7 +39,7 @@ var content = [];
              }
              else{
 	             
-            	 content.push("<center style='margin-top:30px;'><p><font style='color:#FFF;font-family:arial;font-size:12pt;'>"+news[i][3]+"</font></p>");
+            	 content.push("<center style='margin-top:30px;margin-left:10px;'><p><font style='color:#FFF;font-family:arial;font-size:17pt;'>"+news[i][3]+"</font></p>");
                 content.push("<hr style='height:1px;width:100px;border:0px;border-top:1px dotted #FFF;'/>");
                 content.push("<p><font style='font-size:10pt;color:#FFF;'><a href='"+news[i][0]+"'>Naxe</a></font></p>");
                 content.push("<p><font style='font-size:10pt;color:#FFF;'>"+news[i][4].getMonth()+"."+news[i][4].getDate()+"."+news[i][4].getFullYear()+"</font></p>");
@@ -53,15 +52,14 @@ var content = [];
 var click_done = false;
 function marker_animate(id, lon, lat, type, i)
 {
-	
 	if (click_done == false)
-	{
+   	{
             click_done = true;
-            
+
             if( type === 'news'){
-            	var width = 155;
-            	var height = 170;
-            	var top = -80;
+            	var width = 250;
+            	var height = 240;
+            	var top = -105;
             	var left = -110;
 				}else{
 					var width = 250;
@@ -87,7 +85,7 @@ function marker_animate(id, lon, lat, type, i)
                 //console.log(  show_data(i) );
               if( type === 'news' ){
               		var size = {
-							'width': 100,
+							'width': 190,
 							'height':100           			
               		};
 				  }else{

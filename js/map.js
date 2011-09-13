@@ -54,6 +54,11 @@ function setUpPanControls(){
 		}
 		else{
 			map_menu_animate = false;
+            $('#map_and_menus').children('div').each(function(){
+			if( $(this).attr('id').indexOf('map_submenu') == 0 ){
+				$(this).css('visibility','hidden');
+			}
+            });
 		 	$("#map_menu").animate({'height':'0px'},500,function(){
 		 		$(this).css('visibility','hidden');
 		 	});
@@ -152,6 +157,7 @@ function makeMarker(img_source,img_width,img_height,lon,lat,id,type,i)
     var ico = new OpenLayers.Icon(img_source,size,offset);
     var marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),ico);
     	if( map_confs.marker_click ){
+
     marker.events.register('click', marker, function(e){
     	 marker_id = id;
   //  alert(marker_id);
@@ -339,7 +345,7 @@ else if( filter === 'filter_checkbox_news' ){
 
 function change_filter_checkboxes(checkbx)
 {
-
+    if( checkbx != 'projects' && checkbx != 'type' && checkbx != 'date' ){
 	var filter_checkboxes = document.getElementById('map_and_menus').getElementsByTagName('input');
 	for(var i=0,len=filter_checkboxes.length;i<len;i++)
 	{
@@ -364,6 +370,7 @@ function change_filter_checkboxes(checkbx)
                 }  
             }
 	}
+}
 }
 
 function check_filter_checkboxes()
@@ -390,13 +397,17 @@ function map_menu_filter_click( checkbox_text )
 				$('#filter_checkbox_projects_current').removeAttr('checked');
 				$('#filter_checkbox_projects_scheduled').removeAttr('checked');
 			}
-    	map.removeLayer(markers);
+        
+
+         if( popup != null ){
+            popup.destroy();
+            popup = null;
+            click_done = false;
+        }
+        map.removeLayer(markers);
+        
 		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
-		for( var i in map.popups ){
-			map.removePopup(map.popups[i]);
-				click_done = false;
-			}
 		
 	}
 	else{
@@ -413,13 +424,16 @@ function map_menu_filter_click( checkbox_text )
         
         
         change_filter_checkboxes(checkbox_text);
+        if( popup != null ){
+            popup.destroy();
+            popup = null;
+            click_done = false;
+        }
 		map.removeLayer(markers);
 		addMarkerLayer("Marker Layer");
 		check_filter_checkboxes();
 	}
 }
-
-
 
 
 
