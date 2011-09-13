@@ -2,7 +2,7 @@
 
 return array(
     'db_user' => 'root',
-    'db_pass' => 'password',
+    'db_pass' => 'asdfg',
     'project_types' => array(
     	'Sewage',
     	'Water Supply',
@@ -10,5 +10,12 @@ return array(
     	'Irrigation',
     	'Water Quality',
     	'Water Accidents'
+    ),
+    'news_types' => array(
+		'text',
+		'photo',
+		'video',
+		'document',
+		'chart'
     )
 );

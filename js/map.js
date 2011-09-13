@@ -145,7 +145,7 @@ function make_popup(lonlat, size, content)
 }
 
 var marker_id = null;
-function makeMarker(img_source,img_width,img_height,lon,lat,id,i)
+function makeMarker(img_source,img_width,img_height,lon,lat,id,type,i)
 {
     var size = new OpenLayers.Size(img_width,img_height);
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
@@ -153,8 +153,9 @@ function makeMarker(img_source,img_width,img_height,lon,lat,id,i)
     var marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),ico);
     	if( map_confs.marker_click ){
     marker.events.register('click', marker, function(e){
-    		 marker_id = id;
-    		 marker_animate(e.target.id, lon, lat,i);	
+    	 marker_id = id;
+  //  alert(marker_id);
+    		 marker_animate(e.target.id, lon, lat,type,i);	
     		 $(e.target).css('cursor','default');
     });
     marker.events.register('mouseover',marker,function(e){
@@ -256,20 +257,20 @@ function map_menu_filter_out( ths,filter_text )
 
 function display_filter_markers( filter )
 {
-	
+
 
 if( filter ===  'filter_checkbox_projects_completed'){
 	for(var i=0;i<projects.length-1;i++)
 		if( projects[i+1][2].getTime() < projects[0][0].getTime()  ){
 			 var img = "images/project.gif";
-			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
         }
 }
 else if( filter === 'filter_checkbox_projects_current' ){
 	for(var i=0;i<projects.length-1;i++){
 		if( projects[i+1][1].getTime() < projects[0][0].getTime() && projects[i+1][2].getTime() > projects[0][0].getTime()  ){
 			 var img = "images/project-current.gif";
-			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
 		}
 	}
 }
@@ -277,44 +278,44 @@ else if( filter === 'filter_checkbox_projects_scheduled' ){
 	for(var i=0;i<projects.length-1;i++){
 		if(  projects[i+1][1].getTime() > projects[0][0].getTime() ){
 				 var img = "images/project-scheduled.gif";
-				 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+				 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
 		}
 	}
 }
 else if( filter === 'filter_checkbox_Water_Pollution' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Pollution" ){
-			makeMarker("images/water-pollution.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			makeMarker("images/water-pollution.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Sewage' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Sewage" ){
-			makeMarker("images/sewage.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			makeMarker("images/sewage.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Water_Supply' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Supply" ){
-			makeMarker("images/water-supply.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			makeMarker("images/water-supply.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Irrigation' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Irrigation" ){
-			makeMarker("images/irrigation.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			makeMarker("images/irrigation.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Water_Quality' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Quality" ){
-			makeMarker("images/water-quality.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			makeMarker("images/water-quality.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Water_Accidents' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Accidents" ){
-			makeMarker("images/water-accidents.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			makeMarker("images/water-accidents.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( !isNaN(filter.substr(filter.length-4)) ){
@@ -322,9 +323,15 @@ else if( !isNaN(filter.substr(filter.length-4)) ){
 	for(var i=0;i<projects.length-1;i++){		
 			if( projects[i+1][1].getFullYear() == year || projects[i+1][2].getFullYear() == year || (projects[i+1][2].getFullYear() > year && projects[i+1][1].getFullYear() < year) ){
 			 var img = "images/project.gif";
-			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],i);
+			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
 			}
 	}
+}
+else if( filter === 'filter_checkbox_news' ){
+    for(var i=0;i<news.length;i++){
+        var img = "images/news.gif";
+        makeMarker(img,20,20,news[i][1],news[i][2],1,'news',i);
+    }
 }
 
 
@@ -352,7 +359,7 @@ function change_filter_checkboxes(checkbx)
                 }
             }
           else{
-                if( filter_checkboxes[i].id.indexOf('projects')!=-1 || !isNaN( filter_checkboxes[i].id.substr(filter_checkboxes[i].id.length-4) )  ){
+                if( filter_checkboxes[i].id.indexOf('projects')!=-1 || !isNaN( filter_checkboxes[i].id.substr(filter_checkboxes[i].id.length-4) ) || filter_checkboxes[i].id.indexOf('news')!=-1 ){
                      $(filter_checkboxes[i]).removeAttr('checked'); 
                 }  
             }

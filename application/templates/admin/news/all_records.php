@@ -3,7 +3,7 @@
   	<div class='panel'>
   		<div class='titlepanel'>
   		    <div class='tleft'>Title</div>
-  		    <div class='tcenter'>Body</div>
+  		   <!-- <div class='tcenter'>Body</div>-->
   		    <div class='rright'>Manage</div>
   		</div>
   ";
@@ -19,7 +19,7 @@
       echo "
 		<div class='record'>
 		  <div class='rleft'> " . $news['title'] . "</div>
-		  <div class='rcenter'> " . $news['body'] . "</div>
+		 <!--<div class='rcenter'> " . $news['body'] . "</div>-->
 		  <div class='rright'>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
 		      <a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>

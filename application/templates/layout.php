@@ -27,6 +27,8 @@
  	<script type="text/javascript">
 	   var places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>];
  	   var projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
+       var news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>];
+console.log(news[0]);
  	</script>
         <div class='main group'>
 

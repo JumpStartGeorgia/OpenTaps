@@ -156,7 +156,7 @@ function read_news($limit = false,$from = 0,$news_id = false)
     return $statement->fetchAll();
 }
 
-function add_news($title, $body, $filedata, $tags)
+function add_news($title, $body, $filedata, $category, $place, $tags)
 {
     if( strlen($title) < 3 || strlen($body) < 11 )
 	return "either title or body is too short";
@@ -165,21 +165,23 @@ function add_news($title, $body, $filedata, $tags)
     if( substr($up, 0, 8) != "uploads/" && $up != "" )		//return if any errors
         return $up;
 
-    $sql = "INSERT INTO  `opentaps`.`news` (`title`, `body`, `published_at`, `image`) VALUES(:title, :body, :published_at, :image)";
+    $sql = "INSERT INTO  `opentaps`.`news` (`title`, `body`, `published_at`, `image`, category, place_id) VALUES(:title, :body, :published_at, :image, :category, :place)";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
  	':title' => $title,
  	':body' => $body,
  	':published_at' => date("Y-m-d H:i"),
- 	':image' => $up
+ 	':image' => $up,
+    ':category' => $category,
+    ':place' => $place
     ));
 	add_tag_connector('news',Storage::instance()->db->lastInsertId(),$tags);
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
     return ($exec) ? $metarefresh : "couldn't insert into database";
 }
 
-function update_news($id, $title, $body, $filedata, $tags)
+function update_news($id, $title, $body, $filedata, $category, $place, $tags)
 {
     if( strlen($title) < 3 || strlen($body) < 11 || !is_numeric($id) )
 	return "either title or body is too short, or invalid id";
@@ -189,22 +191,26 @@ function update_news($id, $title, $body, $filedata, $tags)
 	return $up;
     elseif( $up == "" )
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` =  :body WHERE  `news`.`id` =:id";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` =  :body, category = :category, place_id = :place WHERE  `news`.`id` =:id";
         $data = array(
             ':id' => $id,
- 	    ':title' => $title,
- 	    ':body' => $body
+     	    ':title' =>$title,
+            ':body' => $body,
+            ':category' => $category,
+            ':place' =>$place
         );
     }
     else
     {
         delete_image($id);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body WHERE  `news`.`id` =:id";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_id = :place WHERE  `news`.`id` =:id";
         $data = array(
             ':id' => $id,
- 	    ':title' => $title,
- 	    ':body' => $body,
- 	    ':image' => $up
+     	    ':title' => $title,
+            ':body' => $body,
+            ':image' => $up,
+            ':category' => $category,
+            ':place' => $place
         );
     }
     
