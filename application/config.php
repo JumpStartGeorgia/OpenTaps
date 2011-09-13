@@ -18,4 +18,5 @@ return array(
 		'document',
 		'chart'
     )
+    'tags_on_single_page' => 15
 );

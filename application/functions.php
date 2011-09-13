@@ -1265,6 +1265,7 @@ function get_region_chart_data($id)
 	$results = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	$b = FALSE;
+	$v[1] = array();
 
 	foreach ( $results as $r )
 	{

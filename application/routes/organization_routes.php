@@ -35,7 +35,7 @@ Slim::get('/organization/:id/',function($id){
     		'names' => $names,
     		'real_values' => $real_values,
     		'tags' => $tags,
-			'projects' => get_organization_projects($id)
+		'projects' => get_organization_projects($id)
     	));
     	
 });

@@ -60,7 +60,7 @@
 
 		<p>INFO ON PROJECTS</p>
 		<div><?php echo $organization['projects_info']; ?></div>
-		<p>PROJECT LISTING</p>
+		<p>ORGANIZATION PROJECTS</p>
 		
 			<table style="margin-left:0px;margin-bottom:30px;float:left;">
 				<?php foreach($projects AS $project): ?>

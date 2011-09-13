@@ -6,6 +6,13 @@ Slim::get('/region/:id/', function($id){
 
 	list($values, $names, $real_values) = get_region_chart_data($id);
 
+	$query = "SELECT projects.title,projects.id FROM projects
+		  LEFT JOIN places ON places.id = projects.place_id
+		  WHERE places.region_id = :id;";
+	$query = db()->prepare($query);
+	$query->execute(array(':id' => $id));
+	$region_projects = $query->fetchAll(PDO::FETCH_ASSOC);
+
     	Storage::instance()->content = template('region', array(
     		'region' => get_region($id),
     		'region_cordinates' => fetch_db($sql_region_cordinates),
@@ -13,6 +20,7 @@ Slim::get('/region/:id/', function($id){
     		'values' => $values,
     		'names' => $names,
     		'real_values' => $real_values,
+    		'projects' => $region_projects
     	));
 });
 

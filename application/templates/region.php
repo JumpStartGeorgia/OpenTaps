@@ -80,7 +80,16 @@
 		<div><?php echo $region['projects_info']; ?></div>
 	</div>
 
-
+	<div id='project_description' style="margin-bottom:35px;">
+		<p>PROJECTS IN THIS REGION</p>
+		<table style="margin-left:0px;margin-bottom:30px;float:left;">
+			<?php foreach($projects AS $project): ?>
+			<tr>	
+			    <td><a style='text-decoration:underline;' href="<?php echo URL.'project/'.$project['id']; ?>"><font style="font-family:arial;color:#656565;"><?php echo $project['title']; ?></font></a></td>
+			</tr>			
+			<?php endforeach; ?>
+		</table>
+	</div>
 
 
 

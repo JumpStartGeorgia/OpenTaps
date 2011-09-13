@@ -1,9 +1,10 @@
 <?php
 ################################################################ tags show routes start
-
+/*
 Slim::get('/tags/', function(){
     Storage::instance()->content = template('tags', array('limit' => false));
 });
+*/
 
 Slim::get('/tag/:def/:name/', function($def, $name){
      switch( $def ):
@@ -31,25 +32,107 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     $id = $query->fetch(PDO::FETCH_ASSOC);
     $id = $id['id'];
 
+    $tosp = config('tags_on_single_page');
+
     $query = "
     		SELECT
-    			".$table.".*
+    			" . $table . ".*
     		FROM
     			tag_connector
     		INNER JOIN
-    			".$table."
+    			" . $table . "
     		ON
-    			tag_connector.".$prefix."_id = ".$table.".id
+    			tag_connector." . $prefix . "_id = " . $table . ".id
     		WHERE
-    			tag_connector.tag_id = :id;
+    			tag_connector.tag_id = :id
+    		LIMIT 0, " . $tosp . ";
     	     ";
     $query = db()->prepare($query);
     $query->execute(array(':id' => $id));
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    
+    $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
+    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
+    		WHERE tag_connector.tag_id = :id;";
+    $query = db()->prepare($query);
+    $query->execute(array(':id' => $id));
+    $total = $query->fetch(PDO::FETCH_ASSOC);
+    $total = $total['total'];
+    $total_pages = ($total - $total % $tosp) / $tosp + 1;
 
-    Storage::instance()->content = template('tags', array('results' => $result, 'def' => $table, 'tag_name' => $name));
+    Storage::instance()->content = template('tags', array(
+    	'results' => $result,
+    	'def' => $table,
+    	'tag_name' => $name,
+    	'current_page' => 1,
+    	'total_pages' => $total_pages
+    ));
+});
+
+Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
+    ($page > 0) OR die('invalid page');
+
+     switch( $def ):
+        default:
+            $prefix = "proj";
+            $table = "projects";
+            break;
+    	case "project":
+    	    $prefix = "proj";
+    	    $table = "projects";
+    	    break;
+    	case "news":
+    	    $prefix = "news";
+    	    $table = "news";
+    	    break;
+    	case "organization":
+    	    $prefix = "org";
+    	    $table = "organizations";
+    	    break;
+    endswitch;
+
+    $query = "SELECT id FROM tags WHERE name = :name";
+    $query = db()->prepare($query);
+    $query->execute(array(':name' => $name));
+    $id = $query->fetch(PDO::FETCH_ASSOC);
+    $id = $id['id'];
+
+    $tosp = config('tags_on_single_page');
+
+    $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
+    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
+    		WHERE tag_connector.tag_id = :id;";
+    $query = db()->prepare($query);
+    $query->execute(array(':id' => $id));
+    $total = $query->fetch(PDO::FETCH_ASSOC);
+    $total = $total['total'];
+    $total_pages = ($total <= $tosp) ? 1 : ($total - $total % $tosp) / $tosp;
+    ($page > $total_pages) AND die('invalid page');
+
+    $query = "
+    		SELECT
+    			" . $table . ".*
+    		FROM
+    			tag_connector
+    		INNER JOIN
+    			" . $table . "
+    		ON
+    			tag_connector." . $prefix . "_id = " . $table . ".id
+    		WHERE
+    			tag_connector.tag_id = :id
+    		LIMIT " . ($tosp * $page - $tosp). ", " . $tosp . ";
+    	     ";
+    $query = db()->prepare($query);
+    $query->execute(array(':id' => $id));
+    $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    Storage::instance()->content = template('tags', array(
+    	'results' => $result,
+    	'def' => $table,
+    	'tag_name' => $name,
+    	'current_page' => $page,
+    	'total_pages' => $total_pages
+    ));
 });
 
 ################################################################ tags show routes end
