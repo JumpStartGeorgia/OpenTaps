@@ -16,7 +16,8 @@ function config($item)
 
 function href($segments = NULL)
 {
-    return URL . ltrim($segments, '/') . "/";
+    $href = URL . ltrim($segments, '/');
+    return  $href . ((substr($href, -1) == "/") ? NULL : "/");
 }
 
 function db()
@@ -153,6 +154,17 @@ function read_news($limit = false,$from = 0,$news_id = false)
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
     }
+    return $statement->fetchAll();
+}
+
+function read_news_one_page($from, $limit, $type = FALSE)
+{
+    $sql = "SELECT * FROM news " . ($type ? "WHERE category = :type" : NULL) . "
+    	    ORDER BY published_at DESC LIMIT " . $from . ", " . $limit . "";
+    $statement = Storage::instance()->db->prepare($sql);
+    $data = $type ? array(':type' => $type) : NULL;
+    $statement->execute($data);
+
     return $statement->fetchAll();
 }
 
@@ -942,6 +954,9 @@ function get_project_chart_data($id)
 	$query->execute(array(':id' => $id));
 
 	$results = $query->fetchAll(PDO::FETCH_ASSOC);
+	$names[1] = array();
+	$v[1] = array();
+	$real_values[1] = array();
 
 	foreach ( $results as $r )
 	{

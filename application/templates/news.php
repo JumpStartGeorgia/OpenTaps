@@ -1,77 +1,126 @@
 <?php
-  foreach($news_all as $news)
-  {
-      $img = ( strlen($news['image']) > 0 ) ? "<img src=\"" . URL . $news['image'] . "\" width='100px' /> <br/>" : "";
-      echo
-          "<b>" . $news['title'] . "</b> <br />" .
-          $img .
-          $news['body'] . "<hr />
-          <br /><br /><br />"
-      ;
-  }
-/*?>
+	$images = array(
+		'photo' => 'images/newstype_photo.gif',
+		'document' => 'images/newstype_doc.gif',
+		'barchart' => 'images/newstype_barchart.gif',
+		'piechart' => 'images/newstype_piechart.gif',
+		'chart' => 'images/newstype_piechart.gif',
+		'text' => 'images/newstype_text.gif',
+		'video' => 'images/newstype_video.gif'
+	);
+?>
+
 <div id='tag_content'>
     <div id='left_list'>
     	<div class='group headers'>
     	    <div class='headers_left'>NEWS</div>
-    	    <div class='headers_right'>SORT BY ▾</div>
+    	    <?php /*<div class='headers_right' style='cursor: pointer;' onclick='$("#newstype_filter").slideToggle("fast");'>SORT BY ▾</div>
+    	    */ ?>
     	</div>
 
-    	<div class='group' id='titletype'>
-    	    <div id='titletype_left'>TITLE</div>
-    	    <div id='titletype_right'>
-    	    	<span style='color: #9b9b9b'>Type of News: </span>
-    	    	<span class='newstypebg1'></span> Project 
-    	    	<span class='newstypebg2'></span> Media
-    	    	<span class='newstypebg3'></span> Pro Media
+    	<div class='group' id='newstype_filter' style='width: 100%; border-bottom: 1px solid #eee;'>
+    	    <div class='titletype_left' style='padding-left: 11px; font-size:9px;'>
+		    <a href='<?php echo href('news') ?>'
+    	    		class='choosedef<?php empty($this_type) AND print("_selected") ?>'>ALL
+		    </a>
+	    <?php
+		$types = config("news_types");
+		foreach ($types as $type):
+	    ?>
+		    <a href='<?php echo href('news/type/' . $type) ?>'
+    	    		class='choosedef<?php ($type == $this_type) AND print("_selected") ?>'>
+			<?php echo strtoupper($type); ?>
+		    </a>
+	    <?php endforeach; ?>
+    	    </div>
+
+    	    <div class='titletype_right' style='margin-top:4px;'>
+		<?php /*<span style='color: rgba(86, 86, 86, .6)'>Type of news: </span>
+		<div class='newstypebg1'></div> Project
+		<div class='newstypebg2'></div> Media
+		<div class='newstypebg3'></div> Pro Media*/ ?>
     	    </div>
     	</div>
 
     	<div id='internal_container' class='group'>
-    	    <div class='content_each group'>
-	    	<div class='content_each_left' style='border-right: 7px solid #d9f5ff'><!--83ddff 19c1ff-->
-	    	    <div class='content_each_title'>Just an empty space</div>
+	<?php foreach ($news_all as $index => $news): ?>
+    	    <div class='content_each group <?php ($index % 2 == 1) AND print("with_bg"); ?>'>
+<?php
+	$rem = $index % 3;
+	switch($rem):
+		case 1:
+		    $color = "#83ddff";
+		    break;
+		case 2:
+		    $color = "#d9f5ff";
+		    break;
+		case 0:
+		    $color = "#19c1ff";
+		    break;
+	endswitch;
+?>
+	    	<div class='content_each_left' style='border-right: 7px solid <?php echo $color ?>'>
+	    	    <div class='content_each_title'><?php echo $news['title'] ?></div>
 	    	    <div class='content_each_body'>
-	    	    	Just an empty space. With some color in it (probably not blue but any other color that will be in the logo).
-	    	    	 However, important updates.
+	    	    	<?php
+	    	    	    $body = $news['body'];
+	    	    	    (strlen($body) > 200) AND $body = substr($body, 0, 200) . "...";
+	    	    	    echo $body;
+	    	    	?>
 	    	    </div>
 	    	</div>
     		<div class='content_each_right'>
-    		    <div image></div>
-    		    <div date></div>
+    		    <div style='padding:4px;padding-top:25px;font-size:10px;text-align:center;'>
+    		    	<img src='<?php echo href() . $images[$news['category']] ?>' width='27px' />
+    		    	<br />
+    		    	<?php echo substr($news['published_at'], 0, 10) ?>
+    		    </div>
     		</div>
     	    </div>
-    	    <div class='content_each group with_bg'>
-	    	<div class='content_each_left' style='border-right: 7px solid #83ddff'><!--d9f5ff 19c1ff-->
-	    	    <div class='content_each_title'>Just an empty space</div>
-	    	    <div class='content_each_body'>
-	    	    	Just an empty space. With some color in it (probably not blue but any other color that will be in the logo).
-	    	    	 However, important updates.
-	    	    </div>
-	    	</div>
-    		<div class='content_each_right'>
-    		    <div image></div>
-    		    <div date></div>
-    		</div>
-    	    </div>
+    	<?php endforeach; ?>
     	</div>
 
+<?php if ($total_pages > 1): ?>
     	<div id='pages'>
-    	    <a href='#' class='prevnext'><</a> 1 | 2 | 3 | 4 | 5 | 6 <a href='#' class='prevnext'>></a>
+    	    <?php if ($current_page > 1): ?>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1)) ?>' class='prevnext'><</a>
+    	    <?php endif; ?>
+    	    <?php
+    	    for ($page = 1; $page <= $total_pages; $page ++):
+    	      if ($page != $current_page): ?>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . $page) ?>'>
+    	    		<?php echo $page; ($total_pages == $page) OR print(" |"); ?>
+    	    	</a>
+    	    <?php
+    	      else:
+		echo $page; ($total_pages == $page) OR print(" |");
+    	      endif;
+    	    endfor;
+    	    if ($current_page < $total_pages): ?>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1)) ?>' class='prevnext'>></a>
+    	    <?php endif; ?>
     	</div>
+<?php endif; ?>
+
     </div>
 
     <div id='right_list'>
         <div class='right_box'>
     	    <div class='headers'>
-    		<div class='right_box_title'>CHART</div>
+    		<div class='right_box_title'>TAG CLOUD</div>
     	    </div>
 
-	    <div class='right_box_content'>
-		Chart Data
+	    <div class='right_box_content' id='right_box_tags'>
+		<?php
+			foreach($tags as $tag):
+				echo 
+					"<a href='".href('tag/project/' . $tag['name'])."'>" .
+						$tag['name'] . " (" . $tag['total_tags'] . ")".
+					"</a><br />"
+				;
+			endforeach;
+		?>
 	    </div>
 	</div>
     </div>
 </div>
-<?php */ ?>
-

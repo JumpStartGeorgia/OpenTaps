@@ -7,6 +7,7 @@ foreach ($places as $place)
 Storage::instance()->js_places = $js_places;*/
 
 $news = fetch_db("SELECT n.*,p.longitude,p.latitude FROM news n INNER JOIN places p ON n.place_id = p.id");
+$js_news = array();
 foreach( $news as $new )
     $js_news[] = '[' . $new['id'] . ',' . $new['longitude'] . ',' . $new['latitude'] .',"' . $new['title'] . '", new Date("' . $new['published_at'] . '") ]';
 Storage::instance()->js_news = $js_news;
