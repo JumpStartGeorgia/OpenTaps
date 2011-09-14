@@ -279,12 +279,51 @@ div.news_each_menu div
 
 
 
-div.bottom{ width:950px; border-top:2px solid #ccc; padding-top: 5px; }
+div.bottom{ width:930px; border-top:2px solid #ccc; padding-top: 5px; }
 div.bottom1, div.bottom2{ float:left; font-size:0.7em; font-family: arial; color:grey; }
 div.bottom1{ margin-left: 1px; }
 
 #about_us_button, #contact_us_button{ cursor: pointer; }
-#about-us, #contact-us { display: none; position: absolute; left: 0; bottom: 0 }
+#about-us, #contact-us { display: none; position: absolute; left: 0; bottom: 0; border: 1px dotted #a6a6a6; border-bottom: 0px; }
+#contact-us iframe{ margin-bottom: -5px; }
+#contact_us_toggle{ margin: -2px 0px 0px 0px; padding-left: 2px; }
+#contact-us-form{ margin: 35px 0px 0px 25px; height: 230px; width: 715px; position: absolute; top: 0; left: 0; }
+#contact-us-circle
+{
+	float: left;
+	font-family: arial;
+	background: rgba(12, 181, 246, .9);
+	height: 230px;
+	width: 230px;
+	-webkit-border-radius: 115px;
+	-moz-border-radius: 115px;
+	border-radius: 115px;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+}
+.contact-us-input
+{
+	width: 208px;
+	font-size: 11px;
+	height: 13px;
+	padding: 6px;
+	border: 1px solid #45bff5;
+	color: #6d6d6d;
+	margin-bottom: 13px;
+}
+#contact-us-textarea{ height: 73px; width: 413px; }
+#contact-us-textarea, .contact-us-input
+{
+	padding: 6px;
+	font-size: 11px;
+	font-family:arial;
+	border: 1px solid #45bff5;
+	color:white;
+	background: rgba(12, 181, 246, .9);
+	outline: none;
+}
+#contact-us-textarea:hover, .contact-us-input:hover{ background: rgba(12, 181, 246, .75); }
 
 div.bottom a{ color:grey; text-decoration:none; }
 div.bottom a:hover{ text-decoration:underline; color:black; }

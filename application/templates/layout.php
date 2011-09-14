@@ -270,15 +270,40 @@ console.log(news[0]);
             </div>
 
 
-	    <div id="bot-container" class="group" style="position: relative; width: 950px; margin-top: 55px">
-		<div id="about-us" class="group">
-<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+	    <div id="bot-container" class="group" style="position: relative; width: 930px; margin-top: 55px; height: 0px;">
+		<div id="about-us" class="group" style='background: grey;'>
+			about us
 		</div>
-		<div id="contact-us" class="group">
-<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+		<div id="contact-us" class="group" >
+			<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.698656732302&lg=44.798275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+			<div id='contact-us-form' class='group'>
+			    <div id='contact-us-circle'>
+				<div style='margin: 40px 0px 0px 0px'>CONTACT US</div>
+				<div style='margin-top: 7px;'>Address: 5 Shevchenko Str.,<br /> Suite 2, Tbilisi, Georgia</div>
+				<div style='margin-top: 7px;'>
+				    <span style=''>Mail: </span>
+				    <span style='color: #000;'>info@opentaps.ge</span>
+				</div>
+				<div style='margin-top: 7px;'>Tel: +995 32 214 29 26</div>
+				<div style='color: #000; margin-top: 27px;'>We'd love to hear from you</div>
+				<div style='color: #000;'>Let's get started!</div>
+			    </div>
+			    <div style='float:right; margin-top: 38px; width: 430px;'>
+				<form action='' method=''>
+				    <input type='text' name='' value='name:' class='contact-us-input'
+					onfocus='contact_us_input_focus(this, "name:")'
+					onblur='contact_us_input_blur(this, "name:")' />
+				    <input type='text' name='' value='e-mail:*' class='contact-us-input'
+					onfocus='contact_us_input_focus(this, "e-mail:*")'
+					onblur='contact_us_input_blur(this, "e-mail:*")' />
+				    <textarea id='contact-us-textarea'
+				    	onfocus='contact_us_input_focus(this, "message:*")'
+				    	onblur='contact_us_input_blur(this, "message:*")'>message:*</textarea>
+				</form>
+			    </div>
+			</div>
 		</div>
 	    </div>
-
 
             <div class='bottom group'>
                 <div class='bottom1'>
@@ -287,15 +312,23 @@ console.log(news[0]);
 		</div>
 	        <div class="bottom2">
 	            <span id="about_us_button">ABOUT US</span> &nbsp;&nbsp;|&nbsp;&nbsp;
-	            <span id="contact_us_button">CONTACT US</span>
+	            <span id="contact_us_button">
+	            	CONTACT US<span style='cursor: pointer'>
+	            	</span><img width='10px' src='<?php echo href() ?>images/contact-line.gif' id='contact_us_toggle' />
+	            </span>
 	        </div>
 	    </div>
 
+
+
+
+
+
+
+
+
+
         </div>
-
-
-
-
 
 
 	<script type="text/javascript" src="<?php echo URL ?>js/OpenLayers/OpenLayers.js"></script>
