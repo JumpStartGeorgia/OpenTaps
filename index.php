@@ -33,6 +33,14 @@ Storage::instance()->viewsubmenu = template('submenu', array(
 Storage::instance()->content = template('home');
 Storage::instance()->show_map = TRUE;
 
+$id = config('about_us_menu_id');
+$query = "SELECT text FROM menu WHERE id = :id";
+$query = db()->prepare($query);
+$query->execute(array(':id' => $id));
+$about_us = $query->fetch(PDO::FETCH_ASSOC);
+$about_us = $about_us['text'];
+
+
 require_once DIR . 'application/routes/default_routes.php';
 require_once DIR . 'application/routes/irakli_routes.php';
 require_once DIR . 'application/routes/projects_routes.php';
@@ -49,4 +57,4 @@ require_once DIR . 'application/routes/region_routes.php';
 
 Slim::run();
 
-echo template('layout');
+echo template('layout', array('about_us' => $about_us));

@@ -13,6 +13,7 @@ $(function(){
 		{
 			about_is_visible = false;
 			about.hide("slide", { direction: "down" }, timeout);
+			$('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
 		}
 		else
 		{
@@ -22,15 +23,16 @@ $(function(){
 				contact_is_visible = false;
 			}
 			about.show("slide", { direction: "down" }, timeout);
+			$('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
 		}
 	});
 
 	contact_button.click(function(){
 		if (contact_is_visible)
 		{
-			contact_is_visible = false;
 			contact.hide("slide", { direction: "down" }, timeout);
-			$('#contact_us_toggle').attr('src', '../images/contact-line.gif');
+			contact_is_visible = false;
+			$('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
 		}
 		else
 		{
@@ -41,7 +43,7 @@ $(function(){
 				about_is_visible = false;
 			}
 			contact.show("slide", { direction: "down" }, timeout);
-			$('#contact_us_toggle').attr('src', '../images/contact-line-amoshlili.gif');
+			$('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
 		}
 	});
 
@@ -58,7 +60,6 @@ function contact_us_input_focus(element, value)
 {
 	element.style.backgroundColor = "#fff";
 	element.style.color = "#6d6d6d";
-	element.value = "";
 	if (element.value == value)
 		element.value = "";
 }

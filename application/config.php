@@ -19,5 +19,6 @@ return array(
 		'chart'
     ),
     'tags_on_single_page' => 15,
-    'news_on_single_page' => 15
+    'news_on_single_page' => 15,
+    'about_us_menu_id' => 11
 );

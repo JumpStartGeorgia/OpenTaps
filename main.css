@@ -1,4 +1,4 @@
-* { margin: 0 auto; }
+* { margin: 0 auto; font-family: arial; }
 
 .group:after{ visibility: hidden; display: block; content: ""; clear: both; height: 0; }
 * html .group             { zoom: 1; } /* IE6 */
@@ -283,11 +283,17 @@ div.bottom{ width:930px; border-top:2px solid #ccc; padding-top: 5px; }
 div.bottom1, div.bottom2{ float:left; font-size:0.7em; font-family: arial; color:grey; }
 div.bottom1{ margin-left: 1px; }
 
+#bot-container{ position: relative; width: 930px; margin-top: 55px; height: 0px; }
 #about_us_button, #contact_us_button{ cursor: pointer; }
 #about-us, #contact-us { display: none; position: absolute; left: 0; bottom: 0; border: 1px dotted #a6a6a6; border-bottom: 0px; }
+#about-us{ background: #fff; font-size: 12px; width: 928px; text-align: justify; }
+#about-us-title-container{ width: 896px; background: #0CB5F6; padding: 11px 16px 11px 16px; }
+#about-us-title{ color: #fff; font-size: 16px; }
+
 #contact-us iframe{ margin-bottom: -5px; }
 #contact_us_toggle{ margin: -2px 0px 0px 0px; padding-left: 2px; }
-#contact-us-form{ margin: 35px 0px 0px 25px; height: 230px; width: 715px; position: absolute; top: 0; left: 0; }
+#contact-us-form-container{ margin: 35px 0px 0px 25px; height: 230px; width: 715px; position: absolute; top: 0; left: 0; }
+#contact-us-form{ float:right; margin-top: 38px; width: 430px; }
 #contact-us-circle
 {
 	float: left;

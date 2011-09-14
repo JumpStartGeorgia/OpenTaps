@@ -270,25 +270,30 @@ console.log(news[0]);
             </div>
 
 
-	    <div id="bot-container" class="group" style="position: relative; width: 930px; margin-top: 55px; height: 0px;">
-		<div id="about-us" class="group" style='background: grey;'>
-			about us
+	    <div id="bot-container" class="group">
+		<div id="about-us" class="group">
+			<div id='about-us-title-container'>
+				<div id='about-us-title'>ABOUT</div>
+			</div>
+			<div style='padding: 30px 22px 40px 16px;'>
+				<div><?php echo $about_us; ?></div>
+			</div>
 		</div>
 		<div id="contact-us" class="group" >
 			<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.698656732302&lg=44.798275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-			<div id='contact-us-form' class='group'>
+			<div id='contact-us-form-container' class='group'>
 			    <div id='contact-us-circle'>
-				<div style='margin: 40px 0px 0px 0px'>CONTACT US</div>
-				<div style='margin-top: 7px;'>Address: 5 Shevchenko Str.,<br /> Suite 2, Tbilisi, Georgia</div>
-				<div style='margin-top: 7px;'>
+				<div style='margin-top: 40px'>CONTACT US</div>
+				<div style='margin-top: 7px'>Address: 5 Shevchenko Str.,<br /> Suite 2, Tbilisi, Georgia</div>
+				<div style='margin-top: 7px'>
 				    <span style=''>Mail: </span>
-				    <span style='color: #000;'>info@opentaps.ge</span>
+				    <span style='color: #000'>info@opentaps.ge</span>
 				</div>
 				<div style='margin-top: 7px;'>Tel: +995 32 214 29 26</div>
 				<div style='color: #000; margin-top: 27px;'>We'd love to hear from you</div>
 				<div style='color: #000;'>Let's get started!</div>
 			    </div>
-			    <div style='float:right; margin-top: 38px; width: 430px;'>
+			    <div id='contact-us-form'>
 				<form action='' method=''>
 				    <input type='text' name='' value='name:' class='contact-us-input'
 					onfocus='contact_us_input_focus(this, "name:")'
@@ -330,7 +335,7 @@ console.log(news[0]);
 
         </div>
 
-
+	<script type='text/javascript'>var baseurl = "<?php echo href(); ?>";;</script>
 	<script type="text/javascript" src="<?php echo URL ?>js/OpenLayers/OpenLayers.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jq.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
