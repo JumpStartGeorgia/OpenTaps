@@ -8,7 +8,7 @@ var map_confs = {"boundsLeft": region_map_boundsLeft != false ? region_map_bound
 		"boundsRight": region_map_boundsRight != false ? region_map_boundsRight : 5422472.9529191,
 		"boundsTop": region_map_boundsTop != false ? region_map_boundsTop : 5427277.3672416,
 		"zoom": region_map_zoom != false ? region_map_zoom : 7.5,
-		"maxZoomOut": region_map_maxzoomout != false ? region_map_maxzoomout : 7,
+		"maxZoomOut": region_map_maxzoomout != false ? region_map_maxzoomout : 8,
 		"lon":  region_map_longitude  != false ? region_map_longitude  : 4876406.8229462 ,
 		"lat":  region_map_latitude != false ? region_map_latitude : 5183290.372998,
 		"make_default_markers": region_make_def_markers == false ? region_make_def_markers : true,
@@ -173,7 +173,8 @@ function makeMarker(img_source,img_width,img_height,lon,lat,id,type,i)
 	   marker_animate_back(e.target.id);
     	   $(e.target).css({'z-index':''});
     	   popup_over = false;
-    	   popup.destroy();		
+    	   popup.destroy();	
+    	   popup = null;	
     	}
     	else{
  	   $(e.target).css({'z-index':''});
@@ -389,7 +390,7 @@ function check_filter_checkboxes()
 function map_menu_filter_click( checkbox_text )
 {
 	
-	if( $('#filter_checkbox_' + checkbox_text).attr('checked') ){
+	if( $('#filter_checkbox_' + checkbox_text).is(':checked') ){
 		
 		$('#filter_checkbox_' + checkbox_text).removeAttr('checked');
 			if(checkbox_text === 'projects'){
