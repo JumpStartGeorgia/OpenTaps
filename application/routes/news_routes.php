@@ -46,11 +46,21 @@ Slim::get('/news/page/:page/', function($page)
 	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
 	($page > $total_pages) AND die('invalid page');
 
+	$query = "SELECT tags.name,
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+		  FROM tag_connector
+		  JOIN tags ON tag_connector.tag_id = tags.id
+		  JOIN news ON tag_connector.news_id = news.id;";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
 	Storage::instance()->content = template('news', array(
 		'news_all' => read_news_one_page(($nosp * $page - $nosp), $nosp),
     		'current_page' => $page,
     		'total_pages' => $total_pages,
-    		'this_type' => NULL
+    		'this_type' => NULL,
+    		'tags' => $tags
 	));
     }
 );
@@ -68,11 +78,22 @@ Slim::get('/news/type/:type/', function($type)
 	$total = $total['total'];
 	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
 
+	$query = "SELECT tags.name,
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+		  FROM tag_connector
+		  JOIN tags ON tag_connector.tag_id = tags.id
+		  JOIN news ON tag_connector.news_id = news.id
+		  WHERE news.category = :type;";
+	$query = db()->prepare($query);
+	$query->execute(array(':type' => $type));
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
 	Storage::instance()->content = template('news', array(
 		'news_all' => read_news_one_page(0, $nosp, $type),
     		'current_page' => 1,
     		'total_pages' => $total_pages,
-    		'this_type' => $type
+    		'this_type' => $type,
+    		'tags' => $tags
 	));
     }
 );
@@ -92,11 +113,22 @@ Slim::get('/news/type/:type/:page/', function($type, $page)
 	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
 	($page > $total_pages) AND die('invalid page');
 
+	$query = "SELECT tags.name,
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+		  FROM tag_connector
+		  JOIN tags ON tag_connector.tag_id = tags.id
+		  JOIN news ON tag_connector.news_id = news.id
+		  WHERE news.category = :type;";
+	$query = db()->prepare($query);
+	$query->execute(array(':type' => $type));
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
 	Storage::instance()->content = template('news', array(
 		'news_all' => read_news_one_page(($nosp * $page - $nosp), $nosp, $type),
     		'current_page' => $page,
     		'total_pages' => $total_pages,
-    		'this_type' => $type
+    		'this_type' => $type,
+    		'tags' => $tags
 	));
     }
 );
