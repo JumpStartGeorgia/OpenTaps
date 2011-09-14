@@ -335,7 +335,7 @@ console.log(news[0]);
 
         </div>
 
-	<script type='text/javascript'>var baseurl = "<?php echo href(); ?>";;</script>
+	<script type='text/javascript'>var baseurl = "<?php echo href(); ?>";</script>
 	<script type="text/javascript" src="<?php echo URL ?>js/OpenLayers/OpenLayers.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jq.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
