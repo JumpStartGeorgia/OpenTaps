@@ -301,7 +301,7 @@ console.log(news[0]);
 				    <input type='text' name='' value='e-mail:*' class='contact-us-input'
 					onfocus='contact_us_input_focus(this, "e-mail:*")'
 					onblur='contact_us_input_blur(this, "e-mail:*")' />
-				    <textarea id='contact-us-textarea'
+				    <textarea id='contact-us-textarea' class='mceNoEditor'
 				    	onfocus='contact_us_input_focus(this, "message:*")'
 				    	onblur='contact_us_input_blur(this, "message:*")'>message:*</textarea>
 				</form>
@@ -345,6 +345,8 @@ console.log(news[0]);
         <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/init.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/menu.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/bottom_toggles.js"></script>
