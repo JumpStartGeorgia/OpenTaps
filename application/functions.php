@@ -125,10 +125,10 @@ function update_menu($id, $name, $short_name, $parent_id, $title, $text, $hide, 
  	':short_name' => $short_name,
  	':name' => $name,
  	':parent_id' => $parent_id,
-    ':title' => $title,
-    ':text' => $text,
-    ':hide' => $hide,
-    ':footer' => $footer
+        ':title' => $title,
+        ':text' => $text,
+        ':hide' => $hide,
+        ':footer' => $footer
     ));
 
     return ($exec) ? true : false;
