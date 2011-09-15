@@ -2,13 +2,13 @@
 /*=================================================================== Regions Fontpage=============================================*/
 Slim::get('/region/:id/', function($id){
 	Storage::instance()->show_map = FALSE;
-	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_id='$id'";
+	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_id = '$id'";
 
 	list($values, $names, $real_values) = get_region_chart_data($id);
 
 	$query = "SELECT projects.title,projects.id FROM projects
 		  LEFT JOIN places ON places.id = projects.place_id
-		  WHERE places.region_id = :id;";
+		  WHERE places.region_id = :id AND projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':id' => $id));
 	$region_projects = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -29,7 +29,7 @@ Slim::get('/region/:id/', function($id){
 
 /*========================================================Admin Regions===============================================*/
 Slim::get('/admin/regions/', function(){
-	$sql_regions = 'SELECT * FROM regions';
+	$sql_regions = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
     Storage::instance()->content = userloggedin()
     	? template('admin/regions/all_records', array('regions' => fetch_db($sql_regions)))
     	: template('login');

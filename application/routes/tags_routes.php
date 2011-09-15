@@ -26,7 +26,7 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     	    break;
     endswitch;
 
-    $query = "SELECT id FROM tags WHERE name = :name";
+    $query = "SELECT id FROM tags WHERE name = :name AND lang = '" . LANG . "';";
     $query = db()->prepare($query);
     $query->execute(array(':name' => $name));
     $id = $query->fetch(PDO::FETCH_ASSOC);
@@ -44,7 +44,7 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     		ON
     			tag_connector." . $prefix . "_id = " . $table . ".id
     		WHERE
-    			tag_connector.tag_id = :id
+    			tag_connector.tag_id = :id AND lang = '" . LANG . "'
     		LIMIT 0, " . $tosp . ";
     	     ";
     $query = db()->prepare($query);
@@ -53,7 +53,7 @@ Slim::get('/tag/:def/:name/', function($def, $name){
 
     $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
     		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
-    		WHERE tag_connector.tag_id = :id;";
+    		WHERE tag_connector.tag_id = :id AND lang = '" . LANG . "';";
     $query = db()->prepare($query);
     $query->execute(array(':id' => $id));
     $total = $query->fetch(PDO::FETCH_ASSOC);
@@ -91,7 +91,7 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     	    break;
     endswitch;
 
-    $query = "SELECT id FROM tags WHERE name = :name";
+    $query = "SELECT id FROM tags WHERE name = :name AND lang = '" . LANG . "'";
     $query = db()->prepare($query);
     $query->execute(array(':name' => $name));
     $id = $query->fetch(PDO::FETCH_ASSOC);
@@ -101,7 +101,7 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
 
     $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
     		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
-    		WHERE tag_connector.tag_id = :id;";
+    		WHERE tag_connector.tag_id = :id AND lang = '" . LANG . "';";
     $query = db()->prepare($query);
     $query->execute(array(':id' => $id));
     $total = $query->fetch(PDO::FETCH_ASSOC);
@@ -119,7 +119,7 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     		ON
     			tag_connector." . $prefix . "_id = " . $table . ".id
     		WHERE
-    			tag_connector.tag_id = :id
+    			tag_connector.tag_id = :id AND lang = '" . LANG . "'
     		LIMIT " . ($tosp * $page - $tosp). ", " . $tosp . ";
     	     ";
     $query = db()->prepare($query);

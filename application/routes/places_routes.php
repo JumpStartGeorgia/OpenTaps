@@ -4,7 +4,7 @@ Slim::get('/admin/places/',function()
           {
 
               if( userloggedin() ) {
-                  $sql = "SELECT * FROM places";
+                  $sql = "SELECT * FROM places WHERE lang = '" . LANG . "'";
                   Storage::instance()->content = template('admin/places/all_records',array('places' => fetch_db($sql)));
               }
               else Storage::instance()->content = template('login');
@@ -22,8 +22,8 @@ Slim::get('/admin/places/:id/delete/',function($id)
 Slim::get('/admin/places/new/',function()
           {
               if( userloggedin() ){
-                  $sql_regions = "SELECT * FROM regions";
-                  $sql_projects = "SELECT * FROM projects";
+                  $sql_regions = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
+                  $sql_projects = "SELECT * FROM projects WHERE lang = '" . LANG . "'";
                   Storage::instance()->content = template('admin/places/new',array('regions'=>fetch_db($sql_regions)));
               }
               else Storage::instance()->content = template('login');
@@ -42,9 +42,11 @@ Slim::get('/admin/places/:id/',function($id)
           {
               if( userloggedin() ){
 
-                  $sql = "SELECT * FROM places WHERE id=$id";
-                  $sql_regions = "SELECT * FROM regions";
-                  $sql_regions_this = "SELECT r.id,r.name FROM regions r INNER JOIN places pl ON pl.id = $id AND pl.region_id = r.id ";
+                  $sql = "SELECT * FROM places WHERE id = $id";
+                  $sql_regions = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
+                  $sql_regions_this = " SELECT r.id,r.name FROM regions r
+                  			INNER JOIN places pl ON pl.id = $id AND pl.region_id = r.id
+                  			WHERE regions.lang = '" . LANG . "' AND places.lang = '" . LANG . "';";
                   Storage::instance()->content = template('admin/places/edit',array(
                                                               'place' => fetch_db($sql),
                                                               'regions' => fetch_db($sql_regions),

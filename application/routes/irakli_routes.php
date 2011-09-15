@@ -6,13 +6,13 @@ foreach ($places as $place)
 	$js_places[] = '[' . $place['id'] . ', ' . $place['longitude'] . ', ' . $place['latitude'] . ',' . $place['project_id'] . ',' . $place['pollution_id'] .']';
 Storage::instance()->js_places = $js_places;*/
 
-$news = fetch_db("SELECT n.*,p.longitude,p.latitude FROM news n INNER JOIN places p ON n.place_id = p.id");
+$news = fetch_db("SELECT n.*,p.longitude,p.latitude FROM news n INNER JOIN places p ON n.place_id = p.id WHERE places.lang = '" . LANG . "' AND news.lang = '" . LANG . "'");
 $js_news = array();
 foreach( $news as $new )
     $js_news[] = '[' . $new['id'] . ',' . $new['longitude'] . ',' . $new['latitude'] .',"' . $new['title'] . '", new Date("' . $new['published_at'] . '") ]';
 Storage::instance()->js_news = $js_news;
 
-$projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_id = pl.id");
+$projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_id = pl.id WHERE projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "'");
 $js_projects[] = '[ new Date("' . date('Y-m-d') . '") ]';
 foreach($projects as $project)
 	$js_projects[] = '[' . $project['id'] . ', new Date("' . $project['start_at'] . '") , new Date("' . $project['end_at'] . '") , "'. $project['title'] .'", "'. $project['grantee'] .'", "'. $project['budget'] .'", "'. $project['city'] .'","'. $project['type'] .'","'.$project['longitude'] .'","'.$project['latitude'] .'"]';
@@ -27,6 +27,8 @@ $years_sql = "
     ORDER BY
         start_at,
         end_at
+    WHERE
+    	lang = '" . LANG . "'
     ;
 ";
 $years_res = fetch_db($years_sql);
@@ -127,7 +129,7 @@ Slim::post('/admin/donors/:id/update/', function($id){
 Slim::get('/admin/projmanagement/',function(){
     if(userloggedin())
     {
-	$sql = "SELECT * FROM projects";
+	$sql = "SELECT * FROM projects WHERE lang = '" . LANG . "'";
 	$results = fetch_db($sql);
 	Storage::instance()->content = template('projectmanagement',array(
 		'projects' => $results
@@ -139,7 +141,7 @@ Slim::get('/admin/projmanagement/',function(){
 Slim::get('/admin/projmanagement/:id/edit/',function($id){
     if(userloggedin())
     {
-	$sql = "SELECT * FROM projects";
+	$sql = "SELECT * FROM projects WHERE lang = '" . LANG . "'";
 	$sql1 = "SELECT * FROM projects WHERE id='$id'";
 	$results = fetch_db($sql);
 	$result = fetch_db($sql1);

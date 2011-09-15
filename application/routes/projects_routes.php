@@ -3,13 +3,14 @@
 ################################################################ projects view
 Slim::get('/project/:id/', function($id){
 	Storage::instance()->show_map = FALSE;
-	$sql = "SELECT budget FROM `projects`";
+	$sql = "SELECT budget FROM `projects` WHERE lang = '" . LANG . "'";
 	$query = db()->prepare($sql);
 	$query->execute();
 
 	list($values, $names, $real_values) = get_project_chart_data($id);
 
-	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags FROM tags";
+	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+		  FROM tags WHERE tags.lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -88,18 +89,18 @@ Slim::get('/admin/projects/', function(){
 });
 
 Slim::get('/admin/projects/new/', function(){
-    $query = "SELECT * FROM organizations;";
+    $query = "SELECT * FROM organizations WHERE lang = '" . LANG . "';";
     $orgs = fetch_db($query);
-    $regions_query = "SELECT * FROM regions";
+    $regions_query = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
     $regions = fetch_db($regions_query);
-    $sql_places = "SELECT * FROM places";
+    $sql_places = "SELECT * FROM places WHERE lang = '" . LANG . "'";
     Storage::instance()->content = userloggedin()
     	? template('admin/projects/new', array(
     		'all_tags' => read_tags(),
     		'organizations' => $orgs,
-            'regions' => $regions,
+                'regions' => $regions,
     		'project_types' => config('project_types'),
-            'places' => fetch_db($sql_places)
+                'places' => fetch_db($sql_places)
     	 ))
     	: template('login');
 });
@@ -107,7 +108,7 @@ Slim::get('/admin/projects/new/', function(){
 Slim::get('/admin/projects/:id/', function($id){
     if ( userloggedin() )
     {
-	$query = "SELECT * FROM organizations;";
+	$query = "SELECT * FROM organizations WHERE lang = '" . LANG . "';";
 	$orgs = fetch_db($query);
 
 	$query = "SELECT organization_id FROM project_organizations WHERE project_id = :id";
@@ -119,10 +120,10 @@ Slim::get('/admin/projects/:id/', function($id){
 		$this_orgs[] = $s['organization_id'];
 
 
-	$regions_query = "SELECT * FROM regions";
+	$regions_query = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
 	$regions = fetch_db($regions_query);
 
-	$sql_places = "SELECT * FROM places";
+	$sql_places = "SELECT * FROM places WHERE lang = '" . LANG . "'";
 	$places = fetch_db($sql_places);
 	Storage::instance()->content = template('admin/projects/edit', array
 	(
@@ -232,7 +233,7 @@ Slim::post('/admin/project-tags/:id/update/',function($id){
 Slim::get('/admin/project-data/:id/',function($id){
     if(userloggedin())
     {
-	$sql = "SELECT * FROM projects_data WHERE project_id = :id ORDER BY id;";
+	$sql = "SELECT * FROM projects_data WHERE project_id = :id AND lang = '" . LANG . "' ORDER BY id;";
         $statement = Storage::instance()->db->prepare($sql);
         $statement->execute(array(':id' => $id));
         $r = $statement->fetchAll();

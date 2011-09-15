@@ -7,7 +7,7 @@ Slim::get('/news/', function()
     {
 	$nosp = config('news_on_single_page');
 
-	$query = "  SELECT COUNT(id) AS total FROM news";
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute(array());
 	$total = $query->fetch(PDO::FETCH_ASSOC);
@@ -18,7 +18,8 @@ Slim::get('/news/', function()
 			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_id = tags.id
-		  JOIN news ON tag_connector.news_id = news.id;";
+		  JOIN news ON tag_connector.news_id = news.id
+		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -38,7 +39,7 @@ Slim::get('/news/page/:page/', function($page)
 	($page > 0) OR die('invalid page');
 	$nosp = config('news_on_single_page');
 
-	$query = "  SELECT COUNT(id) AS total FROM news";
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute(array());
 	$total = $query->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +51,8 @@ Slim::get('/news/page/:page/', function($page)
 			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_id = tags.id
-		  JOIN news ON tag_connector.news_id = news.id;";
+		  JOIN news ON tag_connector.news_id = news.id
+		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -71,7 +73,7 @@ Slim::get('/news/type/:type/', function($type)
 
 	$nosp = config('news_on_single_page');
 
-	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type";
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type AND lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$total = $query->fetch(PDO::FETCH_ASSOC);
@@ -83,7 +85,7 @@ Slim::get('/news/type/:type/', function($type)
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_id = tags.id
 		  JOIN news ON tag_connector.news_id = news.id
-		  WHERE news.category = :type;";
+		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -105,7 +107,7 @@ Slim::get('/news/type/:type/:page/', function($type, $page)
 
 	$nosp = config('news_on_single_page');
 
-	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type";
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type AND lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$total = $query->fetch(PDO::FETCH_ASSOC);
@@ -118,7 +120,7 @@ Slim::get('/news/type/:type/:page/', function($type, $page)
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_id = tags.id
 		  JOIN news ON tag_connector.news_id = news.id
-		  WHERE news.category = :type;";
+		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -151,7 +153,7 @@ Slim::get('/admin/news/new/', function()
             }
             Storage::instance()->content = template('admin/news/new', array(
                                                         'all_tags' => read_tags(),
-                                                        'places' => fetch_db('SELECT * FROM places')
+                                                        'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
                     ));
         }
 );
@@ -181,7 +183,7 @@ Slim::get('/admin/news/:id/', function($id){
                         'news' => read_news(false, 0, $id),
                         'all_tags' => read_tags() ,
                         'news_tags' => read_tag_connector('news',$id),
-                        'places' => fetch_db('SELECT * FROM places')
+                        'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
                        ))
     	: template('login');
 });

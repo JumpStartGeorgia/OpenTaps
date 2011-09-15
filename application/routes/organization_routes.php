@@ -22,7 +22,8 @@ Slim::get('/organization/:id/',function($id){
 	$query->execute();*/
 
 	list($values, $names, $real_values) = get_organization_chart_data($id);
-	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags FROM tags";
+	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+		  FROM tags WHERE tags.lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -43,14 +44,16 @@ Slim::get('/organization/:id/',function($id){
 
 /*=====================================================	Admin Organizations	  ==================================================*/
 Slim::get('/admin/organizations/', function(){
-	$sql_organizations = 'SELECT * FROM organizations';
+	$sql_organizations = "SELECT * FROM organizations WHERE lang = '" . LANG . "'";
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/all_records', array('organizations' => fetch_db($sql_organizations)))
     	: template('login');
 });
 
 Slim::get('/admin/organizations/new/', function(){
-    Storage::instance()->content = userloggedin() ? template('admin/organizations/new', array('all_tags' => read_tags())) : template('login');
+    Storage::instance()->content = userloggedin()
+    	? template('admin/organizations/new', array('all_tags' => read_tags()))
+    	: template('login');
 });
 
 Slim::get('/admin/organizations/:id/', function($id){
@@ -66,7 +69,7 @@ Slim::get('/admin/organizations/:id/', function($id){
 Slim::get('/admin/organizations/:id/delete/', function($id){
      if(userloggedin()) {
      	delete_organization($id) ;
-     	fetch_db("DELETE FROM tag_connector WHERE org_id=$id");
+     	fetch_db("DELETE FROM tag_connector WHERE org_id = $id");
      	Slim::redirect(href('admin/organizations'));
      }
      else Storage::instance()->content = template('login');
@@ -107,7 +110,7 @@ Slim::post('/admin/organizations/:id/update/', function($id){
         	$_POST['p_sector'],
         	$_FILES
        	     );
-       	     fetch_db("DELETE FROM tag_connector WHERE org_id=$id");
+       	     fetch_db("DELETE FROM tag_connector WHERE org_id = $id");
        	     add_tag_connector('org',$id,$_POST['p_tags']);
        	     Slim::redirect(href('admin/organizations'));
        	     }
