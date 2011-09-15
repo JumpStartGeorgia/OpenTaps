@@ -6,7 +6,7 @@
     	</div>
 
     	<div class='group' id='titletype'>
-    	    <div id='titletype_left'>
+    	    <div id='titletype_left' style='padding: 10px; padding-left: 17px;'>
     	    <?php $def = strtoupper($def); ?>
     	    	<a href='<?php echo href('tag/project/' . $tag_name) ?>'
     	    		class='choosedef<?php ($def == "PROJECTS") AND print("_selected") ?>'>PROJECTS

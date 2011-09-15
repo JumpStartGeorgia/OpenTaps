@@ -17,6 +17,7 @@ require_once DIR . 'application/storage.php';
 Storage::instance()->config = require DIR . 'application/config.php';
 require_once DIR . 'application/firephp/fb.php';
 require_once DIR . 'application/functions.php';
+
 try
 {
     Storage::instance()->db = new PDO('mysql:dbname=opentaps;host=localhost', config('db_user'), config('db_pass'));
@@ -32,7 +33,7 @@ Slim::init();
 Storage::instance()->title = 'Home Page';
 Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
-$sql_organizations = 'SELECT * FROM organizations';
+$sql_organizations = "SELECT * FROM organizations WHERE lang = '" . LANG . "';";
 Storage::instance()->viewsubmenu = template('submenu', array(
 	'submenus' => read_submenu(),
 	'projects' => read_projects(),
@@ -41,7 +42,8 @@ Storage::instance()->content = template('home');
 Storage::instance()->show_map = TRUE;
 
 $id = config('about_us_menu_id');
-$query = "SELECT text FROM menu WHERE id = :id";
+$id = $id[LANG];
+$query = "SELECT text FROM menu WHERE id = :id AND lang = '" . LANG . "' LIMIT 1;";
 $query = db()->prepare($query);
 $query->execute(array(':id' => $id));
 $about_us = $query->fetch(PDO::FETCH_ASSOC);

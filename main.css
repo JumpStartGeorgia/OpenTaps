@@ -243,14 +243,14 @@ div.news_each_menu div
 
 /*=======================		TAGS		==========================*/
 #tag_content{ font-family: arial; }
-#tag_content a{ text-decoration: none; color: #565656; }
+#tag_content a{ text-decoration: none; color: #565656; font-size: 11px; }
 #left_list, #right_list{ min-height: 100px; }
 #left_list{ width: 640px; float: left; }
 .headers{ width: 100%; background: #0cb5f6; height: 39px; color: #fff; }
 .headers_left{ float: left; padding-top: 10px; padding-left: 17px; font-size:16px; }
 .headers_right{ float: right; padding-top: 12px; padding-right: 13px; font-size:11px; }
 #titletype{ width: 100%; border-bottom: 1px solid #d1d1d1; }
-.titletype_left{ float: left; padding:11px; padding-left: 17px; font-size: 11px; }
+.titletype_left{ float: left; padding: 11px; padding-left: 17px; font-size: 11px; }
 .titletype_right{ float: right; font-size: 11px; padding: 11px; padding-right: 2px; }
 .choosedef, .choosedef_selected{ padding: 5px; display: inline-block; border: 1px solid transparent; }
 .choosedef:hover, .choosedef_selected{ border: 1px solid #a6a6a6; border-bottom:1px solid #E0E0E0; border-right:1px solid #F0F0F0;

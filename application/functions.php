@@ -25,6 +25,7 @@ function db()
     return Storage::instance()->db;
 }
 
+
 function authenticate($username, $password)
 {
     $sql = "SELECT id, username FROM users WHERE username = :username AND password = :password";
@@ -46,14 +47,14 @@ function userloggedin()
 								### MENU MANAGEMENT
 function read_menu($parent_id = 0, $lang = null)
 {
-    $sql = "SELECT id,name,short_name FROM menu WHERE parent_id = :parent_id";
+    $sql = "SELECT id,name,short_name FROM menu WHERE parent_id = :parent_id AND lang = '" . LANG . "';";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute(array(':parent_id' => $parent_id));
     return $statement->fetchAll();    
 }
 function has_submenu($menuid)
 {
-    $sql = "SELECT id FROM menu WHERE parent_id = '".$menuid."'";
+    $sql = "SELECT id FROM menu WHERE parent_id = '" . $menuid . "' AND lang = '" . LANG . "';";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute();
     $a = $statement->fetchAll();  
@@ -61,7 +62,7 @@ function has_submenu($menuid)
 }
 function read_submenu()
 {
-    $sql = "SELECT id,name,short_name,parent_id FROM menu WHERE parent_id != 0 ORDER BY parent_id,id;";
+    $sql = "SELECT id,name,short_name,parent_id FROM menu WHERE parent_id != 0 AND lang = '" . LANG . "' ORDER BY parent_id,id;";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute();
     $items = $statement->fetchAll();
@@ -73,7 +74,7 @@ function read_submenu()
 
 function get_menu($short_name)
 {
-    $sql = "SELECT * FROM menu WHERE short_name = :short_name LIMIT 1;";
+    $sql = "SELECT * FROM menu WHERE short_name = :short_name AND lang = '" . LANG . "' LIMIT 1;";
     $stmt = Storage::instance()->db->prepare($sql);
     $stmt->execute(array(
             ':short_name' => $short_name
@@ -144,13 +145,14 @@ function read_news($limit = false,$from = 0,$news_id = false)
 {
     if($news_id)
     {
-	$sql = "SELECT * FROM news WHERE id = :news_id ORDER BY published_at DESC";
+	$sql = "SELECT * FROM news WHERE id = :news_id AND lang = '" . LANG . "' ORDER BY published_at DESC";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(':news_id' => $news_id));
     }
     else
     {
-	$sql = "SELECT * FROM news ORDER BY published_at DESC" . ($limit ? " LIMIT " . $from . "," . $limit : NULL);
+	$sql = "SELECT * FROM news WHERE lang = '" . LANG . "'
+		ORDER BY published_at DESC" . ($limit ? " LIMIT " . $from . "," . $limit : NULL);
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute();
     }
@@ -159,7 +161,7 @@ function read_news($limit = false,$from = 0,$news_id = false)
 
 function read_news_one_page($from, $limit, $type = FALSE)
 {
-    $sql = "SELECT * FROM news " . ($type ? "WHERE category = :type" : NULL) . "
+    $sql = "SELECT * FROM news " . ($type ? "WHERE category = :type AND lang = '" . LANG . "'" : "WHERE lang = '" . LANG . "'") . "
     	    ORDER BY published_at DESC LIMIT " . $from . ", " . $limit . "";
     $statement = Storage::instance()->db->prepare($sql);
     $data = $type ? array(':type' => $type) : NULL;
@@ -203,7 +205,7 @@ function update_news($id, $title, $body, $filedata, $category, $place, $tags)
 	return $up;
     elseif( $up == "" )
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` =  :body, category = :category, place_id = :place WHERE  `news`.`id` =:id";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_id = :place WHERE  `news`.`id` =:id";
         $data = array(
             ':id' => $id,
      	    ':title' =>$title,
@@ -273,7 +275,7 @@ function image_upload($filedata)
 }
 function delete_image($news_id)
 {
-    $sql = "SELECT image FROM news WHERE id = :news_id";
+    $sql = "SELECT image FROM news WHERE id = :news_id AND lang = '" . LANG . "'";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute(array(':news_id' => $news_id));
     $image = $statement->fetch(PDO::FETCH_ASSOC);
@@ -282,7 +284,7 @@ function delete_image($news_id)
 }
 function view_image($news_id)
 {
-    $sql = "SELECT image FROM news WHERE id = :news_id";
+    $sql = "SELECT image FROM news WHERE id = :news_id AND lang = '" . LANG . "'";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute(array(':news_id' => $news_id));
     $image = $statement->fetch(PDO::FETCH_ASSOC);
@@ -295,13 +297,13 @@ function read_tags($tag_id = false)
 {
     if($tag_id)
     {
-        $sql = "SELECT * FROM tags WHERE id = :id";
+        $sql = "SELECT * FROM tags WHERE id = :id LIMIT 1";
         $statement = Storage::instance()->db->prepare($sql);
         $statement->execute(array(':id' => $tag_id));
         return $statement->fetch(PDO::FETCH_ASSOC);    
     }
 
-    $sql = "SELECT * FROM tags";
+    $sql = "SELECT * FROM tags WHERE lang = '" . LANG . "'";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute();
     return $statement->fetchAll();    
@@ -548,7 +550,7 @@ function add_region($name,$region_info,$region_projects_info,$city,$population,$
 
 function delete_region($id)
 {
-	$sql = "DELETE FROM regions WHERE id=:id";
+	$sql = "DELETE FROM regions WHERE id = :id LIMIT 1";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
@@ -558,7 +560,7 @@ function delete_region($id)
 
 function get_region($id)
 {
-	$sql = "SELECT * FROM regions WHERE id=:id";
+	$sql = "SELECT * FROM regions WHERE id = :id LIMIT 1";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
@@ -591,8 +593,11 @@ $sql = "UPDATE regions SET name=:name,region_info=:region_info,projects_info=:re
 /*===================================================	  Regions Fontpage	===============================*/
 function region_total_budget($region_id)
 {
-	$total_budget = fetch_db("SELECT SUM(budget) AS total_budget FROM projects
-			LEFT JOIN places ON projects.place_id = places.id WHERE places.region_id = $region_id;");
+	$total_budget = fetch_db("
+				SELECT SUM(budget) AS total_budget FROM projects
+				LEFT JOIN places ON projects.place_id = places.id
+				WHERE places.region_id = $region_id; AND projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "'
+			");
 	$total_budget = number_format($total_budget[0]['total_budget']);
 
 	return $total_budget;	
@@ -676,7 +681,7 @@ function read_projects($project_id = false)
         return empty($result) ? array() : $result;
     }
 
-    $sql = "SELECT * FROM projects ORDER BY start_at";
+    $sql = "SELECT * FROM projects WHERE lang = '" . LANG . "' ORDER BY start_at";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute();
     return $statement->fetchAll();    
@@ -901,7 +906,7 @@ function delete_project($id)
 
 function read_project_data($id)
 {
-	$query = "SELECT * FROM projects_data WHERE project_id = :id;";
+	$query = "SELECT * FROM projects_data WHERE project_id = :id LIMIT 1;";
 	$query = Storage::instance()->db->prepare($query);
 	$query->execute(array(':id' => $id));
 	$query = $query->fetchAll();
@@ -948,7 +953,9 @@ function get_project_chart_data($id)
 		ON
 			(`project_organizations`.`organization_id` = `organizations`.`id`)
 		WHERE
-			project_id = :id;
+			project_id = :id
+		AND
+			organizations.lang = '" . LANG . "';
 	";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
@@ -965,12 +972,7 @@ function get_project_chart_data($id)
 	}
 
 
-	$sql = "
-		SELECT
-			budget, title
-		FROM 
-			`projects`
-	";
+	$sql = "SELECT budget, title FROM  `projects` WHERE lang = '" . LANG . "';";
 	$query = db()->prepare($sql);
 	$query->execute();
 
@@ -1031,7 +1033,7 @@ function get_organization_projects($id)
 	$sql = "SELECT p.id,p.title FROM projects AS p 
 				INNER JOIN project_organizations AS po ON p.id = po.project_id
 				INNER JOIN organizations AS o ON o.id = po.organization_id
-				WHERE o.id = :id";
+				WHERE o.id = :id AND organizations.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
@@ -1130,7 +1132,9 @@ function organization_total_budget($organization_id)
 		ON
 			(`project_organizations`.`project_id` = `projects`.`id`)
 		WHERE
-			organization_id = :id;
+			organization_id = :id
+		AND
+			projects.lang = '" . LANG . "';
 	";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $organization_id));
@@ -1155,7 +1159,9 @@ function get_organization_chart_data($id)
 		ON
 			(project_organizations.project_id = projects.id)
 		WHERE
-			organization_id = :id;
+			organization_id = :id
+		AND
+			projects.lang = '" . LANG . "';
 	";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
@@ -1193,7 +1199,7 @@ function get_organization_chart_data($id)
 
 	$sql = "SELECT projects.start_at FROM project_organizations
 		INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
-		WHERE organization_id = :id ORDER BY start_at LIMIT 0,1;";
+		WHERE organization_id = :id AND projects.lang = '" . LANG . "' ORDER BY start_at LIMIT 0,1;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
 	$first = $query->fetch(PDO::FETCH_ASSOC);
@@ -1201,7 +1207,7 @@ function get_organization_chart_data($id)
 
 	$sql = "SELECT projects.end_at FROM project_organizations
 		INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
-		WHERE organization_id = :id ORDER BY end_at DESC LIMIT 0,1;";
+		WHERE organization_id = :id AND projects.lang = '" . LANG . "' ORDER BY end_at DESC LIMIT 0,1;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
 	$last = $query->fetch(PDO::FETCH_ASSOC);
@@ -1217,7 +1223,7 @@ function get_organization_chart_data($id)
 
 		$sql = "SELECT projects.budget,projects.end_at,projects.start_at FROM project_organizations
 			INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
-			WHERE organization_id = :id AND projects.start_at <= :start;";
+			WHERE organization_id = :id AND projects.lang = '" . LANG . "' AND projects.start_at <= :start;";
 		$query = db()->prepare($sql);
 		$query->execute(array(':id' => $id, ':start' => $i . "-12-31"));
 		$fetch = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -1272,7 +1278,8 @@ function get_region_chart_data($id)
 	$sql = "
 		SELECT title,budget FROM projects
 		LEFT JOIN places ON projects.place_id = places.id
-		WHERE places.region_id = :id LIMIT 0,1
+		WHERE places.region_id = :id AND places.lang = '" . LANG . "' AND projects.lang = '" . LANG . "'
+		LIMIT 0,1
 	;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
@@ -1310,14 +1317,16 @@ function get_region_chart_data($id)
 	/*=========================		COLUMN 1		=============================*/
 
 	$sql = "SELECT start_at FROM projects LEFT JOIN places ON projects.place_id = places.id
-		WHERE places.region_id = :id ORDER BY start_at LIMIT 0,1;";
+		WHERE places.region_id = :id AND places.lang = '" . LANG . "' AND projects.lang = '" . LANG . "'
+		ORDER BY start_at LIMIT 0,1;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
 	$first = $query->fetch(PDO::FETCH_ASSOC);
 	$first_year = substr($first['start_at'], 0, 4);
 
 	$sql = "SELECT end_at FROM projects LEFT JOIN places ON projects.place_id = places.id
-		WHERE places.region_id = :id ORDER BY end_at DESC LIMIT 0,1;";
+		WHERE places.region_id = :id AND places.lang = '" . LANG . "' AND projects.lang = '" . LANG . "'
+		ORDER BY end_at DESC LIMIT 0,1;";
 	$query = db()->prepare($sql);
 	$query->execute(array(':id' => $id));
 	$last = $query->fetch(PDO::FETCH_ASSOC);
@@ -1332,7 +1341,8 @@ function get_region_chart_data($id)
 		$names[2][] = $i;
 
 		$sql = "SELECT budget,end_at,start_at FROM projects LEFT JOIN places ON projects.place_id = places.id
-		WHERE places.region_id = :id AND start_at <= :start;";
+			WHERE places.region_id = :id
+			AND start_at <= :start AND places.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
 		$query = db()->prepare($sql);
 		$query->execute(array(':id' => $id, ':start' => $i . "-12-31"));
 		$fetch = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -1383,6 +1393,9 @@ function get_region_chart_data($id)
 		  LEFT JOIN places
 		  ON p.place_id = places.id
 		  WHERE places.region_id = :id
+		  AND organizations.lang = '" . LANG . "'
+		  AND projects.lang = '" . LANG . "'
+		  AND places.lang = '" . LANG . "'
 		  ORDER BY o.name
 		";
 	$query = db()->prepare($query);
