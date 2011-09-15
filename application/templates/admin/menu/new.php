@@ -29,9 +29,9 @@
   	    </select>
             <br /><br />
         <input type='checkbox' name='m_hide' id='mhide'/>
-        <label for='mhide'>Hidden</label>&nbsp;&nbsp;
-        <input type='checkbox' id='mfooter'  name='m_footer'/>
-        <label for='mfooter'>Footer</label>
+        <label for='mhide'>Hidden</label>&nbsp;&nbsp;";
+        /*<input type='checkbox' id='mfooter'  name='m_footer'/>
+        <label for='mfooter'>Footer</label>*/ echo "
         <br /></br >
   	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />

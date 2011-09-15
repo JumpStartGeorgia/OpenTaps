@@ -280,7 +280,8 @@ console.log(news[0]);
 			</div>
 		</div>
 		<div id="contact-us" class="group" >
-			<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.698656732302&lg=44.798275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+			<!--<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.698656732302&lg=44.798275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
+			<div id='map_image' style='background: url(<?php echo href() ?>images/mapspot_address_on_map.png);'></div>
 			<div id='contact-us-form-container' class='group'>
 			    <div id='contact-us-circle'>
 				<div style='margin-top: 40px'>CONTACT US</div>

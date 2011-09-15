@@ -47,7 +47,7 @@ function userloggedin()
 								### MENU MANAGEMENT
 function read_menu($parent_id = 0, $lang = null)
 {
-    $sql = "SELECT id,name,short_name FROM menu WHERE parent_id = :parent_id AND lang = '" . LANG . "';";
+    $sql = "SELECT id,name,short_name FROM menu WHERE parent_id = :parent_id AND lang = '" . LANG . "' AND hide = '-1';";
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute(array(':parent_id' => $parent_id));
     return $statement->fetchAll();    

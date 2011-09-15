@@ -44,12 +44,13 @@
         <input type='checkbox' ";
 echo $result['hide'] == 0 ? "checked" : NULL;
     echo " name='m_hide' id='mhide'/>
-        <label for='mhide'>Hidden</label>&nbsp;&nbsp;
-        <input type='checkbox'";
+        <label for='mhide'>Hidden</label>&nbsp;&nbsp;";
+        /*<input type='checkbox'";
 echo $result['footer'] == 0 ? "checked" : NULL;
 echo " name='m_footer' id='mfooter'/>
-        <label for='mfooter'>Footer</label>
-        <br /><br />
+<label for='mfooter'>Footer</label>*/
+	echo "
+	<br /><br />
   	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />
   	</form>
