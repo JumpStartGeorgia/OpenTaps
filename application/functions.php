@@ -88,20 +88,28 @@ function add_menu($name, $short_name, $parent_id, $title, $text, $hide, $footer)
     if( strlen($name) < 2 )
 	return false;
 
-    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_id`, `name`, `short_name`, title, text, hide, footer) VALUES(:parent_id, :name, :short_name, :title, :text, :hide, :footer)";
-    $statement = Storage::instance()->db->prepare($sql);
+    $languages = config('languages');
+    foreach ($languages as $lang)
+    {
+	    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_id`, `name`, `short_name`, title, text, hide, footer, lang)
+	    	    VALUES(:parent_id, :name, :short_name, :title, :text, :hide, :footer, :lang)";
+	    $statement = Storage::instance()->db->prepare($sql);
 
-    $exec = $statement->execute(array(
- 	':name' => $name,
- 	':short_name' => $short_name,
- 	':parent_id' => $parent_id,
-    ':title' => $title,
-    ':text' => $text,
-    ':hide' => $hide,
-    ':footer' => $footer
-    ));
+	    $exec = $statement->execute(array(
+	 	':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
+	 	':short_name' => $short_name,
+	 	':parent_id' => $parent_id,
+	        ':title' => $title,
+    	        ':text' => $text,
+	        ':hide' => $hide,
+	        ':footer' => $footer,
+	        ':lang' => $lang
+	    ));
 
-    return ($exec) ? true : false;
+	    $success = (bool)$exec;
+    }
+
+    return $success;
 }
 
 function update_menu($id, $name, $short_name, $parent_id, $title, $text, $hide, $footer)
@@ -109,7 +117,7 @@ function update_menu($id, $name, $short_name, $parent_id, $title, $text, $hide, 
     if( strlen($name) < 2 || !is_numeric($id) )
 	return false;
 
-    $sql = "UPDATE `menu` SET  `parent_id` =  :parent_id, `short_name` =  :short_name, `name` =  :name, title=:title, text=:text, hide=:hide, footer=:footer  WHERE  `menu`.`id` =:id";
+    $sql = "UPDATE `menu` SET  `parent_id` =  :parent_id, `short_name` =  :short_name, `name` =  :name, title=:title, text=:text, hide=:hide, footer=:footer  WHERE  `menu`.`id` = :id";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
@@ -117,10 +125,10 @@ function update_menu($id, $name, $short_name, $parent_id, $title, $text, $hide, 
  	':short_name' => $short_name,
  	':name' => $name,
  	':parent_id' => $parent_id,
-    ':title' => $title,
-    ':text' => $text,
-    ':hide' => $hide,
-    ':footer' => $footer
+        ':title' => $title,
+        ':text' => $text,
+        ':hide' => $hide,
+        ':footer' => $footer
     ));
 
     return ($exec) ? true : false;
@@ -179,20 +187,28 @@ function add_news($title, $body, $filedata, $category, $place, $tags)
     if( substr($up, 0, 8) != "uploads/" && $up != "" )		//return if any errors
         return $up;
 
-    $sql = "INSERT INTO  `opentaps`.`news` (`title`, `body`, `published_at`, `image`, category, place_id) VALUES(:title, :body, :published_at, :image, :category, :place)";
-    $statement = Storage::instance()->db->prepare($sql);
+    $languages = config('languages');
+    foreach ($languages as $lang)
+    {
+	    $sql = "INSERT INTO  `opentaps`.`news` (`title`, `body`, `published_at`, `image`, category, place_id, lang)
+		    VALUES(:title, :body, :published_at, :image, :category, :place, :lang)";
+	    $statement = Storage::instance()->db->prepare($sql);
 
-    $exec = $statement->execute(array(
- 	':title' => $title,
- 	':body' => $body,
- 	':published_at' => date("Y-m-d H:i"),
- 	':image' => $up,
-    ':category' => $category,
-    ':place' => $place
-    ));
-	add_tag_connector('news',Storage::instance()->db->lastInsertId(),$tags);
+	    $exec = $statement->execute(array(
+	 	':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
+	 	':body' => $body,
+	 	':published_at' => date("Y-m-d H:i"),
+	 	':image' => $up,
+	        ':category' => $category,
+	        ':place' => $place,
+	        ':lang' => $lang
+	    ));
+	    $success = (bool)$exec;
+
+	    add_tag_connector('news',Storage::instance()->db->lastInsertId(),$tags);
+    }
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
-    return ($exec) ? $metarefresh : "couldn't insert into database";
+    return ($success) ? $metarefresh : "couldn't insert into database";
 }
 
 function update_news($id, $title, $body, $filedata, $category, $place, $tags)
@@ -217,7 +233,7 @@ function update_news($id, $title, $body, $filedata, $category, $place, $tags)
     else
     {
         delete_image($id);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_id = :place WHERE  `news`.`id` =:id";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_id = :place WHERE  `news`.`id` = :id";
         $data = array(
             ':id' => $id,
      	    ':title' => $title,
@@ -243,13 +259,13 @@ function delete_news($id)
 
     delete_image($id);
 
-    $sql = "DELETE FROM `opentaps`.`news` WHERE  `news`.`id` =:id";
+    $sql = "DELETE FROM `opentaps`.`news` WHERE  `news`.`id` = :id";
     $statement = Storage::instance()->db->prepare($sql);
 
     $exec = $statement->execute(array(
  	':id' => $id
     ));
-	fetch_db("DELETE FROM tag_connector WHERE news_id=$id");
+	fetch_db("DELETE FROM tag_connector WHERE news_id = $id");
    return ($exec) ? true : false;
 }
 
@@ -314,7 +330,7 @@ function read_tag_connector($field, $id)
     if($field != "news" && $field != "proj" && $field != "org")
         return array();
 
-    $sql = "SELECT tag_id FROM tag_connector WHERE ".$field."_id = ".$id;
+    $sql = "SELECT tag_id FROM tag_connector WHERE " . $field . "_id = " . $id;
     $statement = Storage::instance()->db->prepare($sql);
     $statement->execute();
     $r = $statement->fetchAll();
@@ -351,15 +367,21 @@ function add_tag($name)
     if( strlen($name) < 2 )
 	return "name too short".$back;
 
-    $sql = "INSERT INTO  `opentaps`.`tags` (`name`) VALUES(:name)";
-    $statement = Storage::instance()->db->prepare($sql);
+    $languages = config('languages');
+    foreach ($languages as $lang)
+    {
+    	$sql = "INSERT INTO  `opentaps`.`tags` (`name`, lang) VALUES(:name, :lang)";
+    	$statement = Storage::instance()->db->prepare($sql);
 
-    $exec = $statement->execute(array(
- 	':name' => $name
-    ));
+    	$exec = $statement->execute(array(
+ 		':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
+ 		':lang' => $lang
+    	));
+    	$success = (bool)$exec;
+    }
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags") . "' />";
-    return ($exec) ? $metarefresh : "couldn't insert into database".$back;
+    return ($success) ? $metarefresh : "couldn't insert into database" . $back;
 }
 
 function update_tag($id, $name)
@@ -492,20 +514,36 @@ function upload_files($files_data, $file_destination, $files_names = NULL, $rest
 
 
 function add_place($post){
-	$sql = "INSERT INTO places (longitude,latitude,name,region_id,raion_id,project_id,pollution_id) VALUES(:lon,:lat,:name,:region,:raion,:project,:pollution)";
+    $languages = config('languages');
+    foreach ($languages as $lang)
+    {
+	$sql = "INSERT INTO places (longitude,latitude,name,region_id,raion_id,project_id,pollution_id, lang)
+		VALUES(:lon,:lat,:name,:region,:raion,:project,:pollution, :lang)";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':lon' => $post['pl_longitude'],
 		':lat' => $post['pl_latitude'],
-		':name' => $post['pl_name'],
+		':name' => $post['pl_name'] . ((LANG == $lang) ? NULL : " ({$lang})"),
 		':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
 		':raion' => 0,
-        ':project' => 0,
-        ':pollution' => 0
+		':project' => 0,
+		':pollution' => 0,
+		':lang' => $lang
 	));
+    }
 }
 function edit_place($id,$post){
-	$sql = "UPDATE places SET longitude=:lon,latitude=:lat,name=:place_name,region_id=:region,raion_id=:raion,project_id=:project,pollution_id=:pollution WHERE id=:id LIMIT 1;";
+	$sql = "UPDATE places SET
+			longitude = :lon,
+			latitude = :lat,
+			name = :place_name,
+			region_id = :region,
+			raion_id = :raion,
+			project_id = :project,
+			pollution_id = :pollution
+		WHERE
+			id = :id
+		LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':lon' => $post['pl_longitude'],
@@ -513,13 +551,13 @@ function edit_place($id,$post){
 		':place_name' => $post['pl_name'],
 		':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
 		':raion' => 0,
-        ':project' => 0,
-        ':pollution' => 0,
+        	':project' => 0,
+        	':pollution' => 0,
 		':id' => $id
 	));
 }
 function delete_place($id){
-	$sql = "DELETE FROM places WHERE id=:id LIMIT 1;";
+	$sql = "DELETE FROM places WHERE id = :id LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
@@ -530,11 +568,14 @@ function delete_place($id){
 /*=======================================================Admin Regions 	============================================================*/
 function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
 {
-	$sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts) 
-				VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts)";
+    $languages = config('languages');
+    foreach ($languages as $lang)
+    {
+	$sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts, lang)
+		VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts, :lang)";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
-		':name' => $name,
+		':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
 		':region_info' => $region_info,
 		':region_projects' => $region_projects_info,
 		':city' => $city,
@@ -542,10 +583,10 @@ function add_region($name,$region_info,$region_projects_info,$city,$population,$
 		':squares' => $squares,
 		':settlement' => $settlement,
 		':villages' => $villages,
-		':districts' => $districts
+		':districts' => $districts,
+		':lang' => $lang
 	));
-	
-
+    }
 }
 
 function delete_region($id)
@@ -570,8 +611,17 @@ function get_region($id)
 
 function update_region($id,$name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
 {
-$sql = "UPDATE regions SET name=:name,region_info=:region_info,projects_info=:region_projects,city=:city,population=:population,square_meters=:squares,
-			settlement=:settlement,villages=:villages,districts=:districts WHERE id=:id";
+	$sql = "UPDATE regions SET
+			name = :name,
+			region_info = :region_info,
+			projects_info = :region_projects,
+			city = :city,
+			population = :population,
+			square_meters = :squares,
+			settlement = :settlement,
+			villages = :villages,
+			districts = :districts
+		WHERE id = :id";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id,
@@ -609,7 +659,7 @@ function region_total_budget($region_id)
 /*===========================   Users Admin     ============================*/
 function delete_user($id)
 {
-    $sql = "DELETE FROM users WHERE id=:id LIMIT 1;";
+    $sql = "DELETE FROM users WHERE id = :id LIMIT 1;";
     $stmt = Storage::instance()->db->prepare($sql);
     $stmt->execute(array(
            ':id' => $id
@@ -630,7 +680,7 @@ function add_user($post)
 
 function get_user($id)
 {
-    $sql = "SELECT * FROM users WHERE id=:id LIMIT 1;";
+    $sql = "SELECT * FROM users WHERE id = :id LIMIT 1;";
     $stmt = Storage::instance()->db->prepare($sql);
     $stmt->execute(array(
                         ':id' => $id
@@ -642,7 +692,7 @@ function get_user($id)
 function update_user($id,$post)
 {
     if( isset($post['u_name']) ){
-    $sql = "UPDATE users SET username=:username,password=:password WHERE id=:id";
+    $sql = "UPDATE users SET username = :username, password = :password WHERE id = :id";
     $stmt = Storage::instance()->db->prepare($sql);
     $stmt->execute(array(
                        ':username' => $post['u_name'],
@@ -673,7 +723,7 @@ function read_projects($project_id = false)
             ON p.place_id = pl.id
         LEFT JOIN regions AS r
             ON pl.region_id = r.id
-        WHERE p.id = :id
+        WHERE p.id = :id AND places.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND regions.lang = '" . LANG . "'
         ;";
         $statement = Storage::instance()->db->prepare($sql);
         $statement->execute(array(':id' => $project_id));
@@ -715,68 +765,78 @@ function add_project($title, $desc, $budget, /*$region_id*/$place_id, $city, $gr
     if ( count($fields) > 0 )
     	return $f . " too short" . $back;
 
-    $sql = "
-    	INSERT INTO `opentaps`.`projects` (
-    		title,
-    		description,
-    		budget,
-    		region_id,
-    		city,
-    		grantee,
-    		sector,
-    		start_at,
-    		end_at,
-    		info,
-    		type,
-            place_id
-    	)
-    	VALUES(
-    		:title,
-    		:description,
-    		:budget,
-    		:region_id,
-    		:city,
-    		:grantee,
-    		:sector,
-    		:start_at,
-    		:end_at,
-    		:info,
-    		:type,
-            :place_id
-    	);
-    ";
-    $statement = Storage::instance()->db->prepare($sql);
 
-    $exec = $statement->execute(array(
-    	':title' => $title,
-    	':description' => $desc,
-    	':budget' => $budget,
-    	':region_id' => 0,//$region_id,
-    	':city' => $city,
-    	':grantee' => $grantee,
-    	':sector' => $sector,
-    	':start_at' => $start_at,
-    	':end_at' => $end_at,
-    	':info' => $info,
-    	':type' => $type,
-        ':place_id' => $place_id
-    ));
-
-    $last_insert_id = Storage::instance()->db->lastInsertId();
-
-    foreach ( $org_ids as $org_id )
+    $languages = config('languages');
+    foreach ($languages as $lang)
     {
-	$query = "INSERT INTO `project_organizations` ( project_id, organization_id ) VALUES( :project_id, :organization_id );";
-	$query = Storage::instance()->db->prepare($query);
-	$query = $query->execute(array(':project_id' => $last_insert_id, ':organization_id' => $org_id));
+	    $sql = "
+	    	INSERT INTO `opentaps`.`projects` (
+	    		title,
+	    		description,
+	    		budget,
+	    		region_id,
+	    		city,
+	    		grantee,
+	    		sector,
+	    		start_at,
+	    		end_at,
+	    		info,
+	    		type,
+		        place_id,
+		        lang
+	    	)
+	    	VALUES(
+	    		:title,
+	    		:description,
+	    		:budget,
+	    		:region_id,
+	    		:city,
+	    		:grantee,
+	    		:sector,
+	    		:start_at,
+	    		:end_at,
+	    		:info,
+	    		:type,
+		        :place_id,
+		        :lang
+	    	);
+	    ";
+
+	    $statement = Storage::instance()->db->prepare($sql);
+
+	    $exec = $statement->execute(array(
+	    	':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
+	    	':description' => $desc,
+	    	':budget' => $budget,
+	    	':region_id' => 0,//$region_id,
+	    	':city' => $city,
+	    	':grantee' => $grantee,
+	    	':sector' => $sector,
+	    	':start_at' => $start_at,
+	    	':end_at' => $end_at,
+	    	':info' => $info,
+	    	':type' => $type,
+		':place_id' => $place_id,
+		':lang' => $lang
+	    ));
+	    $success = (bool)$exec;
+
+	    $last_insert_id = Storage::instance()->db->lastInsertId();
+
+	    foreach ($org_ids as $org_id)
+	    {
+		$query = "INSERT INTO `project_organizations` ( project_id, organization_id ) VALUES( :project_id, :organization_id );";
+		$query = Storage::instance()->db->prepare($query);
+		$query = $query->execute(array(':project_id' => $last_insert_id, ':organization_id' => $org_id));
+	    }
+
+
+	    if ( !empty($tag_ids) )
+		    if ( !add_tag_connector('proj', $last_insert_id, $tag_ids) )
+			return "tag connection error";
     }
 
-
-    if( !empty($tag_ids) )
-	    if ( !add_tag_connector('proj', $last_insert_id, $tag_ids) )
-		return "tag connection error";
-
-    if ( $exec )
+    if ($success)
     	Slim::redirect(href("admin/projects"));
     else
     	return "couldn't insert record/database error";
@@ -891,7 +951,7 @@ function delete_project($id)
     		DELETE FROM `projects` WHERE  `projects`.`id` = :id;
     		DELETE FROM tag_connector WHERE proj_id = :id;
 		DELETE FROM project_organizations WHERE project_id = :id;
-		DELETE FROM projects_data WHERE project_id = :id;
+		DELETE FROM projects_data WHERE project_id = :id AND lang = '" . LANG . "';
 	   ";
     $statement = Storage::instance()->db->prepare($sql);
     $delete = $statement->execute(array(':id' => $id));
@@ -906,7 +966,7 @@ function delete_project($id)
 
 function read_project_data($id)
 {
-	$query = "SELECT * FROM projects_data WHERE project_id = :id LIMIT 1;";
+	$query = "SELECT * FROM projects_data WHERE project_id = :id AND lang = '" . LANG . "' LIMIT 1;";
 	$query = Storage::instance()->db->prepare($query);
 	$query->execute(array(':id' => $id));
 	$query = $query->fetchAll();
@@ -917,7 +977,7 @@ function read_project_data($id)
 function delete_project_data($id)
 {
 
-	$sql = "DELETE FROM projects_data WHERE project_id = :id;";
+	$sql = "DELETE FROM projects_data WHERE project_id = :id AND lang = '" . LANG . "';";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(':id'=>$id));
 }
@@ -928,11 +988,21 @@ function add_project_data($project_id, $key, $value)
 	{
 	    if ( !empty($key[$i]) && !empty($value[$i]) )
 	    {
-		echo $sql = "
-		 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_id`) VALUES (:key, :value, :project_id);
-		";
-		$statement = Storage::instance()->db->prepare($sql);
-		$statement->execute(array(':project_id' => $project_id, ':key' => $key[$i], ':value' => $value[$i]));
+	        $languages = config('languages');
+    		foreach ($languages as $lang)
+    		{
+			echo $sql = "
+			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_id`, lang)
+			 VALUES (:key, :value, :project_id, :lang);
+			";
+			$statement = Storage::instance()->db->prepare($sql);
+			$statement->execute(array(
+				':project_id' => $project_id,
+				':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
+				':value' => $value[$i],
+				':lang' => $lang
+			));
+		}
 	    }
 	}
 }
@@ -1044,7 +1114,7 @@ function get_organization_projects($id)
 
 function delete_organization($id){
 	$org = get_organization($id);
-	$sql = "DELETE FROM organizations WHERE id=:id LIMIT 1;";
+	$sql = "DELETE FROM organizations WHERE id = :id LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
@@ -1068,22 +1138,26 @@ function add_organization($name,$description,$projects_info,$city_town,$district
 		$logo = NULL;
 	}
 
+	$languages = config('languages');
+    	foreach ($languages as $lang)
+    	{
+		$sql = "INSERT INTO organizations (name,description,district,city_town,grante,sector,projects_info,logo, lang)
+			VALUES(:name,:description,:projects_info,:city_town,:district,:grante,:sector,:logo, :lang)";
+		$statement = Storage::instance()->db->prepare($sql);
+		$statement->execute(array(
+			':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
+			':description' => $description,
+			':projects_info' => $projects_info,
+			':city_town' => $city_town,
+			':district' => $district,
+			':grante' => $grante,
+			':sector' => $sector,
+			':logo' => $logo,
+			':lang' => $lang
+		));
 	
-	$sql = "INSERT INTO organizations (name,description,district,city_town,grante,sector,projects_info,logo) 
-					VALUES(:name,:description,:projects_info,:city_town,:district,:grante,:sector,:logo)";
-	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(
-		':name' => $name,
-		':description' => $description,
-		':projects_info' => $projects_info,
-		':city_town' => $city_town,
-		':district' => $district,
-		':grante' => $grante,
-		':sector' => $sector,
-		':logo' => $logo
-	));
-	
-	add_tag_connector('org',Storage::instance()->db->lastInsertId(),$tags);
+		add_tag_connector('org',Storage::instance()->db->lastInsertId(),$tags);
+	}
 }
 
 function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file){
@@ -1105,7 +1179,7 @@ function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$
 	
 	
 	$sql = "UPDATE organizations SET name=:name,description=:info,district=:district,city_town=:city_town,
-					grante=:grante,sector=:sector,projects_info=:projects_info,logo=:logo WHERE id=:id LIMIT 1;";
+		grante=:grante,sector=:sector,projects_info=:projects_info,logo=:logo WHERE id=:id LIMIT 1;";
 	$statement = Storage::instance()->db->prepare($sql);
 	$statement->execute(array(
 		':name' => $name,

@@ -4,19 +4,20 @@ session_start();
 define('DIR', getcwd() . '/');
 define('URL', 'http://localhost/OpenTaps/');
 
-
-$languages = array('en', 'ka');
-$default_lang = 'ka';
-$lang = (isset($_GET['lang']) AND in_array($_GET['lang'], $languages)) ? $_GET['lang'] : $default_lang;
-define('LANG', $lang);
-
-
 error_reporting(E_ALL);
 
 require_once DIR . 'application/storage.php';
 Storage::instance()->config = require DIR . 'application/config.php';
 require_once DIR . 'application/firephp/fb.php';
 require_once DIR . 'application/functions.php';
+
+
+$languages = config('languages');
+$default_lang = 'ka';
+$lang = (isset($_GET['lang']) AND in_array($_GET['lang'], $languages)) ? $_GET['lang'] : $default_lang;
+define('LANG', $lang);
+
+
 
 try
 {
