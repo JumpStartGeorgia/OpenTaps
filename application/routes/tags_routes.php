@@ -33,6 +33,7 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     $id = $id['id'];
 
     $tosp = config('tags_on_single_page');
+    $unique = get_unique("tags", $id);
 
     $query = "
     		SELECT
@@ -42,20 +43,20 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     		INNER JOIN
     			" . $table . "
     		ON
-    			tag_connector." . $prefix . "_id = " . $table . ".id
+    			tag_connector." . $prefix . "_unique = " . $table . ".`unique`
     		WHERE
-    			tag_connector.tag_id = :id AND lang = '" . LANG . "'
+    			tag_connector.tag_unique = :unique AND lang = '" . LANG . "'
     		LIMIT 0, " . $tosp . ";
     	     ";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
-    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
-    		WHERE tag_connector.tag_id = :id AND lang = '" . LANG . "';";
+    $query = "  SELECT COUNT(" . $table . ".`unique`) AS total FROM tag_connector
+    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_unique = " . $table . ".`unique`
+    		WHERE tag_connector.tag_unique = :unique AND lang = '" . LANG . "';";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
     $total_pages = ($total - $total % $tosp) / $tosp + 1;
@@ -98,12 +99,13 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     $id = $id['id'];
 
     $tosp = config('tags_on_single_page');
+    $unique = get_unique("tags", $id);
 
-    $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
-    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
-    		WHERE tag_connector.tag_id = :id AND lang = '" . LANG . "';";
+    $query = "  SELECT COUNT(" . $table . ".`unique`) AS total FROM tag_connector
+    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_unique = " . $table . ".`unique`
+    		WHERE tag_connector.tag_unique = :unique AND lang = '" . LANG . "';";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
     $total_pages = ($total <= $tosp) ? 1 : ($total - $total % $tosp) / $tosp;
@@ -117,13 +119,13 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     		INNER JOIN
     			" . $table . "
     		ON
-    			tag_connector." . $prefix . "_id = " . $table . ".id
+    			tag_connector." . $prefix . "_unique = " . $table . ".`unique`
     		WHERE
-    			tag_connector.tag_id = :id AND lang = '" . LANG . "'
+    			tag_connector.tag_unique = :unique AND lang = '" . LANG . "'
     		LIMIT " . ($tosp * $page - $tosp). ", " . $tosp . ";
     	     ";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
     Storage::instance()->content = template('tags', array(

@@ -35,17 +35,23 @@ Slim::get('/admin/regions/', function(){
     	: template('login');
 });
 
-Slim::get('/admin/regions/new/', function(){
-    Storage::instance()->content = userloggedin() ? template('admin/regions/new', array('all_tags' => read_tags())) : template('login');
-});
-
 Slim::get('/admin/regions/:id/', function($id){
-    Storage::instance()->content = userloggedin()
-    	? template('admin/regions/edit', array(
+    if ($id != "new")
+    {
+    	is_numeric($id) OR Slim::redirect(href('admin/regions'));
+	Storage::instance()->content = userloggedin()
+    		? template('admin/regions/edit', array(
     			'region' => get_region($id),
     			'all_tags' => read_tags()
-    			))
-    	: template('login');
+    		  ))
+    		: template('login');
+    }
+    else
+    {
+	Storage::instance()->content = userloggedin()
+		? template('admin/regions/new', array('all_tags' => read_tags()))
+		: template('login');
+    }
 });
 
 Slim::get('/admin/regions/:id/delete/', function($id){
@@ -76,7 +82,7 @@ Slim::post('/admin/regions/create/', function(){
 	
 });
 
-Slim::post('/admin/regions/:id/update/', function($id){
+Slim::post('/admin/regions/update/:id/', function($id){
     empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
    if(userloggedin()){
 	     update_region(

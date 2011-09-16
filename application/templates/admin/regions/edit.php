@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/regions/" . $region['id'] . "/update");
+  $action = href("admin/regions/update/" . $region['id']);
 ?>
     	<form action='<? echo $action; ?>' method='post'>
   	     <label for='pname'>Name: </label>

@@ -50,13 +50,16 @@ Slim::get('/admin/organizations/', function(){
     	: template('login');
 });
 
-Slim::get('/admin/organizations/new/', function(){
+Slim::get('/admin/organizations/:id/', function($id){
+if ($id == "new")
+{
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/new', array('all_tags' => read_tags()))
     	: template('login');
-});
-
-Slim::get('/admin/organizations/:id/', function($id){
+}
+else
+{
+    is_numeric($id) or Slim::redirect(href('admin/organizations'));
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/edit', array(
     			'organization' => get_organization($id),
@@ -64,6 +67,7 @@ Slim::get('/admin/organizations/:id/', function($id){
     			'org_tags' => read_tag_connector('org',$id)
     			))
     	: template('login');
+}
 });
 
 Slim::get('/admin/organizations/:id/delete/', function($id){
@@ -76,7 +80,7 @@ Slim::get('/admin/organizations/:id/delete/', function($id){
 });
 
 Slim::post('/admin/organizations/create/', function(){
-    empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+   empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
    if(userloggedin()){
 	     add_organization(
         	$_POST['p_name'],
@@ -88,7 +92,7 @@ Slim::post('/admin/organizations/create/', function(){
         	/*$_POST['p_donors'],*/
         	$_POST['p_sector'],
         	$_POST['p_tags'],
-        	$_FILES     	
+        	$_FILES
        	     );
        	     Slim::redirect(href('admin/organizations'));
        	}
@@ -96,7 +100,7 @@ Slim::post('/admin/organizations/create/', function(){
 	
 });
 
-Slim::post('/admin/organizations/:id/update/', function($id){
+Slim::post('/admin/organizations/update/:id/', function($id){
     empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
    if(userloggedin()){
 	     edit_organization(

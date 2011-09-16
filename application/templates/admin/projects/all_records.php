@@ -23,7 +23,7 @@
 		<div class='record'>
 		  <div class='rleft'> " . $project['title'] . "</div>
 		  <div class='rcenter' style='width:60%;'> " . $project['description'] . "</div>
-		  <div class='rright' style='width:290px'>
+		  <div class='rright' style='width:287px'>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
 		      <a href=\"" . $link_add_data . "\">Add Data</a>
 		      <a href=\"" . $link_edit_data . "\">Edit Data</a>

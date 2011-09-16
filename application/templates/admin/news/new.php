@@ -56,9 +56,7 @@
   	    </select>
   	    <br /><br />
 
-  	    <input type='submit' value='Submit' onclick='
-  	    	return document.getElementById("ntitle").value != "" && document.getElementById("nbody").value != ""
-  	    	' />
+  	    <input type='submit' value='Submit' onclick='return document.getElementById("ntitle").value != ""' />
   	    <br /><br />
   	</form>
 

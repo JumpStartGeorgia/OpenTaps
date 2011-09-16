@@ -9,7 +9,7 @@ Slim::get('/project/:id/', function($id){
 
 	list($values, $names, $real_values) = get_project_chart_data($id);
 
-	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tags WHERE tags.lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute();
@@ -111,13 +111,14 @@ Slim::get('/admin/projects/:id/', function($id){
 	$query = "SELECT * FROM organizations WHERE lang = '" . LANG . "';";
 	$orgs = fetch_db($query);
 
-	$query = "SELECT organization_id FROM project_organizations WHERE project_id = :id";
+	$query = "SELECT organization_unique FROM project_organizations WHERE project_unique = :unique";
 	$query = Storage::instance()->db->prepare($query);
-	$query->execute(array(':id' => $id));
+	$unique = get_unique("projects", $id);
+	$query->execute(array(':unique' => $unique));
 	$result = $query->fetchAll();
 	$this_orgs = array();
 	foreach($result as $s)
-		$this_orgs[] = $s['organization_id'];
+		$this_orgs[] = $s['organization_unique'];
 
 
 	$regions_query = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
@@ -129,7 +130,7 @@ Slim::get('/admin/projects/:id/', function($id){
 	(
 		'project' =>  read_projects($id),
 		'all_tags' => read_tags(),
-		'this_tags' => read_tag_connector('proj', $id),
+		'this_tags' => read_tag_connector('proj', $unique),
 		'this_orgs' => $this_orgs,
 		'organizations' => $orgs,
         	'regions' => $regions,
@@ -196,14 +197,15 @@ Slim::post('/admin/projects/:id/update/', function($id){
 Slim::get('/admin/project-tags/:id/',function($id){
     if(userloggedin())
     {
-	$sql = "SELECT tag_id FROM tag_connector WHERE proj_id = :id;";
+	$sql = "SELECT tag_unique FROM tag_connector WHERE proj_unique = :unique;";
         $statement = Storage::instance()->db->prepare($sql);
-        $statement->execute(array(':id' => $id));
+        $unique = get_unique("projects", $id);
+        $statement->execute(array(':unique' => $unique));
         $r = $statement->fetchAll();
         $tags = array();
         foreach($r as $res)
         {
-          $tags[] = $res['tag_id'];
+          $tags[] = $res['tag_unique'];
         }
         //if(empty($tags)) $rags = array();
         Storage::instance()->content = template('admin/projects/project-tags', array(
@@ -219,10 +221,11 @@ Slim::get('/admin/project-tags/:id/',function($id){
 Slim::post('/admin/project-tags/:id/update/',function($id){
     if(userloggedin())
     {
-	$sql = "DELETE FROM tag_connector where proj_id = :id;";
+	$sql = "DELETE FROM tag_connector where proj_unique = :unique;";
         $statement = Storage::instance()->db->prepare($sql);
-        $delete = $statement->execute(array(':id' => $id));
-        add_tag_connector('proj', $id, $_POST['p_tags']);
+        $unique = get_unique("projects", $id);
+        $delete = $statement->execute(array(':unique' => $unique));
+        add_tag_connector('proj', $unique, $_POST['p_tags']);
         Slim::redirect(href('admin/projects'));
     }
     else
@@ -233,11 +236,12 @@ Slim::post('/admin/project-tags/:id/update/',function($id){
 Slim::get('/admin/project-data/:id/',function($id){
     if(userloggedin())
     {
-	$sql = "SELECT * FROM projects_data WHERE project_id = :id AND lang = '" . LANG . "' ORDER BY id;";
+	$sql = "SELECT * FROM projects_data WHERE project_unique = :unique AND lang = '" . LANG . "' ORDER BY id;";
         $statement = Storage::instance()->db->prepare($sql);
-        $statement->execute(array(':id' => $id));
+        $unique = get_unique("projects", $id);
+        $statement->execute(array(':unique' => $unique));
         $r = $statement->fetchAll();
-        empty($r) AND $r = array(array('key' => NULL, 'value' => NULL, 'project_id' => $id, 'id' => NULL));
+        empty($r) AND $r = array(array('key' => NULL, 'value' => NULL, 'project_unique' => $unique, 'id' => NULL));
         Storage::instance()->content = template('admin/projects/edit_data', array('data' => $r));
     }
     else

@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/organizations/" . $organization['id'] . "/update");
+  $action = href("admin/organizations/update/" . $organization['id']);
 ?>
     	<form action='<? echo $action; ?>' method='post' enctype="multipart/form-data">
   	   <label for='pname'>Name: </label>

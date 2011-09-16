@@ -60,7 +60,7 @@
   	    </select>
   	    <br /><br />
 
-  	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />
+  	    <input type='submit' style='width:90px;' value='Submit' onclick='return document.getElementById("dname").value != "" ' />
   	    <br /><br />
   	</form>
 
