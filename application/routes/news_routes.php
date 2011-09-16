@@ -14,11 +14,13 @@ Slim::get('/news/', function()
 	$total = $total['total'];
 	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
 
-	$query = "SELECT tags.name,
-			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+	$query = "SELECT DISTINCT tags.id,
+			 tags.name,
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			 AS total_tags
 		  FROM tag_connector
-		  JOIN tags ON tag_connector.tag_id = tags.id
-		  JOIN news ON tag_connector.news_id = news.id
+		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+		  JOIN news ON tag_connector.news_unique = news.`unique`
 		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
@@ -47,11 +49,11 @@ Slim::get('/news/page/:page/', function($page)
 	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
 	($page > $total_pages) AND die('invalid page');
 
-	$query = "SELECT tags.name,
+	$query = "SELECT DISTINCT tags.id,tags.name,
 			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
 		  FROM tag_connector
-		  JOIN tags ON tag_connector.tag_id = tags.id
-		  JOIN news ON tag_connector.news_id = news.id
+		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+		  JOIN news ON tag_connector.news_unique = news.`unique`
 		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
@@ -80,11 +82,11 @@ Slim::get('/news/type/:type/', function($type)
 	$total = $total['total'];
 	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
 
-	$query = "SELECT tags.name,
-			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+	$query = "SELECT DISTINCT tags.id,tags.name,
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tag_connector
-		  JOIN tags ON tag_connector.tag_id = tags.id
-		  JOIN news ON tag_connector.news_id = news.id
+		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+		  JOIN news ON tag_connector.news_unique = news.`unique`
 		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
@@ -115,11 +117,11 @@ Slim::get('/news/type/:type/:page/', function($type, $page)
 	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
 	($page > $total_pages) AND die('invalid page');
 
-	$query = "SELECT tags.name,
-			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_id = tags.id) AS total_tags
+	$query = "SELECT DISTINCT tags.id,tags.name,
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tag_connector
-		  JOIN tags ON tag_connector.tag_id = tags.id
-		  JOIN news ON tag_connector.news_id = news.id
+		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+		  JOIN news ON tag_connector.news_unique = news.`unique`
 		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
@@ -182,7 +184,7 @@ Slim::get('/admin/news/:id/', function($id){
     	? template('admin/news/edit', array(
                         'news' => read_news(false, 0, $id),
                         'all_tags' => read_tags() ,
-                        'news_tags' => read_tag_connector('news',$id),
+                        'news_tags' => read_tag_connector('news', get_unique("news", $id)),
                         'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
                        ))
     	: template('login');
@@ -247,7 +249,7 @@ Slim::post('/admin/news/create/', function(){
       	  "type" => $_FILES['n_file']['type'],
       	  "size" => $_FILES['n_file']['size'],
       	  "tmp_name" => $_FILES['n_file']['tmp_name']
-          );
+      );
       Storage::instance()->content = add_news( $_POST['n_title'], $_POST['n_body'], $filedata, $_POST['n_category'], $_POST['n_place'], $_POST['p_tags']);
     }
     else

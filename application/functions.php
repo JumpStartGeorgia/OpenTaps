@@ -66,18 +66,6 @@ function get_unique($table, $id)
 		return false;
 	return $query['unique'];
 }
-function get_uniques_ids($table, $unique)
-{
-	$table = htmlspecialchars(str_replace(";", "", $table));
-	$query = "SELECT id from `" . $table . "` WHERE `unique` = :unique";
-	$query = db()->prepare($query);
-	$query->execute(array(':unique' => $unique));
-	$query = $query->fetchAll(PDO::FETCH_ASSOC);
-	$ids = array();
-	foreach ($query as $result)
-		$ids[] = $result['id'];
-	return $ids;
-}
 
 								### MENU MANAGEMENT
 function read_menu($parent_id = 0, $lang = null)
@@ -242,8 +230,10 @@ function add_news($title, $body, $filedata, $category, $place, $tags)
 	    ));
 	    $success = (bool)$exec;
 
-	    add_tag_connector('news', $unique, $tags);
     }
+
+    add_tag_connector('news', $unique, $tags);
+
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
     return ($success) ? $metarefresh : "couldn't insert into database";
 }
@@ -368,7 +358,7 @@ function read_tag_connector($field, $unique)
     if($field != "news" && $field != "proj" && $field != "org")
         return array();
 
-    $sql = "SELECT tag_unique FROM tag_connector WHERE " . $field . "_unique = " . $unique;
+    $sql = "SELECT tag_unique FROM tag_connector WHERE " . $field . "_unique = '" . $unique . "'";
     $statement = db()->prepare($sql);
     $statement->execute();
     $r = $statement->fetchAll();
@@ -379,8 +369,12 @@ function read_tag_connector($field, $unique)
     }
     return $result;
 }
-function add_tag_connector($field, $f_unique, $tag_uniques)
+function add_tag_connector($field, $f_unique, $tag_ids)
 {
+    $tag_uniques = array();
+    foreach ($tag_ids as $tag_id)
+        $tag_uniques[] = get_unique("tags", $tag_id);
+
     if ( $field != "news" AND $field != "proj" AND $field != "org" )
         exit("incorrect field");
 

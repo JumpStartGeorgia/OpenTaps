@@ -28,7 +28,7 @@
       <select name='n_category' id='ncategory'>
             <!--<option value="-1"></option>-->
             <?php
-     foreach( config('news_types') as $type ):
+      foreach( config('news_types') as $type ):
                   ?>
       <option value="<?php echo $type; ?>" <?php echo $type == $news[0]['category'] ? 'selected=selected' : NULL; ?>><?php echo $type; ?></option>
                    <?php
@@ -58,7 +58,7 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['id'],$news_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['unique'],$news_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
