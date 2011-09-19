@@ -1,6 +1,6 @@
 <?php
-  $action = href("admin/news/" . $news[0]['id'] . "/update");
-  $img = view_image($news[0]['id']);
+  $action = href("admin/news/" . $news[0]['unique'] . "/update");
+  $img = view_image($news[0]['unique']);
 ?>
     	<form enctype='multipart/form-data' action='<? echo $action; ?>' method='post'>
   	    <label for='ntitle'>Title: </label>
@@ -73,6 +73,6 @@
   	<a href="<?php echo href("admin/news"); ?>">Back</a>
   	<br />
   	
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/news/" . $news[0]['id'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/news/" . $news[0]['unique'] . "/delete"); ?>" >
   	    Delete this record
   	</a>

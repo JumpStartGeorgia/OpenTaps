@@ -10,11 +10,12 @@
 
   foreach($projects as $project)
   {
-      $link_edit = href("admin/projects/". $project['id']);
-      $link_add_data = href("admin/project-data/". $project['id'] . "/new");
-      $link_edit_data = href("admin/project-data/". $project['id']);
-      $link_del = href("admin/projects/". $project['id'] . '/delete');
+      $link_edit = href("admin/projects/". $project['unique']);
+      $link_add_data = href("admin/project-data/". $project['unique'] . "/new");
+      $link_edit_data = href("admin/project-data/". $project['unique']);
+      $link_del = href("admin/projects/". $project['unique'] . '/delete');
       $project['title'] = ( strlen($project['title']) > 12 ) ? substr($project['title'], 0, 9) . "..." : $project['title'];
+      $project['description'] = htmlspecialchars($project['description']);
       $project['description'] = ( strlen($project['description']) > 70 )
       		? substr($project['description'], 0, 65) . "..."
       		: $project['description'];

@@ -2,7 +2,8 @@
 /*=================================================================== Regions Fontpage=============================================*/
 Slim::get('/region/:id/', function($id){
 	Storage::instance()->show_map = FALSE;
-	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_id = '$id'";
+	$unique = get_unique("regions", $id);
+	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_unique = '$unique'";
 
 	list($values, $names, $real_values) = get_region_chart_data($id);
 

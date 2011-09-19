@@ -15,6 +15,7 @@
       $link_edit_data = href("admin/regions-data/". $region['id']);
       $link_del = href("admin/regions/". $region['id'] . '/delete');
       $region['name'] = ( strlen($region['name']) > 12 ) ? substr($region['name'], 0, 9) . "..." : $region['name'];
+      $region['region_info'] = htmlspecialchars($region['region_info']);
       $region['region_info'] = ( strlen($region['region_info']) > 70 )
       		? substr($region['region_info'], 0, 65) . "..."
       		: $region['region_info'];

@@ -57,14 +57,13 @@ function generate_unique($table)
 }
 function get_unique($table, $id)
 {
-	$table = htmlspecialchars(str_replace(";", "", $table));
-	$query = "SELECT `unique` from `" . $table . "` WHERE id = :id LIMIT 0,1";
-	$query = db()->prepare($query);
+//	$table = htmlspecialchars(str_replace(";", "", $table));
+	$query = db()->prepare("SELECT `unique` from `" . $table . "` WHERE id = :id LIMIT 1;");
 	$query->execute(array(':id' => $id));
-	$query = $query->fetch(PDO::FETCH_ASSOC);
-	if (empty($query) OR empty($query['unique']))
-		return false;
-	return $query['unique'];
+	$result = $query->fetch(PDO::FETCH_ASSOC);
+	if (empty($result) OR empty($result['unique']))
+		return FALSE;
+	return $result['unique'];
 }
 
 								### MENU MANAGEMENT
@@ -75,6 +74,7 @@ function read_menu($parent_id = 0, $lang = null)
     $statement->execute(array(':parent_id' => $parent_id));
     return $statement->fetchAll();    
 }
+
 function has_submenu($menuid)
 {
     $sql = "SELECT id FROM menu WHERE parent_id = '" . $menuid . "'";
@@ -172,13 +172,13 @@ function delete_menu($id)
    return ($exec) ? true : false;
 }
 								### NEWS MANAGEMENT
-function read_news($limit = false,$from = 0,$news_id = false)
+function read_news($limit = false, $from = 0, $news_unique = false)
 {
-    if($news_id)
+    if($news_unique)
     {
-	$sql = "SELECT * FROM news WHERE id = :news_id ORDER BY published_at DESC";
+	$sql = "SELECT * FROM news WHERE `unique` = :news_unique AND lang = '" . LANG . "' ORDER BY published_at DESC";
 	$statement = db()->prepare($sql);
-	$statement->execute(array(':news_id' => $news_id));
+	$statement->execute(array(':news_unique' => $news_unique));
     }
     else
     {
@@ -238,31 +238,31 @@ function add_news($title, $body, $filedata, $category, $place, $tags)
     return ($success) ? $metarefresh : "couldn't insert into database";
 }
 
-function update_news($id, $title, $body, $filedata, $category, $place, $tags)
+function update_news($unique, $title, $body, $filedata, $category, $place, $tags)
 {
-    if( strlen($title) < 3 || strlen($body) < 11 || !is_numeric($id) )
+    if (strlen($title) < 3 || strlen($body) < 11 || !is_numeric($unique))
 	return "either title or body is too short, or invalid id";
 
-    $up = image_upload( $filedata ); 
-    if( substr($up, 0, 8) != "uploads/" && $up != "" )			//return if any errors
+    $up = image_upload($filedata); 
+    if (substr($up, 0, 8) != "uploads/" && $up != "")			//return if any errors
 	return $up;
-    elseif( $up == "" )
+    elseif ($up == "")
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_id = :place WHERE  `news`.`id` =:id";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_id = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "'";
         $data = array(
-            ':id' => $id,
+            ':unique' => $unique,
      	    ':title' =>$title,
             ':body' => $body,
             ':category' => $category,
-            ':place' =>$place
+            ':place' => $place
         );
     }
     else
     {
-        delete_image($id);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_id = :place WHERE  `news`.`id` = :id";
+        delete_image($unique);
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_id = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "'";
         $data = array(
-            ':id' => $id,
+            ':unique' => $unique,
      	    ':title' => $title,
             ':body' => $body,
             ':image' => $up,
@@ -273,21 +273,22 @@ function update_news($id, $title, $body, $filedata, $category, $place, $tags)
     
     $statement = db()->prepare($sql);
     $exec = $statement->execute($data);
-    $unique = get_unique("news", $id);
+    //$unique = get_unique("news", $id);
     fetch_db("DELETE FROM tag_connector WHERE news_unique = $unique");
-    add_tag_connector('news', $unique, $tags);
+    if (!empty($tags))
+    	add_tag_connector('news', $unique, $tags);
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
     return ($exec) ? $metarefresh : "couldn't update record/database error";
 }
 
-function delete_news($id)
+function delete_news($unique)
 {
-    if( !is_numeric($id) )
+    if( !is_numeric($unique) )
 	return false;
 
-    delete_image($id);
+    delete_image($unique);
 
-    $unique = get_unique("news", $id);
+    //$unique = get_unique("news", $id);
     //print_r(get_uniques_ids("news", $unique));die;
     $sql = "DELETE FROM `opentaps`.`news` WHERE  `news`.`unique` = '" . $unique . "'";
     $statement = db()->prepare($sql);
@@ -317,11 +318,11 @@ function image_upload($filedata)
     else
         return "";
 }
-function delete_image($news_id)
+function delete_image($news_unique)
 {
-    $sql = "SELECT image FROM news WHERE id = :news_id";
+    $sql = "SELECT image FROM news WHERE `unique` = :news_unique LIMIT 1";
     $statement = db()->prepare($sql);
-    $statement->execute(array(':news_id' => $news_id));
+    $statement->execute(array(':news_unique' => $news_unique));
     $image = $statement->fetch(PDO::FETCH_ASSOC);
     if( file_exists($image['image']) )
         unlink($image['image']);
@@ -369,6 +370,7 @@ function read_tag_connector($field, $unique)
     }
     return $result;
 }
+
 function add_tag_connector($field, $f_unique, $tag_ids)
 {
     $tag_uniques = array();
@@ -380,12 +382,13 @@ function add_tag_connector($field, $f_unique, $tag_ids)
 
     empty($tag_uniques) AND exit("tag ids are empty");
 
-    foreach ( $tag_uniques as $tag_unique )
+    foreach ($tag_uniques as $tag_unique)
     {
         $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `".$field."_unique`) VALUES (:tag_unique, :f_unique);";
+        $data = array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique);
         $statement = db()->prepare($sql);
-        $exec = $statement->execute(array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique));
-        if ( !$exec )
+        $exec = $statement->execute($data);
+        if (!$exec)
             return false;
     }
 
@@ -738,11 +741,10 @@ function update_user($id,$post)
 //projects
 
 
-function read_projects($project_id = false)
+function read_projects($project_unique = false)
 {
-    if($project_id)
+    if($project_unique)
     {
-/*        $sql = "SELECT p.* FROM projects p INNER JOIN regions r ON p.region_id = r.id WHERE p.id = :id";*/
         $sql = "
         SELECT
             p.*,
@@ -752,13 +754,13 @@ function read_projects($project_id = false)
             r.id AS region_id
         FROM projects AS p
         LEFT JOIN places AS pl
-            ON p.place_id = pl.id
+            ON p.place_id = pl.id AND p.lang = pl.lang
         LEFT JOIN regions AS r
-            ON pl.region_id = r.id
-        WHERE p.id = :id
+            ON pl.region_id = r.id AND pl.lang = r.lang
+        WHERE p.`unique` = :unique AND p.lang = '" . LANG . "'
         ;";
         $statement = db()->prepare($sql);
-        $statement->execute(array(':id' => $project_id));
+        $statement->execute(array(':unique' => $project_unique));
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return empty($result) ? array() : $result;
     }
@@ -879,9 +881,9 @@ function add_project($title, $desc, $budget, $place_id, $city, $grantee, $sector
     
 }
 
-function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $org_uniques, $type)
+function update_project($unique, $title, $desc, $budget, $place_id, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $org_ids, $type)
 {
-    $back = "<br /><a href=\"" . href("admin/projects/".$id) . "\">Back</a>";
+    $back = "<br /><a href=\"" . href("admin/projects/" . $unique) . "\">Back</a>";
 
     $fields = array();
     $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
@@ -914,7 +916,7 @@ function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $c
     		title = :title,
     		description = :description,
     		budget = :budget,
-            region_id = :region_id,
+		region_id = :region_id,
     		city = :city,
     		grantee = :grantee,
     		sector = :sector,
@@ -922,23 +924,25 @@ function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $c
     		end_at = :end_at,
     		info = :info,
     		type = :type,
-            place_id=:place_id
+		place_id = :place_id
     	WHERE
-    		`projects`.`id` =:id;
-    	DELETE FROM
-    		project_organizations
-    	WHERE
-    		project_unique = :unique;
+    		`projects`.`unique` = :unique;
+    	AND
+    		projects.lang = '" . LANG . "'
     	DELETE FROM
     		tag_connector
     	WHERE
     		proj_unique = :unique;
+    	DELETE FROM
+    		project_organizations
+    	WHERE
+    		project_unique = :unique;
     ";
     $statement = db()->prepare($sql);
 
-    $unique = get_unique("projects", $id);
+    //$unique = get_unique("projects", $id);
     $exec = $statement->execute(array(
-    	':id' => $id,
+    	':unique' => $unique,
     	':title' => $title,
     	':description' => $desc,
     	':budget' => $budget,
@@ -954,25 +958,23 @@ function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $c
         ':place_id' => $place_id
     ));
 
-    if (!empty($org_uniques))
+    //fetch_db("DELETE FROM project_organizations WHERE project_unique = '" . $unique . "';");
+
+    if (!empty($org_ids))
     {
-    	$insert_rows = array();
-    	$insert_rows_data['proj_unique'] = $unique;
-        foreach ($org_uniques AS $org_unique)
-        {
-            $var_org_unique = "org_{$org_unique}_unique";
-            $insert_rows[] = "(:{$var_org_unique}, :proj_unique)";
-            $insert_rows_data[$var_org_unique] = $org_unique;
-        }
-        $sql = 'INSERT INTO project_organizations (organization_unique, project_unique) VALUES ' . implode(', ', $insert_rows) . ';';
-        $statement = db()->prepare($sql);
-	$result = $statement->execute($insert_rows_data);
+        $sql = "INSERT INTO project_organizations (project_unique, organization_unique) VALUES(:project, :organization);";        
+        $query = db()->prepare($sql);
+    	foreach ($org_ids AS $org_unique)
+    	{
+            fb(array(':project' => $unique, ':organization' => $org_unique));
+            db()->prepare($sql)->execute(array(':project' => $unique, ':organization' => $org_unique));
+    	}
     }
 
-
-    if( !empty($tag_uniques) )
-    	if ( !add_tag_connector('proj', $unique, $tag_uniques) )
-	        return "tag connection error";
+//    $unique = get_unique("projects", $id);
+    fetch_db("DELETE FROM tag_connector WHERE proj_unique = $unique");
+    if (!empty($tag_uniques))
+    	add_tag_connector('proj', $unique, $tag_uniques);
 
     if ( $exec )
     	Slim::redirect(href("admin/projects"));
@@ -980,12 +982,12 @@ function update_project($id, $title, $desc, $budget, $place_id/*$region_id*/, $c
     	return "couldn't update record/database error";
 }
 
-function delete_project($id)
+function delete_project($unique)
 {
-    if( !is_numeric($id) )
+    if( !is_numeric($unique) )
 	return "invalid id";
 
-    $unique = get_unique("projects", $id);
+    //$unique = get_unique("projects", $id);
     $sql = "
     		DELETE FROM `projects` WHERE  `projects`.`unique` = '" . $unique . "';
     		DELETE FROM tag_connector WHERE proj_unique = :unique;
@@ -1003,41 +1005,41 @@ function delete_project($id)
     	return "couldn't delete record/database error";
 }
 
-function read_project_data($id)
+function read_project_data($unique)
 {
-	$query = "SELECT * FROM projects_data WHERE project_id = :id AND lang = '" . LANG . "' LIMIT 1;";
+	$query = "SELECT * FROM projects_data WHERE project_unique = :unique AND lang = '" . LANG . "' ORDER BY `unique`;";
 	$query = db()->prepare($query);
-	$query->execute(array(':id' => $id));
+	$query->execute(array(':unique' => $unique));
 	$query = $query->fetchAll();
 	empty($query) AND $query = array();
 	return $query;
 }
 
-function delete_project_data($id)
+function delete_project_data($unique)
 {
-
-	$sql = "DELETE FROM projects_data WHERE project_id = :id AND lang = '" . LANG . "';";
+	$sql = "DELETE FROM projects_data WHERE project_unique = :unique;";
 	$statement = db()->prepare($sql);
-	$statement->execute(array());
+	$statement->execute(array(':unique' => $unique));
 }
 
-function add_project_data($project_id, $key, $value)
+function add_project_data($project_unique, $key, $value)
 {
+	//$project_unique = get_unique("projects", $project_id);
 	for ( $i = 0, $c = count($key); $i < $c; $i ++ )
 	{
-	    if ( !empty($key[$i]) && !empty($value[$i]) )
+	    if (!empty($key[$i]) AND !empty($value[$i]))
 	    {
 	        $languages = config('languages');
-   		$unique = generate_unique("project_data");
+   		$unique = generate_unique("projects_data");
     		foreach ($languages as $lang)
     		{
-			echo $sql = "
-			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_id`, lang, `unique`)
-			 VALUES (:key, :value, :project_id, :lang, :unique);
+			$sql = "
+			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_unique`, lang, `unique`)
+			 VALUES (:key, :value, :project_unique, :lang, :unique);
 			";
 			$statement = db()->prepare($sql);
 			$statement->execute(array(
-				':project_id' => $project_id,
+				':project_unique' => $project_unique,
 				':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
 				':value' => $value[$i],
 				':lang' => $lang,
@@ -1048,7 +1050,7 @@ function add_project_data($project_id, $key, $value)
 	}
 }
 
-function get_project_chart_data($id)
+function get_project_chart_data($unique)
 {
 	//$result = array();
 	$v = array();
@@ -1059,15 +1061,15 @@ function get_project_chart_data($id)
 			organizations.name
 		FROM 
 			`project_organizations`
-		INNER JOIN
+		LEFT JOIN
 			`organizations`
 		ON
-			(`project_organizations`.`organization_id` = `organizations`.`id`)
+			(`project_organizations`.`organization_unique` = `organizations`.`unique`)
 		WHERE
-			project_id = :id;
+			project_unique = :unique;
 	";
 	$query = db()->prepare($sql);
-	$query->execute(array(':id' => $id));
+	$query->execute(array(':unique' => $unique));
 
 	$results = $query->fetchAll(PDO::FETCH_ASSOC);
 	$names[1] = array();
@@ -1140,9 +1142,9 @@ function get_organization($id)
 function get_organization_projects($id)
 {
 	$sql = "SELECT p.id,p.title FROM projects AS p 
-				INNER JOIN project_organizations AS po ON p.id = po.project_id
-				INNER JOIN organizations AS o ON o.id = po.organization_id
-				WHERE o.id = :id";
+			LEFT JOIN project_organizations AS po ON p.id = po.project_id
+			LEFT JOIN organizations AS o ON o.id = po.organization_id
+			WHERE o.id = :id";
 	$statement = db()->prepare($sql);
 	$statement->execute(array(
 		':id' => $id
@@ -1225,7 +1227,8 @@ function add_organization($name,$description,$projects_info,$city_town,$district
 	}
 }
 
-function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file){
+function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file,$tag_uniques)
+{
 	$org = get_organization($id);
 	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){	
 		$logo_destination = DIR.'uploads/organization_photos/';
@@ -1241,8 +1244,9 @@ function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$
 		
 		$logo = $org['logo'];
 	}
-	
-	
+
+	$unique = get_unique("organizations", $id);	
+
 	$sql = "UPDATE organizations SET name=:name,description=:info,district=:district,city_town=:city_town,
 		grante=:grante,sector=:sector,projects_info=:projects_info,logo=:logo WHERE id=:id LIMIT 1;";
 	$statement = db()->prepare($sql);
@@ -1257,6 +1261,11 @@ function edit_organization($id,$name,$info,$projects_info,$city_town,$district,$
 		':id' => $id,
 		':logo' => $logo
 	));
+
+    $unique = get_unique("organizations", $id);
+    fetch_db("DELETE FROM tag_connector WHERE org_unique = $unique");
+    if (!empty($tag_uniques))
+    	add_tag_connector('org', $unique, $tag_uniques);
 }
 
 /*===================================================	  Organizations Fontpage	===============================*/
@@ -1279,7 +1288,7 @@ function organization_total_budget($organization_id)
 	return number_format($result['total_budget']);
 }
 
-function get_organization_chart_data($id)
+function get_organization_chart_data($unique)
 {
 	//$result = array();
 	$v = array();
@@ -1291,36 +1300,35 @@ function get_organization_chart_data($id)
 			projects.budget
 		FROM 
 			project_organizations
-		INNER JOIN
+		LEFT JOIN
 			projects
 		ON
-			(project_organizations.project_unique = projects.unique)
+			(project_organizations.project_unique = projects.`unique`)
 		WHERE
 			organization_unique = :unique;
 	";
 	$query = db()->prepare($sql);
-	$unique = get_unique("projects", $id);
+	//$unique = get_unique("projects", $id);
 	$query->execute(array(':unique' => $unique));
 
 	$results = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    //  print_r($results);exit;
+	//print_r($results);exit;
     
 	$b = FALSE;
 
-	foreach ( $results as $r )
+	foreach ($results as $r)
 	{
 		$i = $v[1][] = str_replace("$", "", str_replace(",", "", $r['budget']));
 		$b OR $b = ( $i > 100 );
 		$names[1][] = str_replace(" ", "+", $r['title']);
 	}
 
-    //  print_r($v);exit;
+	//print_r($v);exit;
 
     	$real_values[1] = $v[1];
 
-
-	if ( $b )
+	if ($b)
 	{
 		$max = max($v[1]);
 		$depth = 0;
@@ -1334,18 +1342,18 @@ function get_organization_chart_data($id)
 	}
 
 	$sql = "SELECT projects.start_at FROM project_organizations
-		INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
-		WHERE organization_id = :id ORDER BY start_at LIMIT 0,1;";
+		LEFT JOIN `projects` ON (`project_organizations`.`project_unique` = `projects`.`unique`)
+		WHERE organization_unique = :unique ORDER BY start_at LIMIT 0,1;";
 	$query = db()->prepare($sql);
-	$query->execute(array(':id' => $id));
+	$query->execute(array(':unique' => $unique));
 	$first = $query->fetch(PDO::FETCH_ASSOC);
 	$first_year = substr($first['start_at'], 0, 4);
 
 	$sql = "SELECT projects.end_at FROM project_organizations
-		INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
-		WHERE organization_id = :id ORDER BY end_at DESC LIMIT 0,1;";
+		LEFT JOIN `projects` ON (`project_organizations`.`project_unique` = `projects`.`unique`)
+		WHERE organization_unique = :unique ORDER BY end_at DESC LIMIT 0,1;";
 	$query = db()->prepare($sql);
-	$query->execute(array(':id' => $id));
+	$query->execute(array(':unique' => $unique));
 	$last = $query->fetch(PDO::FETCH_ASSOC);
 	$last_year = substr($last['end_at'], 0, 4);
 
@@ -1358,10 +1366,10 @@ function get_organization_chart_data($id)
 		$names[2][] = $i;
 
 		$sql = "SELECT projects.budget,projects.end_at,projects.start_at FROM project_organizations
-			INNER JOIN `projects` ON (`project_organizations`.`project_id` = `projects`.`id`)
-			WHERE organization_id = :id AND projects.start_at <= :start;";
+			LEFT JOIN `projects` ON (`project_organizations`.`project_unique` = `projects`.`unique`)
+			WHERE organization_unique = :unique AND projects.start_at <= :start;";
 		$query = db()->prepare($sql);
-		$query->execute(array(':id' => $id, ':start' => $i . "-12-31"));
+		$query->execute(array(':unique' => $unique, ':start' => $i . "-12-31"));
 		$fetch = $query->fetchAll(PDO::FETCH_ASSOC);
 		if ( empty($fetch) )
 			continue;

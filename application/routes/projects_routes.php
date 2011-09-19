@@ -1,23 +1,27 @@
 <?php
 
 ################################################################ projects view
-Slim::get('/project/:id/', function($id){
+Slim::get('/project/:unique/', function($unique)
+{
 	Storage::instance()->show_map = FALSE;
 	$sql = "SELECT budget FROM `projects` WHERE lang = '" . LANG . "'";
 	$query = db()->prepare($sql);
 	$query->execute();
 
-	list($values, $names, $real_values) = get_project_chart_data($id);
+	list($values, $names, $real_values) = get_project_chart_data($unique);
 
 	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
-		  FROM tags WHERE tags.lang = '" . LANG . "'";
+		  FROM tags
+		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
+		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
+		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
     	Storage::instance()->content = template('project', array(
-    		'project' => read_projects($id),
-    		'data' => read_project_data($id),
+    		'project' => read_projects($unique),
+    		'data' => read_project_data($unique),
     		'names' => $names,
     		'values' => $values,
     		'real_values' => $real_values,
@@ -105,21 +109,20 @@ Slim::get('/admin/projects/new/', function(){
     	: template('login');
 });
 
-Slim::get('/admin/projects/:id/', function($id){
-    if ( userloggedin() )
+Slim::get('/admin/projects/:unique/', function($unique){
+    if (userloggedin())
     {
 	$query = "SELECT * FROM organizations WHERE lang = '" . LANG . "';";
 	$orgs = fetch_db($query);
 
 	$query = "SELECT organization_unique FROM project_organizations WHERE project_unique = :unique";
 	$query = Storage::instance()->db->prepare($query);
-	$unique = get_unique("projects", $id);
+	//$unique = get_unique("projects", $id);
 	$query->execute(array(':unique' => $unique));
 	$result = $query->fetchAll();
 	$this_orgs = array();
 	foreach($result as $s)
 		$this_orgs[] = $s['organization_unique'];
-
 
 	$regions_query = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
 	$regions = fetch_db($regions_query);
@@ -128,7 +131,7 @@ Slim::get('/admin/projects/:id/', function($id){
 	$places = fetch_db($sql_places);
 	Storage::instance()->content = template('admin/projects/edit', array
 	(
-		'project' =>  read_projects($id),
+		'project' =>  read_projects($unique),
 		'all_tags' => read_tags(),
 		'this_tags' => read_tag_connector('proj', $unique),
 		'this_orgs' => $this_orgs,
@@ -142,8 +145,8 @@ Slim::get('/admin/projects/:id/', function($id){
 	Storage::instance()->content = template('login');
 });
 
-Slim::get('/admin/projects/:id/delete/', function($id){
-    Storage::instance()->content = (userloggedin()) ? delete_project($id) : template('login');
+Slim::get('/admin/projects/:unique/delete/', function($unique){
+    Storage::instance()->content = (userloggedin()) ? delete_project($unique) : template('login');
 });
 
 Slim::post('/admin/projects/create/', function(){
@@ -169,17 +172,17 @@ Slim::post('/admin/projects/create/', function(){
 	   : template('login');
 });
 
-Slim::post('/admin/projects/:id/update/', function($id){
+Slim::post('/admin/projects/:unique/update/', function($unique){
     empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array(NULL);
     Storage::instance()->content = userloggedin()
 	    ? update_project(
-	    	$id,
+	    	$unique,
         	$_POST['p_title'],
         	$_POST['p_desc'],
         	$_POST['p_budget'],
 /*        	$_POST['p_region'],*/
-            $_POST['p_place'],
+		$_POST['p_place'],
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],
@@ -233,44 +236,38 @@ Slim::post('/admin/project-tags/:id/update/',function($id){
 });
 
 
-Slim::get('/admin/project-data/:id/',function($id){
+Slim::get('/admin/project-data/:unique/',function($unique){
     if(userloggedin())
     {
-	$sql = "SELECT * FROM projects_data WHERE project_unique = :unique AND lang = '" . LANG . "' ORDER BY id;";
-        $statement = Storage::instance()->db->prepare($sql);
-        $unique = get_unique("projects", $id);
-        $statement->execute(array(':unique' => $unique));
-        $r = $statement->fetchAll();
+	$r = read_project_data($unique);
         empty($r) AND $r = array(array('key' => NULL, 'value' => NULL, 'project_unique' => $unique, 'id' => NULL));
-        Storage::instance()->content = template('admin/projects/edit_data', array('data' => $r));
+        Storage::instance()->content = template('admin/projects/edit_data', array('data' => $r, 'project_unique' => $unique));
     }
     else
 	Storage::instance()->content = template('login');
 });
 
-Slim::get('/admin/project-data/:id/new/',function($id){
+Slim::get('/admin/project-data/:unique/new/',function($id){
     if(userloggedin())
-        Storage::instance()->content = template('admin/projects/new_data', array('id' => $id));
+        Storage::instance()->content = template('admin/projects/new_data', array('unique' => $unique));
     else
 	Storage::instance()->content = template('login');
 });
-Slim::post('/admin/project-data/:id/create/',function($id){
+Slim::post('/admin/project-data/:unique/create/',function($unique){
     if(userloggedin())
     {
-	add_project_data($id, $_POST['project_key'], $_POST['project_value']);
+	add_project_data($unique, $_POST['project_key'], $_POST['project_value']);
         Slim::redirect(href('admin/projects'));
     }
     else
 	Storage::instance()->content = template('login');
 });
 
-Slim::post('/admin/project-data/:id/update/',function($id){
+Slim::post('/admin/project-data/:unique/update/',function($unique){
     if(userloggedin())
     {
-	//print_r($_POST);exit;
-	delete_project_data($id);
-
-        add_project_data($id, $_POST['project_key'], $_POST['project_value']);
+	delete_project_data($unique);
+        add_project_data($unique, $_POST['project_key'], $_POST['project_value']);
         Slim::redirect(href('admin/projects'));
     }
     else

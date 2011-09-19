@@ -91,7 +91,7 @@
 		<div class='key'>
 			<?php echo strtoupper($d['key']); ?>
 		</div>
-		<div class='value'>
+		<div class='value group'>
 			<?php echo $d['value']; ?>
 		</div>
 	</div>

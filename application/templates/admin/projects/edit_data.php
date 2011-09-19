@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/project-data/" . $data[0]['project_id'] . "/update");
+  $action = href("admin/project-data/" . $project_unique . "/update");
 ?>
 	<h4>Leave key and value empty for the data you wish to delete</h4>
 	<br />

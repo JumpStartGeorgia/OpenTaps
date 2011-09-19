@@ -15,7 +15,8 @@
       $link_edit_data = href("admin/organizations-data/". $organization['id']);
       $link_del = href("admin/organizations/". $organization['id'] . '/delete');
       $organization['name'] = ( strlen($organization['name']) > 12 ) ? substr($organization['name'], 0, 9) . "..." : $organization['name'];
-      $organization['description'] = ( strlen($organization['description']) > 70 )
+      $organization['description'] = htmlspecialchars($organization['description']);
+      $organization['description'] = (strlen($organization['description']) > 70)
       		? substr($organization['description'], 0, 65) . "..."
       		: $organization['description'];
 
