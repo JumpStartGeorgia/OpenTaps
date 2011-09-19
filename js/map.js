@@ -25,6 +25,8 @@ var mapspot_confs = {"boundsLeft":38.704833984374,
 		     "lon":44.230957031249,
 		     "lat":-43.483886718751};
 
+var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
 function get_osm_url (bounds)
 {
     var res = this.map.getResolution();

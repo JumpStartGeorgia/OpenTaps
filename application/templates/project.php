@@ -68,7 +68,7 @@
 					Time line :
 				</div>
 				<div>
-					<?php echo $project['start_at'] . " - " . $project['end_at']; ?>
+                <?php echo date('M.d.Y',strtotime($project['start_at'])) . " - " . date('M.d.Y',strtotime($project['end_at'])); ?>
 				</div>
 			</div>
 		</div>

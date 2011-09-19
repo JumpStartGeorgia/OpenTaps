@@ -34,7 +34,7 @@ var content = [];
                 content.push("<p><font style='color:#000;font-size:9pt;'>Grantee:</font>&nbsp;<font style='font-size:10pt;color:#FFF;'>"+projects[i][4]+"</font></p>");
                 content.push("<p><font style='color:#000;font-size:9pt;'>Budget:</font>&nbsp;<font style='font-size:10pt;color:#FFF;'>"+projects[i][5]+"</font></p>");
                 content.push("<p><font style='color:#000;font-size:9pt;'>City/Town:</font>&nbsp;<font style='font-size:10pt;color:#FFF;'>"+projects[i][6]+"</font></p>");
-                content.push("<p><font style='font-size:10pt;color:#FFF;'>"+projects[i][1].getMonth()+"."+projects[i][1].getDate()+"."+projects[i][1].getFullYear()+" - "+projects[i][2].getMonth()+"."+projects[i][2].getDate()+"."+projects[i][2].getFullYear()+"</font></p>");
+                content.push("<p><font style='font-size:10pt;color:#FFF;'>"+months[projects[i][1].getMonth()]+"."+projects[i][1].getDate()+"."+projects[i][1].getFullYear()+" - "+months[projects[i][2].getMonth()]+"."+projects[i][2].getDate()+"."+projects[i][2].getFullYear()+"</font></p>");
                 content.push("</center>");
              }
              else{
@@ -42,7 +42,7 @@ var content = [];
             	 content.push("<center style='margin-top:30px;margin-left:10px;'><p><font style='color:#FFF;font-family:arial;font-size:17pt;'>"+news[i][3]+"</font></p>");
                 content.push("<hr style='height:1px;width:100px;border:0px;border-top:1px dotted #FFF;'/>");
                 content.push("<p><font style='font-size:10pt;color:#FFF;'><a href='"+news[i][0]+"'>Naxe</a></font></p>");
-                content.push("<p><font style='font-size:10pt;color:#FFF;'>"+news[i][4].getMonth()+"."+news[i][4].getDate()+"."+news[i][4].getFullYear()+"</font></p>");
+                content.push("<p><font style='font-size:10pt;color:#FFF;'>"+months[news[i][4].getMonth()]+"."+news[i][4].getDate()+"."+news[i][4].getFullYear()+"</font></p>");
                 content.push("</center>");
             	 
 				 }
