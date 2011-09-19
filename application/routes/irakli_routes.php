@@ -15,7 +15,7 @@ Storage::instance()->js_news = $js_news;
 $projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_id = pl.id WHERE projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "'");
 $js_projects[] = '[ new Date("' . date('Y-m-d') . '") ]';
 foreach($projects as $project)
-	$js_projects[] = '[' . $project['id'] . ', new Date("' . $project['start_at'] . '") , new Date("' . $project['end_at'] . '") , "'. $project['title'] .'", "'. $project['grantee'] .'", "'. $project['budget'] .'", "'. $project['city'] .'","'. $project['type'] .'","'.$project['longitude'] .'","'.$project['latitude'] .'"]';
+	$js_projects[] = '[' . $project['id'] . ', new Date("' . $project['start_at'] . '") , new Date("' . $project['end_at'] . '") , "'. $project['title'] .'", "'. $project['grantee'] .'", "'. number_format($project['budget']) .'", "'. $project['city'] .'","'. $project['type'] .'","'.$project['longitude'] .'","'.$project['latitude'] .'"]';
 Storage::instance()->js_projects = $js_projects;
 
 $years_sql = "
