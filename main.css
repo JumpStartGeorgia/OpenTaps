@@ -163,8 +163,8 @@ div.news_each_main img{ width:210px; height:151px; border-right:7px solid #4CBEF
 div.news_each_others
 {
 	border:0px solid #000;
-	width:459px;
-	height:150px;
+	width:535px;
+	height:155px;
 	position:relative;
 	margin-top:180px;
 	margin-left:27px;
@@ -173,12 +173,13 @@ div.news_each_others
 div.news_each_menu { position:absolute; top:0px; right:0px; }
 div.news_each_menu div
 {
-	border-top:4px solid #CCC;
-	width:400px;
-	height:30px;
+    cursor:pointer;
+	border-top:1px solid #CCC;
+	width:375px;
+	height:35px;
 	float:right;
-	background-color:#FFF;
 }
+div.more_news { float:right;margin-right:12px;  }
 /*			HERE			*/
 
 
