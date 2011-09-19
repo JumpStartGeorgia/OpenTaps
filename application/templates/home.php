@@ -26,30 +26,38 @@
     endfor;
 	?>
 	<div class="news_each_others">
-  	<img src="http://localhost.com/OpenTaps/uploads/593276screenshot_opentaps.png" id="menu_img" width="120px" height="130px"/>
+  	<img src="http://localhost.com/OpenTaps/uploads/593276screenshot_opentaps.png" id="menu_img" width="130px" height="130px" style="margin-top:15px;margin-left:15px;"/>
   		<div class="news_each_menu">
 	<?php
     for ($idx = 2, $num = count($news_all); $idx < $num; $idx++):
-    			if($news_all[$idx]['category'] == 'project'): 
+    		 if($news_all[$idx]['category'] == 'project'): 
   			 	$color = 'rgb(11%,76%,100%);'; 
   			 elseif($news_all[$idx]['category'] == 'media'): 
   			 	$color = 'rgb(51%,87%,100%);';
   			 else:  
   			 	$color = 'rgb(85%,96%,100%);';
-  			 endif; 
+  			 endif;
+if( $idx  == 2 ):
         ?>
-        		
-  			<div style="border-right:5px solid <?php echo $color; ?>"
-  			  onmouseover="show_menu_img('<?php echo URL.$news_all[$idx]['image'] ?>',this);" onmouseout="show_menu_img(this)">
-  				<p><&nbsp;&nbsp; <?php echo $news_all[$idx]['title']; ?></p>
+          	<div style="border-right:5px solid <?php echo $color; ?>;background-color:rgba(255,255,255,0.0);"
+  			  onmouseover="news_menu_over('<?php echo URL.$news_all[$idx]['image'] ?>',this);"
+              onclick="news_menu_click('<?php echo $news_all[$idx]['id']; ?>');">
+                 <p style="padding-top:10px;padding-left:15px;">&#60;&nbsp;&nbsp; <font style="color:#000;"><?php echo $news_all[$idx]['title']; ?></font></p>
+  			</div>
+    <?php else: ?>
+  			<div style="border-right:5px solid <?php echo $color; ?>;background-color:#FFF;"
+  			  onmouseover="news_menu_over('<?php echo URL.$news_all[$idx]['image'] ?>',this);"
+              onclick="news_menu_click('<?php echo $news_all[$idx]['id'];  ?>');">
+                                                        <p style="padding-top:10px;padding-left:15px;">&#60;&nbsp;&nbsp;<font style="color:#A6A6A6;"> <?php echo $news_all[$idx]['title']; ?></font></p>
   			</div>
         <?php
+                endif;
     endfor;
   	?>
   		</div>
   	</div>
   <?php
 ?>
-    <div class='more_news'><a href='<?php echo URL . "news"; ?>'>▸ ALL NEWS</a></div>
+    <div class='more_news'><a style="text-decoration:none;" href='<?php echo URL . "news"; ?>' ><font style="font-size:7pt;color:#A6A6A6;">▸ ALL NEWS</font></a></div>
 
 </div>
