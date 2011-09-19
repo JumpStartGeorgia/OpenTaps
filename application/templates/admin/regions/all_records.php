@@ -25,7 +25,7 @@
 		  <div class='rcenter' style='width:61%;'> " . $region['region_info'] . "</div>
 		  <div class='rright' style='width:133px'>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
-		      <a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>
+		      <!--<a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>-->
 		  </div>
 		</div>
       ";

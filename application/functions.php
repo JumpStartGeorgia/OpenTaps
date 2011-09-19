@@ -566,7 +566,7 @@ function delete_place($id){
 
 
 /*=======================================================Admin Regions 	============================================================*/
-function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
+function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts,$water_supply)
 {
     $languages = config('languages');
     foreach ($languages as $lang)
@@ -586,7 +586,19 @@ function add_region($name,$region_info,$region_projects_info,$city,$population,$
 		':districts' => $districts,
 		':lang' => $lang
 	));
+<<<<<<< HEAD
     }
+=======
+    $lastid = Storage::instance()->db->lastInsertId();
+    $sql = "INSERT INTO water_supply ( text, region_id )
+                        VALUE(:text, :region_id)";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+                       ':text' => $water_supply,
+                       ':region_id' => $lastid
+                       ));
+
+>>>>>>> live-ika
 }
 
 function delete_region($id)
@@ -609,7 +621,7 @@ function get_region($id)
 	return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
-function update_region($id,$name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
+function update_region($id,$name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts,$water_supply)
 {
 	$sql = "UPDATE regions SET
 			name = :name,
@@ -635,6 +647,12 @@ function update_region($id,$name,$region_info,$region_projects_info,$city,$popul
 		':villages' => $villages,
 		':districts' => $districts
 	));
+    $sql = "UPDATE water_supply SET text = :text WHERE region_id = :region_id LIMIT 1;";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+                       ':text' => $water_supply,
+                       ':region_id' => $id
+                       ));
 
 }
 

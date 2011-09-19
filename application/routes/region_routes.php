@@ -40,12 +40,15 @@ Slim::get('/admin/regions/new/', function(){
 });
 
 Slim::get('/admin/regions/:id/', function($id){
-    Storage::instance()->content = userloggedin()
-    	? template('admin/regions/edit', array(
-    			'region' => get_region($id),
-    			'all_tags' => read_tags()
-    			))
-    	: template('login');
+        if( userloggedin() ){
+            $region = get_region($id);
+            Storage::instance()->content = template('admin/regions/edit',array(
+                     'region' => $region,
+                     'water_supply' => fetch_db("SELECT * FROM water_supply WHERE region_id = $id LIMIT 1;"),
+                     'all_tags' => read_tags()
+            ));
+        }
+        else Storage::instance()->content = template('login');
 });
 
 Slim::get('/admin/regions/:id/delete/', function($id){
@@ -68,7 +71,8 @@ Slim::post('/admin/regions/create/', function(){
         	$_POST['p_squares'],
         	$_POST['p_settlement'],
         	$_POST['p_villages'],
-        	$_POST['p_districts']
+        	$_POST['p_districts'],
+            $_POST['p_watersupply']
        	     );
        	     Slim::redirect(href('admin/regions'));
        	}
@@ -89,7 +93,8 @@ Slim::post('/admin/regions/:id/update/', function($id){
         	$_POST['p_squares'],
         	$_POST['p_settlement'],
         	$_POST['p_villages'],
-        	$_POST['p_districts']
+        	$_POST['p_districts'],
+            $_POST['p_watersupply']
        	     );
        	     Slim::redirect(href('admin/regions'));
        	     }
