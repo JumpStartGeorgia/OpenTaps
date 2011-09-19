@@ -76,6 +76,8 @@ require_once DIR.'application/routes/users_routes.php';
 
 require_once DIR.'application/routes/places_routes.php';
 
+require_once DIR.'application/routes/watersupply_routes.php';
+
 ################################################################ donors admin routes start
 Slim::get('/admin/donors/', function(){
     Storage::instance()->content = userloggedin() ? template('admin/donors/all_records') : template('login');

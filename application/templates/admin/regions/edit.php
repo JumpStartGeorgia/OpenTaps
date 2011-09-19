@@ -61,7 +61,11 @@
   	        }
   	      ?>
   	    </select>-->
-  	    <br /><br />
+
+         <label for='pwatersupply'>Water Supply: </label>
+  	    <br />
+  	    <input name='p_watersupply' id='pwatersupply' value="<?php echo $water_supply[0]['text']; ?>" type='text' />
+        <br /><br />
 
   	    <input type='submit' style='width:90px;' value='Submit' onclick='return document.getElementById("ptitle").value != ""' />
   	    <br /><br />

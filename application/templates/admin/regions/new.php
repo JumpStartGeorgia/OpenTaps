@@ -35,12 +35,12 @@
   	    <input name='p_settlement' id='psettlement' type='text' />
   	    <br /><br />
 
-  	    <label for='pvillages'>Villages </label>
+         <label for='pvillages'>Villages: </label>
   	    <br />
   	    <input name='p_villages' id='pvillages' type='text' />
   	    <br /><br />
 
-  	    <label for='pdisrtricts'>Districts </label>
+         <label for='pdisrtricts'>Districts: </label>
   	    <br />
   	    <input name='p_districts' id='pdistricts' type='text' />
   	    <br /><br />
@@ -58,8 +58,13 @@
   	        }
   	      ?>
   	    </select>-->
-  	    <br /><br />
 
+
+        <label for='pwatersupply'>Water Supply: </label>
+  	    <br />
+  	    <input name='p_watersupply' id='pwatersupply' type='text' />
+        <br /><br />
+         
   	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />
   	    <br /><br />
   	</form>

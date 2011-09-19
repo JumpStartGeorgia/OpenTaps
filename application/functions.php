@@ -526,7 +526,7 @@ function delete_place($id){
 
 
 /*=======================================================Admin Regions 	============================================================*/
-function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
+function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts,$water_supply)
 {
 	$sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts) 
 				VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts)";
@@ -542,7 +542,14 @@ function add_region($name,$region_info,$region_projects_info,$city,$population,$
 		':villages' => $villages,
 		':districts' => $districts
 	));
-	
+    $lastid = Storage::instance()->db->lastInsertId();
+    $sql = "INSERT INTO water_supply ( text, region_id )
+                        VALUE(:text, :region_id)";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+                       ':text' => $water_supply,
+                       ':region_id' => $lastid
+                       ));
 
 }
 
@@ -566,7 +573,7 @@ function get_region($id)
 	return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
-function update_region($id,$name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts)
+function update_region($id,$name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts,$water_supply)
 {
 $sql = "UPDATE regions SET name=:name,region_info=:region_info,projects_info=:region_projects,city=:city,population=:population,square_meters=:squares,
 			settlement=:settlement,villages=:villages,districts=:districts WHERE id=:id";
@@ -583,6 +590,12 @@ $sql = "UPDATE regions SET name=:name,region_info=:region_info,projects_info=:re
 		':villages' => $villages,
 		':districts' => $districts
 	));
+    $sql = "UPDATE water_supply SET text = :text WHERE region_id = :region_id LIMIT 1;";
+    $stmt = Storage::instance()->db->prepare($sql);
+    $stmt->execute(array(
+                       ':text' => $water_supply,
+                       ':region_id' => $id
+                       ));
 
 }
 
