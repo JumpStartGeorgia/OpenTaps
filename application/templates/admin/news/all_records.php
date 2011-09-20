@@ -15,7 +15,7 @@
       $link_del = href("admin/news/". $news['unique'] . '/delete');
       $news['body'] = htmlspecialchars($news['body']);
       $news['body'] = ( strlen($news['body']) > 85 ) ? substr($news['body'], 0, 82) . "..." : $news['body'];
-      $news['title'] = ( strlen($news['title']) > 13 ) ? substr($news['title'], 0, 9) . "..." : $news['title'];
+      $news['title'] = ( strlen($news['title']) > 23 ) ? substr($news['title'], 0, 19) . "..." : $news['title'];
 
       echo "
 		<div class='record'>

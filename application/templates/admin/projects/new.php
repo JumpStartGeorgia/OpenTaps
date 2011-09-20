@@ -35,7 +35,7 @@
   	    <select name='p_place' id='pplace'>
   	      <?php
   	        foreach($places as $place):
-  	            ?><option value="<?php echo $place['id'] ?>"><?php echo $place['name'] ?></option><?php
+  	            ?><option value="<?php echo $place['unique'] ?>"><?php echo $place['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>
@@ -73,7 +73,7 @@
   	    <select name='p_tags[]' id='ptags' multiple='multiple'>
   	      <?php
   	        foreach($all_tags as $tag):
-  	            ?><option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option><?php
+  	            ?><option value="<?php echo $tag['unique'] ?>"><?php echo $tag['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>
@@ -84,7 +84,7 @@
   	    <select name='p_orgs[]' id='porgs' multiple='multiple'>
   	      <?php
   	        foreach($organizations as $org):
-  	            ?><option value="<?php echo $org['id'] ?>"><?php echo $org['name'] ?></option><?php
+  	            ?><option value="<?php echo $org['unique'] ?>"><?php echo $org['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>

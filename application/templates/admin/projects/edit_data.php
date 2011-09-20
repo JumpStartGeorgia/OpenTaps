@@ -9,14 +9,14 @@
 	foreach ( $data as $d )
 	{
 ?>
-  	    <label for='pk<?php echo $d['id'] ?>'>Key: </label>
+  	    <label for='pk<?php echo $d['unique'] ?>'>Key: </label>
   	    <br />
-  	    <input name='project_key[]' id='p<?php echo $d['id'] ?>' type='text' value="<?php echo $d['key'] ?>" />
+  	    <input name='project_key[]' id='p<?php echo $d['unique'] ?>' type='text' value="<?php echo $d['key'] ?>" />
   	    <br />
 
-  	    <label for='pv<?php echo $d['id'] ?>'>Value: </label>
+  	    <label for='pv<?php echo $d['unique'] ?>'>Value: </label>
   	    <br />
-  	    <textarea name='project_value[]' id='pv<?php echo $d['id'] ?>' cols='55' rows='5'><?php echo $d['value'] ?></textarea>
+  	    <textarea name='project_value[]' id='pv<?php echo $d['unique'] ?>' cols='55' rows='5'><?php echo $d['value'] ?></textarea>
   	    <br /><br />
 <?php
 	}

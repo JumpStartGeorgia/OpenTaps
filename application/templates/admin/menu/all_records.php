@@ -3,11 +3,11 @@
   	<div class='panel'>
   ";
 
-  $parents = Storage::instance()->menu;
+  $parents = read_menu(0, NULL, $readhidden = TRUE);
   foreach($parents as $parent)
   {
-      $link_edit = href("admin/menu/". $parent['id']);
-      $link_del = href("admin/menu/". $parent['id'] . '/delete');
+      $link_edit = href("admin/menu/". $parent['unique']);
+      $link_del = href("admin/menu/". $parent['unique'] . '/delete');
 
       echo "
 		<div class='record'>
@@ -19,12 +19,12 @@
 		</div>
       ";
 
-      $children = read_menu($parent['id']);
+      $children = read_menu($parent['unique'], NULL, TRUE);
 
       foreach($children as $child)
       {
-          $link_edit = href("admin/menu/". $child['id']);
-          $link_del = href("admin/menu/". $child['id'] . '/delete');
+          $link_edit = href("admin/menu/". $child['unique']);
+          $link_del = href("admin/menu/". $child['unique'] . '/delete');
           echo "
 		<div class='record'>
 		  <div class='rleftsub'>↳ " . $child['name'] . "</div>

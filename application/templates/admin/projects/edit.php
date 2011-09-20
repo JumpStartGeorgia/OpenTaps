@@ -24,7 +24,7 @@
   	    <br /><br />
 
         
-  	    <!--<label for='pregion'>Regions: </label>
+  	    <?php /*<label for='pregion'>Regions: </label>
   	    <br />
   	    <select name='p_region' id='pregion'>
   	      <?php
@@ -34,15 +34,15 @@
   	        endforeach;
   	      ?>
   	    </select>
-  	    <br /><br />-->
+  	    <br /><br />*/ ?>
 
         <label for='pplace'>Place: </label>
   	    <br />
   	    <select name='p_place' id='pplace'>
   	      <?php
       foreach($places as $place):
-  	            $selected = ($place['id'] == $project['place_id']) ? "selected='selected'" : NULL;
-  	            ?><option value="<?php echo $place['id'] ?>" <?php echo $selected ?>><?php echo $place['name'] ?></option><?php
+  	            $selected = ($place['unique'] == $project['place_unique']) ? "selected='selected'" : NULL;
+  	            ?><option value="<?php echo $place['unique'] ?>" <?php echo $selected ?>><?php echo $place['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>
@@ -79,7 +79,7 @@
   	      <?php
   	        foreach($all_tags as $tag):
   	            $selected = (in_array($tag['unique'], $this_tags)) ? "selected='selected'" : NULL;
-  	            ?><option value="<?php echo $tag['id'] ?>" <?php echo $selected ?>><?php echo $tag['name'] ?></option><?php
+  	            ?><option value="<?php echo $tag['unique'] ?>" <?php echo $selected ?>><?php echo $tag['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>

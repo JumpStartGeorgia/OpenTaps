@@ -53,7 +53,7 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['unique'] ?>"><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
@@ -64,4 +64,4 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/regions"); ?>">Back</a>
+  	<a href="<?php echo href("admin/organizations"); ?>">Back</a>

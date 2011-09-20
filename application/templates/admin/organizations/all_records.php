@@ -10,10 +10,10 @@
 
   foreach($organizations as $organization)
   {
-      $link_edit = href("admin/organizations/". $organization['id']);
-      $link_add_data = href("admin/regions-data/". $organization['id'] . "/new");
-      $link_edit_data = href("admin/organizations-data/". $organization['id']);
-      $link_del = href("admin/organizations/". $organization['id'] . '/delete');
+      $link_edit = href("admin/organizations/". $organization['unique']);
+      $link_add_data = href("admin/regions-data/". $organization['unique'] . "/new");
+      $link_edit_data = href("admin/organizations-data/". $organization['unique']);
+      $link_del = href("admin/organizations/". $organization['unique'] . '/delete');
       $organization['name'] = ( strlen($organization['name']) > 12 ) ? substr($organization['name'], 0, 9) . "..." : $organization['name'];
       $organization['description'] = htmlspecialchars($organization['description']);
       $organization['description'] = (strlen($organization['description']) > 70)

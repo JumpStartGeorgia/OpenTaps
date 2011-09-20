@@ -157,8 +157,8 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_title'],
         	$_POST['p_desc'],
         	$_POST['p_budget'],
-/*        	$_POST['p_region'],*/
-            $_POST['p_place'],
+		/*$_POST['p_region'],*/
+		$_POST['p_place'],
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],
@@ -197,12 +197,12 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
 });
 
 
-Slim::get('/admin/project-tags/:id/',function($id){
+Slim::get('/admin/project-tags/:unique/',function($unique){
     if(userloggedin())
     {
 	$sql = "SELECT tag_unique FROM tag_connector WHERE proj_unique = :unique;";
         $statement = Storage::instance()->db->prepare($sql);
-        $unique = get_unique("projects", $id);
+        //$unique = get_unique("projects", $id);
         $statement->execute(array(':unique' => $unique));
         $r = $statement->fetchAll();
         $tags = array();
@@ -214,19 +214,19 @@ Slim::get('/admin/project-tags/:id/',function($id){
         Storage::instance()->content = template('admin/projects/project-tags', array(
             'all_tags' => read_tags(),
             'this_tags' => $tags,
-            'id' => $id
+            'unique' => $unique
         ));
     }
     else
 	Storage::instance()->content = template('login');
 });
 
-Slim::post('/admin/project-tags/:id/update/',function($id){
+Slim::post('/admin/project-tags/:unique/update/',function($unique){
     if(userloggedin())
     {
 	$sql = "DELETE FROM tag_connector where proj_unique = :unique;";
         $statement = Storage::instance()->db->prepare($sql);
-        $unique = get_unique("projects", $id);
+        //$unique = get_unique("projects", $unique);
         $delete = $statement->execute(array(':unique' => $unique));
         add_tag_connector('proj', $unique, $_POST['p_tags']);
         Slim::redirect(href('admin/projects'));
@@ -247,7 +247,7 @@ Slim::get('/admin/project-data/:unique/',function($unique){
 	Storage::instance()->content = template('login');
 });
 
-Slim::get('/admin/project-data/:unique/new/',function($id){
+Slim::get('/admin/project-data/:unique/new/',function($unique){
     if(userloggedin())
         Storage::instance()->content = template('admin/projects/new_data', array('unique' => $unique));
     else

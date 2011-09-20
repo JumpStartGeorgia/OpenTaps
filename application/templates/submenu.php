@@ -59,7 +59,7 @@
  	    $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
 	    echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
-	    		<a href="' . href('page/' . $item['id']) . '">' . $item['name'] . '</a>
+	    		<a href="' . href('page/' . $item['unique']) . '">' . $item['name'] . '</a>
 	    	  </td>';
 	    $breakable AND print '</tr><tr>';
 	    $idx++;

@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/organizations/update/" . $organization['id']);
+  $action = href("admin/organizations/update/" . $organization['unique']);
 ?>
     	<form action='<? echo $action; ?>' method='post' enctype="multipart/form-data">
   	   <label for='pname'>Name: </label>
@@ -55,7 +55,7 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['unique'], $org_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['unique'] ?>" <?php echo (in_array($tag['unique'], $org_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
@@ -68,6 +68,6 @@
 
   	<a href="<?php echo href("admin/organizations"); ?>">Back</a>
   	<br />
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/organizations/" . $organization['id'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/organizations/" . $organization['unique'] . "/delete"); ?>" >
   	    Delete this record
   	</a>

@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/regions/update/" . $region['id']);
+  $action = href("admin/regions/update/" . $region['unique']);
 ?>
     	<form action='<? echo $action; ?>' method='post'>
   	     <label for='pname'>Name: </label>
@@ -69,6 +69,6 @@
 
   	<a href="<?php echo href("admin/regions"); ?>">Back</a>
   	<br />
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/regions/" . $region['id'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/regions/" . $region['unique'] . "/delete"); ?>" >
   	    Delete this record
   	</a>

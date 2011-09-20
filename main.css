@@ -204,7 +204,7 @@ div.news_each_menu div
 }
 #project_description{ margin-top:30px; text-align:justify; }
 #project_description div{ margin-bottom: 21px; margin-top: 6px; }
-#project_description p{ font-weight: bold; font-size: 19px; }
+#project_description .desc{ font-weight: bold; font-size: 19px; }
 #project_budget
 {
 	background: #4cbeff;

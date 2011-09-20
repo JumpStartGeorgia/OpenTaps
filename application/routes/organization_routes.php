@@ -10,7 +10,7 @@
 });
 Slim::get('/organizations/',function(){
 	$sql = "SELECT * FROM organizations";
-	$results = fetch_db($sql); 
+	$results = fetch_db($sql);
         Storage::instance()->content = template('organizations',array(
         	'organizations' => $results
         ));
@@ -22,7 +22,7 @@ Slim::get('/organization/:unique/',function($unique){
 	$query->execute();*/
 
 	list($values, $names, $real_values) = get_organization_chart_data($unique);
-	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
+	$query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN organizations ON `org_unique` = organizations.`unique`
@@ -32,13 +32,13 @@ Slim::get('/organization/:unique/',function($unique){
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
     	Storage::instance()->content = template('organization', array(
-    		'organization' => get_organization($id),
-    		'organization_budget' => organization_total_budget($id),
+    		'organization' => get_organization($unique),
+    		'organization_budget' => organization_total_budget($unique),
     		'values' => $values,
     		'names' => $names,
     		'real_values' => $real_values,
     		'tags' => $tags,
-		'projects' => get_organization_projects($id)
+		'projects' => get_organization_projects($unique)
     	));
     	
 });
@@ -52,8 +52,8 @@ Slim::get('/admin/organizations/', function(){
     	: template('login');
 });
 
-Slim::get('/admin/organizations/:id/', function($id){
-if ($id == "new")
+Slim::get('/admin/organizations/:unique/', function($unique){
+if ($unique == "new")
 {
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/new', array('all_tags' => read_tags()))
@@ -61,21 +61,21 @@ if ($id == "new")
 }
 else
 {
-    is_numeric($id) or Slim::redirect(href('admin/organizations'));
+    is_numeric($unique) or Slim::redirect(href('admin/organizations'));
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/edit', array(
-    			'organization' => get_organization($id),
+    			'organization' => get_organization($unique),
     			'all_tags' => read_tags(),
-    			'org_tags' => read_tag_connector('org', get_unique("organizations", $id))
+    			'org_tags' => read_tag_connector('org', $unique)
     			))
     	: template('login');
 }
 });
 
-Slim::get('/admin/organizations/:id/delete/', function($id){
+Slim::get('/admin/organizations/:unique/delete/', function($unique){
      if(userloggedin()) {
-     	delete_organization($id) ;
-     	fetch_db("DELETE FROM tag_connector WHERE org_id = $id");
+     	delete_organization($unique) ;
+     	fetch_db("DELETE FROM tag_connector WHERE org_unique = $unique");
      	Slim::redirect(href('admin/organizations'));
      }
      else Storage::instance()->content = template('login');
@@ -102,12 +102,12 @@ Slim::post('/admin/organizations/create/', function(){
 	
 });
 
-Slim::post('/admin/organizations/update/:id/', function($id){
+Slim::post('/admin/organizations/update/:unique/', function($unique){
     empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
     if(userloggedin())
     {
    	     edit_organization(
-	    	$id,
+	    	$unique,
         	$_POST['p_name'],
         	$_POST['p_org_info'],
         	$_POST['p_org_projects_info'],

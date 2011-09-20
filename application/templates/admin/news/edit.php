@@ -44,7 +44,7 @@
             <?php
          foreach( $places as $place ):
                   ?>
-      <option value="<?php echo $place['id']; ?>" <?php echo $place['id'] == $news[0]['place_id'] ? 'selected=selected' : NULL; ?>><?php echo $place['name']; ?></option>
+      <option value="<?php echo $place['unique']; ?>" <?php echo $place['unique'] == $news[0]['place_unique'] ? 'selected=selected' : NULL; ?>><?php echo $place['name']; ?></option>
                    <?php
          endforeach;
                     ?>
@@ -58,7 +58,7 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['unique'],$news_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['unique'] ?>" <?php echo (in_array($tag['unique'],$news_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>

@@ -42,11 +42,10 @@ Storage::instance()->viewsubmenu = template('submenu', array(
 Storage::instance()->content = template('home');
 Storage::instance()->show_map = TRUE;
 
-$id = config('about_us_menu_id');
-$id = $id[LANG];
-$query = "SELECT text FROM menu WHERE id = :id AND lang = '" . LANG . "' LIMIT 1;";
+$unique = config('about_us_menu_id');
+$query = "SELECT text FROM menu WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;";
 $query = db()->prepare($query);
-$query->execute(array(':id' => $id));
+$query->execute(array(':unique' => $unique));
 $about_us = $query->fetch(PDO::FETCH_ASSOC);
 $about_us = $about_us['text'];
 
