@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/project-data/" . $id . "/create");
+  $action = href("admin/project-data/" . $unique . "/create");
 ?>
     	<form action='<? echo $action; ?>' method='post'>
   	    <label for='pkey'>Key: </label>

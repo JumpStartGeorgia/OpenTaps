@@ -6,8 +6,8 @@
 
   foreach($places as $place)
   {
-      $link_edit = href("admin/places/". $place['id']);
-      $link_del = href("admin/places/". $place['id'] . '/delete');
+      $link_edit = href("admin/places/". $place['unique']);
+      $link_del = href("admin/places/". $place['unique'] . '/delete');
 
       echo "
 		<div class='record'>

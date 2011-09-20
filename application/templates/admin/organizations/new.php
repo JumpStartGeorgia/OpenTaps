@@ -53,15 +53,15 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>"><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['unique'] ?>"><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
   	    </select>
   	    <br /><br />
 
-  	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />
+  	    <input type='submit' style='width:90px;' value='Submit' onclick='return document.getElementById("dname").value != "" ' />
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/regions"); ?>">Back</a>
+  	<a href="<?php echo href("admin/organizations"); ?>">Back</a>

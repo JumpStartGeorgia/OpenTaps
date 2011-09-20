@@ -36,7 +36,7 @@
 					Region :
 				</div>
 				<div>
-					<a id="region_link" href="<?php echo URL.'region/'.$project['region_id']; ?>">	<?php echo $project['region_name']; ?> </a>
+					<a id="region_link" href="<?php echo URL.'region/'.$project['region_unique']; ?>">	<?php echo $project['region_name']; ?> </a>
 				</div>
 			</div>
 			<div class='project_details_line'>
@@ -75,10 +75,10 @@
 	</div>
 
 	<div id='project_description'>
-		<p>PROJECT DESCRIPTION</p>
+		<p class='desc'>PROJECT DESCRIPTION</p>
 		<div><?php echo $project['description']; ?></div>
 
-		<p>INFO ON PROJECT</p>
+		<p class='desc'>INFO ON PROJECT</p>
 		<div><?php echo $project['info']; ?></div>
 	</div>
     </div>
@@ -91,7 +91,7 @@
 		<div class='key'>
 			<?php echo strtoupper($d['key']); ?>
 		</div>
-		<div class='value'>
+		<div class='value group'>
 			<?php echo $d['value']; ?>
 		</div>
 	</div>

@@ -55,12 +55,12 @@
 	</div>
 
 	<div id='project_description' style="margin-top:75px;">
-		<p>ORGANIZATION DESCRIPTION</p>
+		<p class='desc'>ORGANIZATION DESCRIPTION</p>
 		<div><?php echo $organization['description']; ?></div>
 
-		<p>INFO ON PROJECTS</p>
+		<p class='desc'>INFO ON PROJECTS</p>
 		<div><?php echo $organization['projects_info']; ?></div>
-		<p>ORGANIZATION PROJECTS</p>
+		<p class='desc'>ORGANIZATION PROJECTS</p>
 		
 			<table style="margin-left:0px;margin-bottom:30px;float:left;">
 				<?php foreach($projects AS $project): ?>

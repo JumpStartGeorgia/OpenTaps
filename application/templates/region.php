@@ -73,10 +73,10 @@
 	</div>
 		
 	<div id='project_description'>
-		<p><?php echo $region['name']; ?></p>
+		<p class='desc'><?php echo $region['name']; ?></p>
 		<div><?php echo $region['region_info']; ?></div>
 
-		<p>INFO ON PROJECTS</p>
+		<p class='desc'>INFO ON PROJECTS</p>
 		<div><?php echo $region['projects_info']; ?></div>
 	</div>
 
@@ -85,7 +85,7 @@
 		<table style="margin-left:0px;margin-bottom:30px;float:left;">
 			<?php foreach($projects AS $project): ?>
 			<tr>	
-			    <td><a style='text-decoration:underline;' href="<?php echo URL.'project/'.$project['id']; ?>"><font style="font-family:arial;color:#656565;"><?php echo $project['title']; ?></font></a></td>
+			    <td><a style='text-decoration:underline;' href="<?php echo URL.'project/'.$project['unique']; ?>"><font style="font-family:arial;color:#656565;"><?php echo $project['title']; ?></font></a></td>
 			</tr>			
 			<?php endforeach; ?>
 		</table>

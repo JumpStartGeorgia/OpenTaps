@@ -14,22 +14,22 @@ Slim::get('/admin/menu/new/', function(){
 	Storage::instance()->content = template('login');
 });
 
-Slim::get('/admin/menu/:id/', function($id){
+Slim::get('/admin/menu/:unique/', function($unique){
     if(userloggedin())
     {
-	$sql = "SELECT * FROM menu WHERE id = :id";
+	$sql = "SELECT * FROM menu WHERE `unique` = :unique AND lang = '" . LANG . "'";
 	$statement = Storage::instance()->db->prepare($sql);
-	$statement->execute(array(':id' => $id));
+	$statement->execute(array(':unique' => $unique));
 	$result = $statement->fetch(PDO::FETCH_ASSOC);
-	Storage::instance()->content = template('admin/menu/edit', array('id' => $id, 'result' => $result));
+	Storage::instance()->content = template('admin/menu/edit', array('unique' => $unique, 'result' => $result));
     }
     else
 	Storage::instance()->content = template('login');
 });
 
-Slim::get('/admin/menu/:id/delete/', function($id){
+Slim::get('/admin/menu/:unique/delete/', function($unique){
     if(userloggedin())
-	if( delete_menu($id) )
+	if( delete_menu($unique) )
 	    Storage::instance()->content = "
 		<meta http-equiv='refresh' content='0; url=" . href("admin/menu") . "' />
  	    ";
@@ -51,7 +51,7 @@ Slim::post('/admin/menu/create/', function(){
         if( isset($_POST['m_footer']) ){
             $footer = 0;
         } else $footer = -1;
-        if( add_menu($_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_id'], $_POST['m_title'], $_POST['m_text'],$hide,$footer ) )
+        if (add_menu($_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $hide, $footer))
  	    Slim::redirect(href('admin/menu'));
         else
 	    Storage::instance()->content = "
@@ -63,7 +63,7 @@ Slim::post('/admin/menu/create/', function(){
 	Storage::instance()->content = template('login');
 });
 
-Slim::post('/admin/menu/:id/update/', function($id){
+Slim::post('/admin/menu/:unique/update/', function($unique){
         if(userloggedin()){
             if( isset($_POST['m_hide']) ){
                 $hide = 0;
@@ -71,7 +71,7 @@ Slim::post('/admin/menu/:id/update/', function($id){
              if( isset($_POST['m_footer']) ){
                  $footer = 0;
             } else $footer = -1;                
-             if( update_menu($id, $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_id'], $_POST['m_title'], $_POST['m_text'], $hide, $footer) )
+             if( update_menu($unique, $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $hide, $footer) )
 	    Storage::instance()->content = "
 		<meta http-equiv='refresh' content='0; url=" . href("admin/menu") . "' />
 	    ";

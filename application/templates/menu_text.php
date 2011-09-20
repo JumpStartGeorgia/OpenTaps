@@ -6,5 +6,5 @@
     if (isset($text) AND !empty($text))
         echo $text;
     else
-        echo 'Under Constriction';
+        echo 'Under Construction';
 ?></div>

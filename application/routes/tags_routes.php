@@ -33,6 +33,7 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     $id = $id['id'];
 
     $tosp = config('tags_on_single_page');
+    $unique = get_unique("tags", $id);
 
     $query = "
     		SELECT
@@ -42,20 +43,20 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     		INNER JOIN
     			" . $table . "
     		ON
-    			tag_connector." . $prefix . "_id = " . $table . ".id
+    			tag_connector." . $prefix . "_unique = " . $table . ".`unique`
     		WHERE
-    			tag_connector.tag_id = :id AND lang = '" . LANG . "'
+    			tag_connector.tag_unique = :unique AND lang = '" . LANG . "'
     		LIMIT 0, " . $tosp . ";
     	     ";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
-    $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
-    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
-    		WHERE tag_connector.tag_id = :id AND lang = '" . LANG . "';";
+    $query = "  SELECT COUNT(" . $table . ".`unique`) AS total FROM tag_connector
+    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_unique = " . $table . ".`unique`
+    		WHERE tag_connector.tag_unique = :unique AND lang = '" . LANG . "';";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
     $total_pages = ($total - $total % $tosp) / $tosp + 1;
@@ -98,12 +99,13 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     $id = $id['id'];
 
     $tosp = config('tags_on_single_page');
+    $unique = get_unique("tags", $id);
 
-    $query = "  SELECT COUNT(" . $table . ".id) AS total FROM tag_connector
-    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_id = " . $table . ".id
-    		WHERE tag_connector.tag_id = :id AND lang = '" . LANG . "';";
+    $query = "  SELECT COUNT(" . $table . ".`unique`) AS total FROM tag_connector
+    		INNER JOIN " . $table . " ON tag_connector." . $prefix . "_unique = " . $table . ".`unique`
+    		WHERE tag_connector.tag_unique = :unique AND lang = '" . LANG . "';";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
     $total_pages = ($total <= $tosp) ? 1 : ($total - $total % $tosp) / $tosp;
@@ -117,13 +119,13 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     		INNER JOIN
     			" . $table . "
     		ON
-    			tag_connector." . $prefix . "_id = " . $table . ".id
+    			tag_connector." . $prefix . "_unique = " . $table . ".`unique`
     		WHERE
-    			tag_connector.tag_id = :id AND lang = '" . LANG . "'
+    			tag_connector.tag_unique = :unique AND lang = '" . LANG . "'
     		LIMIT " . ($tosp * $page - $tosp). ", " . $tosp . ";
     	     ";
     $query = db()->prepare($query);
-    $query->execute(array(':id' => $id));
+    $query->execute(array(':unique' => $unique));
     $result = $query->fetchAll(PDO::FETCH_ASSOC);
 
     Storage::instance()->content = template('tags', array(
@@ -146,19 +148,21 @@ Slim::get('/admin/tags/new/', function(){
     Storage::instance()->content = userloggedin() ? template('admin/tags/new') : template('login');
 });
 
-Slim::get('/admin/tags/:id/', function($id){
-    Storage::instance()->content = userloggedin() ? template('admin/tags/edit', array('result' => read_tags($id))) : template('login');
+Slim::get('/admin/tags/:unique/', function($unique){
+    Storage::instance()->content = userloggedin()
+    	? template('admin/tags/edit', array('result' => read_tags($unique)))
+    	: template('login');
 });
 
-Slim::get('/admin/tags/:id/delete/', function($id){
-    Storage::instance()->content = userloggedin() ? delete_tag($id) : template('login');
+Slim::get('/admin/tags/:unique/delete/', function($unique){
+    Storage::instance()->content = userloggedin() ? delete_tag($unique) : template('login');
 });
 
 Slim::post('/admin/tags/create/', function(){
-    Storage::instance()->content = userloggedin() ? add_tag( $_POST['t_name'] ) : template('login');
+    Storage::instance()->content = userloggedin() ? add_tag($_POST['t_name']) : template('login');
 });
 
-Slim::post('/admin/tags/:id/update/', function($id){
-    Storage::instance()->content = userloggedin() ? update_tag( $id, $_POST['t_name'] ) : template('login');
+Slim::post('/admin/tags/:unique/update/', function($unique){
+    Storage::instance()->content = userloggedin() ? update_tag($unique, $_POST['t_name']) : template('login');
 });
 ################################################################ tags admin routes end

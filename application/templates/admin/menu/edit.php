@@ -1,5 +1,5 @@
 <?
-  $action = href("admin/menu/" . $result['id'] . "/update");
+  $action = href("admin/menu/" . $result['unique'] . "/update");
   echo "
   	<form action='" . $action . "' method='post'>
   	    <label for='mname'>Name: </label>
@@ -19,18 +19,18 @@
         <textarea name='m_text' id='mtext'>". $result['text'] ."</textarea>
         <br /><br  />
   ";
-  if($result['parent_id'] != 0)
+  if($result['parent_unique'] != 0)
   {
       echo "
   	    Parent: 
-  	    <select name='m_parent_id'>
+  	    <select name='m_parent_unique'>
       ";
 
       foreach(Storage::instance()->menu as $parent)
       {
-         $selected = ($parent['id'] == $result['parent_id']) ? "selected" : "";
+         $selected = ($parent['unique'] == $result['parent_unique']) ? "selected" : "";
 
-         echo "  <option " . $selected . " value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>";
+         echo "  <option " . $selected . " value=\"" . $parent['unique'] . "\">" . $parent['name'] . "</option>";
       }
       echo "
       	    </select>
@@ -38,7 +38,7 @@
       ";
   }
   else
-    echo "  <input type='hidden' value='0' name='m_parent_id' />";
+    echo "  <input type='hidden' value='0' name='m_parent_unique' />";
 
   echo "
         <input type='checkbox' ";
@@ -57,7 +57,7 @@ echo " name='m_footer' id='mfooter'/>
 
   	<a href=\"" . href("admin/menu") . "\">Back</a>
   	<br />
-  	<a href=\"" . href("admin/menu/" . $result['id'] . "/delete") . "\" onclick='return confirm(\"Are you sure?\");'>
+  	<a href=\"" . href("admin/menu/" . $result['unique'] . "/delete") . "\" onclick='return confirm(\"Are you sure?\");'>
   	    Delete this record
   	</a>
   ";

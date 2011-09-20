@@ -35,7 +35,7 @@
             <?php
          foreach( $places as $place ):
                   ?>
-         <option value="<?php echo $place['id']; ?>"><?php echo $place['name']; ?></option>
+         <option value="<?php echo $place['unique']; ?>"><?php echo $place['name']; ?></option>
                    <?php
          endforeach;
                     ?>
@@ -49,16 +49,14 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['id'], $all_tags)) ? "selected = 'selected'" : NULL; ?>><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['unique'] ?>" <?php echo (in_array($tag['unique'], $all_tags)) ? "selected = 'selected'" : NULL; ?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
   	    </select>
   	    <br /><br />
 
-  	    <input type='submit' value='Submit' onclick='
-  	    	return document.getElementById("ntitle").value != "" && document.getElementById("nbody").value != ""
-  	    	' />
+  	    <input type='submit' value='Submit' onclick='return document.getElementById("ntitle").value != ""' />
   	    <br /><br />
   	</form>
 

@@ -1,6 +1,6 @@
 <?php
-  $action = href("admin/news/" . $news[0]['id'] . "/update");
-  $img = view_image($news[0]['id']);
+  $action = href("admin/news/" . $news[0]['unique'] . "/update");
+  $img = view_image($news[0]['unique']);
 ?>
     	<form enctype='multipart/form-data' action='<? echo $action; ?>' method='post'>
   	    <label for='ntitle'>Title: </label>
@@ -28,7 +28,7 @@
       <select name='n_category' id='ncategory'>
             <!--<option value="-1"></option>-->
             <?php
-     foreach( config('news_types') as $type ):
+      foreach( config('news_types') as $type ):
                   ?>
       <option value="<?php echo $type; ?>" <?php echo $type == $news[0]['category'] ? 'selected=selected' : NULL; ?>><?php echo $type; ?></option>
                    <?php
@@ -44,7 +44,7 @@
             <?php
          foreach( $places as $place ):
                   ?>
-      <option value="<?php echo $place['id']; ?>" <?php echo $place['id'] == $news[0]['place_id'] ? 'selected=selected' : NULL; ?>><?php echo $place['name']; ?></option>
+      <option value="<?php echo $place['unique']; ?>" <?php echo $place['unique'] == $news[0]['place_unique'] ? 'selected=selected' : NULL; ?>><?php echo $place['name']; ?></option>
                    <?php
          endforeach;
                     ?>
@@ -58,16 +58,14 @@
   	        foreach($all_tags as $tag)
   	        {
   	            ?>
-  	            <option value="<?php echo $tag['id'] ?>" <?php echo (in_array($tag['id'],$news_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
+  	            <option value="<?php echo $tag['unique'] ?>" <?php echo (in_array($tag['unique'],$news_tags)) ? "selected='selected'" : NULL;?>><?php echo $tag['name'] ?></option>
   	            <?php
   	        }
   	      ?>
   	    </select>
   	    <br /><br />
   	    
-  	    <input type='submit' value='Submit' onclick='
-	  	    return document.getElementById("ntitle").value != "" && document.getElementById("nbody").value != ""
-  	    ' />
+  	    <input type='submit' value='Submit' onclick='return document.getElementById("ntitle").value != ""' />
   	    <br /><br />
   	    
   	</form>
@@ -75,6 +73,6 @@
   	<a href="<?php echo href("admin/news"); ?>">Back</a>
   	<br />
   	
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/news/" . $news[0]['id'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/news/" . $news[0]['unique'] . "/delete"); ?>" >
   	    Delete this record
   	</a>

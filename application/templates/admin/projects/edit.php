@@ -1,6 +1,6 @@
 <?php
 
-  $action = href("admin/projects/" . $project['id'] . "/update");
+  $action = href("admin/projects/" . $project['unique'] . "/update");
 ?>
     	<form action='<? echo $action; ?>' method='post'>
   	    <label for='ptitle'>Title: </label>
@@ -24,7 +24,7 @@
   	    <br /><br />
 
         
-  	    <!--<label for='pregion'>Regions: </label>
+  	    <?php /*<label for='pregion'>Regions: </label>
   	    <br />
   	    <select name='p_region' id='pregion'>
   	      <?php
@@ -34,15 +34,15 @@
   	        endforeach;
   	      ?>
   	    </select>
-  	    <br /><br />-->
+  	    <br /><br />*/ ?>
 
         <label for='pplace'>Place: </label>
   	    <br />
   	    <select name='p_place' id='pplace'>
   	      <?php
       foreach($places as $place):
-  	            $selected = ($place['id'] == $project['place_id']) ? "selected='selected'" : NULL;
-  	            ?><option value="<?php echo $place['id'] ?>" <?php echo $selected ?>><?php echo $place['name'] ?></option><?php
+  	            $selected = ($place['unique'] == $project['place_unique']) ? "selected='selected'" : NULL;
+  	            ?><option value="<?php echo $place['unique'] ?>" <?php echo $selected ?>><?php echo $place['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>
@@ -78,8 +78,8 @@
   	    <select name='p_tags[]' id='ptags' multiple='multiple'>
   	      <?php
   	        foreach($all_tags as $tag):
-  	            $selected = (in_array($tag['id'], $this_tags)) ? "selected='selected'" : NULL;
-  	            ?><option value="<?php echo $tag['id'] ?>" <?php echo $selected ?>><?php echo $tag['name'] ?></option><?php
+  	            $selected = (in_array($tag['unique'], $this_tags)) ? "selected='selected'" : NULL;
+  	            ?><option value="<?php echo $tag['unique'] ?>" <?php echo $selected ?>><?php echo $tag['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>
@@ -90,8 +90,8 @@
   	    <select name='p_orgs[]' id='porgs' multiple='multiple'>
   	      <?php
   	        foreach($organizations as $org):
-  	            $selected = (in_array($org['id'], $this_orgs)) ? "selected='selected'" : NULL;
-  	            ?><option <?php echo $selected ?> value="<?php echo $org['id'] ?>"><?php echo $org['name'] ?></option><?php
+  	            $selected = (in_array($org['unique'], $this_orgs)) ? "selected='selected'" : NULL;
+  	            ?><option <?php echo $selected ?> value="<?php echo $org['unique'] ?>"><?php echo $org['name'] ?></option><?php
   	        endforeach;
   	      ?>
   	    </select>
@@ -115,6 +115,6 @@
 
   	<a href="<?php echo href("admin/projects"); ?>">Back</a>
   	<br />
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/projects/" . $project['id'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/projects/" . $project['unique'] . "/delete"); ?>" >
   	    Delete this record
   	</a>

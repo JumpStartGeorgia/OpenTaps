@@ -5,13 +5,13 @@
 ?>
 
   <li class='dropdownmenu' id='projects_dropdown'>
-      <a href="<?php echo href('page/'); ?>">
+      <a href="#">
 	  <?php echo strtoupper('projects') .$span ?>
       </a>
   </li>
 
   <li class='dropdownmenu' id='organizations_dropdown'>
-      <a href="<?php echo href('page/'); ?>">
+      <a href="#">
 	  <?php echo strtoupper('organizations') .$span ?>
       </a>
   </li>

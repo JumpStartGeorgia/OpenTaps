@@ -6,8 +6,8 @@
   $tags = read_tags();
   foreach($tags as $tag)
   {
-      $link_edit = href("admin/tags/". $tag['id']);
-      $link_del = href("admin/tags/". $tag['id'] . '/delete');
+      $link_edit = href("admin/tags/". $tag['unique']);
+      $link_del = href("admin/tags/". $tag['unique'] . '/delete');
 
       echo "
 		<div class='record'>

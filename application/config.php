@@ -2,7 +2,7 @@
 
 return array(
     'db_user' => 'root',
-    'db_pass' => 'asdfg',
+    'db_pass' => 'password',
     'project_types' => array(
     	'Sewage',
     	'Water Supply',
@@ -20,6 +20,6 @@ return array(
     ),
     'tags_on_single_page' => 15,
     'news_on_single_page' => 15,
-    'about_us_menu_id' => array('ka' => 34, 'en' => 11),
+    'about_us_menu_unique' => 7,
     'languages' => array('en', 'ka')
 );

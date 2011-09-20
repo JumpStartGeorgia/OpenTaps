@@ -18,12 +18,12 @@
         <textarea name='m_text' id='mtext'></textarea>
         <br /><br />
   	    Parent: 
-  	    <select name='m_parent_id'>
+  	    <select name='m_parent_unique'>
   	        <option selected value='0'>None</option>
   ";
 
   foreach(Storage::instance()->menu as $parent)
-    echo "  	<option value=\"" . $parent['id'] . "\">" . $parent['name'] . "</option>";
+    echo       "<option value=\"" . $parent['unique'] . "\">" . $parent['name'] . "</option>";
 
   echo "
   	    </select>

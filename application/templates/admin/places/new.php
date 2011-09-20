@@ -8,8 +8,8 @@
 
          <select name="pl_region" id="plregion">
             <option></option>
-         <?php foreach( $regions as $region ): ?>
-         <option value="<?php echo $region['id']; ?>"><?php echo $region['name']; ?></option>
+         <?php foreach ($regions as $region): ?>
+         <option value="<?php echo $region['unique']; ?>"><?php echo $region['name']; ?></option>
          <?php endforeach; ?>
          </select>
         <br /><br />
