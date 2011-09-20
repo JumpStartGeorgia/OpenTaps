@@ -26,7 +26,7 @@
     endfor;
 	?>
 	<div class="news_each_others">
-  	<img src="http://localhost.com/OpenTaps/uploads/593276screenshot_opentaps.png" id="menu_img" width="130px" height="130px" style="margin-top:15px;margin-left:15px;"/>
+  	<img src="<?php echo $news_all[2]['image']; ?>" id="menu_img" width="130px" height="130px" style="margin-top:15px;margin-left:15px;"/>
   		<div class="news_each_menu">
 	<?php
     for ($idx = 2, $num = count($news_all); $idx < $num; $idx++):
