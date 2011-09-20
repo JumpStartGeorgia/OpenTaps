@@ -41,8 +41,7 @@ function news_menu_over(img,ths)
 
 function news_menu_click(id)
 {
- //   window.location = 
-alert(id);
+    window.location = "news/"+id;
 }
 function show_data(type,i)
 {

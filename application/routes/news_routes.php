@@ -33,6 +33,14 @@ Slim::get('/news/', function()
     }
 );
 
+Slim::get('/news/:id', function($id)
+    {
+        Storage::instance()->content = template('news_single',array(
+                                                    'news' => fetch_db("SELECT * FROM news WHERE id=$id")
+        ));
+    }
+);
+
 Slim::get('/news/page/:page/', function($page)
     {
 	($page > 0) OR die('invalid page');
