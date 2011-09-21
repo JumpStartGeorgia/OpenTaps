@@ -256,7 +256,7 @@ Slim::get('/admin/project-data/:unique/new/',function($unique){
 Slim::post('/admin/project-data/:unique/create/',function($unique){
     if(userloggedin())
     {
-	add_project_data($unique, $_POST['project_key'], $_POST['project_value']);
+	add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['project_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else
@@ -267,7 +267,7 @@ Slim::post('/admin/project-data/:unique/update/',function($unique){
     if(userloggedin())
     {
 	delete_project_data($unique);
-        add_project_data($unique, $_POST['project_key'], $_POST['project_value']);
+        add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['project_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else

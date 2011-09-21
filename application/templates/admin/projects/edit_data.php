@@ -1,23 +1,31 @@
 <?php
   $action = href("admin/project-data/" . $project_unique . "/update", TRUE);
 ?>
-	<h4>Leave key and value empty for the data you wish to delete</h4>
-	<br />
-
     	<form action='<? echo $action; ?>' method='post'>
 <?php
-	foreach ( $data as $d )
-	{
-?>
-  	    <label for='pk<?php echo $d['unique'] ?>'>Key: </label>
-  	    <br />
-  	    <input name='project_key[]' id='p<?php echo $d['unique'] ?>' type='text' value="<?php echo $d['key'] ?>" />
-  	    <br />
 
-  	    <label for='pv<?php echo $d['unique'] ?>'>Value: </label>
-  	    <br />
-  	    <textarea name='project_value[]' id='pv<?php echo $d['unique'] ?>' cols='55' rows='5'><?php echo $d['value'] ?></textarea>
+	foreach ($data as $idx => $d)
+	{
+	    $bg = ($idx & 1) ? 'url(' . href() . 'images/bg.jpg) repeat' : 'white';
+?>
+<div class="group" style="width: 695px; margin: 10px 0; padding: 1.5em .75em; background: <?php echo $bg ?>">
+  	    <label style="cursor: pointer">
+  	    	Title: <br />
+		<input name='project_key[]' type='text' value="<?php echo $d['key'] ?>" />
+  	    </label>
   	    <br /><br />
+
+  	    <label style="cursor: pointer">
+		Sort: <br />
+		<input name="project_sort[]" type="text" value="<?php echo $d['sort'] ?>" style="width: 40px" />
+  	    </label>
+  	    <br /><br />
+
+  	    <label style="cursor: pointer">
+  	    	Text: <br />
+		<textarea name='project_value[]' cols='55' rows='5'><?php echo $d['value'] ?></textarea>
+	    </label>
+</div>
 <?php
 	}
 ?>

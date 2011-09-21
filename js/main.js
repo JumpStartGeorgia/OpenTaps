@@ -221,4 +221,25 @@ $(function()
      $('.admin').hover(function(){
         $(this).children('div').slideToggle(100);
     });
+
+
+    $('#ptags').change(function(){
+        var selected_tags = [];
+        $(this).find('option:selected').each(function(){
+            /*($('#tag_box').val().indexOf($(this).text() + ',') == -1) && */
+            selected_tags.push($(this).text());
+        });
+
+	$('#tag_box').val(selected_tags.join(', '));
+    });
+
+
+
+
+
+
+
+
+
+
 });

@@ -384,6 +384,8 @@ function add_tag_connector($field, $f_unique, $tag_uniques)
 
     empty($tag_uniques) AND exit("tag ids are empty");
 
+    //$tag_uniques = is_array($tag_uniques) ? $tag_uniques : explode(',', $tag_uniques);
+
     foreach ($tag_uniques as $tag_unique)
     {
         $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `".$field."_unique`) VALUES (:tag_unique, :f_unique);";
@@ -1030,7 +1032,7 @@ function delete_project($unique)
 
 function read_project_data($unique)
 {
-	$query = "SELECT * FROM projects_data WHERE project_unique = :unique AND lang = '" . LANG . "' ORDER BY `unique`;";
+	$query = "SELECT * FROM projects_data WHERE project_unique = :unique AND lang = '" . LANG . "' ORDER BY `sort`,`unique`;";
 	$query = db()->prepare($query);
 	$query->execute(array(':unique' => $unique));
 	$query = $query->fetchAll();
@@ -1045,7 +1047,7 @@ function delete_project_data($unique)
 	$statement->execute(array(':unique' => $unique));
 }
 
-function add_project_data($project_unique, $key, $value)
+function add_project_data($project_unique, $key, $sort, $value)
 {
 	//$project_unique = get_unique("projects", $project_id);
 	for ( $i = 0, $c = count($key); $i < $c; $i ++ )
@@ -1057,20 +1059,40 @@ function add_project_data($project_unique, $key, $value)
     		foreach ($languages as $lang)
     		{
 			$sql = "
-			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_unique`, lang, `unique`)
-			 VALUES (:key, :value, :project_unique, :lang, :unique);
+			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_unique`, `sort`, lang, `unique`)
+			 VALUES (:key, :value, :project_unique, :sort, :lang, :unique);
 			";
 			$statement = db()->prepare($sql);
 			$statement->execute(array(
 				':project_unique' => $project_unique,
 				':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
 				':value' => $value[$i],
+				':sort' => $sort[$i],
 				':lang' => $lang,
 	       			':unique' => $unique
 			));
 		}
 	    }
 	}
+}
+
+function word_limiter($text, $limit = 30, $chars = 'აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ0123456789')
+{
+    if (strlen($text) > $limit)
+    {
+        $words = str_word_count($text, 2, $chars);
+        $words = array_reverse($words, TRUE);
+        foreach($words AS $length => $word)
+        {
+            if ($length + strlen($word) >= $limit)
+                array_shift($words);
+            else
+                break;
+        }
+        $words = array_reverse($words);
+        $text = implode(' ', $words) . '&hellip;';
+    }
+    return $text;
 }
 
 function get_project_chart_data($unique)

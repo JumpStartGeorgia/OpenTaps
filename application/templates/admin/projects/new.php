@@ -68,9 +68,11 @@
   	    <br /><br />
 
 
-  	    <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
+  	    <label for='ptags'>Tags: (enter by hand or select tags below)</label>
   	    <br />
-  	    <select name='p_tags[]' id='ptags' multiple='multiple'>
+  	    <input type="text" id="tag_box" name="p_tags" style="width: 150px; border-right: 1px solid #ccc;" />
+  	    <br />
+  	    <select name='p_tags_old[]' id='ptags' multiple="multiple" style="width: 153px; border-right: 1px solid #ccc;">
   	      <?php
   	        foreach($all_tags as $tag):
   	            ?><option value="<?php echo $tag['unique'] ?>"><?php echo $tag['name'] ?></option><?php
