@@ -16,7 +16,7 @@ Slim::get('/admin/places/:unique/delete/',function($unique)
               if (userloggedin())
               {
                   delete_place($unique);
-                  Slim::redirect( href('admin/places') );
+                  Slim::redirect(href('admin/places'), TRUE);
               }
               else Storage::instance()->content = template('login');
           }
@@ -37,7 +37,7 @@ Slim::post('/admin/places/create/',function()
                if (userloggedin())
                {
                    add_place($_POST);
-                   Slim::redirect( href('admin/places') );
+                   Slim::redirect(href('admin/places', TRUE));
                }
                else Storage::instance()->content = template('login');
            }
@@ -65,7 +65,7 @@ Slim::post('/admin/places/:unique/update/',function($unique)
                if (userloggedin())
                {
                    edit_place($unique, $_POST);
-                   Slim::redirect(href('admin/places'));
+                   Slim::redirect(href('admin/places', TRUE));
                }
                else Storage::instance()->content = template('login');
            }

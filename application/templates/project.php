@@ -36,7 +36,7 @@
 					Region :
 				</div>
 				<div>
-					<a id="region_link" href="<?php echo URL.'region/'.$project['region_unique']; ?>">	<?php echo $project['region_name']; ?> </a>
+					<a id="region_link" href="<?php echo href('region/'.$project['region_unique'], TRUE); ?>">	<?php echo $project['region_name']; ?> </a>
 				</div>
 			</div>
 			<div class='project_details_line'>
@@ -106,7 +106,7 @@
 		    <?php
 			foreach($tags as $tag):
 				echo 
-					"<a href='".href('tag/project/' . $tag['name'])."'>" .
+					"<a href='".href('tag/project/' . $tag['name'], TRUE)."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;

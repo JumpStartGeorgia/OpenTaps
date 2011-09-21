@@ -31,12 +31,12 @@ Slim::get('/admin/menu/:unique/delete/', function($unique){
     if(userloggedin())
 	if( delete_menu($unique) )
 	    Storage::instance()->content = "
-		<meta http-equiv='refresh' content='0; url=" . href("admin/menu") . "' />
+		<meta http-equiv='refresh' content='0; url=" . href("admin/menu", TRUE) . "' />
  	    ";
         else
 	    Storage::instance()->content = "
 		invalid data <br />
-		<a href=\"" . href("admin/menu") . "\">Back</a>
+		<a href=\"" . href("admin/menu", TRUE) . "\">Back</a>
 	    ";
     else
 	Storage::instance()->content = template('login');
@@ -52,11 +52,11 @@ Slim::post('/admin/menu/create/', function(){
             $footer = 0;
         } else $footer = -1;
         if (add_menu($_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $hide, $footer))
- 	    Slim::redirect(href('admin/menu'));
+ 	    Slim::redirect(href('admin/menu', TRUE));
         else
 	    Storage::instance()->content = "
 		invalid data <br />
-		<a href=\"" . href("admin/menu") . "\">Back</a>
+		<a href=\"" . href("admin/menu", TRUE) . "\">Back</a>
 	    ";
         }
     else
@@ -73,13 +73,13 @@ Slim::post('/admin/menu/:unique/update/', function($unique){
             } else $footer = -1;                
              if( update_menu($unique, $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $hide, $footer) )
 	    Storage::instance()->content = "
-		<meta http-equiv='refresh' content='0; url=" . href("admin/menu") . "' />
+		<meta http-equiv='refresh' content='0; url=" . href("admin/menu", TRUE) . "' />
 	    ";
         
 	else
 	    Storage::instance()->content = "
 		invalid data <br />
-		<a href=\"" . href("admin/menu") . "\">Back</a>
+		<a href=\"" . href("admin/menu", TRUE) . "\">Back</a>
 	    ";
         }
     else

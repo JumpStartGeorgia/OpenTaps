@@ -1,4 +1,4 @@
-  	<form method='post' enctype="multipart/form-data" action='<?php echo href("admin/projects/create"); ?>'>
+  	<form method='post' enctype="multipart/form-data" action='<?php echo href("admin/projects/create", TRUE); ?>'>
   	    <label for='ptitle'>Title: </label>
   	    <br />
   	    <input name='p_title' id='ptitle' type='text' />
@@ -105,4 +105,4 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects"); ?>">Back</a>
+  	<a href="<?php echo href("admin/projects", TRUE); ?>">Back</a>

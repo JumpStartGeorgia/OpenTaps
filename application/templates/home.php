@@ -58,6 +58,7 @@ if( $idx  == 2 ):
   	</div>
   <?php
 ?>
-    <div class='more_news'><a style="text-decoration:none;" href='<?php echo URL . "news"; ?>' ><font style="font-size:7pt;color:#A6A6A6;">▸ ALL NEWS</font></a></div>
+
+    <div class='more_news'><a style="text-decoration:none;font-size:7pt;color:#A6A6A6;" href='<?php echo href("news", TRUE); ?>'>▸ ALL NEWS</a></div>
 
 </div>

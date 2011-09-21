@@ -1,4 +1,4 @@
-  	<form action='<?php echo href("admin/users/create"); ?>' method='post'>
+  	<form action='<?php echo href("admin/users/create", TRUE); ?>' method='post'>
        <label for='uname'>UserName: </label>
   	    <br />
   	    <input name='u_name' id='uname' type='text' />
@@ -11,4 +11,4 @@
   	</form>
 
         <br /><br />
-  	<a href="<?php echo href("admin/tags"); ?>">Back</a>
+  	<a href="<?php echo href("admin/tags", TRUE); ?>">Back</a>

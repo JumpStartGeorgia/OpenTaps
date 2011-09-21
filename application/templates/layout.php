@@ -33,7 +33,7 @@ console.log(news[0]);
         <div class='main group'>
 
             <div class='header'>
-                <a href = "<? echo URL ?>">
+                <a href = "<? echo href(NULL, TRUE) ?>">
                   <img src='<?php echo URL ?>images/opentaps.jpg' />
 		</a>
                 <div class='header_right'>

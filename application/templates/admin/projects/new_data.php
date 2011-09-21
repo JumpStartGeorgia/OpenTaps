@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/project-data/" . $unique . "/create");
+  $action = href("admin/project-data/" . $unique . "/create", TRUE);
 ?>
     	<form action='<? echo $action; ?>' method='post'>
   	    <label for='pkey'>Key: </label>
@@ -15,4 +15,4 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects") ?>">Back</a>
+  	<a href="<?php echo href("admin/projects", TRUE) ?>">Back</a>

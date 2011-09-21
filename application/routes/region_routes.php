@@ -40,7 +40,7 @@ Slim::get('/admin/regions/', function(){
 Slim::get('/admin/regions/:unique/', function($unique){
     if ($unique != "new")
     {
-    	is_numeric($unique) OR Slim::redirect(href('admin/regions'));
+    	is_numeric($unique) OR Slim::redirect(href('admin/regions', TRUE));
 	Storage::instance()->content = userloggedin()
     		? template('admin/regions/edit', array(
     			'region' => get_region($unique),
@@ -61,7 +61,7 @@ Slim::get('/admin/regions/:unique/', function($unique){
 Slim::get('/admin/regions/:unique/delete/', function($unique){
      if(userloggedin()) {
      	delete_region($unique) ;
-     	Slim::redirect(href('admin/regions'));
+     	Slim::redirect(href('admin/regions', TRUE));
      }
      else Storage::instance()->content = template('login');
 });
@@ -81,7 +81,7 @@ Slim::post('/admin/regions/create/', function(){
         	$_POST['p_districts'],
 		$_POST['p_watersupply']
        	     );
-       	     Slim::redirect(href('admin/regions'));
+       	     Slim::redirect(href('admin/regions', TRUE));
        	}
 	else Storage::instance()->content = template('login');
 	
@@ -104,7 +104,7 @@ Slim::post('/admin/regions/update/:unique/', function($unique){
         	$_POST['p_districts'],
 		$_POST['p_watersupply']
        	     );
-       	     Slim::redirect(href('admin/regions'));
+       	     Slim::redirect(href('admin/regions', TRUE));
     }
 	   else Storage::instance()->content = template('login');
 });

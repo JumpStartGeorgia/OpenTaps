@@ -13,7 +13,7 @@
 //		fb($last_row, $idx . ' last row');
 
 	        echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
-	    		<a href="' . href('project/' . $item['unique']) . '">' . $item['title'] . '</a>
+	    		<a href="' . href('project/' . $item['unique'], TRUE) . '">' . $item['title'] . '</a>
 	    	      </td>';
 	        $breakable AND print '</tr><tr>';
 	        $idx++;
@@ -36,7 +36,7 @@
  	        $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
 	        echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
-	    		<a href="' . href('organization/' . $item['unique']) . '">' . $item['name'] . '</a>
+	    		<a href="' . href('organization/' . $item['unique'], TRUE) . '">' . $item['name'] . '</a>
 	    	      </td>';
 	        $breakable AND print '</tr><tr>';
 	        $idx++;
@@ -46,9 +46,9 @@
     </table>
 </div>
 
-<?php foreach ($submenus AS $parent_id => $items): ?>
+<?php foreach ($submenus AS $parent_unique => $items): ?>
 
-<div id="sub_<?php echo $parent_id ?>" class="submenu">
+<div id="sub_<?php echo $parent_unique ?>" class="submenu">
     <table><tr><?php
         $idx = 0;
         $num = count($items);
@@ -59,7 +59,7 @@
  	    $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
 	    echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
-	    		<a href="' . href('page/' . $item['unique']) . '">' . $item['name'] . '</a>
+	    		<a href="' . href('page/' . $item['unique'], TRUE) . '">' . $item['name'] . '</a>
 	    	  </td>';
 	    $breakable AND print '</tr><tr>';
 	    $idx++;

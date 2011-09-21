@@ -1,5 +1,5 @@
 
-  	<form action='<?php echo href("admin/places/".$place[0]['unique']."/update"); ?>' method='post'>
+  	<form action='<?php echo href("admin/places/" . $place[0]['unique'] . "/update", TRUE); ?>' method='post'>
   	    <label for='plname'>Name: </label>
   	    <br />
   	    <input name='pl_name' id='plname' value="<?php echo $place[0]['name']; ?>" type='text' />
@@ -32,4 +32,4 @@
   	</form>
 
         <br />
-  	<a href="<?php echo href("admin/places"); ?>">Back</a>
+  	<a href="<?php echo href("admin/places", TRUE); ?>">Back</a>

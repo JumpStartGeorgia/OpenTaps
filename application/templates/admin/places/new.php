@@ -1,4 +1,4 @@
-  	<form action='<?php echo href("admin/places/create"); ?>' method='post'>
+  	<form action='<?php echo href("admin/places/create", TRUE); ?>' method='post'>
   	    <label for='plname'>Name: </label>
   	    <br />
   	    <input name='pl_name' id='plname' type='text' />
@@ -30,4 +30,4 @@
   	</form>
 
         <br />
-  	<a href="<?php echo href("admin/places"); ?>">Back</a>
+  	<a href="<?php echo href("admin/places", TRUE); ?>">Back</a>

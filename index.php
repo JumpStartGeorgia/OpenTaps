@@ -9,14 +9,13 @@ error_reporting(E_ALL);
 require_once DIR . 'application/storage.php';
 Storage::instance()->config = require DIR . 'application/config.php';
 require_once DIR . 'application/firephp/fb.php';
-require_once DIR . 'application/functions.php';
 
-
-$languages = config('languages');
+$languages = array('en', 'ka');
 $default_lang = 'ka';
 $lang = (isset($_GET['lang']) AND in_array($_GET['lang'], $languages)) ? $_GET['lang'] : $default_lang;
 define('LANG', $lang);
 
+require_once DIR . 'application/functions.php';
 
 
 try

@@ -1,6 +1,6 @@
 <?php
 
-  $action = href("admin/projects/" . $project['unique'] . "/update");
+  $action = href("admin/projects/" . $project['unique'] . "/update", TRUE);
 ?>
     	<form action='<? echo $action; ?>' method='post'>
   	    <label for='ptitle'>Title: </label>
@@ -113,8 +113,8 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects"); ?>">Back</a>
+  	<a href="<?php echo href("admin/projects", TRUE); ?>">Back</a>
   	<br />
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/projects/" . $project['unique'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/projects/" . $project['unique'] . "/delete", TRUE); ?>" >
   	    Delete this record
   	</a>

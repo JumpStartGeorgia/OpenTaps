@@ -14,10 +14,11 @@ function config($item)
     return isset(Storage::instance()->config[$item]) ? Storage::instance()->config[$item] : FALSE;
 }
 
-function href($segments = NULL)
+function href($segments = NULL, $language = FALSE)
 {
-    $href = URL . ltrim($segments, '/');
-    return  $href . ((substr($href, -1) == "/") ? NULL : "/");
+    $href = URL . (empty($segments) ? NULL : trim($segments, '/') . '/');
+    $language AND $href .= '?lang=' . LANG;
+    return $href;
 }
 
 function db()
@@ -235,7 +236,7 @@ function add_news($title, $body, $filedata, $category, $place, $tags)
 
     add_tag_connector('news', $unique, $tags);
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
     return ($success) ? $metarefresh : "couldn't insert into database";
 }
 
@@ -278,7 +279,7 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
     fetch_db("DELETE FROM tag_connector WHERE news_unique = $unique");
     if (!empty($tags))
     	add_tag_connector('news', $unique, $tags);
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news") . "' />";
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
     return ($exec) ? $metarefresh : "couldn't update record/database error";
 }
 
@@ -398,7 +399,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques)
 
 function add_tag($name)
 {
-    $back = "<br /><a href=\"" . href("admin/tags/new") . "\">Back</a>";
+    $back = "<br /><a href=\"" . href("admin/tags/new", TRUE) . "\">Back</a>";
 
     if( strlen($name) < 2 )
 	return "name too short".$back;
@@ -418,13 +419,13 @@ function add_tag($name)
     	$success = (bool)$exec;
     }
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags") . "' />";
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags", TRUE) . "' />";
     return ($success) ? $metarefresh : "couldn't insert into database" . $back;
 }
 
 function update_tag($unique, $name)
 {
-    $back = "<br /><a href=\"" . href("admin/tags/".$unique) . "\">Back</a>";
+    $back = "<br /><a href=\"" . href("admin/tags/".$unique, TRUE) . "\">Back</a>";
 
     if( strlen($name) < 2 || !is_numeric($unique) )
 	return "name too short or invalid id" . $back;
@@ -437,7 +438,7 @@ function update_tag($unique, $name)
  	':name' => $name
     ));
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags") . "' />";
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags", TRUE) . "' />";
     return ($exec) ? $metarefresh : "couldn't update record/database error" . $back;
 }
 
@@ -451,7 +452,7 @@ function delete_tag($unique)
 
     $exec = $statement->execute(array(':unique' => $unique));
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags") . "' />";
+    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags", TRUE) . "' />";
     return ($exec) ? $metarefresh : "couldn't delete record/database error";
 }
 
@@ -796,7 +797,7 @@ function read_projects($project_unique = false)
 
 function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $org_uniques, $type)
 {
-    $back = "<br /><a href=\"" . href("admin/projects/new") . "\">Back</a>";
+    $back = "<br /><a href=\"" . href("admin/projects/new", TRUE) . "\">Back</a>";
 
     $fields = array();
     $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
@@ -897,7 +898,7 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
     }
 
     if ($success)
-    	Slim::redirect(href("admin/projects"));
+    	Slim::redirect(href("admin/projects", TRUE));
     else
     	return "couldn't insert record/database error";
     
@@ -905,7 +906,7 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 
 function update_project($unique, $title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $org_ids, $type)
 {
-    $back = "<br /><a href=\"" . href("admin/projects/" . $unique) . "\">Back</a>";
+    $back = "<br /><a href=\"" . href("admin/projects/" . $unique, TRUE) . "\">Back</a>";
 
     $fields = array();
     $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
@@ -999,7 +1000,7 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     	add_tag_connector('proj', $unique, $tag_uniques);
 
     if ( $exec )
-    	Slim::redirect(href("admin/projects"));
+    	Slim::redirect(href("admin/projects", TRUE));
     else
     	return "couldn't update record/database error";
 }
@@ -1022,7 +1023,7 @@ function delete_project($unique)
     //delete_project_data($id);
 
     if ( $delete )
-    	Slim::redirect(href("admin/projects"));
+    	Slim::redirect(href("admin/projects", TRUE));
     else
     	return "couldn't delete record/database error";
 }

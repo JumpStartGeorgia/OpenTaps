@@ -4,22 +4,22 @@
 		<td>
 			<h3>Menu Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/menu/new") ?>">Add Menu</a></li>
-				<li><a href="<?php echo href("admin/menu") ?>">List Menu</a></li>
+				<li><a href="<?php echo href("admin/menu/new", TRUE) ?>">Add Menu</a></li>
+				<li><a href="<?php echo href("admin/menu", TRUE) ?>">List Menu</a></li>
 			</ul>
 		</td>
 		<td>
 			<h3>News Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/news/new") ?>">Add News</a></li>
-				<li><a href="<?php echo href("admin/news") ?>">List News</a></li>
+				<li><a href="<?php echo href("admin/news/new", TRUE) ?>">Add News</a></li>
+				<li><a href="<?php echo href("admin/news", TRUE) ?>">List News</a></li>
 			</ul>
 		</td>
 		<td>
 			<h3>Tags Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/tags/new") ?>">Add Tag</a></li>
-				<li><a href="<?php echo href("admin/tags") ?>">Tags Listing</a></li>
+				<li><a href="<?php echo href("admin/tags/new", TRUE) ?>">Add Tag</a></li>
+				<li><a href="<?php echo href("admin/tags", TRUE) ?>">Tags Listing</a></li>
 			</ul>
 		</td>
 	</tr>
@@ -27,22 +27,22 @@
 		<td>
 			<h3>User Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/users/new") ?>">Add User</a></li>
-				<li><a href="<?php echo href("admin/users") ?>">Users listing</a></li>
+				<li><a href="<?php echo href("admin/users/new", TRUE) ?>">Add User</a></li>
+				<li><a href="<?php echo href("admin/users", TRUE) ?>">Users listing</a></li>
 			</ul>
 		</td>
 		<td>
 			<h3>Places Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/places/new") ?>">Add place</a></li>
-				<li><a href="<?php echo href("admin/places") ?>">Places</a></li>
+				<li><a href="<?php echo href("admin/places/new", TRUE) ?>">Add place</a></li>
+				<li><a href="<?php echo href("admin/places", TRUE) ?>">Places</a></li>
 			</ul>
 		</td>
 		<td>
 			<h3>Projects Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/projects/new") ?>">Add Project</a></li>
-				<li><a href="<?php echo href("admin/projects") ?>">Projects listing</a></li>
+				<li><a href="<?php echo href("admin/projects/new", TRUE) ?>">Add Project</a></li>
+				<li><a href="<?php echo href("admin/projects", TRUE) ?>">Projects listing</a></li>
 			</ul>
 		</td>
 	</tr>
@@ -50,15 +50,15 @@
 		<td>
 			<h3>Organisations Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/organizations") ?>">Organisations</a></li>
-				<li><a href="<?php echo href("admin/organizations/new") ?>">Add organisation</a></li>
+				<li><a href="<?php echo href("admin/organizations", TRUE) ?>">Organisations</a></li>
+				<li><a href="<?php echo href("admin/organizations/new", TRUE) ?>">Add organisation</a></li>
 			</ul>
 		</td>
 		<td>
 			<h3>Regions Management</h3>
 			<ul>
-				<li><a href="<?php echo href("admin/regions") ?>">Regions</a></li>
-				<li><a href="<?php echo href("admin/regions/add") ?>">Add Region</a></li>
+				<li><a href="<?php echo href("admin/regions", TRUE) ?>">Regions</a></li>
+				<li><a href="<?php echo href("admin/regions/add", TRUE) ?>">Add Region</a></li>
 			</ul>
 		</td>
 	</tr>

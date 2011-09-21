@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/tags/" . $result['unique'] . "/update");
+  $action = href("admin/tags/" . $result['unique'] . "/update", TRUE);
 ?>
     	<form action='<?php echo $action; ?>' method='post'>
   	    <label for='tname'>Name: </label>
@@ -10,8 +10,8 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/tags"); ?>">Back</a>
+  	<a href="<?php echo href("admin/tags", TRUE); ?>">Back</a>
   	<br />
-  	<a href="<?php echo href("admin/tags/" . $result['unique'] . "/delete"); ?>" onclick='return confirm("Are you sure?");'>
+  	<a href="<?php echo href("admin/tags/" . $result['unique'] . "/delete", TRUE); ?>" onclick='return confirm("Are you sure?");'>
   	    Delete this record
   	</a>

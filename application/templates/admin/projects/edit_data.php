@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/project-data/" . $project_unique . "/update");
+  $action = href("admin/project-data/" . $project_unique . "/update", TRUE);
 ?>
 	<h4>Leave key and value empty for the data you wish to delete</h4>
 	<br />
@@ -25,4 +25,4 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects"); ?>">Back</a>
+  	<a href="<?php echo href("admin/projects", TRUE); ?>">Back</a>

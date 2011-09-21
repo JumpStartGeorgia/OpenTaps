@@ -61,7 +61,7 @@ if ($unique == "new")
 }
 else
 {
-    is_numeric($unique) or Slim::redirect(href('admin/organizations'));
+    is_numeric($unique) or Slim::redirect(href('admin/organizations', TRUE));
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/edit', array(
     			'organization' => get_organization($unique),
@@ -76,7 +76,7 @@ Slim::get('/admin/organizations/:unique/delete/', function($unique){
      if(userloggedin()) {
      	delete_organization($unique) ;
      	fetch_db("DELETE FROM tag_connector WHERE org_unique = $unique");
-     	Slim::redirect(href('admin/organizations'));
+     	Slim::redirect(href('admin/organizations', TRUE));
      }
      else Storage::instance()->content = template('login');
 });
@@ -96,7 +96,7 @@ Slim::post('/admin/organizations/create/', function(){
         	$_POST['p_tags'],
         	$_FILES
        	     );
-       	     Slim::redirect(href('admin/organizations'));
+       	     Slim::redirect(href('admin/organizations', TRUE));
        	}
 	else Storage::instance()->content = template('login');
 	
@@ -118,7 +118,7 @@ Slim::post('/admin/organizations/update/:unique/', function($unique){
         	$_FILES,
         	$_POST['p_tags']
        	     );
-       	     Slim::redirect(href('admin/organizations'));
+       	     Slim::redirect(href('admin/organizations', TRUE));
     }
     else
     	Storage::instance()->content = template('login');

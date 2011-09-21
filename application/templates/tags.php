@@ -8,13 +8,13 @@
     	<div class='group' id='titletype'>
     	    <div id='titletype_left' style='padding: 10px; padding-left: 17px;'>
     	    <?php $def = strtoupper($def); ?>
-    	    	<a href='<?php echo href('tag/project/' . $tag_name) ?>'
+    	    	<a href='<?php echo href('tag/project/' . $tag_name, TRUE) ?>'
     	    		class='choosedef<?php ($def == "PROJECTS") AND print("_selected") ?>'>PROJECTS
     	    	</a>
-    	    	<a href='<?php echo href('tag/organization/' . $tag_name) ?>'
+    	    	<a href='<?php echo href('tag/organization/' . $tag_name, TRUE) ?>'
     	    		class='choosedef<?php ($def == "ORGANIZATIONS") AND print("_selected") ?>'>ORGANIZATIONS
     	    	</a>
-    	    	<a href='<?php echo href('tag/news/' . $tag_name) ?>'
+    	    	<a href='<?php echo href('tag/news/' . $tag_name, TRUE) ?>'
     	    		class='choosedef<?php ($def == "NEWS") AND print("_selected") ?>'>NEWS
     	    	</a>
     	    </div>
@@ -63,12 +63,12 @@
 <?php if ($total_pages > 1): ?>
     	<div id='pages'>
     	    <?php if ($current_page > 1): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1)) ?>' class='prevnext'><</a>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1), TRUE) ?>' class='prevnext'><</a>
     	    <?php endif; ?>
     	    <?php
     	    for ($page = 1; $page <= $total_pages; $page ++):
     	      if ($page != $current_page): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . $page) ?>'>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . $page, TRUE) ?>'>
     	    		<?php echo $page; ($total_pages == $page) OR print(" |"); ?>
     	    	</a>
     	    <?php
@@ -77,7 +77,7 @@
     	      endif;
     	    endfor;
     	    if ($current_page < $total_pages): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1)) ?>' class='prevnext'>></a>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1), TRUE) ?>' class='prevnext'>></a>
     	    <?php endif; ?>
     	</div>
 <?php endif; ?>

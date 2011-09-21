@@ -208,11 +208,11 @@ Slim::get('/admin/news/:unique/delete/', function($unique)
         {
             if (userloggedin())
                 if (delete_news($unique))
-                    Slim::redirect(href('admin/news'));
+                    Slim::redirect(href('admin/news', TRUE));
                 else
                     Storage::instance()->content = "
 		invalid data <br />
-		<a href=\"" . href("admin/news") . "\">Back</a>
+		<a href=\"" . href("admin/news", TRUE) . "\">Back</a>
 	";
             else
                 Storage::instance()->content = template('login');

@@ -10,10 +10,10 @@
 
   foreach($regions as $region)
   {
-      $link_edit = href("admin/regions/". $region['unique']);
-      $link_add_data = href("admin/regions-data/". $region['unique'] . "/new");
-      $link_edit_data = href("admin/regions-data/". $region['unique']);
-      $link_del = href("admin/regions/". $region['unique'] . '/delete');
+      $link_edit = href("admin/regions/". $region['unique'], TRUE);
+      $link_add_data = href("admin/regions-data/". $region['unique'] . "/new", TRUE);
+      $link_edit_data = href("admin/regions-data/". $region['unique'], TRUE);
+      $link_del = href("admin/regions/". $region['unique'] . '/delete', TRUE);
       $region['name'] = ( strlen($region['name']) > 12 ) ? substr($region['name'], 0, 9) . "..." : $region['name'];
       $region['region_info'] = htmlspecialchars($region['region_info']);
       $region['region_info'] = ( strlen($region['region_info']) > 70 )
@@ -34,7 +34,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/regions/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/regions/new", TRUE) . "\">New Record</a>
   		</div>
   	</div>
   ";
