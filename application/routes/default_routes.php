@@ -21,7 +21,7 @@ Slim::post('/login/', function(){
     {
 	$_SESSION['id'] = $user['id'];
 	$_SESSION['username'] = $user['username'];
-	echo "<meta http-equiv='refresh' content='0; url=" . URL . "admin' />";
+	echo "<meta http-equiv='refresh' content='0; url=" . href("admin", TRUE) . "' />";
     }
     else
 	Storage::instance()->content = template('login', array('alert' => 'Incorrect Username/Password'));

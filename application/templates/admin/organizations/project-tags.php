@@ -1,5 +1,5 @@
 <?php
-  $action = href("/project-tags/" . $id . "/update");
+  $action = href("/project-tags/" . $id . "/update", TRUE);
 ?>
     	<form action='<? echo $action; ?>' method='post'>
             <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
@@ -21,4 +21,4 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/projects"); ?>">Back</a>
+  	<a href="<?php echo href("admin/projects", TRUE); ?>">Back</a>

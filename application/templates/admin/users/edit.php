@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/users/" . $result['id'] . "/update");
+  $action = href("admin/users/" . $result['id'] . "/update", TRUE);
 ?>
     	<form action='<?php echo $action; ?>' method='post'>
   	    <label for='uname'>UserName: </label>
@@ -14,8 +14,8 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/users"); ?>">Back</a>
+  	<a href="<?php echo href("admin/users", TRUE); ?>">Back</a>
   	<br />
-  	<a href="<?php echo href("admin/users/" . $result['id'] . "/delete"); ?>" onclick='return confirm("Are you sure?");'>
+  	<a href="<?php echo href("admin/users/" . $result['id'] . "/delete", TRUE); ?>" onclick='return confirm("Are you sure?");'>
   	    Delete this record
   	</a>

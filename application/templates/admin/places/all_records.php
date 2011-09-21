@@ -6,8 +6,8 @@
 
   foreach($places as $place)
   {
-      $link_edit = href("admin/places/". $place['unique']);
-      $link_del = href("admin/places/". $place['unique'] . '/delete');
+      $link_edit = href("admin/places/". $place['unique'], TRUE);
+      $link_del = href("admin/places/". $place['unique'] . '/delete', TRUE);
 
       echo "
 		<div class='record'>
@@ -22,7 +22,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/places/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/places/new", TRUE) . "\">New Record</a>
   		</div>
   	</div>
   ";

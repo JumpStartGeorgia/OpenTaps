@@ -10,10 +10,10 @@
 
   foreach($projects as $project)
   {
-      $link_edit = href("admin/projects/". $project['unique']);
-      $link_add_data = href("admin/project-data/". $project['unique'] . "/new");
-      $link_edit_data = href("admin/project-data/". $project['unique']);
-      $link_del = href("admin/projects/". $project['unique'] . '/delete');
+      $link_edit = href("admin/projects/". $project['unique'], TRUE);
+      $link_add_data = href("admin/project-data/". $project['unique'] . "/new", TRUE);
+      $link_edit_data = href("admin/project-data/". $project['unique'], TRUE);
+      $link_del = href("admin/projects/". $project['unique'] . '/delete', TRUE);
       $project['title'] = ( strlen($project['title']) > 12 ) ? substr($project['title'], 0, 9) . "..." : $project['title'];
       $project['description'] = htmlspecialchars($project['description']);
       $project['description'] = ( strlen($project['description']) > 70 )
@@ -36,7 +36,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/projects/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/projects/new", TRUE) . "\">New Record</a>
   		</div>
   	</div>
   ";

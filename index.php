@@ -9,14 +9,13 @@ error_reporting(E_ALL);
 require_once DIR . 'application/storage.php';
 Storage::instance()->config = require DIR . 'application/config.php';
 require_once DIR . 'application/firephp/fb.php';
-require_once DIR . 'application/functions.php';
 
-
-$languages = config('languages');
+$languages = array('en', 'ka');
 $default_lang = 'ka';
 $lang = (isset($_GET['lang']) AND in_array($_GET['lang'], $languages)) ? $_GET['lang'] : $default_lang;
 define('LANG', $lang);
 
+require_once DIR . 'application/functions.php';
 
 
 try
@@ -42,7 +41,7 @@ Storage::instance()->viewsubmenu = template('submenu', array(
 Storage::instance()->content = template('home');
 Storage::instance()->show_map = TRUE;
 
-$unique = config('about_us_menu_id');
+$unique = config('about_us_menu_unique');
 $query = "SELECT text FROM menu WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;";
 $query = db()->prepare($query);
 $query->execute(array(':unique' => $unique));

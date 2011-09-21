@@ -12,7 +12,7 @@ Slim::get('/admin/users/:id/delete/',function($id)
           {
               if(userloggedin()){
                   delete_user($id);
-                  Slim::redirect(href('admin/users'));
+                  Slim::redirect(href('admin/users', TRUE));
               }
               else Storage::instance()->content = template('login');
           }
@@ -37,7 +37,7 @@ Slim::post('/admin/users/:id/update/',function($id)
            {
                if( userloggedin() ){
                    update_user($id,$_POST);
-                   Slim::redirect(href('admin/users'));
+                   Slim::redirect(href('admin/users', TRUE));
                }
                else Storage::instance()->content = template('login');
            }
@@ -46,7 +46,7 @@ Slim::post('/admin/users/create/',function()
           {
               if( userloggedin() ){
                   add_user($_POST);
-                  Slim::redirect(href('admin/users'));
+                  Slim::redirect(href('admin/users', TRUE));
               }
               else Storage::instance()->content = template('login');
           }

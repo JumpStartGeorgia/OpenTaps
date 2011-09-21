@@ -1,5 +1,5 @@
 <?
-  $action = href("admin/menu/" . $result['unique'] . "/update");
+  $action = href("admin/menu/" . $result['unique'] . "/update", TRUE);
   echo "
   	<form action='" . $action . "' method='post'>
   	    <label for='mname'>Name: </label>
@@ -55,9 +55,9 @@ echo " name='m_footer' id='mfooter'/>
   	    <br /><br />
   	</form>
 
-  	<a href=\"" . href("admin/menu") . "\">Back</a>
+  	<a href=\"" . href("admin/menu", TRUE) . "\">Back</a>
   	<br />
-  	<a href=\"" . href("admin/menu/" . $result['unique'] . "/delete") . "\" onclick='return confirm(\"Are you sure?\");'>
+  	<a href=\"" . href("admin/menu/" . $result['unique'] . "/delete", TRUE) . "\" onclick='return confirm(\"Are you sure?\");'>
   	    Delete this record
   	</a>
   ";

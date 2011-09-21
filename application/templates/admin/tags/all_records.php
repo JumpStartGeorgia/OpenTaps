@@ -6,8 +6,8 @@
   $tags = read_tags();
   foreach($tags as $tag)
   {
-      $link_edit = href("admin/tags/". $tag['unique']);
-      $link_del = href("admin/tags/". $tag['unique'] . '/delete');
+      $link_edit = href("admin/tags/". $tag['unique'], TRUE);
+      $link_del = href("admin/tags/". $tag['unique'] . '/delete', TRUE);
 
       echo "
 		<div class='record'>
@@ -22,7 +22,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/tags/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/tags/new", TRUE) . "\">New Record</a>
   		</div>
   	</div>
   ";

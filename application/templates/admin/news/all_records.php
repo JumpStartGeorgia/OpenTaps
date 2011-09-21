@@ -11,8 +11,8 @@
   $news_all = read_news();
   foreach($news_all as $news)
   {
-      $link_edit = href("admin/news/". $news['unique']);
-      $link_del = href("admin/news/". $news['unique'] . '/delete');
+      $link_edit = href("admin/news/". $news['unique'], TRUE);
+      $link_del = href("admin/news/". $news['unique'] . '/delete', TRUE);
       $news['body'] = htmlspecialchars($news['body']);
       $news['body'] = ( strlen($news['body']) > 85 ) ? substr($news['body'], 0, 82) . "..." : $news['body'];
       $news['title'] = ( strlen($news['title']) > 23 ) ? substr($news['title'], 0, 19) . "..." : $news['title'];
@@ -31,7 +31,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/news/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/news/new", TRUE) . "\">New Record</a>
   		</div>
   	</div>
   ";

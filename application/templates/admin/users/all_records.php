@@ -5,8 +5,8 @@
     
   foreach($users as $user)
   {
-      $link_edit = href("admin/users/". $user['id']);
-      $link_del = href("admin/users/". $user['id'] . '/delete');
+      $link_edit = href("admin/users/". $user['id'], TRUE);
+      $link_del = href("admin/users/". $user['id'] . '/delete', TRUE);
 
       echo "
 		<div class='record'>
@@ -21,7 +21,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/users/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/users/new", TRUE) . "\">New Record</a>
   		</div>
   	</div>
   ";

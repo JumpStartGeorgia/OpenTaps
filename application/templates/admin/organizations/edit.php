@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/organizations/update/" . $organization['unique']);
+  $action = href("admin/organizations/update/" . $organization['unique'], TRUE);
 ?>
     	<form action='<? echo $action; ?>' method='post' enctype="multipart/form-data">
   	   <label for='pname'>Name: </label>
@@ -66,8 +66,8 @@
   	    <br /><br />
   	</form>
 
-  	<a href="<?php echo href("admin/organizations"); ?>">Back</a>
+  	<a href="<?php echo href("admin/organizations", TRUE); ?>">Back</a>
   	<br />
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/organizations/" . $organization['unique'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/organizations/" . $organization['unique'] . "/delete", TRUE); ?>" >
   	    Delete this record
   	</a>

@@ -1,6 +1,6 @@
 <?
   echo "
-  	<form action='" . href("admin/menu/create") . "' method='post'>
+  	<form action='" . href("admin/menu/create", TRUE) . "' method='post'>
   	    <label for='mname'>Name: </label>
   	    <br />
   	    <input name='m_name' id='mname' type='text' />
@@ -37,5 +37,5 @@
   	    <br /><br />
   	</form>
 
-  	<a href=\"" . href("admin/menu") . "\">Back</a>
+  	<a href=\"" . href("admin/menu", TRUE) . "\">Back</a>
   ";

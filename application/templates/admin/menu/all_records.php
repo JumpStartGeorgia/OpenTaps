@@ -6,8 +6,8 @@
   $parents = read_menu(0, NULL, $readhidden = TRUE);
   foreach($parents as $parent)
   {
-      $link_edit = href("admin/menu/". $parent['unique']);
-      $link_del = href("admin/menu/". $parent['unique'] . '/delete');
+      $link_edit = href("admin/menu/". $parent['unique'], TRUE);
+      $link_del = href("admin/menu/". $parent['unique'] . '/delete', TRUE);
 
       echo "
 		<div class='record'>
@@ -23,8 +23,8 @@
 
       foreach($children as $child)
       {
-          $link_edit = href("admin/menu/". $child['unique']);
-          $link_del = href("admin/menu/". $child['unique'] . '/delete');
+          $link_edit = href("admin/menu/". $child['unique'], TRUE);
+          $link_del = href("admin/menu/". $child['unique'] . '/delete', TRUE);
           echo "
 		<div class='record'>
 		  <div class='rleftsub'>↳ " . $child['name'] . "</div>
@@ -39,7 +39,7 @@
 
   echo "
   		<div class='newrecord'>
-  		    <a href=\"" . href("admin/menu/new") . "\">New Record</a>
+  		    <a href=\"" . href("admin/menu/new", TRUE) . "\">New Record</a>
   		</div>
   	</div>
   ";

@@ -21,10 +21,10 @@
 
   foreach(Storage::instance()->menu as $menu)
   {
-	$has = has_submenu($menu['id']);
+	$has = has_submenu($menu['unique']);
 ?>
-	<li <?php echo $has ? "class='dropdownmenu'" : NULL ?> id='<?php echo $menu['id'] ?>'>
-	    <a href="<?php echo href('page/' . $menu['short_name']); ?>">
+	<li <?php echo $has ? "class='dropdownmenu'" : NULL ?> id='<?php echo $menu['unique'] ?>'>
+	    <a href="<?php echo href('page/' . $menu['short_name'], TRUE); ?>">
 	    	<?php echo strtoupper($menu['name']) . ($has ? $span : NULL) ?>
 	    </a>
 	</li>

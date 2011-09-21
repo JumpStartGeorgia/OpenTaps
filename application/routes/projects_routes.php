@@ -229,7 +229,7 @@ Slim::post('/admin/project-tags/:unique/update/',function($unique){
         //$unique = get_unique("projects", $unique);
         $delete = $statement->execute(array(':unique' => $unique));
         add_tag_connector('proj', $unique, $_POST['p_tags']);
-        Slim::redirect(href('admin/projects'));
+        Slim::redirect(href('admin/projects', TRUE));
     }
     else
 	Storage::instance()->content = template('login');
@@ -257,7 +257,7 @@ Slim::post('/admin/project-data/:unique/create/',function($unique){
     if(userloggedin())
     {
 	add_project_data($unique, $_POST['project_key'], $_POST['project_value']);
-        Slim::redirect(href('admin/projects'));
+        Slim::redirect(href('admin/projects', TRUE));
     }
     else
 	Storage::instance()->content = template('login');
@@ -268,7 +268,7 @@ Slim::post('/admin/project-data/:unique/update/',function($unique){
     {
 	delete_project_data($unique);
         add_project_data($unique, $_POST['project_key'], $_POST['project_value']);
-        Slim::redirect(href('admin/projects'));
+        Slim::redirect(href('admin/projects', TRUE));
     }
     else
 	Storage::instance()->content = template('login');

@@ -65,7 +65,7 @@
 			<table style="margin-left:0px;margin-bottom:30px;float:left;">
 				<?php foreach($projects AS $project): ?>
 				<tr>	
-					<td><a style='text-decoration:underline;' href="<?php echo URL.'project/'.$project['id']; ?>"><font style="font-family:arial;color:#656565;"><?php echo $project['title']; ?></font></a></td>
+					<td><a style='text-decoration:underline;' href="<?php echo href('project/'.$project['id'], TRUE); ?>"><font style="font-family:arial;color:#656565;"><?php echo $project['title']; ?></font></a></td>
 				</tr>			
 				<?php endforeach; ?>
 			</table>		
@@ -105,7 +105,7 @@
 		    <?php
 			foreach($tags as $tag):
 				echo 
-					"<a href='".href('tag/organization/' . $tag['name'])."'>" .
+					"<a href='".href('tag/organization/' . $tag['name'], TRUE)."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;

@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/news/" . $news[0]['unique'] . "/update");
+  $action = href("admin/news/" . $news[0]['unique'] . "/update", TRUE);
   $img = view_image($news[0]['unique']);
 ?>
     	<form enctype='multipart/form-data' action='<? echo $action; ?>' method='post'>
@@ -70,9 +70,9 @@
   	    
   	</form>
 
-  	<a href="<?php echo href("admin/news"); ?>">Back</a>
+  	<a href="<?php echo href("admin/news", TRUE); ?>">Back</a>
   	<br />
   	
-  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/news/" . $news[0]['unique'] . "/delete"); ?>" >
+  	<a onclick='return confirm("Are you sure?");' href="<?php echo href("admin/news/" . $news[0]['unique'] . "/delete", TRUE); ?>" >
   	    Delete this record
   	</a>

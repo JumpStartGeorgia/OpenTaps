@@ -20,14 +20,14 @@
 
     	<div class='group' id='newstype_filter' style='width: 100%; border-bottom: 1px solid #eee;'>
     	    <div class='titletype_left' style='padding-left: 11px; font-size:9px;'>
-		    <a href='<?php echo href('news') ?>'
+		    <a href='<?php echo href('news', TRUE) ?>'
     	    		class='choosedef<?php empty($this_type) AND print("_selected") ?>'>ALL
 		    </a>
 	    <?php
 		$types = config("news_types");
 		foreach ($types as $type):
 	    ?>
-		    <a href='<?php echo href('news/type/' . $type) ?>'
+		    <a href='<?php echo href('news/type/' . $type, TRUE) ?>'
     	    		class='choosedef<?php ($type == $this_type) AND print("_selected") ?>'>
 			<?php echo strtoupper($type); ?>
 		    </a>
@@ -83,12 +83,12 @@
 <?php if ($total_pages > 1): ?>
     	<div id='pages'>
     	    <?php if ($current_page > 1): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1)) ?>' class='prevnext'><</a>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1), TRUE) ?>' class='prevnext'><</a>
     	    <?php endif; ?>
     	    <?php
     	    for ($page = 1; $page <= $total_pages; $page ++):
     	      if ($page != $current_page): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . $page) ?>'>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . $page, TRUE) ?>'>
     	    		<?php echo $page; ($total_pages == $page) OR print(" |"); ?>
     	    	</a>
     	    <?php
@@ -97,7 +97,7 @@
     	      endif;
     	    endfor;
     	    if ($current_page < $total_pages): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1)) ?>' class='prevnext'>></a>
+    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1), TRUE) ?>' class='prevnext'>></a>
     	    <?php endif; ?>
     	</div>
 <?php endif; ?>
@@ -114,7 +114,7 @@
 		<?php
 			foreach($tags as $tag):
 				echo 
-					"<a href='".href('tag/project/' . $tag['name'])."'>" .
+					"<a href='".href('tag/project/' . $tag['name'], TRUE)."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;

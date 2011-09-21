@@ -50,6 +50,6 @@
   	</div>
   <?php
 ?>
-    <div class='more_news'><a href='<?php echo URL . "news"; ?>'>▸ ALL NEWS</a></div>
+    <div class='more_news'><a href='<?php echo href("news", TRUE); ?>'>▸ ALL NEWS</a></div>
 
 </div>
