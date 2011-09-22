@@ -65,14 +65,15 @@
   	    <label for='pend_at'>End at: (yyyy-mm-dd) </label>
   	    <br />
   	    <input name='p_end_at' id='pend_at' type='text' />
-  	    <br /><br />
+  	    <br /><br /><br />
 
 
   	    <label for='ptags'>Tags: (enter by hand or select tags below)</label>
-  	    <br />
-  	    <input type="text" id="tag_box" name="p_tags" style="width: 150px; border-right: 1px solid #ccc;" />
-  	    <br />
-  	    <select name='p_tags_old[]' id='ptags' multiple="multiple" style="width: 153px; border-right: 1px solid #ccc;">
+  	    <br /><br />
+  	    <input type="text" id="tag_box" name="p_tag_names" style="width: 150px; border-right: 1px solid #ccc;" value="" />
+  	    <span style='font-size:12px;'>separate by comma ",&nbsp"</span>
+  	    <br /><br />
+  	    <select name='p_tag_uniques[]' id='ptags' multiple="multiple" style="width: 153px; border-right: 1px solid #ccc;">
   	      <?php
   	        foreach($all_tags as $tag):
   	            ?><option value="<?php echo $tag['unique'] ?>"><?php echo $tag['name'] ?></option><?php

@@ -2,21 +2,24 @@
   $action = href("admin/project-data/" . $unique . "/create", TRUE);
 ?>
     	<form action='<? echo $action; ?>' method='post'>
-  	    <label for='pkey'>Title: </label>
-  	    <br />
-  	    <input name='project_key[]' id='pkey' type='text' />
-  	    <br />
-
-  	    <label>
-  	    	Sort: <br/>
-  	    	<input name='project_sort[]' type='text' />
+  	    <label style="cursor: pointer">
+  	    	Title: <br />
+		<input name='project_key[]' type='text' />
   	    </label>
-  	    <br />
-
-  	    <label for='pvalue'>Text: </label>
-  	    <br />
-  	    <textarea name='project_value[]' id='pvalue' cols='55' rows='5'></textarea>
   	    <br /><br />
+
+  	    <label style="cursor: pointer">
+		Sort: <br />
+		<input name="project_sort[]" type="text" style="width: 40px" />
+  	    </label>
+  	    <label style='margin-left: 25px; cursor: pointer;'><input type="checkbox" name="sidebar" /> Sidebar</label>
+  	    <br /><br />
+
+  	    <label style="cursor: pointer">
+  	    	Text: <br />
+		<textarea name='project_value[]' cols='55' rows='5'></textarea>
+	    </label>
+	    <br />
   	    <input type='submit' style='width:90px;' value='Submit' />
   	    <br /><br />
   	</form>

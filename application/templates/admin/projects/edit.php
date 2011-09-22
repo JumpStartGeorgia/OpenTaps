@@ -73,9 +73,12 @@
   	    <input name='p_end_at' id='pend_at' type='text' value="<?php echo $project['end_at'] ?>" />
   	    <br /><br />
 
-  	    <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
-  	    <br />
-  	    <select name='p_tags[]' id='ptags' multiple='multiple'>
+  	    <label for='ptags'>Tags: (enter by hand or select tags below)</label>
+  	    <br /><br />
+  	    <input type="text" id="tag_box" name="p_tag_names" style="width: 150px; border-right: 1px solid #ccc;" value="" />
+  	    <span style='font-size:12px;'>separate by comma ",&nbsp"</span>
+  	    <br /><br />
+  	    <select name='p_tag_uniques[]' id='ptags' multiple='multiple'>
   	      <?php
   	        foreach($all_tags as $tag):
   	            $selected = (in_array($tag['unique'], $this_tags)) ? "selected='selected'" : NULL;

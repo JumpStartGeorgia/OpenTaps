@@ -82,7 +82,7 @@ Slim::get('/admin/organizations/:unique/delete/', function($unique){
 });
 
 Slim::post('/admin/organizations/create/', function(){
-   empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+   empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
    if(userloggedin()){
 	     add_organization(
         	$_POST['p_name'],
@@ -93,7 +93,8 @@ Slim::post('/admin/organizations/create/', function(){
         	$_POST['p_grante'],
         	/*$_POST['p_donors'],*/
         	$_POST['p_sector'],
-        	$_POST['p_tags'],
+        	$_POST['p_tag_uniques'],
+        	$_POST['p_tag_names'],
         	$_FILES
        	     );
        	     Slim::redirect(href('admin/organizations', TRUE));
@@ -103,7 +104,7 @@ Slim::post('/admin/organizations/create/', function(){
 });
 
 Slim::post('/admin/organizations/update/:unique/', function($unique){
-    empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+    empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     if(userloggedin())
     {
    	     edit_organization(
@@ -116,7 +117,8 @@ Slim::post('/admin/organizations/update/:unique/', function($unique){
         	$_POST['p_grante'],
         	$_POST['p_sector'],
         	$_FILES,
-        	$_POST['p_tags']
+        	$_POST['p_tag_uniques'],
+        	$_POST['p_tag_names']
        	     );
        	     Slim::redirect(href('admin/organizations', TRUE));
     }

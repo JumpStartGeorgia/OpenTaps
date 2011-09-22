@@ -1,123 +1,49 @@
 
 <div id='project_content'>
 	<script type="text/javascript">
-		/*var region_map_boundsLeft = 4550479.3343998;
-			var region_map_boundsRight = 4722921.2701802;
-			var region_map_boundsTop = 5183901.869223;
-			var region_map_boundsBottom = 5034696.790037;*/
-			var region_map_zoom = false;
-			var region_make_def_markers = false;
-			var region_show_def_buttons = false;
-			var region_map_maxzoomout = 8;
-			var region_map_longitude = <?php echo isset($project) ? $project['longitude'] : 'false'; ?>;
-			var region_map_latitude = <?php echo isset($project) ? $project['latitude'] : 'false'; ?>;
-			var region_marker_click = false; 
+			/*var region_map_boundsLeft = 4550479.3343998,
+			region_map_boundsRight = 4722921.2701802,
+			region_map_boundsTop = 5183901.869223,
+			region_map_boundsBottom = 5034696.790037;*/
+			var region_map_zoom = false,
+			region_make_def_markers = false,
+			region_show_def_buttons = false,
+			region_map_maxzoomout = 8,
+			region_map_longitude = <?php echo isset($project) ? $project['longitude'] : 'false'; ?>,
+			region_map_latitude = <?php echo isset($project) ? $project['latitude'] : 'false'; ?>,
+			region_marker_click = false;
 			console.log(region_map_longitude);
 			console.log(region_map_latitude);
 	</script>
-    <div style='float:left;width:673px;'>
-	<div class='group'>
-		<div id='map' style='width:282px;height:244px;float:left;'></div>
-		<div id='project_details'>
-			<div id='project_budget'>
-				<p>Overall Project Budget</p>
-				<p style='font-size:27px;color:#FFF;'><?php echo number_format($project['budget']) ?></p>
-			</div>
-			<div class='project_details_line'>
-				<div class='line_left'>
-					Title :
-				</div>
-				<div>
-					<?php echo $project['title']; ?>
-				</div>
-			</div>
-			<div class='project_details_line'>
-				<div class='line_left'>
-					Region :
-				</div>
-				<div>
-					<a id="region_link" href="<?php echo href('region/'.$project['region_unique'], TRUE); ?>">	<?php echo $project['region_name']; ?> </a>
-				</div>
-			</div>
-			<div class='project_details_line'>
-				<div class='line_left'>
-					City/Town :
-				</div>
-				<div>
-					<?php echo $project['city']; ?>
-				</div>
-			</div>
-			<div class='project_details_line'>
-				<div class='line_left'>
-					Grantee :
-				</div>
-				<div>
-					<?php echo $project['grantee']; ?>
-				</div>
-			</div>
-			<div class='project_details_line'>
-				<div class='line_left'>
-					Sector :
-				</div>
-				<div>
-					<?php echo $project['sector']; ?>
-				</div>
-			</div>
-			<div class='project_details_line' style='border:0;'>
-				<div class='line_left'>
-					Time line :
-				</div>
-				<div>
-                <?php echo date('M.d.Y',strtotime($project['start_at'])) . " - " . date('M.d.Y',strtotime($project['end_at'])); ?>
-				</div>
+
+
+	<div style="float: left;">
+		<div id="map" style="width: 638px; height: 160px; border-top: 0;"></div>
+		<div style="background: url(<?php echo href() . "images/bg.jpg" ?>) repeat; width: 610px; height: 35px; padding: 8px 15px;">
+			<span style="font-size: 16px;"><?php echo $project['title'] ?></span>
+			<span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span>
+		</div>
+		<div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px;">
+			<div>
+				<span style="width: 625px; display: block; font-weight: bold; font-size: 14px; padding: 0px 0px 10px 15px; border-bottom: 1px dotted #a6a6a6;">►▼ Project Name: <?php echo $project['title'] ?></span>
+				<span style="">
+					Location - Region:
+					<a id="region_link" href="<?php echo href('region/'.$project['region_unique'], TRUE); ?>">
+						<?php echo $project['region_name']; ?>
+					</a>
+					Location - City/Town: <?php echo $project['city']; ?>
+				</span>
 			</div>
 		</div>
 	</div>
-
-	<div id='project_description'>
-		<p class='desc'>PROJECT DESCRIPTION</p>
-		<div><?php echo $project['description']; ?></div>
-
-		<p class='desc'>INFO ON PROJECT</p>
-		<div><?php echo $project['info']; ?></div>
-	</div>
-    </div>
-
-    <div style='float:right;'>
-
-<?php $i = 0; foreach ( $data as $d ): $i ++; ?>
-
-	<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
-		<div class='key'>
-			<?php echo strtoupper($d['key']); ?>
-		</div>
-		<div class='value group'>
-			<?php echo $d['value']; ?>
-		</div>
+	<div style="float: right;">
 	</div>
 
-<?php endforeach; ?>
 
-	<div class='data_block group'>
-		<div class='key'>
-			TAG CLOUD
-		</div>
-		<div class='value' style='line-height:25px;'>
-		    <?php
-			foreach($tags as $tag):
-				echo 
-					"<a href='".href('tag/project/' . $tag['name'], TRUE)."'>" .
-						$tag['name'] . " (" . $tag['total_tags'] . ")".
-					"</a><br />"
-				;
-			endforeach;
-		    ?>
-		</div>
-	</div>
 
-    </div>
 
-<?php
+
+<?php /*
 	$titles = array(NULL, 'ORGANISATIONS', 'PROJECT BUDGET', 'PROJECT', 'PROJECT BUDGET');
 ?>
 
@@ -156,6 +82,6 @@ $download_csv = href("export/csv/".base64_encode(serialize(array('names' => $nam
 
 <? endfor; ?>
 
-    </div>
+    </div>*/ ?>
 
 </div>

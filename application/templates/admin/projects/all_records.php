@@ -27,7 +27,7 @@
 		<div class='record'>
 		  <div class='rleft'> " . $project['title'] . "</div>
 		  <div class='rcenter' style='width:60%;'> " . word_limiter(strip_tags($project['description']), 50) . "</div>
-		  <div class='rright' style='width:287px'>
+		  <div class='rright' style='width: 287px;'>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
 		      <a href=\"" . $link_add_data . "\">Add Data</a>
 		      <a href=\"" . $link_edit_data . "\">List Data</a>

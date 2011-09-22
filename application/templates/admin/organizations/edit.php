@@ -44,13 +44,14 @@
   	    <input name='p_sector' id='psector' type='text' value="<?php echo $organization['sector']; ?>" />
   	    <br /><br />
 
-	    <label for='plogo'>Logo: </label>
-  	    <br />
-  	    <input name='p_logo' id='plogo' type='file' />
+  	    <label for='ptags'>Tags: (enter by hand or select tags below)</label>
+  	    <br /><br />
+  	    <input type="text" id="tag_box" name="p_tag_names" style="width: 150px; border-right: 1px solid #ccc;" value="" />
+  	    <span style='font-size:12px;'>separate by comma ",&nbsp"</span>
   	    <br /><br />
   	    <label for='ptags'>Tags: (hold down Ctrl to select multiple)</label>
   	    <br />
-  	    <select name='p_tags[]' id='ptags' multiple='multiple'>
+  	    <select name='p_tag_uniques[]' id='ptags' multiple='multiple'>
   	      <?php
   	        foreach($all_tags as $tag)
   	        {

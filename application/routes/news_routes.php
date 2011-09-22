@@ -263,8 +263,8 @@ Slim::post('/admin/news/create/', function(){
       	  "size" => $_FILES['n_file']['size'],
       	  "tmp_name" => $_FILES['n_file']['tmp_name']
       );
-      empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
-      Storage::instance()->content = add_news( $_POST['n_title'], $_POST['n_body'], $filedata, $_POST['n_category'], $_POST['n_place'], $_POST['p_tags']);
+      empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
+      Storage::instance()->content = add_news( $_POST['n_title'], $_POST['n_body'], $filedata, $_POST['n_category'], $_POST['n_place'], $_POST['p_tag_uniques'], $_POST['p_tag_names']);
     }
     else
 	Storage::instance()->content = template('login');
@@ -279,8 +279,8 @@ Slim::post('/admin/news/:unique/update/', function($unique){
       	  "size" => $_FILES['n_file']['size'],
       	  "tmp_name" => $_FILES['n_file']['tmp_name']
       );
-      empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
-      Storage::instance()->content = update_news($unique, $_POST['n_title'], $_POST['n_body'], $filedata , $_POST['n_category'], $_POST['n_place'],$_POST['p_tags']);
+      empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
+      Storage::instance()->content = update_news($unique, $_POST['n_title'], $_POST['n_body'], $filedata , $_POST['n_category'], $_POST['n_place'], $_POST['p_tag_uniques'], $_POST['p_tag_names']);
     }
     else
 	Storage::instance()->content = template('login');

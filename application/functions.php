@@ -203,7 +203,7 @@ function read_news_one_page($from, $limit, $type = FALSE)
     return $statement->fetchAll();
 }
 
-function add_news($title, $body, $filedata, $category, $place, $tags)
+function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names)
 {
     if( strlen($title) < 3 || strlen($body) < 11 )
 	return "either title or body is too short";
@@ -234,13 +234,13 @@ function add_news($title, $body, $filedata, $category, $place, $tags)
 
     }
 
-    add_tag_connector('news', $unique, $tags);
+    add_tag_connector('news', $unique, $tags, $tag_names);
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
     return ($success) ? $metarefresh : "couldn't insert into database";
 }
 
-function update_news($unique, $title, $body, $filedata, $category, $place, $tags)
+function update_news($unique, $title, $body, $filedata, $category, $place, $tags, $tag_names)
 {
     if (strlen($title) < 3 || strlen($body) < 11 || !is_numeric($unique))
 	return "either title or body is too short, or invalid id";
@@ -277,8 +277,8 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
     $exec = $statement->execute($data);
     //$unique = get_unique("news", $id);
     fetch_db("DELETE FROM tag_connector WHERE news_unique = $unique");
-    if (!empty($tags))
-    	add_tag_connector('news', $unique, $tags);
+    if (!empty($tags) OR !empty($tag_names))
+    	add_tag_connector('news', $unique, $tags, $tag_names);
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
     return ($exec) ? $metarefresh : "couldn't update record/database error";
 }
@@ -373,18 +373,45 @@ function read_tag_connector($field, $unique)
     return $result;
 }
 
-function add_tag_connector($field, $f_unique, $tag_uniques)
+function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
 {
-    //$tag_uniques = array();
-    //foreach ($tag_ids as $tag_id)
-    //    $tag_uniques[] = get_unique("tags", $tag_id);
-
     if ( $field != "news" AND $field != "proj" AND $field != "org" )
         exit("incorrect field");
 
-    empty($tag_uniques) AND exit("tag ids are empty");
+    empty($tag_uniques) AND empty($tag_names) AND exit("tags are empty");
 
-    //$tag_uniques = is_array($tag_uniques) ? $tag_uniques : explode(',', $tag_uniques);
+    if (!empty($tag_names) AND strlen(trim($tag_names)) > 1)
+    {
+    	if (strpos($tag_names, ',') !== FALSE)
+    		$tag_names = explode(',', $tag_names);
+    	else
+    		$tag_names = array($tag_names);
+
+    	foreach ($tag_names as $tag_name)
+    	{
+    		$tag_name = trim(htmlspecialchars($tag_name));
+    		if ($tag_name == '')
+    			continue;
+		$query = db()->prepare("SELECT `unique`, id FROM tags WHERE name = :name LIMIT 1");
+		$query->execute(array(':name' => $tag_name));
+		$result = $query->fetch(PDO::FETCH_ASSOC);
+		$success = TRUE;
+		if (empty($result))
+		{
+			if (add_tag($tag_name, FALSE) == TRUE)
+			{
+				$stmt = db()->prepare("SELECT `unique` FROM tags WHERE name = :name LIMIT 1");
+				$stmt->execute(array(':name' => $tag_name));
+				$inserted_unique = $stmt->fetch(PDO::FETCH_ASSOC);
+				$result['unique'] = $inserted_unique['unique'];
+				$success = TRUE;
+			}
+			else
+				$succes = FALSE;
+		}
+		$success AND !in_array($result['unique'], $tag_uniques) AND $tag_uniques[] = $result['unique'];
+	}
+    }
 
     foreach ($tag_uniques as $tag_unique)
     {
@@ -399,12 +426,12 @@ function add_tag_connector($field, $f_unique, $tag_uniques)
     return true;
 }
 
-function add_tag($name)
+function add_tag($name, $redirect = TRUE)
 {
     $back = "<br /><a href=\"" . href("admin/tags/new", TRUE) . "\">Back</a>";
 
     if( strlen($name) < 2 )
-	return "name too short".$back;
+	return "name too short" . $back;
 
     $languages = config('languages');
     $unique = generate_unique("tags");
@@ -422,7 +449,10 @@ function add_tag($name)
     }
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags", TRUE) . "' />";
-    return ($success) ? $metarefresh : "couldn't insert into database" . $back;
+   if ($success)
+   	return $redirect ? $metarefresh : TRUE;
+   else
+	return "couldn't insert into database" . $back;
 }
 
 function update_tag($unique, $name)
@@ -797,7 +827,7 @@ function read_projects($project_unique = false)
 }
 
 
-function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $org_uniques, $type)
+function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new", TRUE) . "\">Back</a>";
 
@@ -894,9 +924,9 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    }
 
 
-	    if (!empty($tag_uniques))
-		    if ( !add_tag_connector('proj', $unique, $tag_uniques) )
-			return "tag connection error";
+	    if (!empty($tag_uniques) OR !empty($tag_names))
+		if (!add_tag_connector('proj', $unique, $tag_uniques, $tag_names))
+		    return "tag connection error";
     }
 
     if ($success)
@@ -906,7 +936,7 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
     
 }
 
-function update_project($unique, $title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $org_ids, $type)
+function update_project($unique, $title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/" . $unique, TRUE) . "\">Back</a>";
 
@@ -998,8 +1028,8 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
 
 //    $unique = get_unique("projects", $id);
     fetch_db("DELETE FROM tag_connector WHERE proj_unique = $unique");
-    if (!empty($tag_uniques))
-    	add_tag_connector('proj', $unique, $tag_uniques);
+    if (!empty($tag_uniques) OR !empty($tag_names))
+    	add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
 
     if ( $exec )
     	Slim::redirect(href("admin/projects", TRUE));
@@ -1047,7 +1077,7 @@ function delete_project_data($unique)
 	$statement->execute(array(':unique' => $unique));
 }
 
-function add_project_data($project_unique, $key, $sort, $value)
+function add_project_data($project_unique, $key, $sort, $sidebar, $value)
 {
 	//$project_unique = get_unique("projects", $project_id);
 	for ( $i = 0, $c = count($key); $i < $c; $i ++ )
@@ -1059,8 +1089,8 @@ function add_project_data($project_unique, $key, $sort, $value)
     		foreach ($languages as $lang)
     		{
 			$sql = "
-			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_unique`, `sort`, lang, `unique`)
-			 VALUES (:key, :value, :project_unique, :sort, :lang, :unique);
+			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_unique`, `sort`, `sidebar`, lang, `unique`)
+			 VALUES (:key, :value, :project_unique, :sort, :sidebar, :lang, :unique);
 			";
 			$statement = db()->prepare($sql);
 			$statement->execute(array(
@@ -1068,6 +1098,7 @@ function add_project_data($project_unique, $key, $sort, $value)
 				':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
 				':value' => $value[$i],
 				':sort' => $sort[$i],
+				':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i]) ? 1 : 0),
 				':lang' => $lang,
 	       			':unique' => $unique
 			));
@@ -1207,7 +1238,7 @@ function delete_organization($unique){
 		unlink($org['logo']);
 }
 
-function add_organization($name,$description,$projects_info,$city_town,$district,$grante,$sector,$tags,$file)
+function add_organization($name,$description,$projects_info,$city_town,$district,$grante,$sector,$tags,$tag_names,$file)
 {
 	if(count($file) > 0)
 	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){
@@ -1268,11 +1299,11 @@ function add_organization($name,$description,$projects_info,$city_town,$district
 		$statement = db()->prepare($sql);
 		$exec = $statement->execute($data);
 
-		add_tag_connector('org', $unique, $tags);
+		add_tag_connector('org', $unique, $tags, $tag_names);
 	}
 }
 
-function edit_organization($unique,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file,$tag_uniques)
+function edit_organization($unique,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file,$tag_uniques,$tag_names)
 {
 	$org = get_organization($unique);
 	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){	
@@ -1310,8 +1341,8 @@ function edit_organization($unique,$name,$info,$projects_info,$city_town,$distri
 
     //$unique = get_unique("organizations", $id);
     fetch_db("DELETE FROM tag_connector WHERE org_unique = $unique");
-    if (!empty($tag_uniques))
-    	add_tag_connector('org', $unique, $tag_uniques);
+    if (!empty($tag_uniques) OR !empty($tag_names))
+    	add_tag_connector('org', $unique, $tag_uniques, $tag_names);
 }
 
 /*===================================================	  Organizations Fontpage	===============================*/

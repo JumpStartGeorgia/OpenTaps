@@ -17,8 +17,13 @@
 
   	    <label style="cursor: pointer">
 		Sort: <br />
-		<input name="project_sort[]" type="text" value="<?php echo $d['sort'] ?>" style="width: 40px" />
+		<input name="project_sort[]" type="text" value="<?php empty($d['sort']) OR print $d['sort']; ?>" style="width: 40px" />
   	    </label>
+
+  	    <label style='margin-left: 25px; cursor: pointer;'>
+  	    	<input type="checkbox" name="sidebar[]" value="<?php echo $idx; ?>" <?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print 'checked="checked"'; ?> /> Sidebar
+  	    </label>
+
   	    <br /><br />
 
   	    <label style="cursor: pointer">

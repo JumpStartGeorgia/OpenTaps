@@ -150,7 +150,7 @@ Slim::get('/admin/projects/:unique/delete/', function($unique){
 });
 
 Slim::post('/admin/projects/create/', function(){
-    empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+    empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array();
     Storage::instance()->content = userloggedin()
 	    ? add_project(
@@ -165,7 +165,8 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
         	$_POST['p_info'],
-        	$_POST['p_tags'],
+        	$_POST['p_tag_uniques'],
+        	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
         	$_POST['p_type']
        	     )
@@ -173,7 +174,7 @@ Slim::post('/admin/projects/create/', function(){
 });
 
 Slim::post('/admin/projects/:unique/update/', function($unique){
-    empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+    empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array(NULL);
     Storage::instance()->content = userloggedin()
 	    ? update_project(
@@ -189,7 +190,8 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
         	$_POST['p_info'],
-        	$_POST['p_tags'],
+        	$_POST['p_tag_uniques'],
+        	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
         	$_POST['p_type']
        	     )
@@ -256,7 +258,8 @@ Slim::get('/admin/project-data/:unique/new/',function($unique){
 Slim::post('/admin/project-data/:unique/create/',function($unique){
     if(userloggedin())
     {
-	add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['project_value']);
+    	empty($_POST['sidebar']) AND $_POST['sidebar'] = array(FALSE);
+	add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else
@@ -265,9 +268,10 @@ Slim::post('/admin/project-data/:unique/create/',function($unique){
 
 Slim::post('/admin/project-data/:unique/update/',function($unique){
     if(userloggedin())
-    {
+    { print_r($_POST['sidebar']);die;
 	delete_project_data($unique);
-        add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['project_value']);
+	empty($_POST['sidebar']) AND $_POST['sidebar'] = array(FALSE);
+        add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else
