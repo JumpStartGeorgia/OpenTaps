@@ -32,6 +32,11 @@ div.header_right
 	color:#565656;
 }
 
+.slide{ display: none; }
+.slide a{ text-decoration: none; color: #565656; }
+.slide a:hover{ color: #d9d9d9; }
+.slide_switcher_right, .slide_switcher_left{ cursor: pointer; }
+
 div.header_right p{ font-size:1.55em; font-family:Arial; margin-bottom:6px; }
 
 div.after_header{ height:7px; margin-top:22px; background-image:url('images/bg_after_header.jpg'); }

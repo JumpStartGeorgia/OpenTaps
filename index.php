@@ -65,4 +65,4 @@ require_once DIR . 'application/routes/region_routes.php';
 
 Slim::run();
 
-echo template('layout', array('about_us' => $about_us));
+echo template('layout', array('about_us' => $about_us, 'slide_news' => read_news()));

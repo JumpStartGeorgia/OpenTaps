@@ -26,7 +26,7 @@
 		<div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px; line-height: 18px;">
 			<div>
 				<span class="expand_title">
-					<span class="racxa">►</span> Project Name: <?php echo $project['title'] ?>
+					<span class="racxa">▼</span> Project Name: <?php echo $project['title'] ?>
 				</span>
 				<div class="expandable" style="display: block;">
 					Location - Region:

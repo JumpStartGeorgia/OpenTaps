@@ -12,6 +12,6 @@
         </p>
         <?php
      else:
-        echo 'Under Constriction';
+        echo 'Under Construction';
      endif;
 ?></div>
