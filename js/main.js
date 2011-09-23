@@ -234,7 +234,14 @@ $(function()
 
 
 
-
+	$('.expand_title').click(function(){
+		var element = $(this);
+		$('.expandable:visible').slideUp().parent().find('span.racxa').html('►');
+		element.parent().find('.expandable').slideToggle('normal');
+		var racxa = element.find('span.racxa'),
+		racxa_text = racxa.text();
+		racxa.text(racxa_text == '►' ? '▼' : '►');
+	});
 
 
 });

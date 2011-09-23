@@ -19,9 +19,15 @@ Slim::get('/project/:unique/', function($unique)
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
+	$sql = "SELECT * FROM projects_data
+		WHERE project_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar ORDER BY `sort`,`unique`;";
+	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
+	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
+
     	Storage::instance()->content = template('project', array(
     		'project' => read_projects($unique),
-    		'data' => read_project_data($unique),
+    		'data' => $data,
+    		'side_data' => $side_data,
     		'names' => $names,
     		'values' => $values,
     		'real_values' => $real_values,
@@ -258,7 +264,7 @@ Slim::get('/admin/project-data/:unique/new/',function($unique){
 Slim::post('/admin/project-data/:unique/create/',function($unique){
     if(userloggedin())
     {
-    	empty($_POST['sidebar']) AND $_POST['sidebar'] = array(FALSE);
+    	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
 	add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }
@@ -268,9 +274,9 @@ Slim::post('/admin/project-data/:unique/create/',function($unique){
 
 Slim::post('/admin/project-data/:unique/update/',function($unique){
     if(userloggedin())
-    { print_r($_POST['sidebar']);die;
+    {
 	delete_project_data($unique);
-	empty($_POST['sidebar']) AND $_POST['sidebar'] = array(FALSE);
+	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
         add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }

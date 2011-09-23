@@ -23,20 +23,58 @@
 			<span style="font-size: 16px;"><?php echo $project['title'] ?></span>
 			<span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span>
 		</div>
-		<div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px;">
+		<div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px; line-height: 18px;">
 			<div>
-				<span style="width: 625px; display: block; font-weight: bold; font-size: 14px; padding: 0px 0px 10px 15px; border-bottom: 1px dotted #a6a6a6;">►▼ Project Name: <?php echo $project['title'] ?></span>
-				<span style="">
+				<span class="expand_title">
+					<span class="racxa">►</span> Project Name: <?php echo $project['title'] ?>
+				</span>
+				<div class="expandable" style="display: block;">
 					Location - Region:
 					<a id="region_link" href="<?php echo href('region/'.$project['region_unique'], TRUE); ?>">
 						<?php echo $project['region_name']; ?>
-					</a>
-					Location - City/Town: <?php echo $project['city']; ?>
-				</span>
+					</a><br />
+					Location - City/Town: <?php echo $project['city']; ?><br />
+					Grentee: <?php echo $project['grantee']; ?><br />
+					Sector: <?php echo $project['sector']; ?><br />
+					Budget: <?php echo $project['budget']; ?><br />
+					Beginning: <?php echo $project['start_at']; ?><br />
+					Ending: <?php echo $project['end_at']; ?><br />
+					Type: <?php echo $project['type']; ?>
+				</div>
 			</div>
+
+			<div>
+				<span class="expand_title"><span class="racxa">►</span> Project Description</span>
+				<div class="expandable"><?php echo $project['description']; ?></div>
+			</div>
+
+			<div>
+				<span class="expand_title"><span class="racxa">►</span> Project Info</span>
+				<div class="expandable"><?php echo $project['info']; ?></div>
+			</div>
+
+		<?php foreach ($data AS $d): ?>
+			<div>
+				<span class="expand_title"><span class="racxa">►</span> <?php echo $d['key'] ?></span>
+				<div class="expandable"><?php echo $d['value']; ?></div>
+			</div>
+		<?php endforeach; ?>
+
 		</div>
 	</div>
 	<div style="float: right;">
+	<?php $i = 0; foreach ( $side_data as $d ): $i ++; ?>
+
+		<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
+			<div class='key'>
+				<?php echo strtoupper($d['key']); ?>
+			</div>
+			<div class='value group'>
+				<?php echo $d['value']; ?>
+			</div>
+		</div>
+
+	<?php endforeach; ?>
 	</div>
 
 
