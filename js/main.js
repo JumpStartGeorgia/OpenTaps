@@ -262,9 +262,9 @@ $(function()
 
 	$('.slidenews').slideQuery({
 	    slides: '.slide', // Selector for slide elements, must be a children of '.my-slideshow' class in this case.
-	    type: 'slide', // Animation type. 'fade', 'slide' and 'none' are supported.
+	    type: 'fade', // Animation type. 'fade', 'slide' and 'none' are supported.
 	    speed: 'normal', // Animation speed. 'normal', 'fast', 'slow' or miliseconds, ignored if animation type is 'none'.
-	    delay: 999999*99999*100, // Delay between switching slides in miliseconds.
+	    delay: 999*999*999, // Delay between switching slides in miliseconds.
 	    direction: 'right', // Direction of the slideshow, 'right', 'left' and 'random' are supported.
 	    switcher: true, // Display slide switcher
 	    switcherTextLeft: '<span class="slide_switcher_left"><</span>',

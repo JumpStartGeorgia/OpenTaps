@@ -271,6 +271,7 @@ div.more_news { float:right;margin-right:12px;  }
 .newstypebg1{ background: #19c1ff/*rgba(25, 193, 255, .9)*/; } .newstypebg2{ background: #83ddff; } .newstypebg3{ background: #d9f5ff; }
 #internal_container{ width: 100%; min-height: 96px; margin-bottom: 10px; }
 .content_each{ width: 100%; }
+.content_each:hover{ text-shadow: 1px 1px 1px rgba(0, 0, 0, .3) }
 .with_bg{ background: url('images/bg.jpg'); }
 .content_each_left{ float: left; width: 509px; padding: 17px 40px 22px 15px; }
 .content_each_title{ color: #01adef; font-size: 15px; }
@@ -358,7 +359,7 @@ div.maxItemInactive{
 	width:25px;
 	height:20px;
 	background: url("images/max.jpg");
-	opacity:.5;
+	opacity:.7;
 	top:15px;
 	left:50px;
 	cursor:pointer;
@@ -370,7 +371,7 @@ div.minItemInactive{
 	width:25px;
 	height:20px;
 	background:url("images/min.jpg");
-	opacity:.5;
+	opacity:.7;
 	top:15px;
 	left:15px;
 	cursor:pointer;
@@ -387,13 +388,8 @@ div.filtersItemInactive{
 	height:20px;
 	background-image:url("images/filter.gif");
 	background-repeat:no-repeat;
-	opacity:.6;
+	opacity:.7;
 	cursor:pointer;
-}
-
-
-div.filtersItemActive{
-	opacity:1;
 }
 
 div.setsItemInactive{
@@ -401,7 +397,7 @@ div.setsItemInactive{
 	width:25px;
 	height:20px;
 	background:url("images/sets.jpg");
-	opacity:.5;
+	opacity:.7;
 	margin-top:-20px;
 	margin-left:875px;
 	cursor:pointer;
@@ -410,7 +406,7 @@ div.tagsItemInactive{
 	width:25px;
 	height:20px;
 	background:url("images/tags.jpg");
-	opacity:.5;
+	opacity:.7;
 	margin-top:-20px;
 	margin-left:905px;
 	cursor:pointer;

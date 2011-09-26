@@ -32,7 +32,6 @@
     {
         slides: null,
         type: 'fade',
-        swapDirection: 'left',
         speed: 'slow',
         delay: null,
         direction: 'right',
@@ -77,6 +76,7 @@
                 switch (opts.startIndex)
                 {
                     default:
+
                         // Check if passed option is a number
                         if (opts.startIndex.toString().search(/^-?[0-9]+$/) != 0)
                         {
@@ -116,27 +116,18 @@
                 delay[index] = opts.delay === null ? count[index] * 1000 : opts.delay;
 
                 // Make slideshow container relatively positioned
-                me[index].css({
-                    position: 'relative',
-                    overflow: 'hidden'
-                });
+                me[index].css('position', 'relative');
 
                 // Set CSS attributes to slides
                 items[index].each(function(slideIndex)
                 {
-                    var styles = {
-                        position: 'absolute',
-                        zIndex: (count[index] * 10) - (slideIndex * 10)
-                    };
-                    if (opts.type == 'swap')
-                    {
-                        styles = $.extend({}, styles, {
-                            left: (opts.swapDirection == 'right' ? -me[index].width() : me[index].width()) + 'px'
-                        });
-                    }
-
                     // Assign CSS properties to the current slide
-                    $(this).css(styles);
+                    $(this).css({
+                        position: 'absolute',
+                        top: 'auto',
+                        left: 'auto',
+                        zIndex: (count[index] * 10) - (slideIndex * 10)
+                    });
                 });
 
                 // Check if slideshow must have switcher
@@ -147,16 +138,20 @@
 
                     // Set the most top zIndex to the switchers
                     var zIndexTop = (count[index] + 1) * 10;
+                    $.extend(opts.switcherStyleLeft, {
+                        zIndex: zIndexTop
+                    });
+                    $.extend(opts.switcherStyleRight, {
+                        zIndex: zIndexTop
+                    });
 
                     // Customize left switcher
                     $('.slide-query-switcher-left', me[index]).html(opts.switcherTextLeft).css({
                         position: 'absolute',
                         bottom: 0,
-                        left: 0,
-                        zIndex: zIndexTop
-                    }).bind('click', function(event)
+                        left: 0
+                    }).bind('click', function()
                     {
-                        event.preventDefault();
                         // Switch slide to the previous one
                         plugin.change(index, 'left');
                     });
@@ -165,18 +160,19 @@
                     $('.slide-query-switcher-right', me[index]).html(opts.switcherTextRight).css({
                         position: 'absolute',
                         bottom: 0,
-                        right: 0,
-                        zIndex: zIndexTop
-                    }).bind('click', function(event)
+                        right: 0
+                    }).bind('click', function()
                     {
-                        event.preventDefault();
                         // Switch slide to the next one
                         plugin.change(index, 'right');
                     });
                 }
 
+                // Hide all slides
+                items[index].hide();
+
                 // Show a index slide with animation
-                plugin.animation(index, items[index].eq(idx[index]).addClass('slide-query-active-item').data('swapped', true), opts.swapDirection, opts.speedIn);
+                plugin.animation(items[index].eq(idx[index]).addClass('slide-query-active-item') , opts.speedIn);
 
                 // Start automatic sliding
                 plugin.start(index);
@@ -216,8 +212,7 @@
         change: function(index, direction)
         {
             // Count number of slides starting with zero-index
-            var lastSlide = count[index] - 1,
-            swapDirection = opts.swapDirection;
+            var lastSlide = count[index] - 1;
 
             // Detect direction
             switch (direction)
@@ -226,16 +221,10 @@
                 case 'right':
                     // Set new slide index to the next one
                     idx[index] = idx[index] == lastSlide ? 0 : idx[index] + 1;
-
-                    swapDirection = 'left';
-
                     break;
                 case 'left':
                     // Set new slide index to the previous one
                     idx[index] = idx[index] == 0 ? lastSlide : idx[index] - 1;
-
-                    swapDirection = 'right';
-
                     break;
                 case 'random':
                     // Random the slide index
@@ -245,8 +234,7 @@
                     if (lastIdx[index] == random)
                     {
                         // Regenerate random slide index
-                        plugin.change(index, 'random');
-                        break;
+                        return plugin.change(index, 'random');
                     }
 
                     // Set new slide index to the random one
@@ -258,10 +246,10 @@
             lastIdx[index] = idx[index];
 
             // Switch to newly indexed slide
-            plugin.animation(index, items[index].filter('.slide-query-active-item').removeClass('slide-query-active-item').data('swapped', true), swapDirection, opts.speedOut);
-            plugin.animation(index, items[index].eq(idx[index]).addClass('slide-query-active-item').data('swapped', true), swapDirection, opts.speedIn);
+            plugin.animation(items[index].filter('.slide-query-active-item').removeClass('slide-query-active-item'), opts.speedOut);
+            plugin.animation(items[index].eq(idx[index]).addClass('slide-query-active-item'), opts.speedIn);
         },
-        animation: function(index, element, direction, speed)
+        animation: function(element, speed, callback)
         {
             // Detect animation type
             switch (opts.type)
@@ -269,42 +257,30 @@
                 default:
                 case 'none':
                     // Instantly display slide without animation
-                    return element.toggle(0);
+                    return element.toggle(0, callback);
                 case 'fade':
                     // Animate slide with fading animation
                     return element.animate({
                         opacity: 'toggle'
                     }, speed, function()
                     {
+                        // Callback hack
+                        if ($.isFunction(callback))
+                        {
+                            // Call callback
+                            callback.call(element);
+                        }
+
                         // Fix IE oppacity fiilter issue with jQuery
                         if (element[0].style.removeAttribute)
                         {
-                            // Remove MS filter from styles
+                            // Remove MS filter from CSS
                             element[0].style.removeAttribute('filter');
                         }
                     });
                 case 'slide':
                     // Animate slide with sliding animation
-                    return element.slideToggle(speed);
-                case 'swap':
-
-                    var slidePosition = 0,
-                    containerWidth = me[index].width(),
-                    startPosition = direction == 'right' ? -containerWidth : containerWidth;
-
-                    // Swapping
-                    if (element.data('swapped') === true)
-                    {
-                        items[index].not(element.removeData('swapped')).css('left', startPosition + 'px');
-                    }
-                    else
-                    {
-                        items[index].css('left', (direction == 'right' ? -containerWidth : containerWidth) + 'px');
-                    }
-
-                    slidePosition = direction == 'right' ? (element.css('left') == -containerWidth + 'px' ? 0 : containerWidth) : (element.css('left') == '0px' ? -containerWidth : 0);
-                    return element.animate({left: slidePosition + 'px'}, speed);
-
+                    return element.slideToggle(speed, callback);
             }
         }
     };
