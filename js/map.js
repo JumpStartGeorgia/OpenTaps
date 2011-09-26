@@ -110,8 +110,7 @@ function stopZoomOut(){
 }
 
 function buthoverEffect(but_class){
-/*
-		document.getElementsByClassName(but_class)[0].onmouseover = function(){
+		/*document.getElementsByClassName(but_class)[0].onmouseover = function(){
 			this.style.opacity = 1;
 		}
 		document.getElementsByClassName(but_class)[0].onmouseout = function(){
@@ -122,8 +121,7 @@ function buthoverEffect(but_class){
 		}
 		document.getElementsByClassName(but_class)[0].onmouseout = function(){
 			this.style.opacity = 0.5;	
-		}
-		*/
+		}*/
 }
 var k = null;
 function addMarkerLayer(layer_name)

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2011 at 06:56 PM
+-- Generation Time: Sep 26, 2011 at 03:31 PM
 -- Server version: 5.1.54
 -- PHP Version: 5.3.5-1ubuntu7.2
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `hide` int(10) NOT NULL,
   `footer` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=54 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
 
 --
 -- Dumping data for table `menu`
@@ -76,18 +76,14 @@ INSERT INTO `menu` (`id`, `unique`, `lang`, `parent_unique`, `name`, `short_name
 (2, 2, 'en', 0, 'water issues', 'issues', 'Vivamus vestibulum', 'Donec aliquet hendrerit lacinia. Curabitur iaculis orci vel ligula bibendum dapibus porttitor sit amet urna. Integer condimentum nunc a dui blandit accumsan. Phasellus vel mi nisl, eu commodo lacus. Sed euismod ultrices nunc a malesuada. Duis eleifend eleifend lorem at suscipit. Cras sem felis, vestibulum et vestibulum at, gravida nec nisl. Suspendisse ullamcorper massa id magna dictum quis porttitor justo viverra. Morbi viverra enim non dolor volutpat a dapibus erat faucibus. Duis vitae sem eu elit pellentesque venenatis. In hac habitasse platea dictumst. Sed laoreet rutrum est, commodo tristique nulla fermentum sit amet. Suspendisse at purus at diam vehicula tincidunt.', -1, -1),
 (5, 3, 'en', 0, 'statistics', 'stat', '', '', -1, -1),
 (6, 4, 'en', 0, 'data', 'data', '', '', -1, -1),
-(7, 5, 'en', 1, 'submenu1', '', '', '', -1, -1),
-(8, 6, 'en', 1, 'submenu2', '', '', '', -1, -1),
 (11, 7, 'en', 0, 'about_us', '', '', '<b style=''font-weight:bold;''>JumpStart</b> Georgia was formed in Tbilisi, Georgia in October, 2009 with the purpose of creating open-source digital maps of Georgia using a network of Community Organizers and volunteers. JumpStart Georgia began with the funding, technical, administrative and financial management support of JumpStart International. JumpStart Georgia has built more than merely maps, however. It has evolved to embody the spirit of open information, improved communication, and increased citizen participation in the world around. We are defined by a set of core values, and we work hard to engage others in what we believe in.', 0, 0),
-(12, 8, 'en', 1, 'project2f', '', '', '', -1, -1),
 (28, 1, 'ka', 0, 'georgia profile', 'profile', '', '', -1, -1),
 (29, 2, 'ka', 0, 'water issues', 'issues', 'Vivamus vestibulum', 'Donec aliquet hendrerit lacinia. Curabitur iaculis orci vel ligula bibendum dapibus porttitor sit amet urna. Integer condimentum nunc a dui blandit accumsan. Phasellus vel mi nisl, eu commodo lacus. Sed euismod ultrices nunc a malesuada. Duis eleifend eleifend lorem at suscipit. Cras sem felis, vestibulum et vestibulum at, gravida nec nisl. Suspendisse ullamcorper massa id magna dictum quis porttitor justo viverra. Morbi viverra enim non dolor volutpat a dapibus erat faucibus. Duis vitae sem eu elit pellentesque venenatis. In hac habitasse platea dictumst. Sed laoreet rutrum est, commodo tristique nulla fermentum sit amet. Suspendisse at purus at diam vehicula tincidunt.', -1, -1),
 (30, 3, 'ka', 0, 'statistics', 'stat', '', '', -1, -1),
 (31, 4, 'ka', 0, 'data', 'data', '', '', -1, -1),
-(32, 5, 'ka', 1, 'submenu1', '', '', '', -1, -1),
-(33, 6, 'ka', 1, 'submenu2', '', '', '', -1, -1),
 (34, 7, 'ka', 0, 'about_us', '', '', '<b style=''font-weight:bold;''>JumpStart</b> Georgia was formed in Tbilisi, Georgia in October, 2009 with the purpose of creating open-source digital maps of Georgia using a network of Community Organizers and volunteers. JumpStart Georgia began with the funding, technical, administrative and financial management support of JumpStart International. JumpStart Georgia has built more than merely maps, however. It has evolved to embody the spirit of open information, improved communication, and increased citizen participation in the world around. We are defined by a set of core values, and we work hard to engage others in what we believe in.', 0, 0),
-(35, 8, 'ka', 1, 'project2f', '', '', '', -1, -1);
+(55, 8, 'ka', 2, 'submenu1 (ka)', '', '', '', -1, -1),
+(54, 8, 'en', 2, 'submenu1', '', '', '', -1, -1);
 
 -- --------------------------------------------------------
 
@@ -106,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `category` varchar(255) NOT NULL,
   `place_unique` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=85 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=89 ;
 
 --
 -- Dumping data for table `news`
@@ -239,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `type` varchar(255) NOT NULL,
   `place_unique` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=40 ;
 
 --
 -- Dumping data for table `projects`
@@ -252,8 +248,12 @@ INSERT INTO `projects` (`id`, `unique`, `lang`, `title`, `description`, `budget`
 (18, 1, 'en', 'Water Pollution Fixing in Rustavi (en)', 'Legal systems elaborate rights and responsibilities in a variety of ways. A general distinction can be made between civil law jurisdictions, which codify their laws, and common law systems, where judge made law is not consolidated. In some countries, religion informs the law. Law provides a rich source of scholarly inquiry, into legal history, philosophy, economic analysis or sociology. Law also raises important and complex issues concerning equality, fairness and justice. "In its majestic equality", said the author Anatole France in 1894, "the law forbids rich and poor alike to sleep under bridges, beg in the streets and steal loaves of bread."[5] In a typical democracy, the central institutions for interpreting and creating law are the three main branches of government, namely an impartial judiciary, a democratic legislature, and an accountable executive.', 6230000, 0, 'Rustavi', 'Ministry of Pain', '42nd international battle station', '2012-12-05', '2013-04-03', 'Criminal law, also known as penal law, pertains to crimes and punishment.[21] It thus regulates the definition of and penalties for offences found to have a sufficiently deleterious social impact but, in itself, makes no moral judgment on an offender nor imposes restrictions on society that physically prevents people from committing a crime in the first place.[22] Investigating, apprehending, charging, and trying suspected offenders is regulated by the law of criminal procedure.[23] The paradigm case of a crime lies in the proof, beyond reasonable doubt, that a person is guilty of two things. First, the accused must commit an act which is deemed by society to be criminal, or actus reus (guilty act).[24] Second, the accused must have the requisite malicious intent to do a criminal act, or mens rea (guilty mind). However for so called "strict liability" crimes, an actus reus is enough.[25] Criminal systems of the civil law tradition distinguish between intention in the broad sense (dolus directus and dolus eventualis), and negligence. Negligence does not carry criminal responsibility unless a particular crime provides for its punishment.', 'Water Pollution', 61),
 (19, 2, 'en', 'Sewage in Batumi', 'Criminal law, also known as penal law, pertains to crimes and punishment.[21] It thus regulates the definition of and penalties for offences found to have a sufficiently deleterious social impact but, in itself, makes no moral judgment on an offender nor imposes restrictions on society that physically prevents people from committing a crime in the first place.[22] Investigating, apprehending, charging, and trying suspected offenders is regulated by the law of criminal procedure.[23] The paradigm case of a crime lies in the proof, beyond reasonable doubt, that a person is guilty of two things. First, the accused must commit an act which is deemed by society to be criminal, or actus reus (guilty act).[24] Second, the accused must have the requisite malicious intent to do a criminal act, or mens rea (guilty mind). However for so called "strict liability" crimes, an actus reus is enough.[25] Criminal systems of the civil law tradition distinguish between intention in the broad sense (dolus directus and dolus eventualis), and negligence. Negligence does not carry criminal responsibility unless a particular crime provides for its punishment.', 13235000, 0, 'Batumi', 'Random grantee', 'Random sector', '2005-10-10', '2010-07-08', 'Legal systems elaborate rights and responsibilities in a variety of ways. A general distinction can be made between civil law jurisdictions, which codify their laws, and common law systems, where judge made law is not consolidated. In some countries, religion informs the law. Law provides a rich source of scholarly inquiry, into legal history, philosophy, economic analysis or sociology. Law also raises important and complex issues concerning equality, fairness and justice. "In its majestic equality", said the author Anatole France in 1894, "the law forbids rich and poor alike to sleep under bridges, beg in the streets and steal loaves of bread."[5] In a typical democracy, the central institutions for interpreting and creating law are the three main branches of government, namely an impartial judiciary, a democratic legislature, and an accountable executive.', 'Sewage', 64),
 (20, 3, 'en', 'Sewage in Batumi', 'Criminal law, also known as penal law, pertains to crimes and punishment.[21] It thus regulates the definition of and penalties for offences found to have a sufficiently deleterious social impact but, in itself, makes no moral judgment on an offender nor imposes restrictions on society that physically prevents people from committing a crime in the first place.[22] Investigating, apprehending, charging, and trying suspected offenders is regulated by the law of criminal procedure.[23] The paradigm case of a crime lies in the proof, beyond reasonable doubt, that a person is guilty of two things. First, the accused must commit an act which is deemed by society to be criminal, or actus reus (guilty act).[24] Second, the accused must have the requisite malicious intent to do a criminal act, or mens rea (guilty mind). However for so called "strict liability" crimes, an actus reus is enough.[25] Criminal systems of the civil law tradition distinguish between intention in the broad sense (dolus directus and dolus eventualis), and negligence. Negligence does not carry criminal responsibility unless a particular crime provides for its punishment.', 13235000, 0, 'Batumi', 'Random grantee', 'Random sector', '2005-10-10', '2010-07-08', 'Legal systems elaborate rights and responsibilities in a variety of ways. A general distinction can be made between civil law jurisdictions, which codify their laws, and common law systems, where judge made law is not consolidated. In some countries, religion informs the law. Law provides a rich source of scholarly inquiry, into legal history, philosophy, economic analysis or sociology. Law also raises important and complex issues concerning equality, fairness and justice. "In its majestic equality", said the author Anatole France in 1894, "the law forbids rich and poor alike to sleep under bridges, beg in the streets and steal loaves of bread."[5] In a typical democracy, the central institutions for interpreting and creating law are the three main branches of government, namely an impartial judiciary, a democratic legislature, and an accountable executive.', 'Sewage', 71),
+(38, 6, 'en', '33333333', '<p>33333333</p>', 33333333, 0, '33333333', '33333333', '33333333', '1000-10-10', '1994-06-10', '<p>33333333</p>', 'Sewage', 4),
+(36, 5, 'en', '33333333', '<p>33333333333333333333333</p>', 2147483647, 0, '333333333333333', '3333333333333333', '33333', '3333-11-11', '3333-12-11', '<p>333333333333333333333333333</p>', 'Sewage', 4),
+(37, 5, 'ka', '33333333', '<p>33333333333333333333333</p>', 2147483647, 0, '333333333333333', '3333333333333333', '33333', '3333-11-11', '3333-12-11', '<p>333333333333333333333333333</p>', 'Sewage', 4),
 (32, 4, 'en', 'lockdown ', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown v</p>', 43673373, 0, 'lockdown ', 'lockdown ', 'lockdown 3', '3333-11-11', '1000-10-10', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;</p>', 'Sewage', 73),
-(33, 4, 'ka', 'lockdown ', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown v</p>', 43673373, 0, 'lockdown ', 'lockdown ', 'lockdown 3', '3333-11-11', '1000-10-10', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;</p>', 'Sewage', 73);
+(33, 4, 'ka', 'lockdown ', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown v</p>', 43673373, 0, 'lockdown ', 'lockdown ', 'lockdown 3', '3333-11-11', '1000-10-10', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;</p>', 'Sewage', 73),
+(39, 6, 'ka', '33333333', '<p>33333333</p>', 33333333, 0, '33333333', '33333333', '33333333', '1000-10-10', '1994-06-10', '<p>33333333</p>', 'Sewage', 4);
 
 -- --------------------------------------------------------
 
@@ -266,20 +266,32 @@ CREATE TABLE IF NOT EXISTS `projects_data` (
   `unique` int(11) NOT NULL,
   `lang` varchar(50) NOT NULL,
   `key` varchar(255) NOT NULL,
+  `sort` int(11) NOT NULL,
+  `sidebar` int(11) NOT NULL,
   `value` text NOT NULL,
   `project_unique` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=100 ;
 
 --
 -- Dumping data for table `projects_data`
 --
 
-INSERT INTO `projects_data` (`id`, `unique`, `lang`, `key`, `value`, `project_unique`) VALUES
-(1, 1, 'en', ' 	delete_project_data($id); (en)', '<p><br /> delete_project_data($id);</p>', 2),
-(2, 1, 'ka', ' 	delete_project_data($id);', '<p><br /> delete_project_data($id);</p>', 2),
-(3, 2, 'en', 'lockdown  (en)', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;</p>', 1),
-(4, 2, 'ka', 'lockdown ', '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;</p>', 1);
+INSERT INTO `projects_data` (`id`, `unique`, `lang`, `key`, `sort`, `sidebar`, `value`, `project_unique`) VALUES
+(13, 3, 'ka', 'asda first', 3, 1, '<p>sdasda</p>', 2),
+(14, 4, 'en', ' 	delete_project_data($id); (en)', 2, 1, '<p><br /> delete_project_data($id);</p>', 2),
+(3, 2, 'en', 'lockdown  (en)', 0, 1, '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;</p>', 1),
+(4, 2, 'ka', 'lockdown ', 0, 1, '<p>lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;lockdown&nbsp;</p>', 1),
+(15, 4, 'ka', ' 	delete_project_data($id);', 2, 1, '<p><br /> delete_project_data($id);</p>', 2),
+(12, 3, 'en', 'asda first (en)', 3, 1, '<p>sdasda</p>', 2),
+(99, 8, 'ka', '452', 234, 0, '<p>23434234</p>', 6),
+(98, 8, 'en', '452 (en)', 234, 0, '<p>23434234</p>', 6),
+(97, 7, 'ka', 'raara', 34, 0, '<p>asdada</p>', 6),
+(96, 7, 'en', 'raara (en)', 34, 0, '<p>asdada</p>', 6),
+(95, 6, 'ka', 'asdasd', 3, 1, '<p>asdads</p>', 6),
+(94, 6, 'en', 'asdasd (en)', 3, 1, '<p>asdads</p>', 6),
+(93, 5, 'ka', 'assdasda', 3, 1, '<p>adasad</p>', 6),
+(92, 5, 'en', 'assdasda (en)', 3, 1, '<p>adasad</p>', 6);
 
 -- --------------------------------------------------------
 
@@ -372,7 +384,7 @@ CREATE TABLE IF NOT EXISTS `tag_connector` (
   `proj_unique` int(11) DEFAULT NULL,
   `news_unique` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=530 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=564 ;
 
 --
 -- Dumping data for table `tag_connector`
@@ -431,7 +443,10 @@ INSERT INTO `tag_connector` (`id`, `tag_unique`, `org_unique`, `proj_unique`, `n
 (237, 2, 1, NULL, NULL),
 (236, 1, 1, NULL, NULL),
 (256, 8, NULL, 2, NULL),
-(255, 7, NULL, 2, NULL);
+(255, 7, NULL, 2, NULL),
+(560, 24, NULL, 6, NULL),
+(559, 12, NULL, 6, NULL),
+(558, 11, NULL, 6, NULL);
 
 -- --------------------------------------------------------
 
@@ -445,7 +460,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `lang` varchar(50) NOT NULL,
   `name` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=59 ;
 
 --
 -- Dumping data for table `tags`
@@ -469,7 +484,39 @@ INSERT INTO `tags` (`id`, `unique`, `lang`, `name`) VALUES
 (18, 7, 'en', 'vaxaxa3 (en)'),
 (19, 8, 'en', 'tag# (en)'),
 (22, 9, 'en', 'sad (en)'),
-(23, 9, 'ka', 'sad');
+(23, 9, 'ka', 'sad'),
+(27, 10, 'en', 'vaxaaxa (en)'),
+(28, 10, 'ka', 'vaxaaxa'),
+(29, 11, 'en', 'shini (en)'),
+(30, 11, 'ka', 'shini'),
+(31, 12, 'en', 'kaieg (en)'),
+(32, 12, 'ka', 'kaieg'),
+(33, 13, 'en', '33335252 (en)'),
+(34, 13, 'ka', '33335252'),
+(35, 14, 'en', '657856858 (en)'),
+(36, 14, 'ka', '657856858'),
+(37, 15, 'en', 'test (en)'),
+(38, 15, 'ka', 'test'),
+(39, 16, 'en', 'test2 (en)'),
+(40, 16, 'ka', 'test2'),
+(41, 17, 'en', 'adasddad (en)'),
+(42, 17, 'ka', 'adasddad'),
+(43, 18, 'en', 'test4 (en)'),
+(44, 18, 'ka', 'test4'),
+(45, 19, 'en', 'test5 (en)'),
+(46, 19, 'ka', 'test5'),
+(47, 20, 'en', 'test6 (en)'),
+(48, 20, 'ka', 'test6'),
+(49, 21, 'en', 'test7 (en)'),
+(50, 21, 'ka', 'test7'),
+(51, 22, 'en', 'kidermae (en)'),
+(52, 22, 'ka', 'kidermae'),
+(53, 23, 'en', 'dara (en)'),
+(54, 23, 'ka', 'dara'),
+(55, 24, 'en', 'atas (en)'),
+(56, 24, 'ka', 'atas'),
+(57, 25, 'en', 'dakidermae (en)'),
+(58, 25, 'ka', 'dakidermae');
 
 -- --------------------------------------------------------
 

@@ -41,6 +41,7 @@ console.log(news[0]);
                   <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
                     <p><?php echo $news['title']; ?></p>
                     <?php echo word_limiter(strip_tags($news['body']), 320); ?>
+                    <div style="font-size: 10px;  position: absolute; bottom: 0px; right: 15px;"><?php echo $news['published_at']; ?></div>
 	  	  </a></div>
 	  	<?php endforeach; ?>
                 </div>
