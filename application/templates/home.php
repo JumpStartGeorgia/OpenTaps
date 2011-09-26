@@ -41,13 +41,13 @@ if( $idx  == 2 ):
         ?>
           	<div style="border-right:5px solid <?php echo $color; ?>;background-color:rgba(255,255,255,0.0);"
   			  onmouseover="news_menu_over('<?php echo URL.$news_all[$idx]['image'] ?>',this);"
-              onclick="news_menu_click('<?php echo $news_all[$idx]['id']; ?>');">
+              onclick="news_menu_click('<?php echo $news_all[$idx]['unique']; ?>');">
                  <p style="padding-top:10px;padding-left:15px;">&#60;&nbsp;&nbsp; <font style="color:#000;"><?php echo $news_all[$idx]['title']; ?></font></p>
   			</div>
     <?php else: ?>
   			<div style="border-right:5px solid <?php echo $color; ?>;background-color:#FFF;"
   			  onmouseover="news_menu_over('<?php echo URL.$news_all[$idx]['image'] ?>',this);"
-              onclick="news_menu_click('<?php echo $news_all[$idx]['id'];  ?>');">
+              onclick="news_menu_click('<?php echo $news_all[$idx]['unique'];  ?>');">
                                                         <p style="padding-top:10px;padding-left:15px;">&#60;&nbsp;&nbsp;<font style="color:#A6A6A6;"> <?php echo $news_all[$idx]['title']; ?></font></p>
   			</div>
         <?php

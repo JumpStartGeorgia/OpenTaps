@@ -490,10 +490,10 @@ function delete_tag($unique)
 
 
 						################################ IRAKLI'S FUNCTIONS
-function fetch_db($sql)
+function fetch_db($sql, $data = NULL)
 {
 	$statement = db()->prepare($sql);
-	$statement->execute();
+	$statement->execute($data);
 	$result = $statement->fetchAll();
 	return empty($result) ? array() : $result;
 }
@@ -1098,7 +1098,7 @@ function add_project_data($project_unique, $key, $sort, $sidebar, $value)
 				':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
 				':value' => $value[$i],
 				':sort' => $sort[$i],
-				':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i]) ? 1 : 0),
+				':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i] == "checked") ? 1 : 0),
 				':lang' => $lang,
 	       			':unique' => $unique
 			));

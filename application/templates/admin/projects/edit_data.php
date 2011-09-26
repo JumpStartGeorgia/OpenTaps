@@ -20,8 +20,9 @@
 		<input name="project_sort[]" type="text" value="<?php empty($d['sort']) OR print $d['sort']; ?>" style="width: 40px" />
   	    </label>
 
+	    <input type="hidden" name="sidebar[<?php echo $idx; ?>]" value="not_checked" />
   	    <label style='margin-left: 25px; cursor: pointer;'>
-  	    	<input type="checkbox" name="sidebar[]" value="<?php echo $idx; ?>" <?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print 'checked="checked"'; ?> /> Sidebar
+  	    	<input type="checkbox" name="sidebar[<?php echo $idx; ?>]" value="checked" <?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print 'checked="checked"'; ?> /> Sidebar
   	    </label>
 
   	    <br /><br />

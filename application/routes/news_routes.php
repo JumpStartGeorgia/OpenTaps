@@ -36,10 +36,10 @@ Slim::get('/news/', function()
     }
 );
 
-Slim::get('/news/:id', function($id)
+Slim::get('/news/:unique', function($unique)
     {
         Storage::instance()->content = template('news_single',array(
-                                                    'news' => fetch_db("SELECT * FROM news WHERE id=$id")
+                                                    'news' => read_news(FALSE, 0, $unique)
         ));
     }
 );

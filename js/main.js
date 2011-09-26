@@ -234,6 +234,67 @@ $(function()
 
 
 
+	$('.expand_title').click(function(){
+		var element = $(this),
+		expandable = element.parent().find('.expandable');
+
+		$('.expandable:visible').slideUp().parent().find('span.racxa').html('►');
+
+		if (expandable.is(':visible'))
+		{
+			expandable.stop().slideUp('normal');
+			element.find('span.racxa').text('►');
+		}
+		else
+		{
+			expandable.slideDown('normal');
+			element.find('span.racxa').text('▼');
+		}
+
+	});
+
+
+
+
+
+
+
+
+	$('.slidenews').slideQuery({
+	    slides: '.slide', // Selector for slide elements, must be a children of '.my-slideshow' class in this case.
+	    type: 'slide', // Animation type. 'fade', 'slide' and 'none' are supported.
+	    speed: 'normal', // Animation speed. 'normal', 'fast', 'slow' or miliseconds, ignored if animation type is 'none'.
+	    delay: 999999*99999, // Delay between switching slides in miliseconds.
+	    direction: 'right', // Direction of the slideshow, 'right', 'left' and 'random' are supported.
+	    switcher: true, // Display slide switcher
+	    switcherTextLeft: '<span class="slide_switcher_left"><<</span>',
+	    switcherStyleLeft: {
+		position: 'absolute',
+		bottom: '50px',
+		left: 0
+	    }, // CSS style for left slide switcher container. Note, slideshow container has a relative property.
+	    switcherTextRight: '<span class="slide_switcher_right">>></span>',
+	    switcherStyleRight: {
+		position: 'absolute',
+		bottom: '50%',
+		right: 0
+	    }, // CSS style for right slide switcher container. Note, slideshow container has a relative property.
+	    stopOnOver: true, // Stop slideshow on mouse over and continue on mouse out.
+	    mouseOutInstantStart: false, // Continue sliding after mouse out instantly, without delay. Note, stopOnOver option should be set to true.
+	    speedIn: null, // Slide show speed, if not set 'speed' option value is used. Ignored if animation type is 'none'.
+	    speedOut: null, // Slide hide speed, if not set 'speed' option value is used. Ignored if animation type is 'none'.
+	    startIndex: 'first' // Starting index/point of the slide. Can be 'first', 'last', 'random' or a index number.
+	});
+
+
+
+
+
+
+
+
+
+
 
 
 

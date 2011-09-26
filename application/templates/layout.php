@@ -36,11 +36,13 @@ console.log(news[0]);
                 <a href = "<? echo href(NULL, TRUE) ?>">
                   <img src='<?php echo URL ?>images/opentaps.jpg' />
 		</a>
-                <div class='header_right'>
-                    <p>News title</p>
-	  Just an empty space. With some color in it (probably not blue but any other color that will be in the logo).
-	  However, important updates. Just an empty space. With some color in it (probably not blue but any other
-	  color that will be in the logo). However, this "empty space" can be turned into space. (More...)
+                <div class='header_right slidenews'>
+                <?php foreach ($slide_news as $news): ?>
+                  <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
+                    <p><?php echo $news['title']; ?></p>
+                    <?php echo word_limiter(strip_tags($news['body']), 320); ?>
+	  	  </a></div>
+	  	<?php endforeach; ?>
                 </div>
             </div>
 
@@ -141,6 +143,7 @@ console.log(news[0]);
 	<script type='text/javascript'>var baseurl = "<?php echo href(); ?>";</script>
 	<script type="text/javascript" src="<?php echo URL ?>js/OpenLayers/OpenLayers.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jq.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/jquery.slideQuery.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/g.bar.js"></script>

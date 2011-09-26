@@ -12,7 +12,7 @@
 		Sort: <br />
 		<input name="project_sort[]" type="text" style="width: 40px" />
   	    </label>
-  	    <label style='margin-left: 25px; cursor: pointer;'><input type="checkbox" name="sidebar" /> Sidebar</label>
+  	    <label style='margin-left: 25px; cursor: pointer;'><input type="checkbox" name="sidebar" value="checked" /> Sidebar</label>
   	    <br /><br />
 
   	    <label style="cursor: pointer">
