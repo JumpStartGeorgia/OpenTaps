@@ -16,6 +16,7 @@
 
 <?php
   $news_all = read_news(6);
+
     for ($idx = 0; $idx < (count($news_all) >= 2 ? 2 : count($news_all) ); $idx++):
         ?>
            <div class="news_each_main">          	
@@ -26,6 +27,7 @@
     endfor;
 	?>
 	<div class="news_each_others">
+
   	<img src="<?php echo $news_all[2]['image']; ?>" id="menu_img" width="130px" height="130px" style="margin-top:15px;margin-left:15px;"/>
   		<div class="news_each_menu">
 	<?php
