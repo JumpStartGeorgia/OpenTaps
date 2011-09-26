@@ -59,7 +59,8 @@ Slim::get('/tag/:def/:name/', function($def, $name){
     $query->execute(array(':unique' => $unique));
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
-    $total_pages = ($total - $total % $tosp) / $tosp + 1;
+    //$total_pages = ($total - $total % $tosp) / $tosp + 1;
+    $total_pages = ($total % $tosp == 0) ? $total / $tosp : ($total + ($tosp - $total % $tosp)) / $tosp;
 
     Storage::instance()->content = template('tags', array(
     	'results' => $result,
@@ -108,7 +109,8 @@ Slim::get('/tag/:def/:name/:page/', function($def, $name, $page){
     $query->execute(array(':unique' => $unique));
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
-    $total_pages = ($total <= $tosp) ? 1 : ($total - $total % $tosp) / $tosp;
+    //$total_pages = ($total - $total % $tosp) / $tosp + 1;
+    $total_pages = ($total % $tosp == 0) ? $total / $tosp : ($total + ($tosp - $total % $tosp)) / $tosp;
     ($page > $total_pages) AND die('invalid page');
 
     $query = "

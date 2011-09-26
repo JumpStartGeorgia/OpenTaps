@@ -14,11 +14,13 @@ function config($item)
     return isset(Storage::instance()->config[$item]) ? Storage::instance()->config[$item] : FALSE;
 }
 
-function href($segments = NULL, $language = FALSE)
+function href($segments = NULL, $language = FALSE, $hash = NULL)
 {
     $href = URL . (empty($segments) ? NULL : trim($segments, '/') . '/');
     $language AND $href .= '?lang=' . LANG;
-    return $href;
+    $hashhref = NULL;
+    empty($hash) OR $hashhref = ((substr($hash, 0, 1) == "#") ? $hash : "#" . $hash);
+    return $href . $hashhref;
 }
 
 function db()

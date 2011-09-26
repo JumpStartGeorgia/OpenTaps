@@ -12,7 +12,7 @@ Slim::get('/news/', function()
 	$query->execute(array());
 	$total = $query->fetch(PDO::FETCH_ASSOC);
 	$total = $total['total'];
-	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+	$total_pages = ($total % $nosp == 0) ? $total / $nosp : ($total + ($nosp - $total % $nosp)) / $nosp;
 
 	$query = "SELECT DISTINCT tags.id,
 			 tags.name,
@@ -36,7 +36,7 @@ Slim::get('/news/', function()
     }
 );
 
-Slim::get('/news/:unique', function($unique)
+Slim::get('/news/:unique/', function($unique)
     {
         Storage::instance()->content = template('news_single',array(
                                                     'news' => read_news(FALSE, 0, $unique)
@@ -54,7 +54,7 @@ Slim::get('/news/page/:page/', function($page)
 	$query->execute(array());
 	$total = $query->fetch(PDO::FETCH_ASSOC);
 	$total = $total['total'];
-	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+	$total_pages = ($total % $nosp == 0) ? $total / $nosp : ($total + ($nosp - $total % $nosp)) / $nosp;
 	($page > $total_pages) AND die('invalid page');
 
 	$query = "SELECT DISTINCT tags.id,
@@ -85,12 +85,12 @@ Slim::get('/news/type/:type/', function($type)
 
 	$nosp = config('news_on_single_page');
 
-	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type AND lang = '" . LANG . "'";
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE category = :type AND lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$total = $query->fetch(PDO::FETCH_ASSOC);
 	$total = $total['total'];
-	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+	$total_pages = ($total % $nosp == 0) ? $total / $nosp : ($total + ($nosp - $total % $nosp)) / $nosp;
 
 	$query = "SELECT DISTINCT tags.id,tags.name,
 			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
@@ -120,12 +120,12 @@ Slim::get('/news/type/:type/:page/', function($type, $page)
 
 	$nosp = config('news_on_single_page');
 
-	$query = "  SELECT COUNT(id) AS total FROM news WHERE type = :type AND lang = '" . LANG . "'";
+	$query = "  SELECT COUNT(id) AS total FROM news WHERE category = :type AND lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$total = $query->fetch(PDO::FETCH_ASSOC);
 	$total = $total['total'];
-	$total_pages = ($total <= $nosp) ? 1 : ($total - $total % $nosp) / $nosp;
+	$total_pages = ($total % $nosp == 0) ? $total / $nosp : ($total + ($nosp - $total % $nosp)) / $nosp;
 	($page > $total_pages) AND die('invalid page');
 
 	$query = "SELECT DISTINCT tags.id,tags.name,

@@ -19,8 +19,7 @@
 
 <?php
 
-  foreach(Storage::instance()->menu as $menu)
-  {
+  foreach(Storage::instance()->menu as $menu):
 	$has = has_submenu($menu['unique']);
 ?>
 	<li <?php echo $has ? "class='dropdownmenu'" : NULL ?> id='<?php echo $menu['unique'] ?>'>
@@ -29,4 +28,11 @@
 	    </a>
 	</li>
 <?php
-  }
+  endforeach;
+?>
+
+  <li>
+      <a href="<?php echo href('news', TRUE) ?>">
+	  <?php echo strtoupper('news') ?>
+      </a>
+  </li>
