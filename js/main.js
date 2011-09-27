@@ -29,14 +29,14 @@ function getArray(){
 function news_menu_over(img,ths)
 {
     $(".news_each_menu").children('div').each(function(){
-        $(this).css('background-color','#FFF');
-        $(this).children('p:first').children('font:first').css('color','#A6A6A6');
+        $(this).css('background-color', '#FFF');
+        $(this).css('color','#A6A6A6');
     });
     $(ths).css({
         'background-color' : 'rgba(255,255,255,0.0)'
     });
-    $(ths).children('p:first').children('font:first').css('color','#000');
-    $("#menu_img").attr('src',img);
+    $(ths).css('color','#000');
+    $("#menu_img").attr('src', img);
 }
 
 function news_menu_click(id)
