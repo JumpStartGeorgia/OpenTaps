@@ -195,7 +195,8 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
     {
 	delete_project_data($unique);
 	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
-        add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
+	if (!empty($_POST['project_key']))
+	    add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
 	update_project(
 	    	$unique,
         	$_POST['p_title'],
