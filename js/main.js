@@ -291,8 +291,33 @@ $(function()
 
 
 
-
-
+	var data_field_index = 0;
+	$('#add_data_field').click(function(){
+		var container = $('#data_fields_container');
+		var bg = (data_field_index % 2 == 1) ? "url(" + baseurl + "images/bg.jpg) repeat;" : 'white;';
+		var html = "<div class='group' style='background: " + bg + "'>" +
+			"<label style='cursor: pointer'>" +
+  	    			"Title: <br /><input name='project_key[]' type='text' />" +
+  	    		"</label><br /><br />" +
+  	    		"<label style='cursor: pointer'>" +
+				"Sort: <br /><input name='project_sort[]' type='text' style='width: 40px' />" +
+  	    		"</label>" +
+  	    		"<input type='hidden' name='sidebar[" + data_field_index + "]' value='not_checked' />" +
+  	    		"<label style='margin-left: 25px; cursor: pointer;'>" +
+  	    			"<input type='checkbox' name='sidebar[" + data_field_index + "]' value='checked' /> Sidebar" +
+  	    		"</label><br /><br />" +
+			"<label style='cursor: pointer'>" +
+  	    			"Text: <br /><textarea class='mceEditor' name='project_value[]' cols='55' rows='5'></textarea>" +
+	    		"</label>" +
+	    		"<a style='color: red; cursor: pointer; font-size: 13px;' onclick='$(this).parent().remove()'>" +
+	    			"-Remove data" +
+	    		"</a>" +
+	    		"<br /><hr style='margin-left: -27px' />" +
+	    		"</div>";
+		container.append(html);
+		tinymceinit();
+		data_field_index ++;
+	});
 
 
 

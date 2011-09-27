@@ -1,4 +1,4 @@
-	tinyMCE.init({
+function tinymceinit(){ tinyMCE.init({
 		// General options
 		mode : "textareas",
 		theme : "advanced",
@@ -40,3 +40,6 @@
 			staffid : "991234"
 		}
 	});
+}
+
+tinymceinit();

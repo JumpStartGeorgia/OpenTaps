@@ -10,13 +10,13 @@ Slim::get('/project/:unique/', function($unique)
 
 	list($values, $names, $real_values) = get_project_chart_data($unique);
 
-	$query = "SELECT *,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
+	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
-		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "'";
+		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique";
 	$query = db()->prepare($query);
-	$query->execute();
+	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	$sql = "SELECT * FROM projects_data
@@ -144,7 +144,8 @@ Slim::get('/admin/projects/:unique/', function($unique){
 		'organizations' => $orgs,
         	'regions' => $regions,
         	'places' => $places,
-		'project_types' => config('project_types')
+		'project_types' => config('project_types'),
+		'data' => read_project_data($unique)
 	));
     }
     else
@@ -158,8 +159,10 @@ Slim::get('/admin/projects/:unique/delete/', function($unique){
 Slim::post('/admin/projects/create/', function(){
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array();
-    Storage::instance()->content = userloggedin()
-	    ? add_project(
+    if (userloggedin())
+    {
+	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
+        add_project(
         	$_POST['p_title'],
         	$_POST['p_desc'],
         	$_POST['p_budget'],
@@ -174,16 +177,26 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
-        	$_POST['p_type']
-       	     )
-	   : template('login');
+        	$_POST['p_type'],
+        	$_POST['project_key'],
+        	$_POST['project_sort'],
+        	$_POST['project_value'],
+        	$_POST['sidebar']
+        );
+    }
+    else
+    	Storage::instance()->content = template('login');
 });
 
 Slim::post('/admin/projects/:unique/update/', function($unique){
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array(NULL);
-    Storage::instance()->content = userloggedin()
-	    ? update_project(
+    if (userloggedin())
+    {
+	delete_project_data($unique);
+	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
+        add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
+	update_project(
 	    	$unique,
         	$_POST['p_title'],
         	$_POST['p_desc'],
@@ -200,8 +213,10 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
         	$_POST['p_type']
-       	     )
-	   : template('login');
+	);
+    }
+    else
+    	Storage::instance()->content = template('login');
 });
 
 

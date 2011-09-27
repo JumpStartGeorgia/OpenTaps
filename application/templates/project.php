@@ -98,10 +98,23 @@
 		</div>
 
 	<?php endforeach; ?>
+
+		<?php if (!empty($tags)): ?><div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
+			<div class='key'>TAG CLOUD</div>
+			<div class='value group'>
+<?php
+			foreach($tags as $tag):
+			    echo 
+				"<a href='".href('tag/project/' . $tag['name'], TRUE)."'>" .
+					$tag['name'] . " (" . $tag['total_tags'] . ")".
+				"</a><br />"
+			    ;
+			endforeach;
+?>
+			</div>
+		</div><?php endif; ?>
+
 	</div>
-
-
-
 
 
 <?php /*

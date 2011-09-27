@@ -31,6 +31,9 @@
   	    	Text: <br />
 		<textarea name='project_value[]' cols='55' rows='5'><?php echo $d['value'] ?></textarea>
 	    </label>
+
+	    <a style='color: red; cursor: pointer; font-size: 13px;' onclick='$(this).parent().remove()'>Remove data</a>
+
 </div>
 <?php
 	}

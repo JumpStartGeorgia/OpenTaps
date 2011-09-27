@@ -417,7 +417,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
 
     foreach ($tag_uniques as $tag_unique)
     {
-        $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `".$field."_unique`) VALUES (:tag_unique, :f_unique);";
+        $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES (:tag_unique, :f_unique);";
         $data = array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique);
         $statement = db()->prepare($sql);
         $exec = $statement->execute($data);
@@ -829,31 +829,31 @@ function read_projects($project_unique = false)
 }
 
 
-function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type)
+function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new", TRUE) . "\">Back</a>";
 
     $fields = array();
-    $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
-    $fields[] = ( strlen($desc) < 4 ) ? 'description' : NULL;
-    $fields[] = ( strlen($budget) < 4 ) ? 'budget' : NULL;
-    $fields[] = ( strlen($city) < 4 ) ? 'city' : NULL;
-    $fields[] = ( strlen($grantee) < 4 ) ? 'grantee' : NULL;
-    $fields[] = ( strlen($sector) < 4 ) ? 'sector' : NULL;
-    $fields[] = ( strlen($start_at) < 4 ) ? 'start_at' : NULL;
-    $fields[] = ( strlen($end_at) < 4 ) ? 'end_at' : NULL;
-    $fields[] = ( strlen($info) < 4 ) ? 'info' : NULL;
+    (strlen($title) < 4) AND $fields[] = 'title';
+  /*$fields[] = (strlen($desc) < 4) ? 'description' : NULL;
+    $fields[] = (strlen($budget) < 4) ? 'budget' : NULL;
+    $fields[] = (strlen($city) < 4) ? 'city' : NULL;
+    $fields[] = (strlen($grantee) < 4) ? 'grantee' : NULL;
+    $fields[] = (strlen($sector) < 4) ? 'sector' : NULL;
+    $fields[] = (strlen($start_at) < 4) ? 'start_at' : NULL;
+    $fields[] = (strlen($end_at) < 4) ? 'end_at' : NULL;
+    $fields[] = (strlen($info) < 4) ? 'info' : NULL;*/
 
     $f = implode(", ", $fields);
 
     $fields_new = array();
     foreach ( $fields as $field )
-    	if ( $field != NULL )
+    	if ($field != NULL)
     		$fields_new[] = $field;
 
     $fields = $fields_new;
 
-    if ( count($fields) > 0 )
+    if (count($fields) > 0)
     	return $f . " too short" . $back;
 
 
@@ -932,7 +932,11 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
     }
 
     if ($success)
+    {
+        if (!empty($project_key))
+        	add_project_data($unique, $project_key, $project_sort, $sidebar, $project_value);
     	Slim::redirect(href("admin/projects", TRUE));
+    }
     else
     	return "couldn't insert record/database error";
     
@@ -943,27 +947,26 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     $back = "<br /><a href=\"" . href("admin/projects/" . $unique, TRUE) . "\">Back</a>";
 
     $fields = array();
-    $fields[] = ( strlen($title) < 4 ) ? 'title' : NULL;
-    $fields[] = ( strlen($desc) < 4 ) ? 'description' : NULL;
-    $fields[] = ( strlen($budget) < 4 ) ? 'budget' : NULL;
-
-    $fields[] = ( strlen($city) < 4 ) ? 'city' : NULL;
-    $fields[] = ( strlen($grantee) < 4 ) ? 'grantee' : NULL;
-    $fields[] = ( strlen($sector) < 4 ) ? 'sector' : NULL;
-    $fields[] = ( strlen($start_at) < 4 ) ? 'start_at' : NULL;
-    $fields[] = ( strlen($end_at) < 4 ) ? 'end_at' : NULL;
-    $fields[] = ( strlen($info) < 4 ) ? 'info' : NULL;
+    (strlen($title) < 4) AND $fields[] = 'title';
+  /*$fields[] = (strlen($desc) < 4) ? 'description' : NULL;
+    $fields[] = (strlen($budget) < 4) ? 'budget' : NULL;
+    $fields[] = (strlen($city) < 4) ? 'city' : NULL;
+    $fields[] = (strlen($grantee) < 4) ? 'grantee' : NULL;
+    $fields[] = (strlen($sector) < 4) ? 'sector' : NULL;
+    $fields[] = (strlen($start_at) < 4) ? 'start_at' : NULL;
+    $fields[] = (strlen($end_at) < 4) ? 'end_at' : NULL;
+    $fields[] = (strlen($info) < 4) ? 'info' : NULL;*/
 
     $fields_new = array();
-    foreach ( $fields as $field )
-    	if ( $field != NULL )
+    foreach ($fields as $field)
+    	if ($field != NULL)
     		$fields_new[] = $field;
 
     $fields = $fields_new;
 
     $f = implode(", ", array_values($fields));
 
-    if ( count($fields) > 0 )
+    if (count($fields) > 0)
     	return $f . " too short" . $back;
 
     $sql = "
@@ -1023,7 +1026,7 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
         $query = db()->prepare($sql);
     	foreach ($org_ids AS $org_unique)
     	{
-            fb(array(':project' => $unique, ':organization' => $org_unique));
+            //fb(array(':project' => $unique, ':organization' => $org_unique));
             db()->prepare($sql)->execute(array(':project' => $unique, ':organization' => $org_unique));
     	}
     }
@@ -1033,7 +1036,7 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     if (!empty($tag_uniques) OR !empty($tag_names))
     	add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
 
-    if ( $exec )
+    if ($exec)
     	Slim::redirect(href("admin/projects", TRUE));
     else
     	return "couldn't update record/database error";

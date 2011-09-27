@@ -21,6 +21,7 @@ require_once DIR . 'application/functions.php';
 try
 {
     Storage::instance()->db = new PDO('mysql:dbname=opentaps;host=localhost', config('db_user'), config('db_pass'));
+    Storage::instance()->db->prepare("SET NAMES 'utf8'")->execute();
 }
 catch (PDOException $exception)
 {

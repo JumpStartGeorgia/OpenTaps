@@ -1,5 +1,5 @@
   	<form method='post' enctype="multipart/form-data" action='<?php echo href("admin/projects/create", TRUE); ?>'>
-  	    <label for='ptitle'>Title: </label>
+  	    <label for='ptitle'>Title<span style="color: red">*</span>: </label>
   	    <br />
   	    <input name='p_title' id='ptitle' type='text' />
   	    <br /><br />
@@ -93,7 +93,7 @@
   	    </select>
   	    <br /><br />
 
- 	    <label for='porgs'>Project Types: (hold down Ctrl to select multiple)</label>
+ 	    <label for='porgs'>Project Types:</label>
   	    <br />
   	    <select name='p_type' id='ptypes'>
   	      <?php
@@ -104,8 +104,15 @@
   	    </select>
   	    <br /><br />
 
+	    <h3>Project Data</h3>
+	    <div id="data_fields_container" style="padding-left: 55px;">
+	    </div>
+	    <a style="color: #4CBEFF; cursor: pointer; font-size: 13px;" id="add_data_field">+Add data</a><br /><br />
+
+
   	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />
   	    <br /><br />
+
   	</form>
 
   	<a href="<?php echo href("admin/projects", TRUE); ?>">Back</a>
