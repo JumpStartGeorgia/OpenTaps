@@ -1,4 +1,11 @@
 <?php
+/*$fh = fopen('settlements/settlements.shp.xml', 'r');
+$xml = fread($fh, filesize('settlements/settlements.shp.xml'));
+fclose($fh);
+$xml = new SimpleXMLElement($xml);
+print_r(json_encode($xml));
+die;*/
+
 session_start();
 
 define('DIR', getcwd() . '/');

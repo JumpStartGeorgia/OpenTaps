@@ -813,7 +813,7 @@ function read_projects($project_unique = false)
         LEFT JOIN places AS pl
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
         LEFT JOIN regions AS r
-            ON p.region_unique = r.`unique` AND pl.lang = r.lang
+            ON pl.region_unique = r.`unique` AND pl.lang = r.lang
         WHERE p.`unique` = :unique AND p.lang = '" . LANG . "'
         ;";
         $statement = db()->prepare($sql);

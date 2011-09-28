@@ -31,10 +31,10 @@ Slim::get('/project/:unique/', function($unique)
     		'names' => $names,
     		'values' => $values,
     		'real_values' => $real_values,
-    		'tags' => $tags
+    		'tags' => $tags,
+    		'edit_permission' => userloggedin()
     	));
 });
-
 
 Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 {
@@ -299,3 +299,73 @@ Slim::post('/admin/project-data/:unique/update/',function($unique){
     else
 	Storage::instance()->content = template('login');
 });
+
+
+
+
+
+
+
+
+
+Slim::post('/admin/project-ajax/:unique/:datatype',function($unique, $datatype){
+    if(userloggedin() AND !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+    {
+    	switch ($datatype)
+    	{
+    		case "basic_info":
+    		    $html = template('admin/projects/ajax_edit_project', array(
+    		    	'project' => read_projects($unique),
+    		    	'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'"),
+    		    	'types' => config('project_types')
+    		    ));
+    		    break;
+
+    		case "project_data":
+    		    $data = db()->prepare("SELECT * FROM projects_data WHERE lang = '" . LANG . "' AND `unique` = :unique");
+    		    $data->execute(array(':unique' => $unique));
+    		    $html = template('admin/projects/ajax_edit_project_data', array(
+    		    	'data' => $data->fetch(PDO::FETCH_ASSOC)
+    		    ));
+    		    break;
+    	}
+    	die($html);
+    }
+    else die('error');
+});
+
+Slim::post('/admin/project-ajax-save/:unique/:datatype',function($unique, $datatype){
+    if(userloggedin() AND !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')
+    {
+    	switch ($datatype)
+    	{
+    		case "basic_info":
+    		    $_POST[':unique'] = $unique;
+    		    $query = "UPDATE projects SET
+    		    		city = :city,
+    		    		place_unique = :place_unique,
+    		    		grantee = :grantee,
+    		    		sector = :sector,
+    		    		budget = :budget,
+    		    		start_at = :start_at,
+    		    		end_at = :end_at,
+    		    		type = :type
+    		    	      WHERE lang = '" . LANG . "' AND `unique` = :unique";
+    		    $exec = db()->prepare($query)->execute($_POST);
+    		    break;
+
+	    	case "project_data":
+    		    $_POST[':unique'] = $unique;
+    		    $query = "UPDATE projects_data SET
+    		    		`key` = :key,
+    		    		`value` = :value
+    		    	      WHERE lang = '" . LANG . "' AND `unique` = :unique";
+    		    $exec = db()->prepare($query)->execute($_POST);
+	    	    break;
+    	}
+    	$html = (bool)$exec ? '<br /><span style="color: green">saved successfully.</span>' : "<br />error";
+    	die($html);
+    }
+    else die('error');
+});
+

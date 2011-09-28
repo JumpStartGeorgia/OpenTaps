@@ -1,3 +1,6 @@
+<?php function edit_button($edit_id = NULL){ return '<span id="' . $edit_id . '" class="admin_edit_button">Edit</span>'; } ?>
+
+
 
 <div id='project_content'>
 	<script type="text/javascript">
@@ -28,13 +31,14 @@
 				<span class="expand_title">
 					<span class="racxa">▼</span> Project Name: <?php echo $project['title'] ?>
 				</span>
+				<abbr><?php $edit_permission AND print edit_button('basic_info'); ?></abbr>
 				<div class="expandable" style="display: block;">
 					Location - Region:
 					<a id="region_link" href="<?php echo href('region/'.$project['region_unique'], TRUE); ?>">
 						<?php echo $project['region_name']; ?>
 					</a><br />
 					Location - City/Town: <?php echo $project['city']; ?><br />
-					Grentee: <?php echo $project['grantee']; ?><br />
+					Grantee: <?php echo $project['grantee']; ?><br />
 					Sector: <?php echo $project['sector']; ?><br />
 					Budget: <?php echo $project['budget']; ?><br />
 					Beginning: <?php echo $project['start_at']; ?><br />
@@ -43,20 +47,27 @@
 				</div>
 			</div>
 
-			<div>
-				<span class="expand_title"><span class="racxa">►</span> Project Description</span>
+			<?php /*<div>
+				<span class="expand_title">
+					<span class="racxa">►</span> Project Description
+					<?php $edit_permission AND print edit_button(); ?>
+				</span>
 				<div class="expandable"><?php echo $project['description']; ?></div>
 			</div>
 
 			<div>
-				<span class="expand_title"><span class="racxa">►</span> Project Info</span>
+				<span class="expand_title">
+					<span class="racxa">►</span> Project Info
+					<?php $edit_permission AND print edit_button(); ?>
+				</span>
 				<div class="expandable"><?php echo $project['info']; ?></div>
-			</div>
+			</div>*/ ?>
 
 		<?php foreach ($data AS $d): ?>
 			<div>
 				<span class="expand_title"><span class="racxa">►</span> <?php echo $d['key'] ?></span>
-				<div class="expandable"><?php echo $d['value']; ?></div>
+				<abbr style="display: none;"><?php $edit_permission AND print edit_button('project_data'); ?></abbr>
+				<div class="expandable" data_unique="<?php echo $d['unique']; ?>"><?php echo $d['value']; ?></div>
 			</div>
 		<?php endforeach; ?>
 
@@ -158,4 +169,5 @@ $download_csv = href("export/csv/".base64_encode(serialize(array('names' => $nam
 
     </div>*/ ?>
 
+<input type="hidden" id="project_unique" value="<?php echo $project['unique']; ?>" />
 </div>

@@ -1,3 +1,6 @@
+@opentaps_default_color: #0CB5F5;
+
+
 * { margin: 0 auto; font-family: arial; word-wrap: break-word; }
 
 .group:after{ visibility: hidden; display: block; content: ""; clear: both; height: 0; }
@@ -8,28 +11,28 @@ body{ margin-top: 0px; color: #565656; padding-bottom: 25px; font-size: 100.01%;
 a:active, a:focus, a:hover{ outline: none; }
 
 body, div.header_right { background-image:url('images/bg.jpg'); }
-div.projects_organization, div.news{ background: #0cb5f5; }
+div.projects_organization, div.news{ background: @opentaps_default_color; }
 .main
 {
-	width:930px;
-	min-height:100px;
-	margin-left:auto;
-	margin-right:auto;
+	width: 930px;
+	min-height: 100px;
+	margin-left: auto;
+	margin-right: auto;
 	background-color: #fff;
 	padding: 22px 25px 7px 25px;
 }
 
-div.header img{ cursor:hand; }
+div.header img{ cursor:pointer; }
 
 div.header_right
 {
-	width:563px;
-	height:74px;
-	float:right;
+	width: 563px;
+	height: 74px;
+	float: right;
 	padding: 17px 31px 25px 21px ;
-	font-size:12px;
-	font-family:Arial;
-	color:#565656;
+	font-size: 12px;
+	font-family: Arial;
+	color: #565656;
 }
 
 .slide{ display: none; width: 510px; margin-left: 20px; height: 98px; }
@@ -364,7 +367,7 @@ div.maxItemInactive{
 	width:25px;
 	height:20px;
 	background: url("images/max.jpg");
-	opacity:.7;
+	opacity:.8;
 	top:15px;
 	left:50px;
 	cursor:pointer;
@@ -376,7 +379,7 @@ div.minItemInactive{
 	width:25px;
 	height:20px;
 	background:url("images/min.jpg");
-	opacity:.7;
+	opacity:.8;
 	top:15px;
 	left:15px;
 	cursor:pointer;
@@ -393,7 +396,7 @@ div.filtersItemInactive{
 	height:20px;
 	background-image:url("images/filter.gif");
 	background-repeat:no-repeat;
-	opacity:.7;
+	opacity:.8;
 	cursor:pointer;
 }
 
@@ -402,7 +405,7 @@ div.setsItemInactive{
 	width:25px;
 	height:20px;
 	background:url("images/sets.jpg");
-	opacity:.7;
+	opacity:.8;
 	margin-top:-20px;
 	margin-left:875px;
 	cursor:pointer;
@@ -411,7 +414,7 @@ div.tagsItemInactive{
 	width:25px;
 	height:20px;
 	background:url("images/tags.jpg");
-	opacity:.7;
+	opacity:.8;
 	margin-top:-20px;
 	margin-left:905px;
 	cursor:pointer;

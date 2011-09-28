@@ -237,18 +237,22 @@ $(function()
 	$('.expand_title').click(function(){
 		var element = $(this),
 		expandable = element.parent().find('.expandable');
+		abbr = element.parent().find('abbr');
 
+		$('.expandable:visible').parent().find('abbr').hide();
 		$('.expandable:visible').slideUp().parent().find('span.racxa').html('►');
 
 		if (expandable.is(':visible'))
 		{
 			expandable.stop().slideUp('normal');
 			element.find('span.racxa').text('►');
+			abbr.hide();
 		}
 		else
 		{
 			expandable.slideDown('normal');
 			element.find('span.racxa').text('▼');
+			abbr.show();
 		}
 
 	});

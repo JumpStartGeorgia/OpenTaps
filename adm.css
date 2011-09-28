@@ -124,3 +124,7 @@ label.newpiclabel{
   cursor:pointer;
   text-decoration:underline;
 }
+
+
+.admin_edit_button{ font-size: 11px; color: #0cb5f5; float: right; cursor: pointer; display: inline-block; }
+.admin_edit_button:hover{ text-decoration: underline; }
