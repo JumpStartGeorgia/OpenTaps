@@ -364,10 +364,10 @@ div.bottom2 img{ vertical-align:middle; margin-top:-6px; }
 div.maxItemInactive{
 	position:absolute;
 	float:left;
-	width:25px;
-	height:20px;
-	background: url("images/max.jpg");
-	opacity:.8;
+	width:27px;
+	height:19px;
+	background: url("images/plus.gif");
+	opacity:.9;
 	top:15px;
 	left:50px;
 	cursor:pointer;
@@ -376,10 +376,10 @@ div.maxItemInactive{
 div.minItemInactive{
 	position:absolute;
 	float:left;
-	width:25px;
-	height:20px;
-	background:url("images/min.jpg");
-	opacity:.8;
+	width:27px;
+	height:19px;
+	background:url("images/minus.gif");
+	opacity:.9;
 	top:15px;
 	left:15px;
 	cursor:pointer;
@@ -396,7 +396,7 @@ div.filtersItemInactive{
 	height:20px;
 	background-image:url("images/filter.gif");
 	background-repeat:no-repeat;
-	opacity:.8;
+	opacity:.9;
 	cursor:pointer;
 }
 

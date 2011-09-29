@@ -1,6 +1,3 @@
-<?php /*print_r(Storage::instance()->js_years); ?>
-<?php print_r(Storage::instance()->js_types); ?>
-<?php exit;*/ ?>
 <!DOCTYPE html>
 ﻿<html>
     <head>
@@ -10,26 +7,23 @@
         <link href="<?php echo URL ?>adm.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8"/>
     	<script type="text/javascript">
-    		var region_map_boundsLeft = false;
-			var region_map_boundsRight = false;
-			var region_map_boundsTop = false;
-			var region_map_boundsBottom = false;
-			var region_map_zoom = false;
-			var region_map_maxzoomout = false;
-			var region_map_longitude = false;
-			var region_map_latitude = false;
-			var region_make_def_markers = false;
-			var region_show_def_buttons = true;
-			var region_marker_click = true;
+    		var region_map_boundsLeft = false,
+		region_map_boundsRight = false,
+		region_map_boundsTop = false,
+		region_map_boundsBottom = false,
+		region_map_zoom = false,
+		region_map_maxzoomout = false,
+		region_map_longitude = false,
+		region_map_latitude = false,
+		region_make_def_markers = false,
+		region_show_def_buttons = true,
+		region_marker_click = true,
+		places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>],
+		news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>],
+		projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
 	</script>
     </head>
     <body onload="init()">
- 	<script type="text/javascript">
-	   var places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>];
- 	   var projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
-       var news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>];
-	/*console.log(news[0]);*/
- 	</script>
         <div class='main group'>
 
             <div class='header'>
@@ -85,8 +79,8 @@
 			</div>
 		</div>
 		<div id="contact-us" class="group" >
-			<!--<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.698656732302&lg=44.798275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
-			<div id='map_image' style='background: url(<?php echo href() ?>images/mapspot_address_on_map.png);'></div>
+			<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+			<div id='map_image' style='display: none; background: url(<?php echo href() ?>images/mapspot_address_on_map.png);'></div>
 			<div id='contact-us-form-container' class='group'>
 			    <div id='contact-us-circle'>
 				<div style='margin-top: 40px'>CONTACT US</div>
@@ -131,29 +125,23 @@
 	    </div>
 
 
-
-
-
-
-
-
         </div>
 
 	<script type='text/javascript'>var baseurl = "<?php echo href(); ?>";</script>
 	<script type="text/javascript" src="<?php echo URL ?>js/OpenLayers/OpenLayers.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jq.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jquery.slideQuery.js"></script>
-	<?php /*<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/g.bar.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/g.pie.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>*/ ?>
+        <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/init.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/menu.js"></script>
-	<?php /*<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>*/ ?>
+	<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/bottom_toggles.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/admin_edit.js"></script>
     </body>

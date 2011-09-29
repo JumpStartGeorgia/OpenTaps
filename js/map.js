@@ -537,7 +537,7 @@ function map_init()
 		else{
 			makeMarker("../../images/marker.png",20,20,map_confs.lon,map_confs.lat);
 		}*/
-			
+
 	map.addControls([panel,nav/*,new OpenLayers.Control.MousePosition()*/]);
 	map.zoomTo(map_confs.zoom);
 	if( map_confs.show_default_buttons ){

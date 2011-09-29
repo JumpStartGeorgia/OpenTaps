@@ -162,7 +162,6 @@ Slim::post('/admin/projects/create/', function(){
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array();
     if (userloggedin())
     {
-	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
         add_project(
         	$_POST['p_title'],
         	$_POST['p_desc'],
@@ -195,7 +194,6 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
     if (userloggedin())
     {
 	delete_page_data('project', $unique);
-	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
 	if (!empty($_POST['data_key']))
 	    add_page_data('project',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
 	update_project(

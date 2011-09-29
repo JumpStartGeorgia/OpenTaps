@@ -1,7 +1,7 @@
 
 function init(){
 	map_init();
-	/*chart_init();*/
+	chart_init();
 }
 
 String.prototype.reverse = function(){
@@ -15,7 +15,6 @@ String.prototype.reverse = function(){
 var img_src  = "";
 var img_style = "";
 var click_done = false;
-/*console.log(projects);*/
 
 function getArray(){
 	for (var i=1;i<projects.length;i++)

@@ -79,11 +79,11 @@ function read_menu($parent_unique = 0, $lang = null, $readhidden = FALSE)
     return $statement->fetchAll();    
 }
 
-function has_submenu($menuid)
+function has_submenu($menuunique)
 {
-    $sql = "SELECT id,`unique` FROM menu WHERE parent_unique = '" . $menuid . "' AND lang = '" . LANG . "'";
+    $sql = "SELECT id,`unique` FROM menu WHERE parent_unique = ':menuunique' AND lang = '" . LANG . "'";
     $statement = db()->prepare($sql);
-    $statement->execute();
+    $statement->execute(array(':menuunique' => $menuunique));
     $a = $statement->fetchAll();  
     return (count($a) > 0);
 }
@@ -205,7 +205,7 @@ function read_news_one_page($from, $limit, $type = FALSE)
     return $statement->fetchAll();
 }
 
-function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names)
+function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
     if( strlen($title) < 3 || strlen($body) < 11 )
 	return "either title or body is too short";
@@ -239,7 +239,14 @@ function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names
     add_tag_connector('news', $unique, $tags, $tag_names);
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
-    return ($success) ? $metarefresh : "couldn't insert into database";
+    if ($success)
+    {
+	if (!empty($data_key))
+	    add_page_data('news', $unique, $data_key, $data_sort, $sidebar, $data_value);
+	return $metarefresh;
+    }
+    else
+	return "couldn't insert into database";
 }
 
 function update_news($unique, $title, $body, $filedata, $category, $place, $tags, $tag_names)
@@ -294,10 +301,11 @@ function delete_news($unique)
 
     //$unique = get_unique("news", $id);
     //print_r(get_uniques_ids("news", $unique));die;
-    $sql = "DELETE FROM `opentaps`.`news` WHERE  `news`.`unique` = '" . $unique . "'";
+    $sql = "DELETE FROM `opentaps`.`news` WHERE  `news`.`unique` = :unique;
+    	    DELETE FROM pages_data WHERE owner = 'news' AND owner_unique = :unique;";
     $statement = db()->prepare($sql);
 
-    $exec = $statement->execute(array());
+    $exec = $statement->execute(array(':unique' => $unique));
     fetch_db("DELETE FROM tag_connector WHERE news_unique = '$unique'");
     return ($exec) ? true : false;
 }
@@ -641,7 +649,7 @@ function delete_place($unique)
 
 
 /*=======================================================Admin Regions 	============================================================*/
-function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts,$water_supply)
+function add_region($name,$region_info,$region_projects_info,$city,$population,$squares,$settlement,$villages,$districts,$water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
     $languages = config('languages');
     $unique = generate_unique("regions");
@@ -650,7 +658,7 @@ function add_region($name,$region_info,$region_projects_info,$city,$population,$
 	$sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts, lang, `unique`)
 		VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
 	$statement = db()->prepare($sql);
-	$statement->execute(array(
+	$exec = $statement->execute(array(
 		':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
 		':region_info' => $region_info,
 		':region_projects' => $region_projects_info,
@@ -666,21 +674,25 @@ function add_region($name,$region_info,$region_projects_info,$city,$population,$
 
     }
 
-    $lastid = Storage::instance()->db->lastInsertId();
-    $sql = "INSERT INTO water_supply ( text, region_id )
-                        VALUE(:text, :region_id)";
+    //$lastid = Storage::instance()->db->lastInsertId();
+    $sql = "INSERT INTO water_supply (text, region_unique)
+                        VALUE(:text, :region_unique)";
     $stmt = Storage::instance()->db->prepare($sql);
     $stmt->execute(array(
-                       ':text' => $water_supply,
-                       ':region_id' => $lastid
-                       ));
+		':text' => $water_supply,
+		':region_unique' => $unique
+    ));
+
+    if ($exec AND !empty($data_key))
+	add_page_data('region', $unique, $data_key, $data_sort, $sidebar, $data_value);
 
 
 }
 
 function delete_region($unique)
 {
-	$sql = "DELETE FROM regions WHERE `unique` = :unique;";
+	$sql = "DELETE FROM regions WHERE `unique` = :unique;
+		DELETE FROM pages_data WHERE owner = 'region' AND owner_unique = :unique;";
 	$statement = db()->prepare($sql);
 	$statement->execute(array(':unique' => $unique));
 }
@@ -916,7 +928,7 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    ));
 	    $success = (bool)$exec;
 
-	    $last_insert_id = db()->lastInsertId();
+	    //$last_insert_id = db()->lastInsertId();
 
 	    foreach ($org_uniques as $org_unique)
 	    {
@@ -1061,54 +1073,7 @@ function delete_project($unique)
     else
     	return "couldn't delete record/database error";
 }
-/*
-function read_project_data($unique)
-{
-	$query = "SELECT * FROM projects_data WHERE project_unique = :unique AND lang = '" . LANG . "' ORDER BY `sort`,`unique`;";
-	$query = db()->prepare($query);
-	$query->execute(array(':unique' => $unique));
-	$query = $query->fetchAll();
-	empty($query) AND $query = array();
-	return $query;
-}
 
-function delete_project_data($unique)
-{
-	$sql = "DELETE FROM projects_data WHERE project_unique = :unique;";
-	$statement = db()->prepare($sql);
-	$statement->execute(array(':unique' => $unique));
-}
-
-function add_project_data($project_unique, $key, $sort, $sidebar, $value)
-{
-	//$project_unique = get_unique("projects", $project_id);
-	for ( $i = 0, $c = count($key); $i < $c; $i ++ )
-	{
-	    if (!empty($key[$i]) AND !empty($value[$i]))
-	    {
-	        $languages = config('languages');
-   		$unique = generate_unique("projects_data");
-    		foreach ($languages as $lang)
-    		{
-			$sql = "
-			 INSERT INTO `opentaps`.`projects_data` (`key`, `value`, `project_unique`, `sort`, `sidebar`, lang, `unique`)
-			 VALUES (:key, :value, :project_unique, :sort, :sidebar, :lang, :unique);
-			";
-			$statement = db()->prepare($sql);
-			$statement->execute(array(
-				':project_unique' => $project_unique,
-				':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
-				':value' => $value[$i],
-				':sort' => $sort[$i],
-				':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i] == "checked") ? 1 : 0),
-				':lang' => $lang,
-	       			':unique' => $unique
-			));
-		}
-	    }
-	}
-}
-*/
 /*==========================================================================================================*/
 function read_page_data($owner, $unique)
 {

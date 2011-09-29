@@ -7,7 +7,7 @@ Slim::get('/news/', function()
     {
 	$nosp = config('news_on_single_page');
 
-	$query = "  SELECT COUNT(id) AS total FROM news WHERE lang = '" . LANG . "'";
+	$query = " SELECT COUNT(id) AS total FROM news WHERE lang = '" . LANG . "'";
 	$query = db()->prepare($query);
 	$query->execute(array());
 	$total = $query->fetch(PDO::FETCH_ASSOC);
@@ -38,8 +38,14 @@ Slim::get('/news/', function()
 
 Slim::get('/news/:unique/', function($unique)
     {
-        Storage::instance()->content = template('news_single',array(
-                                                    'news' => read_news(FALSE, 0, $unique)
+	$sql = "SELECT * FROM pages_data
+		WHERE owner = 'news' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
+
+        Storage::instance()->content = template('news_single', array(
+        	'news' => read_news(FALSE, 0, $unique),
+        	'data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0)),
+        	'side_data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1))
         ));
     }
 );
@@ -158,7 +164,6 @@ Slim::get('/admin/news/', function()
 );
 
 Slim::get('/admin/news/new/', function()
-
         {
             if (!userloggedin())
             {
@@ -166,8 +171,8 @@ Slim::get('/admin/news/new/', function()
                 exit;
             }
             Storage::instance()->content = template('admin/news/new', array(
-                                                        'all_tags' => read_tags(),
-                                                        'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
+						'all_tags' => read_tags(),
+						'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
                     ));
         }
 );
@@ -198,7 +203,8 @@ Slim::get('/admin/news/:unique/', function($unique)
                         'news' => read_news(false, 0, $unique),
                         'all_tags' => read_tags() ,
                         'news_tags' => read_tag_connector('news', $unique),
-                        'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
+                        'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'"),
+			'data' => read_page_data('news', $unique)
                        ))
     	: template('login');
 });
@@ -257,14 +263,26 @@ Slim::post('/admin/news/create/', function()
 Slim::post('/admin/news/create/', function(){
     if(userloggedin())
     {
-      $filedata = array(
-      	  "name" => $_FILES['n_file']['name'],
-      	  "type" => $_FILES['n_file']['type'],
-      	  "size" => $_FILES['n_file']['size'],
-      	  "tmp_name" => $_FILES['n_file']['tmp_name']
-      );
-      empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
-      Storage::instance()->content = add_news( $_POST['n_title'], $_POST['n_body'], $filedata, $_POST['n_category'], $_POST['n_place'], $_POST['p_tag_uniques'], $_POST['p_tag_names']);
+	    $filedata = array(
+	    "name" => $_FILES['n_file']['name'],
+	    "type" => $_FILES['n_file']['type'],
+	    "size" => $_FILES['n_file']['size'],
+	    "tmp_name" => $_FILES['n_file']['tmp_name']
+	);
+	empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
+	Storage::instance()->content = add_news(
+		$_POST['n_title'],
+		$_POST['n_body'],
+		$filedata,
+		$_POST['n_category'],
+		$_POST['n_place'],
+		$_POST['p_tag_uniques'],
+		$_POST['p_tag_names'],
+        	$_POST['data_key'],
+        	$_POST['data_sort'],
+        	$_POST['data_value'],
+        	$_POST['sidebar']
+	);
     }
     else
 	Storage::instance()->content = template('login');
@@ -273,14 +291,17 @@ Slim::post('/admin/news/create/', function(){
 Slim::post('/admin/news/:unique/update/', function($unique){
     if(userloggedin())
     {
-      $filedata = array(
-      	  "name" => $_FILES['n_file']['name'],
-      	  "type" => $_FILES['n_file']['type'],
-      	  "size" => $_FILES['n_file']['size'],
-      	  "tmp_name" => $_FILES['n_file']['tmp_name']
-      );
-      empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
-      Storage::instance()->content = update_news($unique, $_POST['n_title'], $_POST['n_body'], $filedata , $_POST['n_category'], $_POST['n_place'], $_POST['p_tag_uniques'], $_POST['p_tag_names']);
+	delete_page_data('news', $unique);
+	if (!empty($_POST['data_key']))
+	    add_page_data('news',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	$filedata = array(
+	    "name" => $_FILES['n_file']['name'],
+	    "type" => $_FILES['n_file']['type'],
+	    "size" => $_FILES['n_file']['size'],
+	    "tmp_name" => $_FILES['n_file']['tmp_name']
+	);
+	empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
+	Storage::instance()->content = update_news($unique, $_POST['n_title'], $_POST['n_body'], $filedata , $_POST['n_category'], $_POST['n_place'], $_POST['p_tag_uniques'], $_POST['p_tag_names']);
     }
     else
 	Storage::instance()->content = template('login');

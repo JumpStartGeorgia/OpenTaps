@@ -14,6 +14,12 @@ Slim::get('/region/:unique/', function($unique){
 	$query->execute(array(':unique' => $unique));
 	$region_projects = $query->fetchAll(PDO::FETCH_ASSOC);
 
+	$sql = "SELECT * FROM pages_data
+		WHERE owner = 'region' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
+	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
+	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
+
     	Storage::instance()->content = template('region', array(
     		'region' => get_region($unique),
     		'region_cordinates' => fetch_db($sql_region_cordinates),
@@ -21,7 +27,9 @@ Slim::get('/region/:unique/', function($unique){
     		'values' => $values,
     		'names' => $names,
     		'real_values' => $real_values,
-    		'projects' => $region_projects
+    		'projects' => $region_projects,
+    		'data' => $data,
+    		'side_data' => $side_data
     	));
 });
 
@@ -44,8 +52,9 @@ Slim::get('/admin/regions/:unique/', function($unique){
 	Storage::instance()->content = userloggedin()
     		? template('admin/regions/edit', array(
     			'region' => get_region($unique),
-    			'water_supply' => fetch_db("SELECT * FROM water_supply WHERE region_id = $id LIMIT 1;"),
-    			'all_tags' => read_tags()
+    			'water_supply' => fetch_db("SELECT * FROM water_supply WHERE region_unique = '{$unique}' LIMIT 1;"),
+    			'all_tags' => read_tags(),
+    			'data' => read_page_data('region', $unique)
     		  ))
     		: template('login');
     }
@@ -79,7 +88,11 @@ Slim::post('/admin/regions/create/', function(){
         	$_POST['p_settlement'],
         	$_POST['p_villages'],
         	$_POST['p_districts'],
-		$_POST['p_watersupply']
+		$_POST['p_watersupply'],
+        	$_POST['data_key'],
+        	$_POST['data_sort'],
+        	$_POST['data_value'],
+        	$_POST['sidebar']
        	     );
        	     Slim::redirect(href('admin/regions', TRUE));
        	}
@@ -91,7 +104,10 @@ Slim::post('/admin/regions/update/:unique/', function($unique){
     empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
     if (userloggedin())
     {
-	     update_region(
+	delete_page_data('region', $unique);
+	if (!empty($_POST['data_key']))
+	    add_page_data('region', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	update_region(
 	    	$unique,
         	$_POST['p_name'],
         	$_POST['p_reg_info'],
@@ -103,8 +119,8 @@ Slim::post('/admin/regions/update/:unique/', function($unique){
         	$_POST['p_villages'],
         	$_POST['p_districts'],
 		$_POST['p_watersupply']
-       	     );
-       	     Slim::redirect(href('admin/regions', TRUE));
+	);
+	Slim::redirect(href('admin/regions', TRUE));
     }
-	   else Storage::instance()->content = template('login');
+    else Storage::instance()->content = template('login');
 });

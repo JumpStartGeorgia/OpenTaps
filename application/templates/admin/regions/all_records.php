@@ -11,8 +11,6 @@
   foreach($regions as $region)
   {
       $link_edit = href("admin/regions/". $region['unique'], TRUE);
-      $link_add_data = href("admin/regions-data/". $region['unique'] . "/new", TRUE);
-      $link_edit_data = href("admin/regions-data/". $region['unique'], TRUE);
       $link_del = href("admin/regions/". $region['unique'] . '/delete', TRUE);
       $region['name'] = ( strlen($region['name']) > 12 ) ? substr($region['name'], 0, 9) . "..." : $region['name'];
       $region['region_info'] = htmlspecialchars($region['region_info']);
@@ -26,7 +24,7 @@
 		  <div class='rcenter' style='width:61%;'> " . $region['region_info'] . "</div>
 		  <div class='rright' style='width:133px'>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
-		      <!--<a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>-->
+		      <a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>
 		  </div>
 		</div>
       ";

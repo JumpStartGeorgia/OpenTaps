@@ -15,8 +15,6 @@
 			region_map_longitude = <?php echo isset($project) ? $project['longitude'] : 'false'; ?>,
 			region_map_latitude = <?php echo isset($project) ? $project['latitude'] : 'false'; ?>,
 			region_marker_click = false;
-			console.log(region_map_longitude);
-			console.log(region_map_latitude);
 	</script>
 
 
