@@ -28,13 +28,13 @@
 	   var places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>];
  	   var projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
        var news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>];
-console.log(news[0]);
+	/*console.log(news[0]);*/
  	</script>
         <div class='main group'>
 
             <div class='header'>
                 <a href = "<? echo href(NULL, TRUE) ?>">
-                  <img src='<?php echo URL ?>images/opentaps.jpg' />
+                  <img src='<?php echo URL ?>images/open-taps-logo.gif' />
 		</a>
                 <div class='header_right slidenews'>
                 <?php foreach ($slide_news as $news): ?>
@@ -137,25 +137,23 @@ console.log(news[0]);
 
 
 
-
-
         </div>
 
 	<script type='text/javascript'>var baseurl = "<?php echo href(); ?>";</script>
 	<script type="text/javascript" src="<?php echo URL ?>js/OpenLayers/OpenLayers.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jq.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jquery.slideQuery.js"></script>
-	<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
+	<?php /*<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/g.bar.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/g.pie.js"></script>
-        <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>
+        <script type="text/javascript" src="<?php echo URL ?>js/chart.js"></script>*/ ?>
 	<script type="text/javascript" src="<?php echo URL ?>js/map.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/main.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/init.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/menu.js"></script>
-	<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>
+	<?php /*<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>*/ ?>
 	<script type="text/javascript" src="<?php echo URL ?>js/bottom_toggles.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/admin_edit.js"></script>
     </body>

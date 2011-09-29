@@ -1,5 +1,5 @@
 <?php
-  $action = href("admin/project-data/" . $project_unique . "/update", TRUE);
+  $action = href("admin/project-data/" . $data[0]['owner_unique'] . "/update", TRUE);
 ?>
     	<form action='<? echo $action; ?>' method='post'>
 <?php

@@ -31,9 +31,17 @@ Slim::get('/organization/:unique/',function($unique){
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
+	$sql = "SELECT * FROM pages_data
+		WHERE owner = 'organization' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
+	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
+	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
+
     	Storage::instance()->content = template('organization', array(
     		'organization' => get_organization($unique),
     		'organization_budget' => organization_total_budget($unique),
+    		'data' => $data,
+    		'side_data' => $side_data,
     		'values' => $values,
     		'names' => $names,
     		'real_values' => $real_values,
@@ -61,12 +69,13 @@ if ($unique == "new")
 }
 else
 {
-    is_numeric($unique) or Slim::redirect(href('admin/organizations', TRUE));
+    is_numeric($unique) OR Slim::redirect(href('admin/organizations', TRUE));
     Storage::instance()->content = userloggedin()
     	? template('admin/organizations/edit', array(
     			'organization' => get_organization($unique),
     			'all_tags' => read_tags(),
-    			'org_tags' => read_tag_connector('org', $unique)
+    			'org_tags' => read_tag_connector('org', $unique),
+			'data' => read_page_data('organization', $unique)
     			))
     	: template('login');
 }
@@ -95,7 +104,11 @@ Slim::post('/admin/organizations/create/', function(){
         	$_POST['p_sector'],
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
-        	$_FILES
+        	$_FILES,
+        	$_POST['data_key'],
+        	$_POST['data_sort'],
+        	$_POST['data_value'],
+        	$_POST['sidebar']
        	     );
        	     Slim::redirect(href('admin/organizations', TRUE));
        	}
@@ -107,7 +120,11 @@ Slim::post('/admin/organizations/update/:unique/', function($unique){
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     if(userloggedin())
     {
-   	     edit_organization(
+	    delete_page_data('organization', $unique);
+	    empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
+	    if (!empty($_POST['data_key']))
+	    	add_page_data('organization',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+   	    edit_organization(
 	    	$unique,
         	$_POST['p_name'],
         	$_POST['p_org_info'],

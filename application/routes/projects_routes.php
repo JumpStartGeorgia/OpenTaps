@@ -19,8 +19,9 @@ Slim::get('/project/:unique/', function($unique)
 	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
-	$sql = "SELECT * FROM projects_data
-		WHERE project_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar ORDER BY `sort`,`unique`;";
+	$sql = "SELECT * FROM pages_data
+		WHERE owner = 'project' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
 	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
 	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
 
@@ -145,7 +146,7 @@ Slim::get('/admin/projects/:unique/', function($unique){
         	'regions' => $regions,
         	'places' => $places,
 		'project_types' => config('project_types'),
-		'data' => read_project_data($unique)
+		'data' => read_page_data('project', $unique)
 	));
     }
     else
@@ -178,9 +179,9 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
         	$_POST['p_type'],
-        	$_POST['project_key'],
-        	$_POST['project_sort'],
-        	$_POST['project_value'],
+        	$_POST['data_key'],
+        	$_POST['data_sort'],
+        	$_POST['data_value'],
         	$_POST['sidebar']
         );
     }
@@ -193,10 +194,10 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array(NULL);
     if (userloggedin())
     {
-	delete_project_data($unique);
+	delete_page_data('project', $unique);
 	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
-	if (!empty($_POST['project_key']))
-	    add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
+	if (!empty($_POST['data_key']))
+	    add_page_data('project',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
 	update_project(
 	    	$unique,
         	$_POST['p_title'],
@@ -263,9 +264,9 @@ Slim::post('/admin/project-tags/:unique/update/',function($unique){
 Slim::get('/admin/project-data/:unique/',function($unique){
     if(userloggedin())
     {
-	$r = read_project_data($unique);
-        empty($r) AND $r = array(array('key' => NULL, 'value' => NULL, 'project_unique' => $unique, 'id' => NULL));
-        Storage::instance()->content = template('admin/projects/edit_data', array('data' => $r, 'project_unique' => $unique));
+	$r = read_page_data('project', $unique);
+        empty($r) AND $r = array(array('key' => NULL, 'value' => NULL, 'owner_unique' => $unique, 'id' => NULL));
+        Storage::instance()->content = template('admin/projects/edit_data', array('data' => $r));
     }
     else
 	Storage::instance()->content = template('login');
@@ -281,7 +282,7 @@ Slim::post('/admin/project-data/:unique/create/',function($unique){
     if(userloggedin())
     {
     	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
-	add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
+	add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else
@@ -291,9 +292,9 @@ Slim::post('/admin/project-data/:unique/create/',function($unique){
 Slim::post('/admin/project-data/:unique/update/',function($unique){
     if(userloggedin())
     {
-	delete_project_data($unique);
+	delete_page_data('project', $unique);
 	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
-        add_project_data($unique, $_POST['project_key'], $_POST['project_sort'], $_POST['sidebar'], $_POST['project_value']);
+        add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else
@@ -322,7 +323,7 @@ Slim::post('/admin/project-ajax/:unique/:datatype',function($unique, $datatype){
     		    break;
 
     		case "project_data":
-    		    $data = db()->prepare("SELECT * FROM projects_data WHERE lang = '" . LANG . "' AND `unique` = :unique");
+    		    $data = db()->prepare("SELECT * FROM pages_data WHERE owner = 'project' AND lang = '" . LANG . "' AND `unique` = :unique");
     		    $data->execute(array(':unique' => $unique));
     		    $html = template('admin/projects/ajax_edit_project_data', array(
     		    	'data' => $data->fetch(PDO::FETCH_ASSOC)
@@ -356,10 +357,10 @@ Slim::post('/admin/project-ajax-save/:unique/:datatype',function($unique, $datat
 
 	    	case "project_data":
     		    $_POST[':unique'] = $unique;
-    		    $query = "UPDATE projects_data SET
+    		    $query = "UPDATE pages_data SET
     		    		`key` = :key,
     		    		`value` = :value
-    		    	      WHERE lang = '" . LANG . "' AND `unique` = :unique";
+    		    	      WHERE lang = '" . LANG . "' AND `unique` = :unique AND owner = 'project'";
     		    $exec = db()->prepare($query)->execute($_POST);
 	    	    break;
     	}

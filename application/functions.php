@@ -934,7 +934,7 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
     if ($success)
     {
         if (!empty($project_key))
-        	add_project_data($unique, $project_key, $project_sort, $sidebar, $project_value);
+        	add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
     	Slim::redirect(href("admin/projects", TRUE));
     }
     else
@@ -1036,15 +1036,12 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     if (!empty($tag_uniques) OR !empty($tag_names))
     	add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
 
-    if ($exec)
-    	Slim::redirect(href("admin/projects", TRUE));
-    else
-    	return "couldn't update record/database error";
+    Slim::redirect(href("admin/projects", TRUE));
 }
 
 function delete_project($unique)
 {
-    if( !is_numeric($unique) )
+    if (!is_numeric($unique))
 	return "invalid id";
 
     //$unique = get_unique("projects", $id);
@@ -1052,19 +1049,19 @@ function delete_project($unique)
     		DELETE FROM `projects` WHERE  `projects`.`unique` = '" . $unique . "';
     		DELETE FROM tag_connector WHERE proj_unique = :unique;
 		DELETE FROM project_organizations WHERE project_unique = :unique;
-		DELETE FROM projects_data WHERE project_unique = :unique;
+		DELETE FROM pages_data WHERE owner = 'project' AND owner_unique = :unique;
 	   ";
     $statement = db()->prepare($sql);
     $delete = $statement->execute(array(':unique' => $unique));
 
     //delete_project_data($id);
 
-    if ( $delete )
+    if ($delete)
     	Slim::redirect(href("admin/projects", TRUE));
     else
     	return "couldn't delete record/database error";
 }
-
+/*
 function read_project_data($unique)
 {
 	$query = "SELECT * FROM projects_data WHERE project_unique = :unique AND lang = '" . LANG . "' ORDER BY `sort`,`unique`;";
@@ -1111,6 +1108,58 @@ function add_project_data($project_unique, $key, $sort, $sidebar, $value)
 	    }
 	}
 }
+*/
+/*==========================================================================================================*/
+function read_page_data($owner, $unique)
+{
+	$query = "SELECT * FROM pages_data
+		  WHERE owner = :owner AND owner_unique = :unique AND lang = '" . LANG . "'
+		  ORDER BY `sort`,`unique`;";
+	$query = db()->prepare($query);
+	$query->execute(array(':unique' => $unique, ':owner' => $owner));
+	$query = $query->fetchAll();
+	empty($query) AND $query = array();
+	return $query;
+}
+
+function delete_page_data($owner, $unique)
+{
+	$sql = "DELETE FROM pages_data WHERE owner = :owner AND owner_unique = :unique;";
+	$statement = db()->prepare($sql);
+	$statement->execute(array(':unique' => $unique, ':owner' => $owner));
+}
+
+function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value)
+{
+	$languages = config('languages');
+	for ( $i = 0, $c = count($key); $i < $c; $i ++ )
+	{
+	    if (!empty($key[$i]) AND !empty($value[$i]))
+	    {
+   		$unique = generate_unique("pages_data");
+    		foreach ($languages as $lang)
+    		{
+			$sql = "
+			 INSERT INTO `opentaps`.`pages_data` (`key`, `value`, `owner`, owner_unique, `sort`, `sidebar`, lang, `unique`)
+			 VALUES (:key, :value, :owner, :owner_unique, :sort, :sidebar, :lang, :unique);
+			";
+			$statement = db()->prepare($sql);
+			$data = array(
+				':owner' => $owner,
+				':owner_unique' => $owner_unique,
+				':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
+				':value' => $value[$i],
+				':sort' => $sort[$i],
+				':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i] == "checked") ? 1 : 0),
+				':lang' => $lang,
+	       			':unique' => $unique
+			);
+			$statement->execute($data);
+		}
+	    }
+	}
+}
+/*==========================================================================================================*/
 
 function word_limiter($text, $limit = 30, $chars = 'აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ0123456789')
 {
@@ -1236,14 +1285,15 @@ function get_organization_projects($unique)
 
 function delete_organization($unique){
 	$org = get_organization($unique);
-	$sql = "DELETE FROM organizations WHERE `unique` = :unique;";
+	$sql = "DELETE FROM organizations WHERE `unique` = :unique;
+		DELETE FROM pages_data WHERE owner = 'organization' AND owner_unique = :unique";
 	$statement = db()->prepare($sql);
 	$statement->execute(array(':unique' => $unique));
 	if (file_exists($org['logo']))
 		unlink($org['logo']);
 }
 
-function add_organization($name,$description,$projects_info,$city_town,$district,$grante,$sector,$tags,$tag_names,$file)
+function add_organization($name,$description,$projects_info,$city_town,$district,$grante,$sector,$tags,$tag_names,$file, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
 {
 	if(count($file) > 0)
 	if( count($file) > 0 AND $file['p_logo']['error'] == 0 ){
@@ -1306,6 +1356,8 @@ function add_organization($name,$description,$projects_info,$city_town,$district
 
 		add_tag_connector('org', $unique, $tags, $tag_names);
 	}
+	if ($exec AND !empty($org_key))
+        	add_page_data('organization', $unique, $org_key, $org_sort, $sidebar, $org_value);
 }
 
 function edit_organization($unique,$name,$info,$projects_info,$city_town,$district,$grante,$sector,$file,$tag_uniques,$tag_names)

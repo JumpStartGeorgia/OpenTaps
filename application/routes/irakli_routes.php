@@ -6,7 +6,7 @@ foreach( $news as $new )
     $js_news[] = '[' . $new['unique'] . ',' . $new['longitude'] . ',' . $new['latitude'] .',"' . $new['title'] . '", new Date("' . $new['published_at'] . '") ]';
 Storage::instance()->js_news = $js_news;
 
-$projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_unique = pl.`unique` WHERE projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "'");
+$projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_unique = pl.`unique` WHERE p.lang = '" . LANG . "' AND pl.lang = '" . LANG . "'");
 $js_projects[] = '[ new Date("' . date('Y-m-d') . '") ]';
 foreach($projects as $project)
 

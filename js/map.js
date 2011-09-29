@@ -1,3 +1,8 @@
+var mouse_is_over_map = false;
+$('#map').mouseenter(function(){ mouse_is_over_map = true; });
+$('#map').mouseleave(function(){ mouse_is_over_map = false; });
+
+
 var zoomNum = 1;
 var map = null;
 var markers = null;
@@ -269,14 +274,14 @@ function display_filter_markers( filter )
 if( filter ===  'filter_checkbox_projects_completed'){
 	for(var i=0;i<projects.length-1;i++)
 		if( projects[i+1][2].getTime() < projects[0][0].getTime()  ){
-			 var img = "images/project.gif";
+			 var img = baseurl + "images/project.gif";
 			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
         }
 }
 else if( filter === 'filter_checkbox_projects_current' ){
 	for(var i=0;i<projects.length-1;i++){
 		if( projects[i+1][1].getTime() < projects[0][0].getTime() && projects[i+1][2].getTime() > projects[0][0].getTime()  ){
-			 var img = "images/project-current.gif";
+			 var img = baseurl + "images/project-current.gif";
 			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
 		}
 	}
@@ -284,7 +289,7 @@ else if( filter === 'filter_checkbox_projects_current' ){
 else if( filter === 'filter_checkbox_projects_scheduled' ){
 	for(var i=0;i<projects.length-1;i++){
 		if(  projects[i+1][1].getTime() > projects[0][0].getTime() ){
-				 var img = "images/project-scheduled.gif";
+				 var img = baseurl + "images/project-scheduled.gif";
 				 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
 		}
 	}
@@ -292,51 +297,51 @@ else if( filter === 'filter_checkbox_projects_scheduled' ){
 else if( filter === 'filter_checkbox_Water_Pollution' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Pollution" ){
-			makeMarker("images/water-pollution.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
+			makeMarker(baseurl + "images/water-pollution.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Sewage' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Sewage" ){
-			makeMarker("images/sewage.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
+			makeMarker(baseurl + "images/sewage.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Water_Supply' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Supply" ){
-			makeMarker("images/water-supply.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
+			makeMarker(baseurl + "images/water-supply.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Irrigation' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Irrigation" ){
-			makeMarker("images/irrigation.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
+			makeMarker(baseurl + "images/irrigation.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Water_Quality' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Quality" ){
-			makeMarker("images/water-quality.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
+			makeMarker(baseurl + "images/water-quality.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( filter === 'filter_checkbox_Water_Accidents' ){
 	for(var i=0;i<projects.length-1;i++)
 	   if( projects[i+1][7] === "Water Accidents" ){
-			makeMarker("images/water-accidents.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
+			makeMarker(baseurl + "images/water-accidents.gif",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
        }
 }
 else if( !isNaN(filter.substr(filter.length-4)) ){
 	var year = filter.substr(filter.length-4);
 	for(var i=0;i<projects.length-1;i++){		
 			if( projects[i+1][1].getFullYear() == year || projects[i+1][2].getFullYear() == year || (projects[i+1][2].getFullYear() > year && projects[i+1][1].getFullYear() < year) ){
-			 var img = "images/project.gif";
+			 var img = baseurl + "images/project.gif";
 			 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
 			}
 	}
 }
 else if( filter === 'filter_checkbox_news' ){
     for(var i=0;i<news.length;i++){
-        var img = "images/news.gif";
+        var img = baseurl + "images/news.gif";
         makeMarker(img,20,20,news[i][1],news[i][2],1,'news',i);
     }
 }
@@ -470,10 +475,12 @@ function map_init()
 	var conts = setUpPanControls();
 	if(map_confs.show_default_buttons) conts.push(maximize,minimize);
 	conts[0].defaultKeyPress = function(code){
-				switch(code.keyCode) {
-            case OpenLayers.Event.KEY_LEFT:
-               this.map.pan(-this.slideFactor, 0);
-               break;
+		if (!mouse_is_over_map)
+			return;
+		switch(code.keyCode) {
+		    case OpenLayers.Event.KEY_LEFT:
+			this.map.pan(-this.slideFactor, 0);
+			break;
 	            case OpenLayers.Event.KEY_RIGHT:
 	                this.map.pan(this.slideFactor, 0);
 	                break;
@@ -483,7 +490,6 @@ function map_init()
 	            case OpenLayers.Event.KEY_DOWN:
 	                this.map.pan(0, this.slideFactor);
 	                break;
-	           
 	            case 33: 
 	                var size = this.map.getSize();
 	                this.map.pan(0, -0.75*size.h);

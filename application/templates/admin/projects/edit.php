@@ -120,22 +120,22 @@
 			<div class='group' style='background: <?php echo $bg; ?>'>
 			<label style='cursor: pointer'>
   	    			Title: <br />
-  	    			<input name='project_key[]' value="<?php empty($d['key']) OR print $d['key'] ?>" type='text' />
+  	    			<input name='data_key[]' value="<?php empty($d['key']) OR print $d['key'] ?>" type='text' />
   	    		</label><br /><br />
   	    		<label style='cursor: pointer'>
 				Sort: <br />
-				<input name='project_sort[]' value="<?php empty($d['sort']) OR print $d['sort']; ?>" type='text' style='width: 40px' />
+				<input name='data_sort[]' value="<?php empty($d['sort']) OR print $d['sort']; ?>" type='text' style='width: 40px' />
   	    		</label>
-  	    		<input type='hidden' name='sidebar[<?php echo $idx; ?>]' value='not_checked' />
-  	    		<label style='margin-left: 25px; cursor: pointer;'>
-  	    			<input type='checkbox' name='sidebar[<?php echo $idx; ?>]' value='checked' <?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print 'checked="checked"'; ?> /> Sidebar
+  	    		<input type='hidden' class="data_unique_container" name='sidebar[]' value='<?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print "checked"; ?>' />
+  	    		<label style='margin-left: 25px; cursor: pointer;' onmouseup="check_sidebar($(this))">
+  	    			<input type='checkbox' <?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print 'checked="checked"'; ?> /> Sidebar
   	    		</label><br /><br />
 			<label style='cursor: pointer'>
   	    			Text: <br />
-  	    			<textarea class='mceEditor' name='project_value[]' cols='55' rows='5'><?php empty($d['value']) OR print $d['value'] ?></textarea>
+  	    			<textarea class='mceEditor' name='data_value[]' cols='55' rows='5'><?php empty($d['value']) OR print $d['value'] ?></textarea>
 	    		</label>
-	    		<a style='color: red; cursor: pointer; font-size: 13px;' onclick='$(this).parent().remove()'>
-	    			-Remove data
+	    		<a style='color: red; cursor: pointer; font-size: 13px;' onclick='$(this).parent().slideUp(function(){ $(this).remove(); })'>
+	    			- Remove data
 	    		</a>
 	    		<br /><hr style='margin-left: -27px' />
 	    		</div>
