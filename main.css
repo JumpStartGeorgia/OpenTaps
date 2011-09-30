@@ -1,6 +1,3 @@
-@opentaps_default_color: #0CB5F5;
-
-
 * { margin: 0 auto; font-family: arial; word-wrap: break-word; }
 
 .group:after{ visibility: hidden; display: block; content: ""; clear: both; height: 0; }
@@ -125,11 +122,10 @@ div#map:before, div.menu:after
 
 div.projects_organization{ width:296px; float: left; }
 
-div.news{ width:548px; padding-left:27px; text-align:left; margin:0; float:right; }
+div.news{ width: 559px; padding-left: 27px; text-align:left; margin: 0; float:right; }
 
 div.news, div.projects_organization{ height:27px; padding-top:4px; }
 
-div.news img{ vertical-align:middle; float:left; }
 /* 			IRAKLI HERE 		*/
 div.chartall
 { 
@@ -147,21 +143,45 @@ div.chart svg:after{ content:"."; display:block; height:1; clear:both; }
 
 
 
-div.news_body,div.newsall_body
+div.newsall_body
 {
-	width:573px;
-	color:#565656;
-	font-size:13px;
-	font-family:Arial;
-	border:1px dotted #A6A6A6;
+	width: 573px;
+	color: #565656;
+	font-size: 13px;
+	font-family: Arial;
+	border: 1px dotted #A6A6A6;
 	border-top:0px;
+	float: left;
+	border: 0px;
 }
 
-div.news_body{ float:right; }
-div.newsall_body{ float:left; border:0px; }
+div.news_body
+{
+	float: right;
+	width: 535px;
+	padding: 28px 22px 15px 27px;
+	border: 1px dotted #a6a6a6;
+	border-top: 0px;
+}
 
-div.news_body hr{ margin-top:20px;  border:1px solid #CCC; border-top:1px solid #909090; }
-div.news_each_main/*, div.news_each_with_bg*/
+
+.news_body .top_image{ width: 249px; height: 151px; display: inline-block; float: left; border-right: 6px solid #0cb5f5; }
+.news_body .top_image img{ width: 248px; height: 151px; border-right: 1px solid #fff; }
+.news_body .top_image .over_background{ position: absolute; width: 248px; height: 113px; padding-top: 38px; text-align: center; color: #fff; background: rgba(@opentaps_default_rgba, .6); font-size: 13px; }
+#news_middle_content{ width: 535px; height: 154px; margin-top: 33px; background: url(@hrefimages/bg.jpg) }
+.news_body #left_image_box{ padding: 13px 16px 13px 15px; height: 128px; width: 128px; overflow: hidden; float: left; }
+.news_body #left_image_box img{ height: 128px; width: 128px; }
+#right_titles_box{ height: 152px; border-top: 1px solid transparent; border-bottom: 1px solid transparent; width: 375px; float: right; }
+.right_title_one{ background: #fff; border-right: 6px solid #0cb5f5; width: 369px; height: 37.25px; font-size: 10px; }
+.right_title_one:hover{ background: rgba(0,0,0,0); border-color: rgba(@opentaps_default_rgba, .7); }
+.right_title_one a:hover{ color: #000; }
+.right_title_one a span{ margin-right: 9px; font-size: 12px; }
+.right_title_one a{ padding: 9px 0px 14px 16px; color: #858585; text-decoration: none; display: block; }
+#news_bottom_content{ font-size: 12px; margin: 8px 2px 0px 0px; float: right; }
+#news_bottom_content a{ color: #858585; text-decoration: none; }
+#news_bottom_content a:hover{ text-decoration: underline; }
+/*div.news_body hr{ margin-top:20px;  border:1px solid #CCC; border-top:1px solid #909090; }
+div.news_each_main
 {
 	float:left;
 	padding-left:27px;
@@ -171,7 +191,7 @@ div.news_each_main/*, div.news_each_with_bg*/
 	height:151px;
 }
 div.news_each_main p{ margin-top:-25%; color:#FFF; font-size:10pt; }
-div.news_each_main img{ width:210px; height:151px; border-right:7px solid #4CBEFF; }
+div.news_each_main img{ width:210px; height:151px; border-right:7px solid @opentaps_default_color; }
 div.news_each_others
 {
 	border:0px solid #000;
@@ -196,13 +216,13 @@ div.news_each_menu div
 div.news_each_menu div:hover{ border-top: 1px solid transparent; }
 div.more_news { float: right; margin-right: 12px; padding: 8px 0px; }
 div.more_news a{ text-decoration: none; font-size: 7pt; color: #A6A6A6; }
-div.more_news a:hover{ color: #303030; }
+div.more_news a:hover{ color: #303030; }*/
 /*			HERE			*/
 
 
 
 
-#region_link{ text-decoration: none; color: #4CBEFF; }
+#region_link{ text-decoration: none; color: @opentaps_default_color; }
 #region_link:hover{ text-decoration: underline; }
 
 
@@ -220,12 +240,12 @@ div.more_news a:hover{ color: #303030; }
 	border-right:1px dotted #a6a6a6;
 	border-bottom:1px dotted #a6a6a6;
 }
-#project_description{ margin-top:30px; text-align:justify; }
+#project_description{ margin-top:30px; text-align: justify; }
 #project_description div{ margin-bottom: 21px; margin-top: 6px; }
 #project_description .desc{ font-weight: bold; font-size: 19px; }
 #project_budget
 {
-	background: #4cbeff;
+	background: @opentaps_default_color;
 	height:55px;
 	border-bottom :1px dotted #a6a6a6;
 	padding-left:16px;
@@ -238,7 +258,7 @@ div.more_news a:hover{ color: #303030; }
 .data_block{ width:240px; min-height:45px; border: 1px dotted #a6a6a6; margin-bottom:10px; text-align:justify; }
 .data_block .key
 {
-	background: #4cbeff;
+	background: @opentaps_default_color;
 	color: rgba(255,255,255,.9);
 	padding:10px 0px 10px 17px;
 	font-size: 13px;

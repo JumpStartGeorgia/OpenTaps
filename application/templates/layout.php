@@ -3,7 +3,20 @@
     <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
-        <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
+        <?php /* <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />*/ ?>
+        <style type="text/css">
+	<?php
+		$file = fopen('main.css', 'r');
+		$style = fread($file, filesize('main.css'));
+		fclose($file);
+		$variables = array(
+			"@opentaps_default_color" => "#0cb5f5",
+			"@opentaps_default_rgba" => "12, 181, 245",
+			"@href" => href()
+		);
+		echo str_replace(array_keys($variables), $variables, $style);
+	?>
+        </style>
         <link href="<?php echo URL ?>adm.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8"/>
     	<script type="text/javascript">
@@ -78,7 +91,7 @@
 				<div><?php echo $about_us; ?></div>
 			</div>
 		</div>
-		<div id="contact-us" class="group" >
+		<div id="contact-us" class="group">
 			<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
 			<div id='map_image' style='display: none; background: url(<?php echo href() ?>images/mapspot_address_on_map.png);'></div>
 			<div id='contact-us-form-container' class='group'>

@@ -207,11 +207,11 @@ function read_news_one_page($from, $limit, $type = FALSE)
 
 function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
-    if( strlen($title) < 3 || strlen($body) < 11 )
-	return "either title or body is too short";
+    if (strlen($title) < 1)
+	return "title can't be empty";
 
-    $up = image_upload( $filedata );
-    if( substr($up, 0, 8) != "uploads/" && $up != "" )		//return if any errors
+    $up = image_upload($filedata);
+    if (substr($up, 0, 8) != "uploads/" && $up != "")		//return if any errors
         return $up;
 
     $languages = config('languages');
@@ -233,16 +233,14 @@ function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names
 	        ':unique' => $unique
 	    ));
 	    $success = (bool)$exec;
-
     }
 
-    add_tag_connector('news', $unique, $tags, $tag_names);
+    (empty($tags) AND empty($tag_names)) OR add_tag_connector('news', $unique, $tags, $tag_names);
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
     if ($success)
     {
-	if (!empty($data_key))
-	    add_page_data('news', $unique, $data_key, $data_sort, $sidebar, $data_value);
+	empty($data_key) OR add_page_data('news', $unique, $data_key, $data_sort, $sidebar, $data_value);
 	return $metarefresh;
     }
     else
@@ -251,8 +249,8 @@ function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names
 
 function update_news($unique, $title, $body, $filedata, $category, $place, $tags, $tag_names)
 {
-    if (strlen($title) < 3 || strlen($body) < 11 || !is_numeric($unique))
-	return "either title or body is too short, or invalid id";
+    if (strlen($title) < 1 OR !is_numeric($unique))
+	return "title is empty or invalid id";
 
     $up = image_upload($filedata); 
     if (substr($up, 0, 8) != "uploads/" && $up != "")			//return if any errors
@@ -332,11 +330,11 @@ function image_upload($filedata)
 }
 function delete_image($news_unique)
 {
-    $sql = "SELECT image FROM news WHERE `unique` = :news_unique LIMIT 1";
+    $sql = "SELECT image FROM news WHERE `unique` = :news_unique AND lang = '" . LANG . "' LIMIT 1";
     $statement = db()->prepare($sql);
     $statement->execute(array(':news_unique' => $news_unique));
     $image = $statement->fetch(PDO::FETCH_ASSOC);
-    if( file_exists($image['image']) )
+    if (file_exists($image['image']))
         unlink($image['image']);
 }
 function view_image($news_unique)
@@ -345,7 +343,7 @@ function view_image($news_unique)
     $statement = db()->prepare($sql);
     $statement->execute(array(':news_unique' => $news_unique));
     $image = $statement->fetch(PDO::FETCH_ASSOC);
-    return ( file_exists($image['image']) ) ? URL . $image['image'] : false;
+    return file_exists($image['image']) ? URL . $image['image'] : false;
 }
 
 
