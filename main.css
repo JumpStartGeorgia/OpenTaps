@@ -340,7 +340,7 @@ div.bottom1{ margin-left: 1px; }
 {
 	float: left;
 	font-family: arial;
-	background: rgba(12, 181, 246, .9);
+	background: rgba(@opentaps_default_rgba, .9);
 	height: 230px;
 	width: 230px;
 	-webkit-border-radius: 115px;
@@ -368,10 +368,10 @@ div.bottom1{ margin-left: 1px; }
 	font-family:arial;
 	border: 1px solid #45bff5;
 	color:white;
-	background: rgba(12, 181, 246, .9);
+	background: rgba(@opentaps_default_rgba, .9);
 	outline: none;
 }
-#contact-us-textarea:hover, .contact-us-input:hover{ background: rgba(12, 181, 246, .75); }
+#contact-us-textarea:hover, .contact-us-input:hover{ background: rgba(@opentaps_default_rgba, .75); }
 
 div.bottom a{ color:grey; text-decoration:none; }
 div.bottom a:hover{ text-decoration:underline; color:black; }
