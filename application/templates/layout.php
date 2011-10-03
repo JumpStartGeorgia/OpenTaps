@@ -3,22 +3,8 @@
     <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
-        <?php /* <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />*/ ?>
-        <style type="text/css">
-	<?php
-		$file = fopen('main.css', 'r');
-		$style = fread($file, filesize('main.css'));
-		fclose($file);
-		$variables = array(
-			"@opentaps_default_color" => "#0cb5f5",
-			"@opentaps_default_rgba" => "12, 181, 245",
-			"@baseurl" => href(),
-			"@opentaps_default_bordercolor" => "#A6A6A6"
-		);
-		echo str_replace(array_keys($variables), $variables, $style);
-	?>
-        </style>
-        <link href="<?php echo URL ?>adm.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo URL ?>adm.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8"/>
     	<script type="text/javascript">
     		var region_map_boundsLeft = false,
@@ -48,8 +34,8 @@
                 <?php foreach ($slide_news as $news): ?>
                   <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
                     <p><?php echo $news['title']; ?></p>
-                    <?php echo word_limiter(strip_tags($news['body']), 320); ?>
-                    <div class="slider_date"><?php echo $news['published_at']; ?></div>
+                    <?php echo word_limiter(strip_tags($news['body']), 320); /*?>
+                    <div class="slider_date"><?php echo $news['published_at']; ?></div>*/ ?>
 	  	  </a></div>
 	  	<?php endforeach; ?>
                 </div>

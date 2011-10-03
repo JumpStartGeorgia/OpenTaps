@@ -82,7 +82,7 @@
 	The OpenTaps project is made possible thanks to the generous support of information Program and the Think Tank Fund of Open Society Foundations and O'Sullivan Foundation.
 	</div>
 	<div style="float: left; margin-left: 85px; font-size: 14px; font-weight: bold; color: #00AFF2;">
-		<a href="#">
+		<a href="<?php echo href("water_supply", TRUE) ?>">
 			<img src="<?php echo href('images') . 'water-supply-24.gif' ?>" style="margin-top: 9px;" />
 		</a>
 		<h4 style="visibility: hidden;">WATER SUPPLY SCHEDULE</h4>
