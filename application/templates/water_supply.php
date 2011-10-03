@@ -9,10 +9,10 @@
                             }
                         });">
              <?php foreach( $regions as $region  ): ?>
-     <option value="<?php echo $region['id']; ?>" <?php echo (isset($region_id) AND $region_id == $region['id']) ? 'selected="selected"' : NULL; ?>>
+     <option value="<?php echo $region['unique']; ?>" <?php echo (isset($region_unique) AND $region_unique == $region['unique']) ? 'selected="selected"' : NULL; ?>>
                          <?php echo $region['name']; ?>
                     </option>
-             <?php endforeach;?>
+             <?php endforeach; ?>
         </select></p>
         </div>
         <br />
@@ -20,7 +20,7 @@
         <div style="margin-left:105px;width:525px;height:55px;border:1px dotted #A6A6A6;">
             <p style="padding-top:27px;">
              <?php foreach( $water_supply as $ws ):
-             if( $ws['region_id'] == $region_id):?>
+             if( $ws['region_unique'] == $region_unique):?>
                     <p style="padding-left:10px;margin-top:-15px;">
                         <font style="color:#0CB5F5;">
                             <?php echo $ws['text'];?>
