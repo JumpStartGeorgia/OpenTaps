@@ -12,7 +12,8 @@
 		$variables = array(
 			"@opentaps_default_color" => "#0cb5f5",
 			"@opentaps_default_rgba" => "12, 181, 245",
-			"@href" => href()
+			"@baseurl" => href(),
+			"@opentaps_default_bordercolor" => "#A6A6A6"
 		);
 		echo str_replace(array_keys($variables), $variables, $style);
 	?>
@@ -84,11 +85,29 @@
 
 	    <div id="bot-container" class="group">
 		<div id="about-us" class="group">
-			<div id='about-us-title-container'>
-				<div id='about-us-title'>ABOUT</div>
+			<div id='about-us-main-title-container'>
+				<div id='about-us-main-title'>ABOUT</div>
 			</div>
 			<div style='padding: 30px 22px 40px 16px;'>
-				<div><?php echo $about_us; ?></div>
+				<div><?php echo $about_us['main']['text']; ?></div>
+				<div class="about-us-inner-box" style="margin-left: 0px;">
+					<div class="about-us-main-title-container">
+						<div class='about-us-title'>OPEN INFORMATION</div>
+					</div>
+					<div class="inner-text-box"><?php echo $about_us['open_information']['text']; ?></div>
+				</div>
+				<div class="about-us-inner-box">
+					<div class="about-us-main-title-container">
+						<div class='about-us-title'>PARTICIPATION</div>
+					</div>
+					<div class="inner-text-box"><?php echo $about_us['participation']['text']; ?></div>
+				</div>
+				<div class="about-us-inner-box">
+					<div class="about-us-main-title-container">
+						<div class='about-us-title'>INNOVATION</div>
+					</div>
+					<div class="inner-text-box"><?php echo $about_us['innovation']['text']; ?></div>
+				</div>
 			</div>
 		</div>
 		<div id="contact-us" class="group">

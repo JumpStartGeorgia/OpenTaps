@@ -49,13 +49,14 @@ Storage::instance()->viewsubmenu = template('submenu', array(
 Storage::instance()->content = template('home');
 Storage::instance()->show_map = TRUE;
 
-$unique = config('about_us_menu_unique');
-$query = "SELECT text FROM menu WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;";
-$query = db()->prepare($query);
-$query->execute(array(':unique' => $unique));
-$about_us = $query->fetch(PDO::FETCH_ASSOC);
-$about_us = $about_us['text'];
-
+$uniques = config('about_us_uniques');
+$sql = "SELECT text FROM menu WHERE `unique` = ";
+$about_us = array(
+    'main' => fetch_db("{$sql} '{$uniques['main']}' AND lang = '".LANG."' LIMIT 1;", NULL, TRUE),
+    'open_information' => fetch_db("{$sql} '{$uniques['open_information']}' AND lang = '".LANG."' LIMIT 1;", NULL, TRUE),
+    'participation' => fetch_db("{$sql} '{$uniques['participation']}' AND lang = '".LANG."' LIMIT 1;", NULL, TRUE),
+    'innovation' => fetch_db("{$sql} '{$uniques['innovation']}' AND lang = '".LANG."' LIMIT 1;", NULL, TRUE)
+);
 
 require_once DIR . 'application/routes/default_routes.php';
 require_once DIR . 'application/routes/irakli_routes.php';

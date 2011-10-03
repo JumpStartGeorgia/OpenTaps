@@ -20,6 +20,11 @@ return array(
     ),
     'tags_on_single_page' => 15,
     'news_on_single_page' => 15,
-    'about_us_menu_unique' => 7,
+    'about_us_uniques' => array(
+    	'main' => 7,
+    	'open_information' => 9,
+    	'participation' => 10,
+    	'innovation' => 11
+    ),
     'languages' => array('en', 'ka')
 );
