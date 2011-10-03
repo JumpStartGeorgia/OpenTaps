@@ -496,14 +496,21 @@ function delete_tag($unique)
     return ($exec) ? $metarefresh : "couldn't delete record/database error";
 }
 
-
 						################################ IRAKLI'S FUNCTIONS
-function fetch_db($sql, $data = NULL)
+function fetch_db($sql, $data = NULL, $fetch_one = FALSE)
 {
 	$statement = db()->prepare($sql);
 	$statement->execute($data);
-	$result = $statement->fetchAll();
-	return empty($result) ? array() : $result;
+	if ($fetch_one)
+	{
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+		return empty($result) ? array() : $result;
+	}
+	else
+	{
+		$result = $statement->fetchAll(PDO::FETCH_ASSOC);
+		return empty($result) ? array() : $result;
+	}
 }
 function upload_files($files_data, $file_destination, $files_names = NULL, $restrictions = NULL)
 {

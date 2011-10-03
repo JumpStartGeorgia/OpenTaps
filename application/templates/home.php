@@ -55,14 +55,16 @@
 		    $news = $news_all[$index];
 		    $src = substr($news['image'], 0, 7);
 		    $src = ($src == "http://" OR $src == "https:/") ? $news['image'] : href() . $news['image'];
-		    $margin = $index > 2 ? 'style="margin-top: 1px;"' : NULL;
 	    ?>
-		    <div class="right_title_one" <?php echo $margin ?>>
+		    <div class="right_title_one">
 			<a href="<?php echo href("news/" . $news['unique'], TRUE); ?>">
 			    <span><</span><?php echo strtoupper($news['title']); ?>
 			</a>
 			<input type="hidden" class="src_container" value="<?php echo $src; ?>" />
 		    </div>
+		    <?php if ($index != 5): ?>
+		    	<hr style="background: transparent; border: 0px; height: 2px;" />
+		    <?php endif; ?>
 	    <?php endfor; ?>
 	    </div>
 	</div>
