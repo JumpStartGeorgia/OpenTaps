@@ -145,7 +145,7 @@
             <div class='bottom group'>
                 <div class='bottom1'>
 		    © 2011 OPEN TAPS. &nbsp; Designed and developed by
-		    <a href='http://jumpstart.ge/'>Jumpstart Georgia</a>
+		    <a target="_blank" href='http://jumpstart.ge/'>Jumpstart Georgia</a>
 		</div>
 	        <div class="bottom2">
 	            <span id="about_us_button">ABOUT US</span> &nbsp;&nbsp;|&nbsp;&nbsp;
