@@ -37,7 +37,7 @@ foreach ($years_res AS $years)
 Storage::instance()->js_years = array_unique($years_storage);
 
 $types_tmp = array();
-$type_img = array('Water Pollution' => 'water-pollution.gif','Sewage' => 'sewage.gif','Water Supply' => 'water-supply.gif','Irrigation' => 'irrigation.gif','Water Quality' => 'water-quality.gif','Water Accidents' => 'water-accidents.gif');
+$type_img = array('Water Pollution' => 'water-pollution.png','Sewage' => 'sewage.png','Water Supply' => 'water-supply.png','Irrigation' => 'irrigation.png','Water Quality' => 'water-quality.png','Water Accidents' => 'water-accidents.png');
 foreach( config('project_types') as $type ){
 	if(isset($type_img[$type])){
 		$types_tmp[] = array($type,$type_img[$type]);

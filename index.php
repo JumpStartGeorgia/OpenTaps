@@ -3,7 +3,8 @@
 $xml = fread($fh, filesize('settlements/settlements.shp.xml')); fclose($fh);
 $xml = new SimpleXMLElement($xml); print_r(json_encode($xml)); die;*/
 
-session_start();
+if (!isset($_SESSION) OR (isset($_SESSION) AND empty($_SESSION)))
+    session_start();
 
 define('DIR', getcwd() . '/');
 define('URL', 'http://localhost/OpenTaps/');

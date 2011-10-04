@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 .olLayerGoogleCopyright {
     right: 3px;
     bottom: 2px;

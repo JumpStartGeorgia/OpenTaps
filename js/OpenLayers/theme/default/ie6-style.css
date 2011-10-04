@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 .olControlZoomPanel div {
     background-image: url(img/zoom-panel-NOALPHA.png);
 }

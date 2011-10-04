@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 #text_font {width:250px;}
 #text_size {width:70px;}
 .mceAddSelectValue {background:#DDD;}

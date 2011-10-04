@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 #frmbody {
 	padding: 10px;
 	background-color: #FFF;

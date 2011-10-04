@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 /* Hide the advanced tab */
 #advanced_tab {
 	display: none;
