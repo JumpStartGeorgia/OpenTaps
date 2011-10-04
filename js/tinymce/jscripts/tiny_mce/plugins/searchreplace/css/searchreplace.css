@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 .panel_wrapper {height:85px;}
 .panel_wrapper div.current {height:85px;}
 

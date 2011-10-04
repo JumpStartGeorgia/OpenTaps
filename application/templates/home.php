@@ -23,14 +23,14 @@
 	    $src = ($src == "http://" OR $src == "https:/") ? $news['image'] : href() . $news['image'];
 	    switch ($news['category'])
 	    {
-	        default:         $filename = "text";     break;
-		case "text":     $filename = "text";     break;
-		case "video":    $filename = "video";    break;
-		case "photo":    $filename = "photo";    break;
-		case "document": $filename = "doc";      break;
-		case "chart":    $filename = "piechart"; break;
+	        default:         $filename = "text";      break;
+		case "text":     $filename = "text";      break;
+		case "video":    $filename = "video";     break;
+		case "photo":    $filename = "photo";     break;
+		case "document": $filename = "doc";       break;
+		case "chart":    $filename = "chart-pie"; break;
 	    }
-	    $type_src = href() . "images/newstype_" . $filename . ".gif";
+	    $type_src = href() . "images/" . $filename . ".png";
 	    $margin = $index == 1 ? 'style="margin-left: 25px"' : NULL;
 	    ?>
 	    <div class="top_image" <?php echo $margin ?>>
@@ -76,6 +76,7 @@
 </div>
 
 
+<?php $filenameend = (LANG == "ka") ? "-geo.png" : ".gif"; ?>
 
 <div style="margin-top: 27px; " class="group">
 	<div style="float: left; width: 293px; text-align: justify; font-size: 11px; color: #808080">
@@ -83,13 +84,13 @@
 	</div>
 	<div style="float: left; margin-left: 85px; font-size: 14px; font-weight: bold; color: #00AFF2;">
 		<a href="<?php echo href("water_supply", TRUE) ?>">
-			<img src="<?php echo href('images') . 'water-supply-24.gif' ?>" style="margin-top: 9px;" />
+			<img src="<?php echo href('images') . 'water-supply' . $filenameend ?>" style="margin-top: 9px;" />
 		</a>
 		<h4 style="visibility: hidden;">WATER SUPPLY SCHEDULE</h4>
 	</div>
 	<div style="display: inline-block; margin-left: 56px; height: 57px; padding-left: 56px; font-size: 14px; font-weight: bold; color: #00AFF2; border-left: 1px dotted #a6a6a6;">
 		<a href="#">
-			<img src="<?php echo href('images') . 'water-diseases.gif' ?>" style="margin-top: 9px;" />
+			<img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" />
 		</a>
 		<h4 style="visibility: hidden;">WATER AND DISEASES</h4>
 	</div>

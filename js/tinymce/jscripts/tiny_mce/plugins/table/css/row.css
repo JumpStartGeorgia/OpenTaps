@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 /* CSS file for row dialog in the table plugin */
 
 .panel_wrapper div.current {

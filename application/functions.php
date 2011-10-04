@@ -81,10 +81,10 @@ function read_menu($parent_unique = 0, $lang = null, $readhidden = FALSE)
 
 function has_submenu($menuunique)
 {
-    $sql = "SELECT id,`unique` FROM menu WHERE parent_unique = ':menuunique' AND lang = '" . LANG . "'";
+    $sql = "SELECT id,`unique` FROM menu WHERE parent_unique = :menuunique AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->execute(array(':menuunique' => $menuunique));
-    $a = $statement->fetchAll();  
+    $a = $statement->fetchAll();
     return (count($a) > 0);
 }
 function read_submenu()
@@ -845,6 +845,37 @@ function read_projects($project_unique = false)
     return $statement->fetchAll();    
 }
 
+function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALSE)
+{
+    if ($order)
+    {
+	    $order = htmlspecialchars(stripslashes($order));
+	    $direction = $direction ? strtoupper(htmlspecialchars(stripslashes($direction))) : NULL;
+	    switch ($order)
+	    {
+	    	default:           $order = "p.title";          break;
+	    	case "region":     $order = "pl.region_unique"; break;
+	    	case "districts":  $order = "";                 break;
+	    	case "years":      $order = "p.start_at";       break;
+	    	case "categories": $order = "p.type";           break;
+	    	case "a-z":        $order = "p.title";          break;
+	    }
+	    $order .= " " . $direction . " ";
+    }
+    $sql = "
+        SELECT
+            p.title, p.`unique`, p.description, p.start_at, p.type, r.name AS region_name, r.`unique` AS region_unique
+        FROM projects AS p
+        LEFT JOIN places AS pl
+            ON p.place_unique = pl.`unique` AND p.lang = pl.lang
+	LEFT JOIN regions AS r
+	    ON pl.region_unique = r.`unique` AND pl.lang = r.lang
+        WHERE p.lang = '" . LANG . "'
+	" . ($order ? " ORDER BY {$order} " : NULL ) . " LIMIT {$from}, {$limit};";
+    $statement = db()->prepare($sql);
+    $statement->execute();
+    return $statement->fetchAll();
+}
 
 function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {

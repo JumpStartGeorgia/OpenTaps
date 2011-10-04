@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 body, td, pre { margin:8px;}
 body.mceForceColors {background:#FFF; color:#000;}
 h1 {font-size: 2em}

@@ -1,6 +1,39 @@
 <?php
 
 ################################################################ projects view
+Slim::get('/projects/', function()
+{
+	$posp = config('projects_on_single_page');
+
+	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "'";
+	$query = db()->prepare($query);
+	$query->execute(array());
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+
+	$query = "SELECT DISTINCT tags.id,
+			  tags.name,
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  AS total_tags
+			  FROM tag_connector
+			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	Storage::instance()->content = template('projects', array(
+		    'projects' => read_projects_one_page(0, $posp, 'region', 'ASC'),
+    		'current_page' => 1,
+    		'total_pages' => $total_pages,
+    		'this_order' => 'region',
+    		'tags' => $tags,
+    		'direction' => 'asc'
+	));
+});
+
 Slim::get('/project/:unique/', function($unique)
 {
 	Storage::instance()->show_map = FALSE;
@@ -11,17 +44,17 @@ Slim::get('/project/:unique/', function($unique)
 	list($values, $names, $real_values) = get_project_chart_data($unique);
 
 	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
-		  FROM tags
-		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
-		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
-		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique";
+			  FROM tags
+			  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
+			  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique";
 	$query = db()->prepare($query);
 	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	$sql = "SELECT * FROM pages_data
-		WHERE owner = 'project' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
-		ORDER BY `sort`,`unique`;";
+			WHERE owner = 'project' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+			ORDER BY `sort`,`unique`;";
 	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
 	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
 
@@ -36,6 +69,141 @@ Slim::get('/project/:unique/', function($unique)
     		'edit_permission' => userloggedin()
     	));
 });
+
+Slim::get('/projects/page/:page/', function($page)
+{
+	($page > 0) OR die('invalid page');
+	$posp = config('projects_on_single_page');
+
+	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "'";
+	$query = db()->prepare($query);
+	$query->execute(array());
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+	($page > $total_pages) AND die('invalid page');
+
+	$query = "SELECT DISTINCT tags.id,
+			  tags.name,
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  AS total_tags
+			  FROM tag_connector
+			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	Storage::instance()->content = template('projects', array(
+		    'projects' => read_projects_one_page(($posp * $page - $posp), $posp, 'region', 'ASC'),
+    		'current_page' => $page,
+    		'total_pages' => $total_pages,
+    		'this_order' => 'region',
+    		'tags' => $tags,
+    		'direction' => 'asc'
+	));
+});
+
+Slim::get('/projects/order/:order-:direction/', function($order, $direction)
+{
+	list($order) = explode("_", strtolower(htmlspecialchars(stripslashes($order))));
+	in_array($order, array('region', 'district', 'years', 'categories', 'a-z')) OR die('invalid project ordering');
+	in_array(strtolower($direction), array('asc', 'desc')) OR $direction = 'asc';
+
+	$posp = config('projects_on_single_page');
+
+	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "';";
+	$query = db()->prepare($query);
+	$query->execute();
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+
+	$query = "SELECT DISTINCT tags.id,tags.name,
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  AS total_tags
+			  FROM tag_connector
+			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	Storage::instance()->content = template('projects', array(
+		    'projects' => read_projects_one_page(0, $posp, $order, $direction),
+    		'current_page' => 1,
+    		'total_pages' => $total_pages,
+    		'this_order' => $order,
+    		'tags' => $tags,
+    		'direction' => $direction
+	));
+});
+
+Slim::get('/projects/order/:order-:direction/:page/', function($order, $direction, $page)
+{
+	list($order) = explode("_", strtolower(htmlspecialchars(stripslashes($order))));
+	($page > 0) OR die('invalid page');
+	in_array($order, array('region', 'district', 'years', 'categories', 'a-z')) OR die('invalid project ordering');
+	in_array(strtolower($direction), array('asc', 'desc')) OR $direction = 'asc';
+
+	$posp = config('projects_on_single_page');
+
+	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "';";
+	$query = db()->prepare($query);
+	$query->execute();
+	$total = $query->fetch(PDO::FETCH_ASSOC);
+	$total = $total['total'];
+	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+	($page > $total_pages) AND die('invalid page');
+
+	$query = "SELECT DISTINCT tags.id,tags.name,
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  AS total_tags
+			  FROM tag_connector
+			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+	$query = db()->prepare($query);
+	$query->execute();
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	Storage::instance()->content = template('projects', array(
+	    	'projects' => read_projects_one_page(($posp * $page - $posp), $posp, $order, $direction),
+    		'current_page' => $page,
+    		'total_pages' => $total_pages,
+    		'this_order' => $order,
+    		'tags' => $tags,
+    		'direction' => $direction
+	));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 {

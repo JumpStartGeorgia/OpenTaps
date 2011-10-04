@@ -1,3 +1,5 @@
+<?php header("Content-type: text/css"); ?>
+
 #id, #name, #hspace, #vspace, #class_name, #align { width: 100px }
 #hspace, #vspace { width: 50px }
 #flash_quality, #flash_align, #flash_scale, #flash_salign, #flash_wmode { width: 100px }

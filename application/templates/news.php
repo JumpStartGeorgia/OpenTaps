@@ -1,12 +1,11 @@
 <?php
 	$images = array(
-		'photo' => 'images/newstype_photo.gif',
-		'document' => 'images/newstype_doc.gif',
-		'barchart' => 'images/newstype_barchart.gif',
-		'piechart' => 'images/newstype_piechart.gif',
-		'chart' => 'images/newstype_piechart.gif',
-		'text' => 'images/newstype_text.gif',
-		'video' => 'images/newstype_video.gif'
+		'photo' => 'images/photo.png',
+		'document' => 'images/doc.png',
+		'barchart' => 'images/chart-bar.png',
+		'piechart' => 'images/chart-pie.png',
+		'text' => 'images/text.png',
+		'video' => 'images/video.png'
 	);
 
 	$this_type_original = empty($this_type) ? NULL : $this_type;
@@ -18,8 +17,7 @@
     <div id='left_list'>
     	<div class='group headers'>
     	    <div class='headers_left'>NEWS</div>
-    	    <?php /*<div class='headers_right' style='cursor: pointer;' onclick='$("#newstype_filter").slideToggle("fast");'>SORT BY ▾</div>
-    	    */ ?>
+    	    <?php /*<div class='headers_right' style='cursor: pointer;' onclick='$("#newstype_filter").slideToggle("fast");'>SORT BY ▾</div>*/ ?>
     	</div>
 
     	<div class='group' id='newstype_filter' style='width: 100%; border-bottom: 1px solid #eee;'>
@@ -50,29 +48,16 @@
 	<?php foreach ($news_all as $index => $news): ?>
     	    <div class='content_each group <?php ($index % 2 == 1) AND print("with_bg"); ?>'>
     	      <a href="<?php echo href('news/' . $news['unique'], TRUE, "news") ?>">
-<?php
-	$rem = $index % 3;
-	switch($rem):
-		case 1:
-		    $color = "#83ddff";
-		    break;
-		case 2:
-		    $color = "#d9f5ff";
-		    break;
-		case 0:
-		    $color = "#19c1ff";
-		    break;
-	endswitch;
-?>
 	    	<div class='content_each_left'>
 	    	    <div class='content_each_title'><?php echo $news['title'] ?></div>
 	    	    <div class='content_each_body'>
 	    	    	<?php echo word_limiter(strip_tags($news['body']), 170); ?>
 	    	    </div>
 	    	</div>
-    		<div class='content_each_right' style='border-left: 7px solid <?php echo $color ?>'>
-    		    <div style='padding: 4px; padding-top: 25px; font-size: 10px; text-align: center;'>
-    		    	<img src='<?php echo href() . $images[$news['category']] ?>' width='27px' />
+	    	<?php $rgba = 1 - ($index % 3) / 2.5; ?>
+    		<div class='content_each_right' style='border-left: 7px solid rgba(12, 181, 245, <?php echo $rgba; ?>)'>
+    		    <div style='padding: 4px; padding-top: 15px; font-size: 10px; text-align: center;'>
+    		    	<img src='<?php echo href() . $images[$news['category']] ?>' height='36px' />
     		    	<br />
     		    	<?php echo substr($news['published_at'], 0, 10) ?>
     		    </div>
@@ -119,7 +104,7 @@
 		<?php
 			foreach($tags as $tag):
 				echo 
-					"<a href='".href('tag/project/' . $tag['name'], TRUE)."'>" .
+					"<a href='".href('tag/news/' . $tag['name'], TRUE)."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;

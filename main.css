@@ -256,6 +256,11 @@ div.more_news a:hover{ color: #303030; }*/
 #project_details
 {
 	float:left;
+
+
+
+
+
 	width:386px;
 	min-height:244px;
 	border-right:1px dotted @opentaps_default_bordercolor;
@@ -305,6 +310,7 @@ div.more_news a:hover{ color: #303030; }*/
 /*=======================		TAGS		==========================*/
 #tag_content{ font-family: arial; }
 #tag_content a{ text-decoration: none; color: #565656; font-size: 11px; }
+#tag_content #region_link{ color: #0CB5F5; }
 #left_list, #right_list{ min-height: 100px; }
 #left_list{ width: 640px; float: left; }
 .headers{ width: 100%; background: #0cb5f6; height: 39px; color: #fff; }
@@ -320,7 +326,7 @@ div.more_news a:hover{ color: #303030; }*/
 .newstypebg1{ background: #19c1ff/*rgba(25, 193, 255, .9)*/; } .newstypebg2{ background: #83ddff; } .newstypebg3{ background: #d9f5ff; }
 #internal_container{ width: 100%; min-height: 96px; margin-bottom: 10px; }
 .content_each{ width: 100%; }
-.content_each:hover{ text-shadow: 1px 1px 1px rgba(0, 0, 0, .3) }
+.content_each:hover{ text-shadow: 1px 1px 8px rgba(0, 0, 0, .2) }
 .with_bg{ background: url('@baseurl/images/bg.jpg'); }
 .content_each_left{ float: left; width: 509px; padding: 17px 40px 22px 15px; }
 .content_each_title{ color: #01adef; font-size: 15px; }
