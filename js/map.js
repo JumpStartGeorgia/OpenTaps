@@ -485,7 +485,7 @@ function map_init()
     }, {
         isBaseLayer:true
     });
-    deven.setOpacity(0.5);
+    deven.setOpacity(0.4);
     var devka = new OpenLayers.Layer.OSM("Georgian", "http://a.tile.mapspot.ge/ndi_ka/${z}/${x}/${y}.png", {
         numZoomLevels: 19
     }, {
