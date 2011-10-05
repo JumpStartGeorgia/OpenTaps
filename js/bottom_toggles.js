@@ -47,6 +47,14 @@ $(function(){
 		}
 	});
 
+
+	$('#contact-us-close-button').click(function(){
+		contact_button.click();
+	});
+
+	$('#about-us-close-button').click(function(){
+		about_button.click();
+	});
 });
 
 

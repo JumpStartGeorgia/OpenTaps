@@ -72,6 +72,7 @@
 	    <div id="bot-container" class="group">
 		<div id="about-us" class="group">
 			<div id='about-us-main-title-container'>
+				<span id="about-us-close-button">×</span>
 				<div id='about-us-main-title'>ABOUT</div>
 			</div>
 			<div style='padding: 30px 22px 40px 16px;'>
@@ -97,8 +98,12 @@
 			</div>
 		</div>
 		<div id="contact-us" class="group">
-			<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="929" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-			<div id='map_image' style='display: none; background: url(<?php echo href() ?>images/mapspot_address_on_map.png);'></div>
+			<div class="about-us-main-title-container" style="border: 0px; position: relative;">
+				<span id="contact-us-close-button">×</span>
+				<div class='about-us-title' style='display: inline-block'>CONTACT US</div>
+			</div>
+			<iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+			<?php /*<div id='map_image' style='background: url(<?php echo href() ?>images/mapspot_address_on_map.png);'></div>*/ ?>
 			<div id='contact-us-form-container' class='group'>
 			    <div id='contact-us-circle'>
 				<div style='margin-top: 40px'>CONTACT US</div>
