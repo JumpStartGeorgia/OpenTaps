@@ -78,19 +78,19 @@
 			<div style='padding: 30px 22px 40px 16px;'>
 				<div><?php echo $about_us['main']['text']; ?></div>
 				<div class="about-us-inner-box" style="margin-left: 0px;">
-					<div class="about-us-main-title-container">
+					<div class="about-us-main-title-container about-us-inner-button">
 						<div class='about-us-title'>OPEN INFORMATION</div>
 					</div>
 					<div class="inner-text-box"><?php echo $about_us['open_information']['text']; ?></div>
 				</div>
 				<div class="about-us-inner-box">
-					<div class="about-us-main-title-container">
+					<div class="about-us-main-title-container about-us-inner-button">
 						<div class='about-us-title'>PARTICIPATION</div>
 					</div>
 					<div class="inner-text-box"><?php echo $about_us['participation']['text']; ?></div>
 				</div>
 				<div class="about-us-inner-box">
-					<div class="about-us-main-title-container">
+					<div class="about-us-main-title-container about-us-inner-button">
 						<div class='about-us-title'>INNOVATION</div>
 					</div>
 					<div class="inner-text-box"><?php echo $about_us['innovation']['text']; ?></div>

@@ -55,6 +55,26 @@ $(function(){
 	$('#about-us-close-button').click(function(){
 		about_button.click();
 	});
+
+
+
+	$('.about-us-inner-button').click(function(){
+		var target = $(this).parent().find('.inner-text-box');
+		target.slideToggle();
+		/*
+		target.hide().css('height', 'auto');
+		var target_height = target.height();
+		target.height(0);alert(target_height);
+		target.show().animate({
+			'paddingTop': 14,
+			'paddingBottom': 11,
+			'height': target_height + 55
+		});*/
+	});
+
+
+
+
 });
 
 

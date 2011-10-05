@@ -364,7 +364,9 @@ div.bottom1{ margin-left: 1px; }
 #about-us-main-title-container{ width: 898px; }
 #about-us-main-title{ font-size: 16px; display: inline-block; }
 .about-us-inner-box{ margin-top: 40px; float: left; width: 262px; margin-left: 49px; border: 1px dotted @opentaps_default_bordercolor; margin-bottom: 25px; }
-.inner-text-box{ padding: 14px 16px 11px 15px; text-align: justify; }
+.inner-text-box{ padding: 14px 16px 11px 15px; text-align: justify; display: none; position: relative; width: 231px; }
+.about-us-inner-button{ cursor: pointer; }
+.about-us-inner-button:active{ background: #2f8aac; }
 
 /*#contact-us iframe{ margin-bottom: -5px; }*/
 #map_image{ width: 930px; height: 300px; }
