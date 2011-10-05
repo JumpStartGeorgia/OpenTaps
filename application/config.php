@@ -4,7 +4,7 @@ return array(
     'db_host' => 'localhost',
     'db_name' => 'opentaps',
     'db_user' => 'root',
-    'db_pass' => 'asdfg',
+    'db_pass' => 'password',
     'project_types' => array(
         'Sewage',
         'Water Supply',

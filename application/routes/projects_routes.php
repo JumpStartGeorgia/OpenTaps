@@ -25,7 +25,7 @@ Slim::get('/projects/', function()
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	Storage::instance()->content = template('projects', array(
-		    'projects' => read_projects_one_page(0, $posp, 'region', 'ASC'),
+		'projects' => read_projects_one_page(0, $posp, 'region', 'ASC'),
     		'current_page' => 1,
     		'total_pages' => $total_pages,
     		'this_order' => 'region',
@@ -96,7 +96,7 @@ Slim::get('/projects/page/:page/', function($page)
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	Storage::instance()->content = template('projects', array(
-		    'projects' => read_projects_one_page(($posp * $page - $posp), $posp, 'region', 'ASC'),
+		'projects' => read_projects_one_page(($posp * $page - $posp), $posp, 'region', 'ASC'),
     		'current_page' => $page,
     		'total_pages' => $total_pages,
     		'this_order' => 'region',
