@@ -7,6 +7,7 @@ foreach( $news as $new )
 Storage::instance()->js_news = $js_news;
 
 $projects = fetch_db("SELECT p.*,pl.longitude,pl.latitude FROM projects p INNER JOIN places pl ON p.place_unique = pl.`unique` WHERE p.lang = '" . LANG . "' AND pl.lang = '" . LANG . "'");
+
 $js_projects[] = '[ new Date("' . date('Y-m-d') . '") ]';
 foreach($projects as $project)
 
@@ -24,8 +25,7 @@ $years_sql = "
         start_at,
         end_at
     WHERE
-    	lang = '" . LANG . "'
-    ;
+    	lang = '" . LANG . "';
 ";
 $years_res = fetch_db($years_sql);
 $years_storage = array();

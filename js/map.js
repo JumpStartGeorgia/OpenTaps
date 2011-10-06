@@ -183,11 +183,11 @@ function makeMarker(img_source,img_width,img_height,lon,lat,id,type,i)
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
     var ico = new OpenLayers.Icon(img_source,size,offset);
     var marker = new OpenLayers.Marker(new OpenLayers.LonLat(lon,lat),ico);
-    if( map_confs.marker_click ){
-
+    if (map_confs.marker_click)
+    {
         marker.events.register('click', marker, function(e){
             marker_id = id;
-            //  alert(marker_id);
+            //alert(marker_id);
             marker_animate(e.target.id, lon, lat,type,i);
             $(e.target).css('cursor','default');
         });
@@ -295,7 +295,7 @@ function map_menu_filter_out( ths,filter_text )
     }
 }
 
-function display_filter_markers( filter )
+function display_filter_markers(filter)
 {
 
 
@@ -340,9 +340,10 @@ function display_filter_markers( filter )
                 makeMarker(baseurl + "images/water-supply.png",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
             }
     }
-    else if( filter === 'filter_checkbox_Irrigation' ){
-        for(var i=0;i<projects.length-1;i++)
-            if( projects[i+1][7] === "Irrigation" ){
+    else if (filter === 'filter_checkbox_Irrigation'){
+        for (var i = 0; i < projects.length - 1; i ++)
+            if( projects[i+1][7] === "Irrigation" )
+            {
                 makeMarker(baseurl + "images/irrigation.png",20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0], 'project',i);
             }
     }
@@ -383,13 +384,17 @@ function change_filter_checkboxes(checkbx)
         var filter_checkboxes = document.getElementById('map_and_menus').getElementsByTagName('input');
         for(var i=0,len=filter_checkboxes.length;i<len;i++)
         {
-            if(  !isNaN(checkbx) ){
-                if( isNaN( filter_checkboxes[i].id.substr(filter_checkboxes[i].id.length-4) ) ){
+            if ( !isNaN(checkbx))
+            {
+                if (isNaN(filter_checkboxes[i].id.substr(filter_checkboxes[i].id.length - 4)))
+                {
                     $(filter_checkboxes[i]).removeAttr('checked');
                 }
             }
-            else if( checkbx.indexOf('projects')!=-1 ){
-                if( filter_checkboxes[i].id.indexOf('projects')==-1 ){
+            else if (checkbx.indexOf('projects') != -1)
+            {
+                if (filter_checkboxes[i].id.indexOf('projects') == -1)
+                {
                     $(filter_checkboxes[i]).removeAttr('checked');
                 }
             }
@@ -569,7 +574,7 @@ function map_init()
 
     if(	map_confs.make_default_markers	  )//{
         for(var i=0;i<places.length;i++){
-            makeMarker("images/marker.png",20,20,places[i][1],places[i][2]);
+            makeMarker(baseurl + "images/marker.png",20,20,places[i][1],places[i][2]);
         }
     /*}
 		else{

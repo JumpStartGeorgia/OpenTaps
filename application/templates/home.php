@@ -4,7 +4,7 @@
     </div>
 
     <div class='news group'>
-        <span><strong>NEWS</strong></span>
+        <span><strong><?php echo l('news') ?></strong></span>
     </div>
 
     <div id="chart" class='chart'></div>
@@ -27,7 +27,7 @@
                 switch ($news['category'])
                 {
                     default: $filename = "text";
-                        break;
+z                        break;
                     case "text": $filename = "text";
                         break;
                     case "video": $filename = "video";

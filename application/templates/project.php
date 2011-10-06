@@ -69,6 +69,17 @@
 			</div>
 		<?php endforeach; ?>
 
+			<div>
+				<span class="expand_title"><span class="racxa">►</span> Organizations</span>
+				<div class="expandable">
+				<?php foreach ($organizations AS $org): ?>
+					<a class="region_link" href="<?php echo href('organization/' . $org['unique'], TRUE); ?>">
+						<?php echo $org['name']; ?>
+					</a><br />
+				<?php endforeach; ?>
+				</div>
+			</div>
+
 		</div>
 
 

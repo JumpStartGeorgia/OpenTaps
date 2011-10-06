@@ -37,34 +37,31 @@ Slim::get('/projects/', function()
 Slim::get('/project/:unique/', function($unique)
 {
 	Storage::instance()->show_map = FALSE;
-	$sql = "SELECT budget FROM `projects` WHERE lang = '" . LANG . "'";
+/*	$sql = "SELECT budget FROM `projects` WHERE lang = '" . LANG . "'";
 	$query = db()->prepare($sql);
-	$query->execute();
-
-	list($values, $names, $real_values) = get_project_chart_data($unique);
+	$query->execute();*/
 
 	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
-			  FROM tags
-			  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
-			  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
-			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique";
+		  FROM tags
+		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
+		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
+		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique";
 	$query = db()->prepare($query);
 	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	$sql = "SELECT * FROM pages_data
-			WHERE owner = 'project' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
-			ORDER BY `sort`,`unique`;";
+		WHERE owner = 'project' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
 	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
 	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
 
     	Storage::instance()->content = template('project', array(
     		'project' => read_projects($unique),
+    		'organizations' => get_project_organizations($unique),
     		'data' => $data,
+    		'chart_data' => get_project_chart_data($unique),
     		'side_data' => $side_data,
-    		'names' => $names,
-    		'values' => $values,
-    		'real_values' => $real_values,
     		'tags' => $tags,
     		'edit_permission' => userloggedin()
     	));

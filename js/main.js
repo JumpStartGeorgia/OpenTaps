@@ -337,7 +337,7 @@ $(function(){
 	$('.top_image').mouseenter(function(){
 		if (!over_background_visible)
 		{
-			$(this).find('.over_background').slideUp();
+			$(this).find('.over_background').stop(true, true).slideUp();
 			over_background_visible = true;
 		}
 	});
@@ -353,6 +353,10 @@ $(function(){
 		$('#left_image_box').find('img').attr('src', $(this).find('.src_container').val());
 	});
 
+
+
+	$('select').addClass('chosen-select');
+	$(".chosen-select").chosen();
 
 
 });

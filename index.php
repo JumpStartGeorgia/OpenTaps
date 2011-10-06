@@ -14,6 +14,8 @@ require_once DIR . 'application/firephp/fb.php';
 
 define('LANG', (isset($_GET['lang']) AND in_array($_GET['lang'], array('en', 'ka'))) ? $_GET['lang'] : 'ka');
 
+Storage::instance()->language_items = require_once DIR . 'application/languages/' . LANG . '.php';
+
 require_once DIR . 'application/functions.php';
 
 try

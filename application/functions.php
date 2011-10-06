@@ -13,6 +13,13 @@ function config($item)
     return isset(Storage::instance()->config[$item]) ? Storage::instance()->config[$item] : FALSE;
 }
 
+function l($item, $variables = array())
+{
+    if (!isset(Storage::instance()->language_items[$item]))
+        return NULL;
+    return empty($variables) ? Storage::instance()->language_items[$item] : strtr(Storage::instance()->language_items[$item], $variables);
+}
+
 function get_ip()
 {
     if (!empty($_SERVER['HTTP_CLIENT_IP']))
@@ -1214,80 +1221,36 @@ function word_limiter($text, $limit = 30, $chars = 'აბგდევზთი�
 
 function get_project_chart_data($unique)
 {
-    //$result = array();
-    $v = array();
-    $names = array();
+    $results = array();
 
-    $sql = "
-		SELECT
-			organizations.name
-		FROM
-			`project_organizations`
-		LEFT JOIN
-			`organizations`
-		ON
-			(`project_organizations`.`organization_unique` = `organizations`.`unique`)
-		WHERE
-			project_unique = :unique;
-	";
+    $sql = "SELECT orgs.`unique`, orgs.name, (
+			SELECT SUM(p.budget) FROM organizations AS o
+			INNER JOIN project_organizations AS po ON po.organization_unique = o.`unique`
+			LEFT JOIN projects AS p ON p.lang = o.lang AND p.`unique` = po.project_unique
+			WHERE o.`unique` = orgs.`unique` AND o.lang = '" . LANG . "'
+	    	) AS org_sum_budget
+	    FROM projects
+	    LEFT JOIN project_organizations ON projects.`unique` = project_organizations.project_unique
+	    INNER JOIN organizations AS orgs
+	    ON orgs.`unique` = project_organizations.organization_unique AND orgs.lang = projects.lang
+	    WHERE projects.`unique` = :unique AND projects.lang = '" . LANG . "'
+	    ORDER BY org_sum_budget";
+
     $query = db()->prepare($sql);
     $query->execute(array(':unique' => $unique));
+    $results['organization_projects'] = $query->fetchAll(PDO::FETCH_ASSOC);
+    empty($results['organization_projects']) AND $results['organization_projects'] = FALSE;
 
-    $results = $query->fetchAll(PDO::FETCH_ASSOC);
-    $names[1] = array();
-    $v[1] = array();
-    $real_values[1] = array();
-
-    foreach ($results as $r)
-    {
-        $real_values[1][] = $v[1][] = 1;
-        $names[1][] = str_replace(" ", "+", $r['name']);
-    }
-
-
-    $sql = "SELECT budget, title FROM  `projects` WHERE lang = '" . LANG . "';";
+    $sql = "SELECT projects.`unique`, projects.budget, projects.title FROM projects
+    	    WHERE projects.lang = '" . LANG . "'
+    	    ORDER BY projects.budget;";
     $query = db()->prepare($sql);
     $query->execute();
+    $results['all_projects'] = $query->fetchAll(PDO::FETCH_ASSOC);
+    empty($results['all_projects']) AND $results['all_projects'] = FALSE;
 
-    $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
-    $b = FALSE;
-
-    foreach ($results as $r)
-    {
-        $i = $v[2][] = (integer) str_replace("$", "", str_replace(",", "", $r['budget']));
-        $b OR $b = ( $i > 100 );
-        $names[2][] = str_replace(" ", "+", $r['title']);
-    }
-
-    $real_values[2] = $v[2];
-
-    if ($b)
-    {
-        $max = max($v[2]);
-        $depth = 0;
-        while ($max > 100):
-            $max = $max / 100;
-            $depth++;
-        endwhile;
-        for ($i = 0, $n = count($v[2]); $i < $n; $i++)
-            for ($j = 0; $j < $depth; $j++)
-                $v[2][$i] = $v[2][$i] / 100;
-    }
-
-    return array($v, $names, $real_values);
+    return $results;
 }
-
-/* function down_to_range($n, $range = 100)
-  {
-  if ( $n > $range )
-  return down_to_range($n / $range, $range);
-  else
-  return $n;
-  } */
-
-
-
 
 
 
@@ -1307,7 +1270,7 @@ function get_organization_projects($unique)
 {
     $sql = "SELECT p.`unique`,p.id,p.title FROM projects AS p
 		LEFT JOIN project_organizations AS po ON p.`unique` = po.project_unique
-		LEFT JOIN organizations AS o ON o.`unique` = po.organization_unique
+		LEFT JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
 		WHERE o.`unique` = :unique AND o.lang = '" . LANG . "'";
     $statement = db()->prepare($sql);
     $statement->execute(array(
@@ -1755,6 +1718,20 @@ function get_region_chart_data($unique)
 
     return array($v, $names, $real_values);
 }
+
+
+function get_project_organizations($unique)
+{
+    $query = "SELECT o.name, o.`unique` FROM projects AS p
+	      LEFT JOIN project_organizations AS po ON po.project_unique = p.`unique`
+	      LEFT JOIN organizations AS o ON o.lang = p.lang AND o.`unique` = po.organization_unique
+	      WHERE p.lang = '" . LANG . "' AND p.`unique` = :unique
+	      ORDER BY o.name;";
+    $query = db()->prepare($query);
+    $query->execute(array(':unique' => $unique));
+    return $query->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 function dateDiff($start, $end)
 {

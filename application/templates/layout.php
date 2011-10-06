@@ -5,6 +5,7 @@
         <title><?php echo Storage::instance()->title ?> - OpenTaps</title>
         <link href="<?php echo URL ?>main.css" rel="stylesheet" type="text/css" />
 	<link href="<?php echo URL ?>adm.css" rel="stylesheet" type="text/css" />
+	<link href="<?php echo URL ?>chosen.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8"/>
     	<script type="text/javascript">
     		var region_map_boundsLeft = false,
@@ -153,6 +154,7 @@
 	<script type='text/javascript'>var baseurl = "<?php echo href(); ?>";</script>
 	<script type="text/javascript" src="<?php echo URL ?>js/OpenLayers/OpenLayers.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jq.js"></script>
+	<script type="text/javascript" src="<?php echo URL ?>js/chosen.jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/jquery.slideQuery.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/raphael.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/graphael.js"></script>

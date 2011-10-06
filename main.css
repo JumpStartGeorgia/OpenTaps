@@ -243,8 +243,8 @@ div.more_news a:hover{ color: #303030; }*/
 
 
 
-#region_link{ text-decoration: none; color: @opentaps_default_color; }
-#region_link:hover{ text-decoration: underline; }
+#region_link, .region_link{ text-decoration: none; color: @opentaps_default_color; }
+#region_link:hover, .region_link:hover{ text-decoration: underline; }
 
 
 .content{ width: 932px; min-height: 120px; margin-top: 0px; padding: 0; }
@@ -256,6 +256,7 @@ div.more_news a:hover{ color: #303030; }*/
 #project_details
 {
 	float:left;
+
 
 
 
@@ -311,7 +312,7 @@ div.more_news a:hover{ color: #303030; }*/
 /*=======================		TAGS		==========================*/
 #tag_content{ font-family: arial; }
 #tag_content a{ text-decoration: none; color: #565656; font-size: 11px; }
-#tag_content #region_link{ color: #0CB5F5; }
+#tag_content #region_link, #tag_content .region_link{ color: #0CB5F5; }
 #left_list, #right_list{ min-height: 100px; }
 #left_list{ width: 640px; float: left; }
 .headers{ width: 100%; background: #0cb5f6; height: 39px; color: #fff; }

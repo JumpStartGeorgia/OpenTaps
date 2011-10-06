@@ -38,7 +38,7 @@
 
         <label for='pplace'>Place: </label>
   	    <br />
-  	    <select name='p_place' id='pplace'>
+  	    <select name='p_place' class="chosen-select" id='pplace'>
   	      <?php
       foreach($places as $place):
   	            $selected = ($place['unique'] == $project['place_unique']) ? "selected='selected'" : NULL;
@@ -78,7 +78,7 @@
   	    <input type="text" id="tag_box" name="p_tag_names" style="width: 150px; border-right: 1px solid #ccc;" value="" />
   	    <span style='font-size:12px;'>separate by comma ",&nbsp"</span>
   	    <br /><br />
-  	    <select name='p_tag_uniques[]' id='ptags' multiple='multiple'>
+  	    <select class="chosen-select" name='p_tag_uniques[]' id='ptags' multiple='multiple'>
   	      <?php
   	        foreach($all_tags as $tag):
   	            $selected = (in_array($tag['unique'], $this_tags)) ? "selected='selected'" : NULL;
@@ -90,7 +90,7 @@
 
   	    <label for='porgs'>Organizations: (hold down Ctrl to select multiple)</label>
   	    <br />
-  	    <select name='p_orgs[]' id='porgs' multiple='multiple'>
+  	    <select class="chosen-select" name='p_orgs[]' id='porgs' multiple='multiple'>
   	      <?php
   	        foreach($organizations as $org):
   	            $selected = (in_array($org['unique'], $this_orgs)) ? "selected='selected'" : NULL;
@@ -102,7 +102,7 @@
 
   	    <label for='ptypes'>Project Type:</label>
   	    <br />
-  	    <select name='p_type' id='ptypes'>
+  	    <select class="chosen-select" name='p_type' id='ptypes'>
   	      <?php
   	        foreach($project_types as $type):
   	            $selected = ( $type == $project['type'] ) ? "selected='selected'" : NULL;

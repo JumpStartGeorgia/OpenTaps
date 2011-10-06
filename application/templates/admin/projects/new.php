@@ -19,7 +19,7 @@
   	    <input name='p_budget' id='pbudget' type='text' />
   	    <br /><br />
 
-  	   <!-- <label for='pregions'>Region:</label>
+  	   <?php /* <label for='pregions'>Region:</label>
   	    <br />
   	    <select name='p_region' id='pregions'>
   	      <?php
@@ -28,11 +28,11 @@
   	        endforeach;
   	      ?>
   	    </select>
-  	    <br /><br />-->
+  	    <br /><br />-->*/ ?>
 
         <label for='pplace'>Place:</label>
   	    <br />
-  	    <select name='p_place' id='pplace'>
+  	    <select name='p_place' class="chosen-select" id='pplace'>
   	      <?php
   	        foreach($places as $place):
   	            ?><option value="<?php echo $place['unique'] ?>"><?php echo $place['name'] ?></option><?php
