@@ -327,6 +327,10 @@ $(function(){
 	    		"<br /><hr style='margin-left: -27px' />" +
 	    		"</div>";
 		container.append(html);
+		/*	enable chosenJS	*/
+		$('select').addClass('chosen-select');
+		$(".chosen-select").chosen();
+		/*			*/
 		container.find('.group:last-child').slideDown('normal');
 		data_field_index ++;
 	});
@@ -357,6 +361,7 @@ $(function(){
 
 	$('select').addClass('chosen-select');
 	$(".chosen-select").chosen();
+
 
 
 });

@@ -9,4 +9,12 @@
 	<span id='message_container'></span>
 </div>
 
-<!--<script type="text/javascript" language="javascript">tinymceinit();</script>-->
+<script type="text/javascript" language="javascript">
+
+$(function(){
+	$('select').addClass('chosen-select');
+	$(".chosen-select").chosen();
+});
+
+/*tinymceinit();*/
+</script>

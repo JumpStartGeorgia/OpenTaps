@@ -27,7 +27,7 @@
                 switch ($news['category'])
                 {
                     default: $filename = "text";
-z                        break;
+                        break;
                     case "text": $filename = "text";
                         break;
                     case "video": $filename = "video";

@@ -1234,7 +1234,7 @@ function get_project_chart_data($unique)
 	    INNER JOIN organizations AS orgs
 	    ON orgs.`unique` = project_organizations.organization_unique AND orgs.lang = projects.lang
 	    WHERE projects.`unique` = :unique AND projects.lang = '" . LANG . "'
-	    ORDER BY org_sum_budget";
+	    ORDER BY org_sum_budget;";
 
     $query = db()->prepare($sql);
     $query->execute(array(':unique' => $unique));
