@@ -1238,15 +1238,21 @@ function get_project_chart_data($unique)
 
     $query = db()->prepare($sql);
     $query->execute(array(':unique' => $unique));
-    $results['organization_projects'] = $query->fetchAll(PDO::FETCH_ASSOC);
-    empty($results['organization_projects']) AND $results['organization_projects'] = FALSE;
+    $results['organization_projects'] = array(
+    	'description' => 'Organizations which run this project, ordered by sum of budgets of all their projects.',
+    	'data' => $query->fetchAll(PDO::FETCH_ASSOC)
+    );
+    empty($results['organization_projects']['data']) AND $results['organization_projects']['data'] = FALSE;
 
     $sql = "SELECT projects.`unique`, projects.budget, projects.title FROM projects
     	    WHERE projects.lang = '" . LANG . "'
     	    ORDER BY projects.budget;";
     $query = db()->prepare($sql);
     $query->execute();
-    $results['all_projects'] = $query->fetchAll(PDO::FETCH_ASSOC);
+    $results['all_projects'] = array(
+    	'description' => 'All projects ordered by budget.',
+    	'data' => $query->fetchAll(PDO::FETCH_ASSOC)
+    );
     empty($results['all_projects']) AND $results['all_projects'] = FALSE;
 
     return $results;
