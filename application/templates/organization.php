@@ -118,7 +118,7 @@
     </div>
   
 
-
+<?php /*
     <div id='charts'>
 <?php												//PIE 1
    $width = 165;
@@ -207,6 +207,6 @@ $download_csv = href("export/csv/".base64_encode(serialize(array('names' => $nam
 
     </div>
 
-
+*/ ?>
 
 </div>

@@ -95,7 +95,7 @@
 
 
 
-<?php												//PIE 1
+<?php /*												//PIE 1
    $width = 165;
    $defh = 203.875;
 
@@ -246,6 +246,6 @@ $download_csv = href("export/csv/".base64_encode(serialize(array('names' => $nam
 
 
     </div>
-  
+*/ ?>
 
 </div>

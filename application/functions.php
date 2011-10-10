@@ -1434,7 +1434,7 @@ function organization_total_budget($organization_unique)
 
 function get_organization_chart_data($unique)
 {
-    //$result = array();
+    /* $result = array();
     $v = array();
     $names = array();
 
@@ -1551,18 +1551,19 @@ function get_organization_chart_data($unique)
         endfor;
     endif;
 
-    return array($v, $names, $real_values);
+    return array($v, $names, $real_values); */
+    return array(NULL, NULL, NULL);
 }
 
 function get_region_chart_data($unique)
 {
-    //$result = array();
+    /*$result = array();
     $v = array();
     $names = array();
 
 
 
-    /* =========================		PIE 1		============================= */
+    /* =========================		PIE 1		============================= *//*
     $sql = "
 		SELECT title,budget FROM projects
 		LEFT JOIN places ON projects.place_unique = places.`unique`
@@ -1602,7 +1603,7 @@ function get_region_chart_data($unique)
 
 
 
-    /* =========================		COLUMN 1		============================= */
+    /* =========================		COLUMN 1		============================= *//*
 
     $sql = "SELECT start_at FROM projects LEFT JOIN places ON projects.place_unique = places.`unique`
 			AND projects.lang = places.lang
@@ -1672,7 +1673,7 @@ function get_region_chart_data($unique)
     endif;
 
 
-    /* =========================		PIE 2		============================= */
+    /* =========================		PIE 2		============================= *//*
     $query = "SELECT p.budget, p.title, o.name
 		  FROM organizations AS o
 		  INNER JOIN project_organizations AS po
@@ -1722,7 +1723,8 @@ function get_region_chart_data($unique)
     }
 
 
-    return array($v, $names, $real_values);
+    return array($v, $names, $real_values); */
+    return array(NULL, NULL, NULL); 
 }
 
 

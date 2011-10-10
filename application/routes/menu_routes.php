@@ -2,7 +2,9 @@
 ################################################################ Menu admin routes start
 Slim::get('/admin/menu/', function(){
     if(userloggedin())
-	Storage::instance()->content = template('admin/menu/all_records');
+	Storage::instance()->content = template('admin/menu/all_records', array(
+		'undeletable_menus' => config("undeletable_menu_uniques")
+	));
     else
 	Storage::instance()->content = template('login');
 });
@@ -85,4 +87,9 @@ Slim::post('/admin/menu/:unique/update/', function($unique){
     else
 	Storage::instance()->content = template('login');
 });
-################################################################ Menu admin routes end
+/*################################################################ Menu admin routes end
+##################  GEORGIA PROFILE ##################*/
+
+Slim::get('/georgia_profile/', function(){
+	Storage::instance()->content = template('georgia_profile', array());
+});

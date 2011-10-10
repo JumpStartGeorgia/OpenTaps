@@ -37,9 +37,6 @@ Slim::get('/projects/', function()
 Slim::get('/project/:unique/', function($unique)
 {
 	Storage::instance()->show_map = FALSE;
-/*	$sql = "SELECT budget FROM `projects` WHERE lang = '" . LANG . "'";
-	$query = db()->prepare($sql);
-	$query->execute();*/
 
 	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tags

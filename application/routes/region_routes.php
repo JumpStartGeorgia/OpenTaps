@@ -5,7 +5,7 @@ Slim::get('/region/:unique/', function($unique){
 	//$unique = get_unique("regions", $id);
 	$sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_unique = '$unique'";
 
-	list($values, $names, $real_values) = get_region_chart_data($unique);
+	/*list($values, $names, $real_values) = get_region_chart_data($unique);*/
 
 	$query = "SELECT projects.title,projects.id,projects.`unique` FROM projects
 		  LEFT JOIN places ON places.`unique` = projects.place_unique
@@ -24,9 +24,6 @@ Slim::get('/region/:unique/', function($unique){
     		'region' => get_region($unique),
     		'region_cordinates' => fetch_db($sql_region_cordinates),
     		'region_budget' => region_total_budget($unique),
-    		'values' => $values,
-    		'names' => $names,
-    		'real_values' => $real_values,
     		'projects' => $region_projects,
     		'data' => $data,
     		'side_data' => $side_data
