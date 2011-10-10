@@ -60,30 +60,41 @@
 
 		<p class='desc'>INFO ON PROJECTS</p>
 		<div><?php echo $organization['projects_info']; ?></div>
-		<p class='desc'>ORGANIZATION PROJECTS</p>
-		
-			<table style="margin-left:0px;margin-bottom:30px;float:left;">
-				<?php foreach($projects AS $project): ?>
-				<tr>	
-					<td><a style='text-decoration:underline;' href="<?php echo href('project/'.$project['id'], TRUE); ?>"><font style="font-family:arial;color:#656565;"><?php echo $project['title']; ?></font></a></td>
-				</tr>			
-				<?php endforeach; ?>
-			</table>		
-		
+
+		<div id="organization_project_types" class="group">
+		<?php foreach (config('project_types') AS $type): ?>
+			<a href="<?php echo href('projects', TRUE) /*filter link here*/ ?>">
+				<img src="<?php echo href('images') . str_replace(' ', '-', strtolower(trim($type)))  ?>" />
+				<?php echo $type . " (" . $count[$type] . ")" ?>
+			</a>
+		<?php endforeach; ?>
+		</div>
+
 	</div>
     </div>
-    <div style="float:right;width:240px;border:0px solid #a6a6a6;" >
+    <div style="float: right; width: 240px; border:0px solid #a6a6a6;" >
     	<div class="organization_right">
-			<div style="border:1px dotted #a6a6a6;width:100%;height:40px;background-color:rgb(30%,75%,100%);border-top:0px;border-bottom:0px;">
-				<p style="float:left;margin-top:12px;margin-left:20px;color:#FFF;font-size:11pt;font-weight:bold;font-family:arial;">ORGANIZATION PROJECTS</p>
-				<!--<p style="float:right;margin-top:12px;margin-right:25px;"><a href="projects" style="text-decoration:none;color:#FFF;font-size:7.5pt;">►View All</a></p>-->
-			</div>				
-			
-				<div style="width:100%;border:1px dotted #a6a6a6;" class='group'>
-					<p style="display:inline-block;foat:left;margin-left:7px;margin-top:5px;"><img width='225px' src="http://media.strategywiki.org/images/thumb/5/57/Angry_Birds_logo.jpg/250px-Angry_Birds_logo.jpg" /></p>
-					<p style="padding:5px;display:inline-block">Curabitur a enim in ipsum bibendum pellentesque vitae et orci. Phasellus metus erat, bibendum id dignissim quis, interdum sit amet lectus.</p>
-				</div>
-				<br /><br /><br />
+
+	<div class='data_block group' style="border-bottom: 0px;">
+		<div class='key'>
+			ORGANIZATION PROJECTS
+		</div>
+		<div class='value' style='line-height: 25px; padding: 0px;'>
+		    <?php
+			foreach ($projects AS $project):
+				$ptype = str_replace(" ", "-", strtolower(trim($project['type'])));
+				echo 
+					"<a style='display: block; border-bottom: 1px dotted #a6a6a6; padding: 3px 17px 3px 8px;'
+					    href='" . href('project/' . $project['unique'], TRUE) . "'>
+						<img src='" . href('images') . $ptype . ".png' width='23px' style=\"vertical-align: middle; margin-right: 3px; margin-bottom: 3px;\" />" .
+						$project['title'] .
+					"</a>"
+				;
+			endforeach;
+		    ?>
+		</div>
+	</div>
+
 				<div style="border:1px dotted #A6A6A6;">
 				    
 					<blockquote style="margin-top:25px;margin-left:20px;margin-bottom:25px;">
@@ -103,7 +114,7 @@
 		</div>
 		<div class='value' style='line-height:25px;'>
 		    <?php
-			foreach($tags as $tag):
+			foreach ($tags as $tag):
 				echo 
 					"<a href='".href('tag/organization/' . $tag['name'], TRUE)."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
@@ -113,9 +124,7 @@
 		    ?>
 		</div>
 	</div>
-   	</div>
-    	
-    </div>
+   </div>
   
 
 <?php /*

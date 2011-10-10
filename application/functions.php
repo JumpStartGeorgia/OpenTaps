@@ -1060,7 +1060,6 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     		title = :title,
     		description = :description,
     		budget = :budget,
-		region_unique = :region_unique,
     		city = :city,
     		grantee = :grantee,
     		sector = :sector,
@@ -1070,9 +1069,9 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     		type = :type,
 		place_unique = :place_unique
     	WHERE
-    		`projects`.`unique` = :unique;
+    		`projects`.`unique` = :unique
     	AND
-    		projects.lang = '" . LANG . "'
+    		projects.lang = '" . LANG . "';
     	DELETE FROM
     		tag_connector
     	WHERE
@@ -1080,17 +1079,16 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     	DELETE FROM
     		project_organizations
     	WHERE
-    		project_unique = :unique;
+    		project_unique = :unique; 	
     ";
     $statement = db()->prepare($sql);
 
     //$unique = get_unique("projects", $id);
-    $exec = $statement->execute(array(
+    $data = array(
                 ':unique' => $unique,
                 ':title' => $title,
                 ':description' => $desc,
                 ':budget' => $budget,
-                ':region_unique' => 0, //$region_id,
                 ':city' => $city,
                 ':grantee' => $grantee,
                 ':sector' => $sector,
@@ -1098,9 +1096,15 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
                 ':end_at' => $end_at,
                 ':info' => $info,
                 ':type' => $type,
-                ':unique' => $unique,
                 ':place_unique' => $place_unique
-            ));
+	);
+    /*$rep = array();
+    foreach ($data as $key => $value)
+    {
+    	$rep[$key] = "'{$value}'";
+    }
+    exit(strtr($sql, $rep));*/
+    $exec = $statement->execute($data);
 
     //fetch_db("DELETE FROM project_organizations WHERE project_unique = '" . $unique . "';");
 
@@ -1274,7 +1278,7 @@ function get_organization($unique)
 
 function get_organization_projects($unique)
 {
-    $sql = "SELECT p.`unique`,p.id,p.title FROM projects AS p
+    $sql = "SELECT DISTINCT(p.`unique`) AS `unique`, p.id,p.title,p.type FROM projects AS p
 		LEFT JOIN project_organizations AS po ON p.`unique` = po.project_unique
 		LEFT JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
 		WHERE o.`unique` = :unique AND o.lang = '" . LANG . "'";
@@ -1283,7 +1287,27 @@ function get_organization_projects($unique)
         ':unique' => $unique
     ));
 
-    return $statement->fetchAll();
+    return $statement->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function count_organization_project_types($unique)
+{
+    $types = config('project_types');
+    foreach ($types AS $type)
+    {
+	$sql = "SELECT COUNT(p.`unique`) AS num FROM projects AS p
+		LEFT JOIN project_organizations AS po ON p.`unique` = po.project_unique
+		LEFT JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
+		WHERE o.`unique` = :unique AND p.type = :type AND o.lang = '" . LANG . "'";
+	$statement = db()->prepare($sql);
+	$statement->execute(array(
+		':unique' => $unique,
+		':type' => $type
+	));
+	$total = $statement->fetch(PDO::FETCH_ASSOC);
+	$count[$type] = $total['num'];
+    }
+    return $count;
 }
 
 function delete_organization($unique)

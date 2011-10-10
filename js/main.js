@@ -328,7 +328,7 @@ $(function(){
 		/*	enable chosenJS	*/
 		$('select').addClass('chosen-select');
 		$(".chosen-select").chosen();
-		/*			*/
+		/*	..		*/
 		container.find('.group:last-child').slideDown('normal');
 		data_field_index ++;
 	});

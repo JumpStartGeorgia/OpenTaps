@@ -24,7 +24,6 @@
 
 
 <?php
-
   foreach(Storage::instance()->menu as $menu):
 	$has = has_submenu($menu['unique']);
 ?>
