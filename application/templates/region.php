@@ -244,8 +244,8 @@ $download_csv = href("export/csv/".base64_encode(serialize(array('names' => $nam
 				</div>
    	</div>
 
+*/ ?>
 
     </div>
-*/ ?>
 
 </div>

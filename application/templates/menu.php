@@ -16,7 +16,7 @@
       </a>
   </li>
 
-  <li class='dropdownmenu'>
+  <li>
       <a href="<?php echo href('georgia_profile', TRUE) ?>">
 	  <?php echo strtoupper('georgia profile') ?>
       </a>

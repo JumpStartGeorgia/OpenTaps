@@ -130,3 +130,9 @@ label.newpiclabel{
 
 .admin_edit_button{ font-size: 11px; color: #0cb5f5; float: right; cursor: pointer; display: inline-block; }
 .admin_edit_button:hover{ text-decoration: underline; }
+
+
+
+
+
+#gp_add_data_field{ color: #4CBEFF; cursor: pointer; font-size: 13px; display: block; margin: 17px 0px; }

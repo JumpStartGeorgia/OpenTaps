@@ -2,7 +2,7 @@
   $action = href("admin/news/" . $news[0]['unique'] . "/update", TRUE);
   $img = view_image($news[0]['unique']);
 ?>
-    	<form enctype='multipart/form-data' action='<? echo $action; ?>' method='post'>
+    	<form enctype='multipart/form-data' action='<?php echo $action; ?>' method='post'>
   	    <label for='ntitle'>Title: </label>
   	    <br />
   	    <input name='n_title' id='ntitle' type='text' value='<?php echo $news[0]['title']; ?>' />

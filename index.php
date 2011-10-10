@@ -47,15 +47,16 @@ foreach (glob(DIR . 'application/routes/*.php') AS $route)
 
 $about_uniques = config('about_us_uniques');
 $about_sql = "SELECT text FROM menu WHERE `unique` = ";
+$lang_sql = "AND lang = '" . LANG . "' LIMIT 1;";
 
 Slim::run();
 
 echo template('layout', array(
     'about_us' => array(
-        'main' => fetch_db("{$about_sql} '{$about_uniques['main']}' AND lang = '" . LANG . "' LIMIT 1;", NULL, TRUE),
-        'open_information' => fetch_db("{$about_sql} '{$about_uniques['open_information']}' AND lang = '" . LANG . "' LIMIT 1;", NULL, TRUE),
-        'participation' => fetch_db("{$about_sql} '{$about_uniques['participation']}' AND lang = '" . LANG . "' LIMIT 1;", NULL, TRUE),
-        'innovation' => fetch_db("{$about_sql} '{$about_uniques['innovation']}' AND lang = '" . LANG . "' LIMIT 1;", NULL, TRUE)
+        'main' => fetch_db("{$about_sql} '{$about_uniques['main']}' {$lang_sql}", NULL, TRUE),
+        'open_information' => fetch_db("{$about_sql} '{$about_uniques['open_information']}' {$lang_sql}", NULL, TRUE),
+        'participation' => fetch_db("{$about_sql} '{$about_uniques['participation']}' {$lang_sql}", NULL, TRUE),
+        'innovation' => fetch_db("{$about_sql} '{$about_uniques['innovation']}' {$lang_sql}", NULL, TRUE)
     ),
     'slide_news' => read_news()
 ));

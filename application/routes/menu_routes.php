@@ -87,9 +87,4 @@ Slim::post('/admin/menu/:unique/update/', function($unique){
     else
 	Storage::instance()->content = template('login');
 });
-/*################################################################ Menu admin routes end
-##################  GEORGIA PROFILE ##################*/
-
-Slim::get('/georgia_profile/', function(){
-	Storage::instance()->content = template('georgia_profile', array());
-});
+/*############################################################# Menu admin routes end*/

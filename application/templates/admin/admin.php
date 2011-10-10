@@ -61,6 +61,12 @@
 				<li><a href="<?php echo href("admin/regions/add", TRUE) ?>">Add Region</a></li>
 			</ul>
 		</td>
+		<td>
+			<h3>Georgia Profile</h3>
+			<ul>
+				<li><a href="<?php echo href("admin/georgia_profile", TRUE) ?>">Manage Georgia Profile</a></li>
+			</ul>
+		</td>
 	</tr>
     </table>
 </div>

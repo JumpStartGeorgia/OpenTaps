@@ -190,12 +190,10 @@ function check_sidebar(element)
 {
 	if (element.find('input').attr('checked'))
 	{
-		//alert('ari checked mara qreba');
 		element.parent().find('.data_unique_container').val('not_checked');
 	}
 	else
 	{
-		//alert('ari unchecked mara inishneba');
 		element.parent().find('.data_unique_container').val('checked');
 	}
 }
@@ -333,6 +331,31 @@ $(function(){
 		/*			*/
 		container.find('.group:last-child').slideDown('normal');
 		data_field_index ++;
+	});
+
+	var gp_data_field_index = 0;
+	$('#gp_add_data_field').click(function(){
+		var container = $('#data_fields_container'),
+		bg = (gp_data_field_index % 2 == 1) ? "url(" + baseurl + "images/bg.jpg) repeat;" : 'white;',
+		html = "<div class='group' style='display: none; background: " + bg + "; padding: 13px; border-bottom: 2px solid #ccc;'>" +
+			"<label style='cursor: pointer'>" +
+  	    		"	Title: <br />" + "<input name='data_key[]' type='text' />" +
+  	    		"</label><br /><br />" +
+			"<label style='cursor: pointer'>" + "Value: <br />" +
+  	    		"	<input name='data_value[]' type='text' />" +
+	    		"</label><br /><br />" + 
+			"<label style=\"cursor: pointer\" onmouseup=\"$(this).parent().parent().find('.hidden_radio').val('no'); $(this).find('.hidden_radio').val('yes');\">" +
+  	    		"	<input name='main' type='radio' /> Main" +
+  	    		"	<input type=\"hidden\" class='hidden_radio' name=\"data_main[]\" />" +
+	    		"</label><br /><br />" + 
+	    		"<a style='color: red; cursor: pointer; font-size: 13px;'" +
+	    		"   onclick='$(this).parent().slideUp(function(){ $(this).remove(); })'>" +
+	    		"	- Remove data" +
+	    		"</a><br /><br />" +
+			"</div>";
+		container.append(html);
+		container.find('.group:last-child').slideDown('normal');
+		gp_data_field_index ++;
 	});
 
 
