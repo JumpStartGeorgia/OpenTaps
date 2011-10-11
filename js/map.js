@@ -177,7 +177,7 @@ function make_popup(lonlat, size, content)
 }
 
 var marker_id = null;
-function makeMarker(img_source,img_width,img_height,lon,lat,id,type,i)
+function makeMarker(img_source, img_width, img_height, lon, lat, id, type, i)
 {
     var size = new OpenLayers.Size(img_width,img_height);
     var offset = new OpenLayers.Pixel(-size.w / 2, -size.h / 2);
@@ -189,7 +189,7 @@ function makeMarker(img_source,img_width,img_height,lon,lat,id,type,i)
             marker_id = id;
             //alert(marker_id);
             marker_animate(e.target.id, lon, lat,type,i);
-            $(e.target).css('cursor','default');
+            $(e.target).css('cursor', 'default');
         });
         marker.events.register('mouseover',marker,function(e){
             $(e.target).css('cursor','pointer');
@@ -300,11 +300,12 @@ function display_filter_markers(filter)
 
 
     if( filter ===  'filter_checkbox_projects_completed'){
-        for(var i=0;i<projects.length-1;i++)
+        for(var i=0;i<projects.length-1;i++){
             if( projects[i+1][2].getTime() < projects[0][0].getTime()  ){
                 var img = baseurl + "images/project.png";
                 makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
             }
+        }
     }
     else if( filter === 'filter_checkbox_projects_current' ){
         for(var i=0;i<projects.length-1;i++){
@@ -318,7 +319,7 @@ function display_filter_markers(filter)
         for(var i=0;i<projects.length-1;i++){
             if(  projects[i+1][1].getTime() > projects[0][0].getTime() ){
                 var img = baseurl + "images/project-scheduled.png";
-                makeMarker(img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
+                (img,20,20,projects[i+1][8],projects[i+1][9],projects[i+1][0],'project',i);
             }
         }
     }
@@ -581,7 +582,7 @@ function map_init()
 			makeMarker("../../images/marker.png",20,20,map_confs.lon,map_confs.lat);
 		}*/
 
-    map.addControls([panel,nav/*,new OpenLayers.Control.MousePosition()*/]);
+    map.addControls([panel,nav,new OpenLayers.Control.MousePosition()]);
     map.zoomTo(map_confs.zoom);
     if( map_confs.show_default_buttons ){
         new function (){
@@ -591,10 +592,8 @@ function map_init()
 
         }
     }
-    //	console.log(map_confs.lon);
-    //			console.log(map_confs.lat);
-    map.setCenter(new OpenLayers.LonLat(map_confs.lon,map_confs.lat));
 
+    map.setCenter(new OpenLayers.LonLat(map_confs.lon,map_confs.lat));
 }
 
 

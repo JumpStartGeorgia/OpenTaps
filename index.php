@@ -58,5 +58,6 @@ echo template('layout', array(
         'participation' => fetch_db("{$about_sql} '{$about_uniques['participation']}' {$lang_sql}", NULL, TRUE),
         'innovation' => fetch_db("{$about_sql} '{$about_uniques['innovation']}' {$lang_sql}", NULL, TRUE)
     ),
-    'slide_news' => read_news()
+    'slide_news' => read_news(),
+    'languages' => config('languages')
 ));

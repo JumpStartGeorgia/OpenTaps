@@ -30,7 +30,8 @@ Slim::get('/projects/', function()
     		'total_pages' => $total_pages,
     		'this_order' => 'region',
     		'tags' => $tags,
-    		'direction' => 'asc'
+    		'direction' => 'asc',
+    		'types' => config('project_types')
 	));
 });
 
@@ -95,7 +96,8 @@ Slim::get('/projects/page/:page/', function($page)
     		'total_pages' => $total_pages,
     		'this_order' => 'region',
     		'tags' => $tags,
-    		'direction' => 'asc'
+    		'direction' => 'asc',
+    		'types' => config('project_types')
 	));
 });
 
@@ -126,12 +128,13 @@ Slim::get('/projects/order/:order-:direction/', function($order, $direction)
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	Storage::instance()->content = template('projects', array(
-		    'projects' => read_projects_one_page(0, $posp, $order, $direction),
+		'projects' => read_projects_one_page(0, $posp, $order, $direction),
     		'current_page' => 1,
     		'total_pages' => $total_pages,
     		'this_order' => $order,
     		'tags' => $tags,
-    		'direction' => $direction
+    		'direction' => $direction,
+    		'types' => config('project_types')
 	));
 });
 
@@ -169,7 +172,8 @@ Slim::get('/projects/order/:order-:direction/:page/', function($order, $directio
     		'total_pages' => $total_pages,
     		'this_order' => $order,
     		'tags' => $tags,
-    		'direction' => $direction
+    		'direction' => $direction,
+    		'types' => config('project_types')
 	));
 });
 

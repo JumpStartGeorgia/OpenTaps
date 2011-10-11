@@ -1774,3 +1774,25 @@ function dateDiff($start, $end)
     $diff = $end_ts - $start_ts;
     return round($diff / 86400);
 }
+
+function change_language($lang)
+{
+    in_array($lang, config('languages')) OR $lang = 'ka';
+
+    if (strpos($_SERVER['REQUEST_URI'], "admin") === FALSE)
+    {
+	return href() . "?lang=" . $lang;
+    }
+
+    list($uri) = explode("?", $_SERVER['REQUEST_URI']);
+    $_GET['lang'] = $lang;
+    $querystring = NULL;
+    foreach ($_GET as $key => $value)
+    {
+	$querystring .= $key . (empty($value) ? NULL : "=" . $value) . "&";
+    }
+    $querystring = substr($querystring, 0, -1);
+    $uri = $uri . "?" . $querystring;
+
+    return 'http://' . $_SERVER['HTTP_HOST'] . $uri;
+}

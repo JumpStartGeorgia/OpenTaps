@@ -25,9 +25,21 @@
 	    <?php endforeach; ?>
     	    </div>
 
+    	    <div class='titletype_center'>
+		<a class="choosedef<?php ($direction == 'ASC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from first to last" href="<?php echo href('projects/order/' . $this_order . '-ASC', TRUE, 'projects'); ?>">▼</a>
+		<a class="choosedef<?php ($direction == 'DESC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from last to first" href="<?php echo href('projects/order/' . $this_order . '-DESC', TRUE, 'projects'); ?>">▲</a>
+    	    </div>
+
     	    <div class='titletype_right'>
-		<a class="choosedef<?php ($direction == 'ASC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from first to last" href="<?php echo href('projects/order/' . $order . '-ASC', TRUE, 'projects'); ?>">▼</a>
-		<a class="choosedef<?php ($direction == 'DESC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from last to first" href="<?php echo href('projects/order/' . $order . '-DESC', TRUE, 'projects'); ?>">▲</a>
+	        <?php $location = href(NULL, TRUE); ?>
+		<select style="width: 170px;" onchange="window.location.href = '<?php echo $location; ?>';">
+<?php		foreach ($types AS $type)
+		{
+		    $value = strtolower(str_replace(" ", "_", $type));
+		    echo '<option value="' . $value . '">' . $type . '</option>';
+		}
+?>
+		</select>
     	    </div>
     	</div>
 

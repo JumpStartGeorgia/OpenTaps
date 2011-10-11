@@ -8,29 +8,38 @@
 	<link href="<?php echo URL ?>chosen.css" rel="stylesheet" type="text/css" />
         <meta charset="utf-8"/>
     	<script type="text/javascript">
-    		var region_map_boundsLeft = false,
-		region_map_boundsRight = false,
-		region_map_boundsTop = false,
-		region_map_boundsBottom = false,
-		region_map_zoom = false,
-		region_map_maxzoomout = false,
-		region_map_longitude = false,
-		region_map_latitude = false,
-		region_make_def_markers = false,
-		region_show_def_buttons = true,
-		region_marker_click = true,
-		places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>],
-		news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>],
-		projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
-	</script>
+    	    var region_map_boundsLeft = false,
+    	    region_map_boundsRight = false,
+    	    region_map_boundsTop = false,
+    	    region_map_boundsBottom = false,
+    	    region_map_zoom = false,
+    	    region_map_maxzoomout = false,
+    	    region_map_longitude = false,
+    	    region_map_latitude = false,
+    	    region_make_def_markers = false,
+    	    region_show_def_buttons = true,
+    	    region_marker_click = true,
+    	    places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>],
+    	    news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>],
+    	    projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];	</script>
     </head>
     <body onload="init()">
         <div class='main group'>
 
-            <div class='header'>
-                <a href = "<? echo href(NULL, TRUE) ?>">
-                  <img src='<?php echo URL ?>images/open-taps-logo.gif' />
+            <div class='header' style="position: relative">
+                <a href = "<? echo href(NULL, TRUE) ?>" style="text-decoration: none;">
+		    <img src="<?php echo URL ?>images/open-taps-logo.gif" />
 		</a>
+
+		<div style="position: absolute; font-size: 11px; right:0px; word-spacing: 7px;">
+		    <?php foreach ($languages AS $lang): ?>
+		        <?php if (LANG == $lang): ?>
+			    <a class="region_link" style="font-weight: bold; text-decoration: none;"><?php echo strtoupper($lang); ?></a>
+		        <?php continue; endif; ?>
+			<a class="region_link" href="<?php echo change_language($lang); ?>"><?php echo strtoupper($lang); ?></a>
+		    <?php endforeach; ?>
+		</div>
+
                 <div class='header_right slidenews'>
                 <?php foreach ($slide_news as $news): ?>
                   <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
@@ -40,10 +49,10 @@
 	  	  </a></div>
 	  	<?php endforeach; ?>
                 </div>
+
             </div>
 
-            <div class='after_header'>
-            </div>
+            <div class='after_header'></div>
 
             <div class='menu'>
                 <ul id="menu"><?php echo Storage::instance()->viewmenu ?></ul>
@@ -166,7 +175,7 @@
 	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/init.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/menu.js"></script>
-	<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>
+	<?php /*<script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>*/ ?>
 	<script type="text/javascript" src="<?php echo URL ?>js/bottom_toggles.js"></script>
 	<script type="text/javascript" src="<?php echo URL ?>js/admin_edit.js"></script>
     </body>
