@@ -61,14 +61,17 @@
 		<p class='desc'>INFO ON PROJECTS</p>
 		<div><?php echo $organization['projects_info']; ?></div>
 
-		<div id="organization_project_types" class="group">
-		<?php foreach (config('project_types') AS $type): ?>
-			<a href="<?php echo href('projects', TRUE) /*filter link here*/ ?>">
+		<?php if ($count !== FALSE AND is_array($count)): ?>
+		    <div id="organization_project_types" class="group">
+		    <?php foreach (config('project_types') AS $type): ?>
+			    <?php if ($count[$type] == 0) continue; ?>
+			    <a href="<?php echo href('projects', TRUE) /*filter link here*/ ?>">
 				<img src="<?php echo href('images') . str_replace(' ', '-', strtolower(trim($type)))  ?>" />
 				<?php echo $type . " (" . $count[$type] . ")" ?>
-			</a>
-		<?php endforeach; ?>
-		</div>
+			    </a>
+			<?php endforeach; ?>
+		    </div>
+		<?php endif; ?>
 
 	</div>
     </div>

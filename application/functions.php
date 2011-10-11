@@ -1293,6 +1293,7 @@ function get_organization_projects($unique)
 function count_organization_project_types($unique)
 {
     $types = config('project_types');
+    $total_types_count = 0;
     foreach ($types AS $type)
     {
 	$sql = "SELECT COUNT(p.`unique`) AS num FROM projects AS p
@@ -1306,8 +1307,9 @@ function count_organization_project_types($unique)
 	));
 	$total = $statement->fetch(PDO::FETCH_ASSOC);
 	$count[$type] = $total['num'];
+	($count[$type] > 0) AND $total_types_count ++;
     }
-    return $count;
+    return ($total_types_count > 0) ? $count : FALSE;
 }
 
 function delete_organization($unique)
