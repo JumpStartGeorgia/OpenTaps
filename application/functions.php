@@ -417,9 +417,14 @@ function read_tag_connector($field, $unique)
 function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
 {
     if ($field != "news" AND $field != "proj" AND $field != "org")
+    {
         exit("incorrect field");
+    }
 
-    empty($tag_uniques) AND empty($tag_names) AND exit("tags are empty");
+    if (empty($tag_uniques) AND empty($tag_names))
+    {
+	return TRUE;
+    }
 
     if (!empty($tag_names) AND strlen(trim($tag_names)) > 1)
     {

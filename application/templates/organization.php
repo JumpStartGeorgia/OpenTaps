@@ -61,6 +61,11 @@
 		<p class='desc'>INFO ON PROJECTS</p>
 		<div><?php echo $organization['projects_info']; ?></div>
 
+		<?php foreach ($data as $d): ?>
+			<p class='desc'><?php echo strtoupper($d['key']); ?></p>
+			<div><?php echo $d['value']; ?></div>
+		<?php endforeach; ?>
+
 		<?php if ($count !== FALSE AND is_array($count)): ?>
 		    <div id="organization_project_types" class="group">
 		    <?php foreach (config('project_types') AS $type): ?>
@@ -82,35 +87,31 @@
 		<div class='key'>
 			ORGANIZATION PROJECTS
 		</div>
-		<div class='value' style='line-height: 25px; padding: 0px;'>
-		    <?php
-			foreach ($projects AS $project):
-				$ptype = str_replace(" ", "-", strtolower(trim($project['type'])));
-				echo 
-					"<a style='display: block; border-bottom: 1px dotted #a6a6a6; padding: 3px 17px 3px 8px;'
-					    href='" . href('project/' . $project['unique'], TRUE) . "'>
-						<img src='" . href('images') . $ptype . ".png' width='23px' style=\"vertical-align: middle; margin-right: 3px; margin-bottom: 3px;\" />" .
-						$project['title'] .
-					"</a>"
-				;
-			endforeach;
-		    ?>
+		<div class='value' style='padding: 0px;'>
+		<?php foreach ($projects AS $project):
+			$ptype = str_replace(" ", "-", strtolower(trim($project['type']))); ?>
+			<a class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
+				<img src="<?php echo href('images') . $ptype ?>.png" />
+				<?php echo $project['title'] ?>
+			</a>
+		<?php endforeach; ?>
 		</div>
 	</div>
 
-				<div style="border:1px dotted #A6A6A6;">
-				    
-					<blockquote style="margin-top:25px;margin-left:20px;margin-bottom:25px;">
-						<p><font style="font-weight:bold;">CONTACT INFORMATION</font></p><br/>
-						<p style="margin-top:-10px;"><font>Aaron Mason</font></p><br/>
-						<p style="margin-top:-5px;"><font>Communication Officer</font></p><br/>
-						<p style="margin-top:-5px;"><font>+995 - 93 - 5610 - 989</font></p><br/>
-						<p style="margin-top:-5px;"><a href="mailto:" style="color:rgb(5%,71%,96%);text-decoration:none;"><font>aaron@gmail.com</font></a></p><br/>
-						<p style="margin-top:-5px;"><a href="" style="color:rgb(5%,71%,96%);text-decoration:none;"><font>unknown.com</font></a></p>
-					</blockquote>
-				    
-				</div>
-				<br /><br />
+	<?php $i = 0; foreach ($side_data as $d): $i ++; ?>
+
+		<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
+			<div class='key'>
+				<?php echo strtoupper($d['key']); ?>
+			</div>
+			<div class='value group'>
+				<?php echo $d['value']; ?>
+			</div>
+		</div>
+
+	<?php endforeach; ?>
+
+	<?php if (!empty($tags)): ?>
 	<div class='data_block group'>
 		<div class='key'>
 			TAG CLOUD
@@ -127,98 +128,10 @@
 		    ?>
 		</div>
 	</div>
+	<?php endif; ?>
+
    </div>
-  
 
-<?php /*
-    <div id='charts'>
-<?php												//PIE 1
-   $width = 165;
-   $defh = 203.875;
-
-   $titles = array(NULL, 'ORGANISATIONS', 'PROJECT BUDGET', 'PROJECT', 'PROJECT BUDGET');
-   for ( $i = 1; $i <= 1; $i ++ ):
-	$height = $defh + count($names[$i]) * 18.125;
-	$h = round($height);
-	$src = "http://chart.googleapis.com/chart?".
-		urldecode(http_build_query(array(
-			'cht' => 'pc',
-			'chs' => $width.'x'.$h,
-			'chco' => '0000FF',
-			'chd' => 't:' . implode(',', $values[$i]),
-			'chdl' => implode('|', $names[$i]),
-			'chdlp' => 'bv'
-		)))."";
-
-$download_png = href("export/png/".base64_encode(str_replace($width."x".$h, (2*$width)."x".(round(2*$height)), $src))."/".$titles[$i]);
-$download_csv = href("export/csv/".base64_encode(serialize(array(
-    'names' => $names[$i],
-    'values' => $real_values[$i]
-)))."/".$titles[$i]);
-
-?>
-	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">
-		<div class="title group" style='display:block; text-align:center;'>
-			<?php echo $titles[$i] ?>
-		</div>
-		<div class='export group'>
-                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
-                	<a href='<?php echo $download_csv ?>'>CSV</a>
-		</div>
-		<img src="<?php echo $src; ?>"
-		     width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
-	</div>
-
-<?php endfor; ?>
-
-<?php										//COLUMN 1
-
-
-   $defwidth = 265;
-   $width = 10;
-   $height = 240;
-
-   for ( $i = 2; $i <= 2; $i ++ ):
-   	$width += count($values[$i]) * 30;
-	$src = "http://chart.googleapis.com/chart?".
-		urldecode(http_build_query(array(
-			'chxt' => 'x',
-			'cht' => 'bvs',
-			'chs' => $width.'x'.$height,
-			'chco' => '0000FF',
-			'chd' => 't:' . implode(',', $values[$i]),
-			'chbh' => '13,17',
-			'chxl' => '0:|'.implode('|', $names[$i]),
-			'chds' => '0,150'
-		)))."";
-
-$dw = round(1.5 * $width);
-$dh = round(1.5 * $height);
-
-$download_png = href("export/png/".base64_encode(str_replace($width."x".$height, $dw."x".$dh, $src))."/".$titles[$i]);
-$download_csv = href("export/csv/".base64_encode(serialize(array('names' => $names[$i],'values' => $real_values[$i])))."/".$titles[$i]);
-
-?>
-	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">
-		<div class="title group" style='display:block; text-align:center;'>
-			<?php echo $titles[$i] ?>
-		</div>
-		<div class='export group'>
-                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
-                	<a href='<?php echo $download_csv ?>'>CSV</a>
-		</div>
-		<img src="<?php echo $src; ?>"
-		     width="<?php echo $width ?>px" height="<?php echo $height ?>px" alt="" />
-	</div>
-
-<? endfor; ?>
-
-
-
-
-
-
-*/ ?>
     </div>
 
 </div>

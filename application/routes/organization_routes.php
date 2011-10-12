@@ -28,7 +28,7 @@ Slim::get('/organization/:unique/',function($unique){
 		  LEFT JOIN organizations ON `org_unique` = organizations.`unique`
 		  WHERE organizations.`unique` = :unique
 		  AND tags.lang = '" . LANG . "'
-		  AND organizations.lang = '" . LANG . "'";
+		  AND organizations.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -105,10 +105,10 @@ Slim::post('/admin/organizations/create/', function(){
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
         	$_FILES,
-        	$_POST['data_key'],
-        	$_POST['data_sort'],
-        	$_POST['data_value'],
-        	$_POST['sidebar']
+        	(empty($_POST['data_key']) ? NULL : $_POST['data_key']),
+        	(empty($_POST['data_sort']) ? NULL : $_POST['data_sort']),
+        	(empty($_POST['data_value']) ? NULL : $_POST['data_value']),
+        	(empty($_POST['sidebar']) ? NULL : $_POST['sidebar'])
        	     );
        	     Slim::redirect(href('admin/organizations', TRUE));
        	}

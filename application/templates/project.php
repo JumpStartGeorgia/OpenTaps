@@ -1,26 +1,24 @@
 <?php function edit_button($edit_id = NULL){ return '<span id="' . $edit_id . '" class="admin_edit_button">Edit</span>'; } ?>
 
-
+<script type="text/javascript">
+	/*var region_map_boundsLeft = 4550479.3343998,
+	region_map_boundsRight = 4722921.2701802,
+	region_map_boundsTop = 5183901.869223,
+	region_map_boundsBottom = 5034696.790037;*/
+	var region_map_zoom = false,
+	region_make_def_markers = false,
+	region_show_def_buttons = false,
+	region_map_maxzoomout = 8,
+	region_map_longitude = <?php echo isset($project) ? $project['longitude'] : 'false'; ?>,
+	region_map_latitude = <?php echo isset($project) ? $project['latitude'] : 'false'; ?>,
+	region_marker_click = false;
+</script>
 
 <div id='project_content'>
-	<script type="text/javascript">
-			/*var region_map_boundsLeft = 4550479.3343998,
-			region_map_boundsRight = 4722921.2701802,
-			region_map_boundsTop = 5183901.869223,
-			region_map_boundsBottom = 5034696.790037;*/
-			var region_map_zoom = false,
-			region_make_def_markers = false,
-			region_show_def_buttons = false,
-			region_map_maxzoomout = 8,
-			region_map_longitude = <?php echo isset($project) ? $project['longitude'] : 'false'; ?>,
-			region_map_latitude = <?php echo isset($project) ? $project['latitude'] : 'false'; ?>,
-			region_marker_click = false;
-	</script>
-
 
 	<div style="float: left;">
 		<div id="map" style="width: 638px; height: 160px; border-top: 0;"></div>
-		<div style="background: url(<?php echo href() . "images/bg.jpg" ?>) repeat; width: 610px; height: 35px; padding: 8px 15px;">
+		<div style="background:url(<?php echo href().'images/bg.jpg' ?>) repeat; width: 610px; height: 35px; padding: 8px 15px;">
 			<span style="font-size: 16px;"><?php echo $project['title'] ?></span>
 			<span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span>
 		</div>
@@ -45,22 +43,6 @@
 				</div>
 			</div>
 
-			<?php /*<div>
-				<span class="expand_title">
-					<span class="racxa">►</span> Project Description
-					<?php $edit_permission AND print edit_button(); ?>
-				</span>
-				<div class="expandable"><?php echo $project['description']; ?></div>
-			</div>
-
-			<div>
-				<span class="expand_title">
-					<span class="racxa">►</span> Project Info
-					<?php $edit_permission AND print edit_button(); ?>
-				</span>
-				<div class="expandable"><?php echo $project['info']; ?></div>
-			</div>*/ ?>
-
 		<?php foreach ($data AS $d): ?>
 			<div>
 				<span class="expand_title"><span class="racxa">►</span> <?php echo $d['key'] ?></span>
@@ -84,29 +66,11 @@
 
 
 
-<?php /*
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    //  * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * 
-    var disqus_shortname = 'opentaps'; // required: replace example with your forum shortname
-
-    //   * * * DON'T EDIT BELOW THIS LINE * *
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
-*/ ?>
+	</div><!--LEFT PANEL END-->
 
 
-
-
-	</div>
-	<div style="float: right;">
-	<?php $i = 0; foreach ( $side_data as $d ): $i ++; ?>
+	<div style="float: right;"><!--DATA-->
+	<?php $i = 0; foreach ($side_data as $d): $i ++; ?>
 
 		<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
 			<div class='key'>
@@ -119,11 +83,11 @@
 
 	<?php endforeach; ?>
 
-		<?php if (!empty($tags)): ?><div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
+	<?php if (!empty($tags)): ?>
+		<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
 			<div class='key'>TAG CLOUD</div>
 			<div class='value group'>
-<?php
-			foreach($tags as $tag):
+<?php			foreach($tags as $tag):
 			    echo 
 				"<a href='".href('tag/project/' . $tag['name'], TRUE)."'>" .
 					$tag['name'] . " (" . $tag['total_tags'] . ")".
@@ -132,51 +96,19 @@
 			endforeach;
 ?>
 			</div>
-		</div><?php endif; ?>
+		</div>
+	<?php endif; ?>
 
-	</div>
+	</div><!--DATA END-->
 
 
 <?php /*
-	$titles = array(NULL, 'ORGANISATIONS', 'PROJECT BUDGET', 'PROJECT', 'PROJECT BUDGET');
-?>
 
     <div id='charts'>
-<?php
-   $width = 165;
-   $defh = 203.875;
-   for ( $i = 1; $i <= 2; $i ++ ):
-	$height = $defh + count($names[$i]) * 18.125;
-	$h = round($height);
-	$src = "http://chart.googleapis.com/chart?".
-		urldecode(http_build_query(array(
-			'cht' => 'pc',
-			'chs' => $width.'x'.$h,
-			'chco' => '0000FF',
-			'chd' => 't:' . implode(',', $values[$i]),
-			'chdl' => implode('|', $names[$i]),
-			'chdlp' => 'bv'
-		)))."";
-		
-$download_png = href("export/png/".base64_encode(str_replace($width."x".$h, (2*$width)."x".(round(2*$height)), $src))."/".$titles[$i]);
-$download_csv = href("export/csv/".base64_encode(serialize(array('names' => $names[$i],'values' => $real_values[$i])))."/".$titles[$i]);
 
-?>
-	<div id="chart_div_<?php echo $i ?>" style="float: left; width: 160px; margin-right: 5px">
-		<div class="title group" style='display:block; text-align:center;'>
-			<?php echo $titles[$i] ?>
-		</div>
-		<div class='export group'>
-                	<a href='<?php echo $download_png ?>'>PNG</a> &middot;
-                	<a href='<?php echo $download_csv ?>'>CSV</a>
-		</div>
-		<img src="<?php echo $src; ?>"
-		     width="<?php echo $width ?>px" height="<?php echo $h ?>px" alt="" />
-	</div>
-
-<? endfor; ?>
-
-    </div>*/ ?>
+    </div>
+*/ ?>
 
 <input type="hidden" id="project_unique" value="<?php echo $project['unique']; ?>" />
+
 </div>

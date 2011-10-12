@@ -1,11 +1,11 @@
 <?php
 
 return array(
-    'url' => 'http://localhost/OpenTaps/',
+    'url' => 'http://www.localhost.com/opentaps/',
     'db' => array(
         'host' => 'localhost',
         'name' => 'opentaps',
         'user' => 'root',
-        'pass' => 'password'
+        'pass' => 'asdfg'
     )
 );
