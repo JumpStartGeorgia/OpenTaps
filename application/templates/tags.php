@@ -1,3 +1,5 @@
+<?php $link_to_item = strtolower($def); $def == 'news' OR $link_to_item = substr($link_to_item, 0, -1); ?>
+
 <div id='tag_content'>
     <div id='left_list'>
     	<div class='group headers'>
@@ -38,17 +40,21 @@
 	endswitch;
 ?>
 	    	<div class='content_each_left' style='border-right: 7px solid <?php echo $color ?>'>
-	    	    <div class='content_each_title'><?php echo (empty($result['name'])) ? $result['title'] : $result['name']; ?></div>
-	    	    <div class='content_each_body'>
-	    	    	<?php
-	    	    	    $body = (empty($result['body'])) ? $result['description'] : $result['body'];
-	    	    	    (strlen($body) > 200) AND $body = substr($body, 0, 200) . "...";
-	    	    	    echo $body;
-	    	    	?>
-	    	    </div>
+	    	    <a href="<?php echo href($link_to_item . '/' . $result['unique'], TRUE) ?>" style="">
+		    	    <div class='content_each_title'>
+		    	    	<?php echo (empty($result['name'])) ? $result['title'] : $result['name']; ?>
+		    	    </div>
+		    	    <div class='content_each_body'>
+		    	    	<?php
+		    	    	    $body = (empty($result['body'])) ? $result['description'] : $result['body'];
+		    	    	    (strlen($body) > 200) AND $body = substr($body, 0, 200) . "...";
+		    	    	    echo $body;
+		    	    	?>
+		    	    </div>
+	    	    </a>
 	    	</div>
     		<div class='content_each_right'>
-    		    <div style='padding:4px;padding-top:25px;font-size:10px;text-align:center;'>
+    		    <div style="padding: 4px; padding-top: 25px; font-size: 10px; text-align: center;">
     		    	<?php
     		    	    empty($result['start_at']) OR print($result['start_at'] . "<br/>-<br/>" . $result['end_at']);
     		    	    empty($result['published_at']) OR print($result['published_at']);
@@ -77,7 +83,7 @@
     	      endif;
     	    endfor;
     	    if ($current_page < $total_pages): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page + 1), TRUE) ?>' class='prevnext'>></a>
+    	    	<a href="<?php echo href('tag/' . $def . '/' . $tag_name . '/' . ($current_page + 1), TRUE) ?>" class='prevnext'>></a>
     	    <?php endif; ?>
     	</div>
 <?php endif; ?>
