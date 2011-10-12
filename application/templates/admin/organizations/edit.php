@@ -7,6 +7,22 @@
   	    <input name='p_name' id='pname' type='text' value="<?php echo $organization['name']; ?>" />
   	    <br /><br />
 
+  	    <label for='plogo'>Logo: </label>
+  	    <?php if (!empty($organization['logo'])): ?>
+  	    	<span>
+  	    	<span>
+  	    	    <br />
+	  	    current logo :
+	  	    <a target="_blank" href="<?php echo href() . $organization['logo'] ?>" class="region_link">here</a>
+  	    	    &nbsp;<a onclick="$(this).parent().parent().find('input').val('yes'); $(this).parent().slideUp('normal', function(){ $(this).remove(); });" class="region_link" style="cursor: pointer; text-decoration: underline; color: black">remove</a>
+  	    	</span>
+  	    	<input type="hidden" name="delete_logo" value="no" />
+  	    	</span>
+  	    <?php endif; ?>
+  	    <br />
+  	    <input name='p_logo' id='plogo' type='file' />
+  	    <br /><br />
+
   	    <label for='porg_info'>Organization Info: </label>
   	    <br />
   	    <textarea name='p_org_info' id='porg_info' cols='30' rows='3'><?php echo $organization['description']; ?></textarea>

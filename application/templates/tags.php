@@ -69,7 +69,7 @@
 <?php if ($total_pages > 1): ?>
     	<div id='pages'>
     	    <?php if ($current_page > 1): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . ($current_page - 1), TRUE) ?>' class='prevnext'><</a>
+    	    	<a href="<?php echo href('tag/' . $def . '/' . $tag_name . '/' . ($current_page - 1), TRUE) ?>" class='prevnext'><</a>
     	    <?php endif; ?>
     	    <?php
     	    for ($page = 1; $page <= $total_pages; $page ++):
