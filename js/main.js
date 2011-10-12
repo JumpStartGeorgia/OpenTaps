@@ -389,6 +389,15 @@ $(function(){
 
 });
 
+// Logo Animation
+$(function(){
+    $('#site-logo').hover(function(){
+        $(this).stop().animate({ opacity: 0.65 });
+    }, function(){
+        $(this).stop().animate({ opacity: 1 });
+    });
+});
+
 // Block Errors
 $(function(){
     $(window).error(function(){
