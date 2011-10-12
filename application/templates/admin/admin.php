@@ -58,7 +58,7 @@
 			<h3>Regions Management</h3>
 			<ul>
 				<li><a href="<?php echo href("admin/regions", TRUE) ?>">Regions</a></li>
-				<li><a href="<?php echo href("admin/regions/add", TRUE) ?>">Add Region</a></li>
+				<li><a href="<?php echo href("admin/regions/new", TRUE) ?>">Add Region</a></li>
 			</ul>
 		</td>
 		<td>

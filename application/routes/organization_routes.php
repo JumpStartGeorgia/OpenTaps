@@ -17,11 +17,7 @@ Slim::get('/organizations/',function(){
 });*/
 Slim::get('/organization/:unique/',function($unique){
 	Storage::instance()->show_map = FALSE;
-	/*$sql = "SELECT budget FROM `projects`";
-	$query = db()->prepare($sql);
-	$query->execute();*/
 
-	/*list($values, $names, $real_values) = get_organization_chart_data($unique);*/
 	$query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`

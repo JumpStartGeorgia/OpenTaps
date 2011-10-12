@@ -489,7 +489,7 @@ div.tagsItemInactive{
 	cursor:pointer;
 }
 
-.page-container { padding: 1em }
+.page-container { padding: 1em; padding-top: 0px; width: 550px; margin-left: 0px; float: left; }
 
 #map-overlay
 {

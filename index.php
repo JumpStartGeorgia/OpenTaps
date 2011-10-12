@@ -55,11 +55,12 @@ Slim::init();
 Storage::instance()->title = 'Home Page';
 Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
+(strpos($_SERVER['REQUEST_URI'], '/admin/') !== FALSE) AND Storage::instance()->show_map = FALSE;
 Storage::instance()->viewsubmenu = template('submenu', array(
     'submenus' => read_submenu(),
     'projects' => read_projects(),
     'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
-        ));
+));
 Storage::instance()->content = template('home');
 Storage::instance()->show_map = TRUE;
 
