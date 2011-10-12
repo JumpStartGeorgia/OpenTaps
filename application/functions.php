@@ -1777,12 +1777,12 @@ function dateDiff($start, $end)
 
 function change_language($lang)
 {
-    in_array($lang, config('languages')) OR $lang = 'ka';
+    in_array($lang, Storage::instance()->config['languages']) OR $lang = 'ka';
 
-    if (strpos($_SERVER['REQUEST_URI'], "admin") === FALSE)
+    /*if (strpos($_SERVER['REQUEST_URI'], "admin") === FALSE)
     {
 	return href() . "?lang=" . $lang;
-    }
+    }*/
 
     list($uri) = explode("?", $_SERVER['REQUEST_URI']);
     $_GET['lang'] = $lang;

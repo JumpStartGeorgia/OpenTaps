@@ -177,7 +177,7 @@
         <script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/tinymce/jscripts/tiny_mce/init.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/menu.js"></script>
-        <?php /* <script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script> */ ?>
+        <script type="text/javascript" src="<?php echo URL ?>js/jquery_ui_slide_effect.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/bottom_toggles.js"></script>
         <script type="text/javascript" src="<?php echo URL ?>js/admin_edit.js"></script>
 

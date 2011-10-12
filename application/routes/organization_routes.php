@@ -26,9 +26,11 @@ Slim::get('/organization/:unique/',function($unique){
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN organizations ON `org_unique` = organizations.`unique`
-		  WHERE tags.lang = '" . LANG . "' AND organizations.lang = '" . LANG . "'";
+		  WHERE organizations.`unique` = :unique
+		  AND tags.lang = '" . LANG . "'
+		  AND organizations.lang = '" . LANG . "'";
 	$query = db()->prepare($query);
-	$query->execute();
+	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	$sql = "SELECT * FROM pages_data

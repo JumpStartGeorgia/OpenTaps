@@ -11,7 +11,7 @@ require_once DIR . 'application/storage.php';
 
 // Declare and define environments by URI string.
 foreach (array(
-'localhost.com' => 'development',
+ 'localhost.com' => 'development',
  'deda.omc.ge' => 'testing',
  'opentaps.ge' => 'production'
 ) AS $uri => $env)
@@ -30,7 +30,7 @@ Storage::instance()->config_env = require_once $env_config;
 define('URL', Storage::instance()->config_env['url']);
 
 Storage::instance()->config = require_once DIR . 'application/config.php';
-require_once DIR . 'application/firephp/fb.php';
+/*require_once DIR . 'application/firephp/fb.php';*/
 
 define('LANG', (isset($_GET['lang']) AND in_array($_GET['lang'], array('en', 'ka'))) ? $_GET['lang'] : 'ka');
 
