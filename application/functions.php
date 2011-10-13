@@ -958,7 +958,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    		title,
 	    		description,
 	    		budget,
-	    		region_unique,
 	    		city,
 	    		grantee,
 	    		sector,
@@ -974,7 +973,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    		:title,
 	    		:description,
 	    		:budget,
-	    		:region_unique,
 	    		:city,
 	    		:grantee,
 	    		:sector,
@@ -994,7 +992,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
                     ':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
                     ':description' => $desc,
                     ':budget' => $budget,
-                    ':region_unique' => 0, //$region_id,
                     ':city' => $city,
                     ':grantee' => $grantee,
                     ':sector' => $sector,
@@ -1023,14 +1020,11 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
                 return "tag connection error";
     }
 
-    if ($success)
+    if ($success AND !empty($project_key))
     {
-        if (!empty($project_key))
-            add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
-        Slim::redirect(href("admin/projects", TRUE));
+	add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
     }
-    else
-        return "couldn't insert record/database error";
+    Slim::redirect(href("admin/projects", TRUE));
 }
 
 function update_project($unique, $title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)

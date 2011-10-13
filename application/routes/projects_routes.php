@@ -344,10 +344,10 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
         	$_POST['p_type'],
-        	$_POST['data_key'],
-        	$_POST['data_sort'],
-        	$_POST['data_value'],
-        	$_POST['sidebar']
+        	(empty($_POST['data_key']) ? NULL : $_POST['data_key']),
+        	(empty($_POST['data_sort']) ? NULL : $_POST['data_sort']),
+        	(empty($_POST['data_value']) ? NULL : $_POST['data_value']),
+        	(empty($_POST['sidebar']) ? NULL : $_POST['sidebar'])
         );
     }
     else

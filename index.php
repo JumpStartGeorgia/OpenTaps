@@ -55,7 +55,7 @@ Slim::init();
 Storage::instance()->title = 'Home Page';
 Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
-Storage::instance()->show_map = (strpos($_SERVER['REQUEST_URI'], '/admin/') !== FALSE) ? FALSE : TRUE;
+Storage::instance()->show_map = (strpos($_SERVER['REQUEST_URI'], '/admin/') !== FALSE OR strpos($_SERVER['REQUEST_URI'], '/login/') !== FALSE) ? FALSE : TRUE;
 Storage::instance()->viewsubmenu = template('submenu', array(
     'submenus' => read_submenu(),
     'projects' => read_projects(),
