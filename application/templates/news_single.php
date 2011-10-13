@@ -1,9 +1,9 @@
 <div class="page-container">
-	<h1><?php echo $news[0]['title'] ?></h1>
-	<?php echo $news[0]['body']; ?>
+	<h1 style="font-size: 18px;"><?php echo $news[0]['title'] ?></h1>
+	<span style="font-size: 15px; text-align: justify"><?php echo $news[0]['body']; ?></span>
         <p style="padding-top:20px;">
-        <font style="font-size:10pt;">Type: <?php echo $news[0]['category']; ?></font><br />
-        <font style="font-size:10pt;">Published at: <?php echo $news[0]['published_at']; ?><font>
+        <font style="font-size:13px;">Type: <?php echo $news[0]['category']; ?></font><br />
+        <font style="font-size:12px;">Published at: <?php echo $news[0]['published_at']; ?><font>
         </p>
 
 	<div id='project_description'>

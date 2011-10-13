@@ -4,7 +4,7 @@
     <div id='left_list'>
     	<div class='group headers'>
     	    <div class='headers_left'>TAGS</div>
-    	    <div class='headers_right'>SORT BY ▾</div>
+    	    <div class='headers_right'><!--SORT BY ▾--></div>
     	</div>
 
     	<div class='group' id='titletype'>

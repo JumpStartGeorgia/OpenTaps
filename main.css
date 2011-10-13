@@ -99,13 +99,13 @@ div#submenu{  }
 #submenu div.submenu table{ width:100%; }
 #submenu div.submenu td
 {
-	width:149px;
+	width: 149px;
 	float:left;
-	margin-left:17px;
-	margin-right:17px;
-	font-size:11px;
-	font-family:arial;
-	border-bottom:1px dotted @opentaps_default_bordercolor;
+	margin-left: 17px;
+	margin-right: 17px;
+	font-size: 11px;
+	font-family: arial;
+	border-bottom: 1px dotted @opentaps_default_bordercolor;
 }
 #submenu div.submenu td:hover{ background-color:rgba(95,204,243,.2); border-color:rgba(0,0,0,.1); }
 #submenu div.submenu td a
@@ -325,7 +325,8 @@ div.more_news a:hover{ color: #303030; }*/
 #tag_content #region_link, #tag_content .region_link{ color: #0CB5F5; }
 #left_list, #right_list{ min-height: 100px; }
 #left_list{ width: 640px; float: left; }
-.headers{ width: 100%; background: #0cb5f6; height: 39px; color: #fff; }
+.headers { width: 100%; background: #0cb5f6; height: 39px; color: #fff; }
+.chzn-container{ color: #565656; }
 .headers_left{ float: left; padding-top: 10px; padding-left: 17px; font-size:16px; }
 .headers_right{ float: right; padding-top: 12px; padding-right: 13px; font-size:11px; }
 #titletype{ width: 100%; border-bottom: 1px solid #d1d1d1; }
@@ -424,6 +425,7 @@ div.bottom1{ margin-left: 1px; }
 
 div.bottom a{ color:grey; text-decoration:none; }
 div.bottom a:hover{ text-decoration:underline; color:black; }
+
 
 div.bottom2{ float:right; margin-right: 2px; font-size: 10px; }
 div.bottom2 img{ vertical-align:middle; margin-top:-6px; }

@@ -2,16 +2,28 @@
 <div id='project_content'>
     <div style='float:left;width:673px;'>
 	<div class='group'>
-		<?php if($organization['logo'] != NULL):
-			  if(substr($organization['logo'], 0, 4) == "http")
-			  	$logo = $organization['logo'];
-			  else
-			  	$logo = URL . "uploads/" . $organization['logo'];
-		      else:
-		      	  $logo = NULL; 
-		      endif;
+		<?php
+		    if (!empty($organization['logo']))
+		    {
+			$p = substr($organization['logo'], 0, 7);
+			if ($p != 'http://' AND $p != 'https:/')
+				$logo = URL . $organization['logo'];
+			?><div style="width: 282px; float: left;">
+				<img width="282px" src="<?php echo $logo; ?>" />
+			</div><?php
+		    }
+		    else
+		    {
+			?>
+			<div style="width: 282px; height: 170px; background: url(<?php echo URL ?>images/bg.jpg); float: left;">
+			    <div style="width: 100%; padding-top: 65px; height: 105px; text-align: center; color: #FFF; font-weight: bold; background: rgba(12, 181, 245, 1); letter-spacing: 1px; font-size: 25px;">
+				NO LOGO
+			    </div>
+			</div>
+			<?php
+		    }
 		?>
-		<div style="width:282px;height:170px;float:left;<?php echo $logo != NULL ? 'background-image:url(\''.$logo.'\');' : NULL; ?>"><?php echo $logo == NULL ? "<p style='padding-top:50px;'><center><font style='font-size:25pt;'>No Logo</font></center></p>" : NULL; ?></div>
+
 		
 		<div id='project_details' style="min-height:150px;">
 			<div id='project_budget'>
@@ -58,7 +70,9 @@
 		<p class='desc'>ORGANIZATION DESCRIPTION</p>
 		<div><?php echo $organization['description']; ?></div>
 
-		<p class='desc'>INFO ON PROJECTS</p>
+		<div style="width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
+
+		<?php /*<p class='desc'>INFO ON PROJECTS</p>*/ ?>
 		<div><?php echo $organization['projects_info']; ?></div>
 
 		<?php foreach ($data as $d): ?>
@@ -116,7 +130,7 @@
 		<div class='key'>
 			TAG CLOUD
 		</div>
-		<div class='value' style='line-height:25px;'>
+		<div class='value' style="line-height: 25px;">
 		    <?php
 			foreach ($tags as $tag):
 				echo 

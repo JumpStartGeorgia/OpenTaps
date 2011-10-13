@@ -9,6 +9,18 @@
     <div id='left_list'>
     	<div class='group headers'>
     	    <div class='headers_left'>PROJECTS</div>
+    	    <div class='headers_right' style="padding-top: 5px; padding-right: 5px;">
+    	        filter by
+	        <?php $location = href('projects', TRUE, 'projects'); ?>
+		<select style="width: 170px;" onchange="window.location.href = '<?php echo $location; ?>';">
+<?php		foreach ($types AS $type)
+		{
+		    $value = strtolower(str_replace(" ", "_", $type));
+		    echo '<option value="' . $value . '">' . $type . '</option>';
+		}
+?>
+		</select>
+    	    </div>
     	</div>
 
     	<div class='group' id='newstype_filter' style='width: 100%; border-bottom: 1px solid #eee;'>
@@ -25,21 +37,11 @@
 	    <?php endforeach; ?>
     	    </div>
 
-    	    <div class='titletype_center'>
-		<a class="choosedef<?php ($direction == 'ASC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from first to last" href="<?php echo href('projects/order/' . $this_order . '-ASC', TRUE, 'projects'); ?>">▼</a>
-		<a class="choosedef<?php ($direction == 'DESC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from last to first" href="<?php echo href('projects/order/' . $this_order . '-DESC', TRUE, 'projects'); ?>">▲</a>
-    	    </div>
+    	    <div class='titletype_center'></div>
 
     	    <div class='titletype_right'>
-	        <?php $location = href(NULL, TRUE); ?>
-		<select style="width: 170px;" onchange="window.location.href = '<?php echo $location; ?>';">
-<?php		foreach ($types AS $type)
-		{
-		    $value = strtolower(str_replace(" ", "_", $type));
-		    echo '<option value="' . $value . '">' . $type . '</option>';
-		}
-?>
-		</select>
+		<a class="choosedef<?php ($direction == 'ASC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from first to last" href="<?php echo href('projects/order/' . $this_order . '-ASC', TRUE, 'projects'); ?>">▼</a>
+		<a class="choosedef<?php ($direction == 'DESC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from last to first" href="<?php echo href('projects/order/' . $this_order . '-DESC', TRUE, 'projects'); ?>">▲</a>
     	    </div>
     	</div>
 

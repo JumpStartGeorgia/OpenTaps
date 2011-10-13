@@ -1,10 +1,21 @@
 <?php
   $action = href("admin/organizations/update/" . $organization['unique'], TRUE);
 ?>
-    	<form action='<? echo $action; ?>' method='post' enctype="multipart/form-data">
+    	<form action="<? echo $action; ?>" method='post' enctype="multipart/form-data" style="padding-top: 5px;">
   	   <label for='pname'>Name: </label>
   	    <br />
   	    <input name='p_name' id='pname' type='text' value="<?php echo $organization['name']; ?>" />
+  	    <br /><br />
+
+  	    <label>
+		Type:
+		<br />
+		<select name='p_type' style="width: 150px;">
+		    <?php $s = 'selected="selected"'; ?>
+		    <option <?php $organization['type'] == "organization" AND print $s; ?> value="organization">Organization</option>
+		    <option <?php $organization['type'] == "donor" AND print $s; ?> value="donor">Donor</option>
+		</select>
+	    </label>
   	    <br /><br />
 
   	    <label for='plogo'>Logo: </label>

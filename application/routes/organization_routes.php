@@ -91,6 +91,7 @@ Slim::post('/admin/organizations/create/', function(){
    if(userloggedin()){
 	     add_organization(
         	$_POST['p_name'],
+        	$_POST['p_type'],
         	$_POST['p_org_info'],
         	$_POST['p_org_projects_info'],
         	$_POST['p_city_town'],
@@ -124,6 +125,7 @@ Slim::post('/admin/organizations/update/:unique/', function($unique){
    	    edit_organization(
 	    	$unique,
         	$_POST['p_name'],
+        	$_POST['p_type'],
         	$_POST['p_org_info'],
         	$_POST['p_org_projects_info'],
         	$_POST['p_city_town'],

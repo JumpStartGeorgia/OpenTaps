@@ -288,7 +288,7 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
         return $up;
     elseif ($up == "")
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "'";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
@@ -300,7 +300,8 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
     else
     {
         delete_image($unique);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "'";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
+        	UPDATE  `opentaps`.`news` SET  `image` =  :image WHERE  `news`.`unique` = :unique;";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
@@ -1324,9 +1325,10 @@ function delete_organization($unique)
         unlink($org['logo']);
 }
 
-function add_organization($name, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $filedata, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
+function add_organization($name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $filedata, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
 {
     $up = image_upload($filedata);
+    in_array($type, array('donor', 'organization')) OR $type = "organization";
 
     $languages = config('languages');
     $unique = generate_unique("organizations");
@@ -1334,6 +1336,7 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
     {
         $sql = "INSERT INTO organizations(
 				name,
+				type,
 				description,
 				district,
 				city_town,
@@ -1346,6 +1349,7 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
 			)
 			VALUES(
 				:name,
+				:type,
 				:description,
 				:district,
 				:city_town,
@@ -1358,6 +1362,7 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
 			)";
         $data = array(
             ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
+            ':type' => $type,
             ':description' => $description,
             ':projects_info' => $projects_info,
             ':city_town' => $city_town,
@@ -1379,14 +1384,23 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
         add_page_data('organization', $unique, $org_key, $org_sort, $sidebar, $org_value);
 }
 
-function edit_organization($unique, $name, $info, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
+function edit_organization($unique, $name, $type, $info, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
 {
     $org = get_organization($unique);
+    in_array($type, array('donor', 'organization')) OR $type = "organization";
+
     if ($filedata)
     {
 	if (file_exists($org['logo']))
 	    unlink($org['logo']);
-	$up = ($filedata['delete_only'] == TRUE) ? NULL : image_upload($filedata);
+	if ($filedata['delete_only'] == TRUE)
+	{
+	    $up = ($filedata['size'] > 0) ? image_upload($filedata) : NULL;
+	}
+	else
+	{
+	    $up = image_upload($filedata);
+	}
     }
     else
     {
@@ -1396,12 +1410,14 @@ function edit_organization($unique, $name, $info, $projects_info, $city_town, $d
 
     //$unique = get_unique("organizations", $id);
 
-    $sql = "UPDATE organizations SET name=:name,description=:info,district=:district,city_town=:city_town,
-		grante=:grante,sector=:sector,projects_info=:projects_info,logo=:logo
-		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;";
+    $sql = "UPDATE organizations SET name=:name,type=:type,description=:info,district=:district,city_town=:city_town,
+		grante=:grante,sector=:sector,projects_info=:projects_info
+		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
+	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;";
     $statement = db()->prepare($sql);
     $statement->execute(array(
         ':name' => $name,
+        ':type' => $type,
         ':info' => $info,
         ':district' => $district,
         ':city_town' => $city_town,

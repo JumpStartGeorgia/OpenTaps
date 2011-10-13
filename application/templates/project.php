@@ -86,7 +86,7 @@
 	<?php if (!empty($tags)): ?>
 		<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
 			<div class='key'>TAG CLOUD</div>
-			<div class='value group'>
+			<div class='value group' style="line-height: 25px;">
 <?php			foreach($tags as $tag):
 			    echo 
 				"<a href='".href('tag/project/' . $tag['name'], TRUE)."'>" .
