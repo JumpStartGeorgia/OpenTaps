@@ -37,8 +37,8 @@
 					Grantee: <?php echo $project['grantee']; ?><br />
 					Sector: <?php echo $project['sector']; ?><br />
 					Budget: <?php echo $project['budget']; ?><br />
-					Beginning: <?php echo $project['start_at']; ?><br />
-					Ending: <?php echo $project['end_at']; ?><br />
+					Beginning: <?php echo substr($project['start_at'], 8, 2) . '-' . substr($project['start_at'], 5, 2) . '-' . substr($project['start_at'], 0, 4); ?><br />
+					Ending: <?php echo substr($project['end_at'], 8, 2) . '-' . substr($project['end_at'], 5, 2) . '-' . substr($project['end_at'], 0, 4); ?><br />
 					Type: <?php echo $project['type']; ?>
 				</div>
 			</div>
