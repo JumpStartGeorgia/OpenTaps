@@ -107,7 +107,7 @@ Slim::post('/admin/organizations/create/', function(){
         	(empty($_POST['data_value']) ? NULL : $_POST['data_value']),
         	(empty($_POST['sidebar']) ? NULL : $_POST['sidebar'])
        	     );
-       	     //Slim::redirect(href('admin/organizations', TRUE));
+       	     Slim::redirect(href('admin/organizations', TRUE));
        	}
 	else Storage::instance()->content = template('login');
 	
