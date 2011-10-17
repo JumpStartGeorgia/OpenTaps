@@ -922,20 +922,12 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
     return $statement->fetchAll();
 }
 
-function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
+function add_project($title, $desc, $budgets, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
     $back = "<br /><a href=\"" . href("admin/projects/new", TRUE) . "\">Back</a>";
 
     $fields = array();
     (strlen($title) < 4) AND $fields[] = 'title';
-    /* $fields[] = (strlen($desc) < 4) ? 'description' : NULL;
-      $fields[] = (strlen($budget) < 4) ? 'budget' : NULL;
-      $fields[] = (strlen($city) < 4) ? 'city' : NULL;
-      $fields[] = (strlen($grantee) < 4) ? 'grantee' : NULL;
-      $fields[] = (strlen($sector) < 4) ? 'sector' : NULL;
-      $fields[] = (strlen($start_at) < 4) ? 'start_at' : NULL;
-      $fields[] = (strlen($end_at) < 4) ? 'end_at' : NULL;
-      $fields[] = (strlen($info) < 4) ? 'info' : NULL; */
 
     $f = implode(", ", $fields);
 
@@ -958,7 +950,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    	INSERT INTO `opentaps`.`projects` (
 	    		title,
 	    		description,
-	    		budget,
 	    		city,
 	    		grantee,
 	    		sector,
@@ -973,7 +964,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    	VALUES(
 	    		:title,
 	    		:description,
-	    		:budget,
 	    		:city,
 	    		:grantee,
 	    		:sector,
@@ -992,7 +982,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
         $exec = $statement->execute(array(
                     ':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
                     ':description' => $desc,
-                    ':budget' => $budget,
                     ':city' => $city,
                     ':grantee' => $grantee,
                     ':sector' => $sector,
@@ -1021,14 +1010,33 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
                 return "tag connection error";
     }
 
-    if ($success AND !empty($project_key))
+    if ($success)
     {
-	add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
+	empty($project_key) OR add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
+	if (!empty($budgets))
+	{
+	    list($budgets, $organization, $currency) = $budgets;
+	    foreach ($budgets AS $idx => $budget)
+	    {
+	        if (is_numeric($budget))
+	        {
+		    $sql = "INSERT INTO `project_budgets`(project_unique, organization_unique, budget, currency)
+		    	    VALUES(:project_unique, :organization_unique, :budget, :currency);";
+		    $query = db()->prepare($sql);
+		    $query = $query->execute(array(
+		    	':project_unique' => $unique,
+		    	':organization_unique' => $organization[$idx],
+		    	':currency' => $currency[$idx],
+		    	':budget' => $budget[$idx]
+		    ));
+		}
+	    }
+	}
     }
     Slim::redirect(href("admin/projects", TRUE));
 }
 
-function update_project($unique, $title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
+function update_project($unique, $title, $desc, $budgets, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/" . $unique, TRUE) . "\">Back</a>";
 
@@ -1061,7 +1069,6 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     	SET
     		title = :title,
     		description = :description,
-    		budget = :budget,
     		city = :city,
     		grantee = :grantee,
     		sector = :sector,
@@ -1079,6 +1086,10 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     	WHERE
     		proj_unique = :unique;
     	DELETE FROM
+    		project_budgets
+    	WHERE
+    		project_unique = :unique;
+    	DELETE FROM
     		project_organizations
     	WHERE
     		project_unique = :unique; 	
@@ -1090,7 +1101,6 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
                 ':unique' => $unique,
                 ':title' => $title,
                 ':description' => $desc,
-                ':budget' => $budget,
                 ':city' => $city,
                 ':grantee' => $grantee,
                 ':sector' => $sector,
@@ -1125,6 +1135,27 @@ function update_project($unique, $title, $desc, $budget, $place_unique, $city, $
     fetch_db("DELETE FROM tag_connector WHERE proj_unique = $unique");
     if (!empty($tag_uniques) OR !empty($tag_names))
         add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
+
+    if (!empty($budgets))
+    {
+	list($budgets, $organization, $currency) = $budgets;
+	//print_r($organization);die;
+	foreach ($budgets AS $idx => $budget)
+	{
+	    if (is_numeric($budget))
+	    {
+		$sql = "INSERT INTO `project_budgets`(project_unique, organization_unique, budget, currency)
+			VALUES(:project_unique, :organization_unique, :budget, :currency);";
+		$query = db()->prepare($sql);
+		$query = $query->execute(array(
+		    ':project_unique' => $unique,
+		    ':organization_unique' => $organization[$idx],
+		    ':currency' => $currency[$idx],
+		    ':budget' => $budget
+		));
+	    }
+	}
+    }
 
     Slim::redirect(href("admin/projects", TRUE));
 }

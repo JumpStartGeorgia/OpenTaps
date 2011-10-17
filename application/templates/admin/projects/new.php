@@ -14,21 +14,40 @@
   	    <textarea name='p_info' id='pinfo' cols='30' rows='3'></textarea>
   	    <br />
 
-  	    <label for='pbudget'>Budget: </label>
+  	    Budgets:
+  	    <span style="font-size: 12px;">
+  	    	(if you select an organization twice or more, the first one will be inserted in database)
+  	    </span>
   	    <br />
-  	    <input name='p_budget' id='pbudget' type='text' />
-  	    <br /><br />
-
-  	   <?php /* <label for='pregions'>Region:</label>
-  	    <br />
-  	    <select name='p_region' id='pregions'>
-  	      <?php
-  	        foreach($regions as $region):
-  	            ?><option value="<?php echo $region['id'] ?>"><?php echo $region['name'] ?></option><?php
-  	        endforeach;
-  	      ?>
-  	    </select>
-  	    <br /><br />-->*/ ?>
+  	    <div style="margin: 0px; width: 300px;" class="group" id="budget_fields_container">
+		<div class="budget-container group" id="budget_fields">
+			<div style="width: 100%; height: 30px;">
+		  	    <div style="margin-top: 1px; float: left">Organization</div>
+		  	    <div style="float: right">
+				<select class="chosen-select" name='p_budget_org[]' style="width: 160px;">
+				<?php foreach($organizations as $org): ?>
+				    <option value="<?php echo $org['unique'] ?>"><?php echo $org['name'] ?></option>
+				<?php endforeach; ?>
+				</select>
+		  	    </div>
+		  	</div>
+		  	<div style="width: 100%; height: 30px;">
+		  	    <div style="margin-top: 1px; float:left;">Budget</div>
+			    <div style="float:right;"><input name='p_budget[]' type='text' /></div>
+		  	</div>
+		  	<div style="width: 100%; height: 25px;">
+		  	    <div style="margin-top: 1px; float:left;">Currency</div>
+			    <div style="float:right;">
+				<select class="chosen-select" name='p_budget_currency[]' style="width: 160px;">
+				<?php foreach($currency_list as $currency): ?>
+				    <option value="<?php echo $currency ?>"><?php echo $currency ?></option>
+				<?php endforeach; ?>
+				</select>
+			    </div>
+		  	</div>
+		</div>
+	    </div>
+	    <a class="region_link" style="display: block; margin-bottom: 20px; font-size: 13px;" id="add_budget_field">+Add budget</a>
 
 	    <label for='pplace'>Place:</label>
   	    <br />
@@ -82,11 +101,9 @@
  	    <label for='porgs'>Organizations: (hold down Ctrl to select multiple)</label>
   	    <br />
   	    <select name='p_orgs[]' id='porgs' multiple='multiple'>
-  	      <?php
-  	        foreach($organizations as $org):
-  	            ?><option value="<?php echo $org['unique'] ?>"><?php echo $org['name'] ?></option><?php
-  	        endforeach;
-  	      ?>
+  	    <?php foreach($organizations as $org): ?>
+		<option value="<?php echo $org['unique'] ?>"><?php echo $org['name'] ?></option>
+  	    <?php endforeach; ?>
   	    </select>
   	    <br /><br />
 
@@ -104,7 +121,7 @@
 	    <h3>Project Data</h3>
 	    <div id="data_fields_container" style="padding-left: 55px;">
 	    </div>
-	    <a style="color: #4CBEFF; cursor: pointer; font-size: 13px;" id="add_data_field">+Add data</a><br /><br />
+	    <a class="region_link" style="font-size: 13px;" id="add_data_field">+Add data</a><br /><br />
 
 
   	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />

@@ -387,6 +387,50 @@ $(function(){
 
 
 
+	$('#add_budget_field').click(function(){
+		var container = $('#budget_fields_container'),
+		html = '<div class="budget-container group" style="display: none;">' +
+			'	<div style="width: 100%; height: 30px;">' +
+			'	    <div style="margin-top: 1px; float: left">Organization</div>' +
+			'	    <div style="float: right">' +
+			'		<select class="chosen-select" name="p_budget_org[]" style="width: 160px;">';
+
+		for (i = 0, num = organization_names.length; i < num; i ++)
+		{
+			html += '<option value="' + organization_uniques[i] + '">' + organization_names[i] + '</option>';
+		}
+
+		html += '		</select>' +
+			'	    </div>' +
+			'	</div>' +
+			'	<div style="width: 100%; height: 30px;">' +
+			'	    <div style="margin-top: 1px; float:left;">Budget</div>' +
+			'	    <div style="float:right;"><input name="p_budget[]" type="text" /></div>' +
+			'	</div>' +
+			'	<div style="width: 100%; height: 25px;">' +
+			'	    <div style="margin-top: 1px; float:left;">Currency</div>' +
+			'	    <div style="float:right;">' +
+			'		<select class="chosen-select" name="p_budget_currency[]" style="width: 160px;">';
+
+		for (i = 0, num = currency_list.length; i < num; i ++)
+		{
+			html += '<option value="' + currency_list[i] + '">' + currency_list[i] + '</option>';
+		}
+
+		html += '		</select>' +
+			'	    </div>' +
+			'	</div>' +
+		  	'	<a onclick="$(this).parent().slideUp(function(){$(this).remove();})"' +
+		  	'	   class="region_link" style="color: red; font-size: 12px;">' +
+		  	'	    -Remove budget' +
+		  	'	</a>' +
+			'</div>';
+		container.append(html);
+		$(".chosen-select").chosen();
+		container.find('.group:last-child').slideDown('normal');
+	});
+
+
 });
 
 // Logo Animation

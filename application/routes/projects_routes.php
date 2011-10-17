@@ -271,13 +271,48 @@ Slim::get('/admin/projects/new/', function(){
     $regions_query = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
     $regions = fetch_db($regions_query);
     $sql_places = "SELECT * FROM places WHERE lang = '" . LANG . "'";
+
+    $num = count($orgs) - 1;
+    $orgnames_jsarray = $orguniques_jsarray = "[";
+    foreach ($orgs as $idx => $org)
+    {
+	$orgnames_jsarray .= '"' . $org['name'] . '"';
+	$orguniques_jsarray .= $org['unique'];
+	if ($idx != $num)
+	{
+	    $orgnames_jsarray .= ',';
+	    $orguniques_jsarray .= ',';
+	}
+    }
+    $orgnames_jsarray .= "]";
+    $orguniques_jsarray .= "]";
+
+    $currency_list = config('currency_list');
+    $num = count($currency_list) - 1;
+    $currency_list_jsarray = "[";
+    foreach ($currency_list as $idx => $currency)
+    {
+	$currency_list_jsarray .= '"' . $currency . '"';
+	($idx == $num) OR $currency_list_jsarray .= ',';
+    }
+    $currency_list_jsarray .= "]";
+
+    echo '
+    	<script type="text/javascript" language="javascript">
+	    var organization_names = ' . $orgnames_jsarray . ',
+	    organization_uniques = ' . $orguniques_jsarray . ',
+	    currency_list = ' . $currency_list_jsarray . ';
+    	</script>
+    ';
+
     Storage::instance()->content = userloggedin()
     	? template('admin/projects/new', array(
     		'all_tags' => read_tags(),
     		'organizations' => $orgs,
                 'regions' => $regions,
     		'project_types' => config('project_types'),
-                'places' => fetch_db($sql_places)
+                'places' => fetch_db($sql_places),
+                'currency_list' => $currency_list
     	 ))
     	: template('login');
 });
@@ -285,10 +320,9 @@ Slim::get('/admin/projects/new/', function(){
 Slim::get('/admin/projects/:unique/', function($unique){
     if (userloggedin())
     {
-	$query = "SELECT * FROM organizations WHERE lang = '" . LANG . "';";
-	$orgs = fetch_db($query);
+	$orgs = fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';");
 
-	$query = "SELECT organization_unique FROM project_organizations WHERE project_unique = :unique";
+	$query = "SELECT organization_unique FROM project_organizations WHERE project_unique = :unique;";
 	$query = Storage::instance()->db->prepare($query);
 	//$unique = get_unique("projects", $id);
 	$query->execute(array(':unique' => $unique));
@@ -297,11 +331,42 @@ Slim::get('/admin/projects/:unique/', function($unique){
 	foreach($result as $s)
 		$this_orgs[] = $s['organization_unique'];
 
-	$regions_query = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
-	$regions = fetch_db($regions_query);
+	$num = count($orgs) - 1;
+	$orgnames_jsarray = $orguniques_jsarray = "[";
+	foreach ($orgs as $idx => $org)
+	{
+	$orgnames_jsarray .= '"' . $org['name'] . '"';
+	$orguniques_jsarray .= $org['unique'];
+	if ($idx != $num)
+	{
+	    $orgnames_jsarray .= ',';
+	    $orguniques_jsarray .= ',';
+	}
+	}
+	$orgnames_jsarray .= "]";
+	$orguniques_jsarray .= "]";
 
-	$sql_places = "SELECT * FROM places WHERE lang = '" . LANG . "'";
-	$places = fetch_db($sql_places);
+	$currency_list = config('currency_list');
+	$num = count($currency_list) - 1;
+	$currency_list_jsarray = "[";
+	foreach ($currency_list as $idx => $currency)
+	{
+	$currency_list_jsarray .= '"' . $currency . '"';
+	($idx == $num) OR $currency_list_jsarray .= ',';
+	}
+	$currency_list_jsarray .= "]";
+
+	echo '
+	<script type="text/javascript" language="javascript">
+	    var organization_names = ' . $orgnames_jsarray . ',
+	    organization_uniques = ' . $orguniques_jsarray . ',
+	    currency_list = ' . $currency_list_jsarray . ';
+	</script>
+	';
+
+	$regions = fetch_db("SELECT * FROM regions WHERE lang = '" . LANG . "';");
+	$places = fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "';");
+	$budgets = fetch_db("SELECT * FROM project_budgets WHERE project_unique = :unique ORDER BY id;", array(':unique' => $unique));
 	Storage::instance()->content = template('admin/projects/edit', array
 	(
 		'project' =>  read_projects($unique),
@@ -312,7 +377,9 @@ Slim::get('/admin/projects/:unique/', function($unique){
         	'regions' => $regions,
         	'places' => $places,
 		'project_types' => config('project_types'),
-		'data' => read_page_data('project', $unique)
+		'data' => read_page_data('project', $unique),
+		'budgets' => $budgets,
+		'currency_list' => $currency_list
 	));
     }
     else
@@ -326,12 +393,20 @@ Slim::get('/admin/projects/:unique/delete/', function($unique){
 Slim::post('/admin/projects/create/', function(){
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array();
+    if (empty($_POST['p_budget']) OR empty($_POST['p_budget_org']) OR empty($_POST['p_budget_currency']))
+    {
+	$budgets = NULL;
+    }
+    else
+    {
+	$budgets = array($_POST['p_budget'], $_POST['p_budget_org'], $_POST['p_budget_currency']);
+    }
     if (userloggedin())
     {
         add_project(
         	$_POST['p_title'],
         	$_POST['p_desc'],
-        	$_POST['p_budget'],
+        	$budgets,
 		/*$_POST['p_region'],*/
 		$_POST['p_place'],
         	$_POST['p_city'],
@@ -357,16 +432,25 @@ Slim::post('/admin/projects/create/', function(){
 Slim::post('/admin/projects/:unique/update/', function($unique){
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array(NULL);
+    if (empty($_POST['p_budget']) OR empty($_POST['p_budget_org']) OR empty($_POST['p_budget_currency']))
+    {
+	$budgets = NULL;
+    }
+    else
+    {
+	$budgets = array($_POST['p_budget'], $_POST['p_budget_org'], $_POST['p_budget_currency']);
+    }
     if (userloggedin())
     {
 	delete_page_data('project', $unique);
 	if (!empty($_POST['data_key']))
-	    add_page_data('project',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+		add_page_data('project',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+
 	update_project(
 	    	$unique,
         	$_POST['p_title'],
         	$_POST['p_desc'],
-        	$_POST['p_budget'],
+        	$budgets,
 /*        	$_POST['p_region'],*/
 		$_POST['p_place'],
         	$_POST['p_city'],

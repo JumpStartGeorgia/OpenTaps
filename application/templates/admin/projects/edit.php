@@ -18,25 +18,52 @@
   	    <textarea name='p_info' id='pinfo' cols='30' rows='3'><?php echo $project['info'] ?></textarea>
   	    <br />
 
-  	    <label for='pbudget'>Budget: </label>
-  	    <br />
-  	    <input name='p_budget' id='pbudget' type='text' value="<?php echo $project['budget'] ?>" />
-  	    <br /><br />
+  	    Budgets: <br /><?php $s = 'selected="selected"'; ?>
+	    <div style="margin: 0px; width: 300px;" class="group" id="budget_fields_container">
+	    <?php foreach ($budgets as $budget): ?>
+		<div class="budget-container group" id="budget_fields">
+			<div style="width: 100%; height: 30px;">
+		  	    <div style="margin-top: 1px; float: left">Organization</div>
+		  	    <div style="float: right">
+				<select class="chosen-select" name='p_budget_org[]' style="width: 160px;">
+				<?php foreach($organizations as $org): ?>
+				    <option <?php $budget['organization_unique'] == $org['unique'] AND print $s; ?>
+				    	    value="<?php echo $org['unique'] ?>">
+				        <?php echo $org['name'] ?>
+				    </option>
+				<?php endforeach; ?>
+				</select>
+		  	    </div>
+		  	</div>
+		  	<div style="width: 100%; height: 30px;">
+		  	    <div style="margin-top: 1px; float:left;">Budget</div>
+			    <div style="float:right;">
+			    	<input name='p_budget[]' value="<?php echo $budget['budget']; ?>" type='text' />
+			    </div>
+		  	</div>
+		  	<div style="width: 100%; height: 25px;">
+		  	    <div style="margin-top: 1px; float:left;">Currency</div>
+			    <div style="float:right;">
+				<select class="chosen-select" name='p_budget_currency[]' style="width: 160px;">
+				<?php foreach($currency_list as $currency): ?>
+				    <option <?php $budget['currency'] == $currency AND print $s; ?> value="<?php echo $currency ?>">
+				    	<?php echo $currency ?>
+				    </option>
+				<?php endforeach; ?>
+				</select>
+			    </div>
+		  	</div>
+		  	<a onclick="$(this).parent().slideUp(function(){$(this).remove();})"
+		  	   class="region_link" style="color: red; font-size: 12px;">
+		  		-Remove budget
+		  	</a>
+		</div>
+	    <?php endforeach; ?>
+	    </div>
+	    <a class="region_link" style="display: block; margin-bottom: 20px; font-size: 13px;" id="add_budget_field">+Add budget</a>
 
 
-  	    <?php /*<label for='pregion'>Regions: </label>
-  	    <br />
-  	    <select name='p_region' id='pregion'>
-  	      <?php
-      foreach($regions as $region):
-  	            $selected = ($region['id'] == $project['region_id']) ? "selected='selected'" : NULL;
-  	            ?><option value="<?php echo $region['id'] ?>" <?php echo $selected ?>><?php echo $region['name'] ?></option><?php
-  	        endforeach;
-  	      ?>
-  	    </select>
-  	    <br /><br />*/ ?>
-
-        <label for='pplace'>Place: </label>
+	    <label for='pplace'>Place: </label>
   	    <br />
   	    <select name='p_place' class="chosen-select" id='pplace'>
   	      <?php
