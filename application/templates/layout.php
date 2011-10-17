@@ -151,11 +151,9 @@
                     <a target="_blank" href='http://jumpstart.ge/'>Jumpstart Georgia</a>
                 </div>
                 <div class="bottom2">
+                    <?php if (userloggedin()): ?><span id="admin_button" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>admin';">ADMINISTRATION</span>&nbsp;&nbsp;|&nbsp;&nbsp;<?php endif; ?>
                     <span id="about_us_button">ABOUT US</span> &nbsp;&nbsp;|&nbsp;&nbsp;
-                    <span id="contact_us_button">
-	            	CONTACT US<span style='cursor: pointer'>
-                        </span><img width='10px' src='<?php echo href() ?>images/contact-line.gif' id='contact_us_toggle' />
-                    </span>
+                    <span id="contact_us_button">CONTACT US<span style='cursor: pointer'></span><img width='10px' src='<?php echo href() ?>images/contact-line.gif' id='contact_us_toggle' /></span>
                 </div>
             </div>
 
