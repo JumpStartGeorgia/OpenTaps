@@ -1026,7 +1026,7 @@ function add_project($title, $desc, $budgets, $place_unique, $city, $grantee, $s
 		    	':project_unique' => $unique,
 		    	':organization_unique' => $organization[$idx],
 		    	':currency' => $currency[$idx],
-		    	':budget' => $budget[$idx]
+		    	':budget' => $budget
 		    ));
 		}
 	    }
