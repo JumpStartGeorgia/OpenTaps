@@ -40,17 +40,29 @@
 
    	</div>
 
-    <div style="float:right;width:240px;border:0px solid #a6a6a6;" >
+    <?php if (!empty($projects)): ?>
+    <div style="float: right; width: 240px; border:0px;" >
     	<div class="organization_right">
-			<div style="border:1px dotted #a6a6a6;width:100%;height:40px;background-color:rgb(30%,75%,100%);border-top:0px;border-bottom:0px;">
-				<p style="float:left;margin-top:12px;margin-left:20px;color:#FFF;font-size:11pt;font-weight:bold;font-family:arial;">ORGANIZATION PROJECTS</p>
-				<!--<p style="float:right;margin-top:12px;margin-right:25px;"><a href="projects" style="text-decoration:none;color:#FFF;font-size:7.5pt;">►View All</a></p>-->
-            </div>
-			<div style="width:100%;border:1px dotted #a6a6a6;" class='group'>
-					<p style="display:inline-block;foat:left;margin-left:7px;margin-top:5px;"><img width='225px' src="http://media.strategywiki.org/images/thumb/5/57/Angry_Birds_logo.jpg/250px-Angry_Birds_logo.jpg" /></p>
-					<p style="padding:5px;display:inline-block">Curabitur a enim in ipsum bibendum pellentesque vitae et orci. Phasellus metus erat, bibendum id dignissim quis, interdum sit amet lectus.</p>
+
+		<div class='data_block group' style="border-bottom: 0px;">
+			<div class='key'>
+				REGION PROJECTS
 			</div>
-       	</div>
+			<div class='value' style='padding: 0px;'>
+			<?php foreach ($projects AS $project):
+				$ptype = str_replace(" ", "-", strtolower(trim($project['type']))); ?>
+				<a class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
+					<img src="<?php echo href('images') . $ptype ?>.png" />
+					<?php echo $project['title'] ?>
+				</a>
+			<?php endforeach; ?>
+			</div>
+		</div>
+
+	</div>
+
     </div>
+    <?php endif; ?>
+
 
 </div>

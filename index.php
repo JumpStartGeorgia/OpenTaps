@@ -55,13 +55,13 @@ Slim::init();
 Storage::instance()->title = 'Home Page';
 Storage::instance()->menu = read_menu();
 Storage::instance()->viewmenu = template('menu');
+Storage::instance()->show_map = (strpos($_SERVER['REQUEST_URI'], '/admin/') !== FALSE OR strpos($_SERVER['REQUEST_URI'], '/login/') !== FALSE) ? FALSE : TRUE;
 Storage::instance()->viewsubmenu = template('submenu', array(
     'submenus' => read_submenu(),
     'projects' => read_projects(),
     'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
-        ));
+));
 Storage::instance()->content = template('home');
-Storage::instance()->show_map = TRUE;
 
 foreach (glob(DIR . 'application/routes/*.php') AS $route)
     require_once $route;

@@ -17,11 +17,7 @@ Slim::get('/organizations/',function(){
 });*/
 Slim::get('/organization/:unique/',function($unique){
 	Storage::instance()->show_map = FALSE;
-	/*$sql = "SELECT budget FROM `projects`";
-	$query = db()->prepare($sql);
-	$query->execute();*/
 
-	/*list($values, $names, $real_values) = get_organization_chart_data($unique);*/
 	$query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
@@ -95,6 +91,7 @@ Slim::post('/admin/organizations/create/', function(){
    if(userloggedin()){
 	     add_organization(
         	$_POST['p_name'],
+        	$_POST['p_type'],
         	$_POST['p_org_info'],
         	$_POST['p_org_projects_info'],
         	$_POST['p_city_town'],
@@ -104,7 +101,7 @@ Slim::post('/admin/organizations/create/', function(){
         	$_POST['p_sector'],
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
-        	$_FILES,
+        	(empty($_FILES['p_logo']) ? FALSE : $_FILES['p_logo']),
         	(empty($_POST['data_key']) ? NULL : $_POST['data_key']),
         	(empty($_POST['data_sort']) ? NULL : $_POST['data_sort']),
         	(empty($_POST['data_value']) ? NULL : $_POST['data_value']),
@@ -122,18 +119,20 @@ Slim::post('/admin/organizations/update/:unique/', function($unique){
     {
 	    delete_page_data('organization', $unique);
 	    empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
+	    empty($_FILES['p_logo']) OR $_FILES['p_logo']['delete_only'] = (!empty($_POST['delete_logo']) AND $_POST['delete_logo'] == "yes");
 	    if (!empty($_POST['data_key']))
 	    	add_page_data('organization',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
    	    edit_organization(
 	    	$unique,
         	$_POST['p_name'],
+        	$_POST['p_type'],
         	$_POST['p_org_info'],
         	$_POST['p_org_projects_info'],
         	$_POST['p_city_town'],
         	$_POST['p_district'],
         	$_POST['p_grante'],
         	$_POST['p_sector'],
-        	$_FILES,
+        	(empty($_FILES['p_logo']) ? FALSE : $_FILES['p_logo']),
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names']
        	     );

@@ -1,7 +1,30 @@
-  	<form method='post' enctype="multipart/form-data" action='<?php echo href("admin/organizations/create", TRUE); ?>'>
+  	<form method='post' enctype="multipart/form-data" action="<?php echo href('admin/organizations/create', TRUE); ?>">
+    	   Language: &nbsp;
+	   <select style="width: 70px;" name="record_language">
+	   <?php foreach (Storage::instance()->config['languages'] AS $lang): $s = 'selected="selected"';?>
+	   	<option <?php LANG == $lang AND print $s; ?> value=""><?php echo $lang; ?></option>
+	   <?php endforeach; ?>
+	   </select><br /><br />
+
   	    <label for='pname'>Name: </label>
   	    <br />
   	    <input name='p_name' id='pname' type='text' />
+  	    <br /><br />
+
+  	    <label>
+		Type:
+		<br />
+		<select name='p_type' style="width: 150px;">
+		    <option selected="selected" value="organization">Organization</option>
+		    <option value="donor">Donor</option>
+		</select>
+	    </label>
+  	    <br /><br />
+
+
+  	    <label for='plogo'>Logo: </label>
+  	    <br />
+  	    <input name='p_logo' id='plogo' type='file' />
   	    <br /><br />
 
   	    <label for='porg_info'>Organization Info: </label>
@@ -30,21 +53,10 @@
   	    <input name='p_grante' id='pgrante' type='text' />
   	    <br /><br />
 
-  	    <!--<label for='pdonors'>Donors: </label>
-  	    <br />
-  	    <input name='p_donors' id='pdonors' type='text' />
-  	    <br /><br />-->
-
 	    <label for='psector'>Sector: </label>
   	    <br />
   	    <input name='p_sector' id='psector' type='text' />
   	    <br /><br />
-  	    
-  	    <label for='plogo'>Logo: </label>
-  	    <br />
-  	    <input name='p_logo' id='plogo' type='file' />
-  	    <br /><br />
-  	    
 
   	    <label for='ptags'>Tags: (enter by hand or select tags below)</label>
   	    <br /><br />

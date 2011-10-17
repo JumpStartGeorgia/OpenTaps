@@ -288,7 +288,7 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
         return $up;
     elseif ($up == "")
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "'";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
@@ -300,7 +300,8 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
     else
     {
         delete_image($unique);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "'";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
+        	UPDATE  `opentaps`.`news` SET  `image` =  :image WHERE  `news`.`unique` = :unique;";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
@@ -339,11 +340,12 @@ function delete_news($unique)
     return ($exec) ? true : false;
 }
 
-function image_upload($filedata)
+function image_upload($filedata, $path = "uploads/")
 {
     if ($filedata['size'] > 0)
+    {
         if (($filedata['type'] == "image/jpeg" || $filedata['type'] == "image/pjpeg" ||
-                $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 2049)
+                $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 3149)
         {
             $path = "uploads/";
             $name = mt_rand(0, 1000) . $filedata['name'];
@@ -355,16 +357,17 @@ function image_upload($filedata)
             return $path . $name;
         }
         else
-            return "uploaded file is not an image or file size exceeds 2MB";
+            return "uploaded file is not an image or file size exceeds 3MB";
+    }
     else
         return "";
 }
 
-function delete_image($news_unique)
+function delete_image($unique)
 {
     $sql = "SELECT image FROM news WHERE `unique` = :news_unique AND lang = '" . LANG . "' LIMIT 1";
     $statement = db()->prepare($sql);
-    $statement->execute(array(':news_unique' => $news_unique));
+    $statement->execute(array(':news_unique' => $unique));
     $image = $statement->fetch(PDO::FETCH_ASSOC);
     if (file_exists($image['image']))
         unlink($image['image']);
@@ -956,7 +959,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    		title,
 	    		description,
 	    		budget,
-	    		region_unique,
 	    		city,
 	    		grantee,
 	    		sector,
@@ -972,7 +974,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
 	    		:title,
 	    		:description,
 	    		:budget,
-	    		:region_unique,
 	    		:city,
 	    		:grantee,
 	    		:sector,
@@ -992,7 +993,6 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
                     ':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
                     ':description' => $desc,
                     ':budget' => $budget,
-                    ':region_unique' => 0, //$region_id,
                     ':city' => $city,
                     ':grantee' => $grantee,
                     ':sector' => $sector,
@@ -1021,14 +1021,11 @@ function add_project($title, $desc, $budget, $place_unique, $city, $grantee, $se
                 return "tag connection error";
     }
 
-    if ($success)
+    if ($success AND !empty($project_key))
     {
-        if (!empty($project_key))
-            add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
-        Slim::redirect(href("admin/projects", TRUE));
+	add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
     }
-    else
-        return "couldn't insert record/database error";
+    Slim::redirect(href("admin/projects", TRUE));
 }
 
 function update_project($unique, $title, $desc, $budget, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
@@ -1328,22 +1325,10 @@ function delete_organization($unique)
         unlink($org['logo']);
 }
 
-function add_organization($name, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $file, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
+function add_organization($name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $filedata, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
 {
-    if (count($file) > 0)
-        if (count($file) > 0 AND $file['p_logo']['error'] == 0)
-        {
-            $logo_destination = DIR . 'uploads/organization_photos/';
-            $logo_name = mt_rand(0, 100000) . time() . $file['p_logo']['name'];
-            upload_files($file, $logo_destination, array(
-                $logo_name
-            ));
-            $logo = $logo_destination . $logo_name;
-        }
-        else
-        {
-            $logo = NULL;
-        }
+    $up = image_upload($filedata);
+    in_array($type, array('donor', 'organization')) OR $type = "organization";
 
     $languages = config('languages');
     $unique = generate_unique("organizations");
@@ -1351,6 +1336,7 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
     {
         $sql = "INSERT INTO organizations(
 				name,
+				type,
 				description,
 				district,
 				city_town,
@@ -1363,6 +1349,7 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
 			)
 			VALUES(
 				:name,
+				:type,
 				:description,
 				:district,
 				:city_town,
@@ -1375,13 +1362,14 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
 			)";
         $data = array(
             ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
+            ':type' => $type,
             ':description' => $description,
             ':projects_info' => $projects_info,
             ':city_town' => $city_town,
             ':district' => $district,
             ':grante' => $grante,
             ':sector' => $sector,
-            ':logo' => $logo,
+            ':logo' => $up,
             ':lang' => $lang,
             ':unique' => $unique
         );
@@ -1396,34 +1384,40 @@ function add_organization($name, $description, $projects_info, $city_town, $dist
         add_page_data('organization', $unique, $org_key, $org_sort, $sidebar, $org_value);
 }
 
-function edit_organization($unique, $name, $info, $projects_info, $city_town, $district, $grante, $sector, $file, $tag_uniques, $tag_names)
+function edit_organization($unique, $name, $type, $info, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
 {
     $org = get_organization($unique);
-    if (count($file) > 0 AND $file['p_logo']['error'] == 0)
+    in_array($type, array('donor', 'organization')) OR $type = "organization";
+
+    if ($filedata)
     {
-        $logo_destination = DIR . 'uploads/organization_photos/';
-        $logo_name = mt_rand(0, 100000000) . time() . $file['p_logo']['name'];
-        upload_files($file, $logo_destination, array(
-            $logo_name
-        ));
-        $logo = $logo_destination . $logo_name;
-        if (file_exists($org['logo']))
-            ($org['logo']);
+	if (file_exists($org['logo']))
+	    unlink($org['logo']);
+	if ($filedata['delete_only'] == TRUE)
+	{
+	    $up = ($filedata['size'] > 0) ? image_upload($filedata) : NULL;
+	}
+	else
+	{
+	    $up = image_upload($filedata);
+	}
     }
     else
     {
-
-        $logo = $org['logo'];
+	$up = $org['logo'];
     }
+    
 
     //$unique = get_unique("organizations", $id);
 
-    $sql = "UPDATE organizations SET name=:name,description=:info,district=:district,city_town=:city_town,
-		grante=:grante,sector=:sector,projects_info=:projects_info,logo=:logo
-		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;";
+    $sql = "UPDATE organizations SET name=:name,type=:type,description=:info,district=:district,city_town=:city_town,
+		grante=:grante,sector=:sector,projects_info=:projects_info
+		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
+	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;";
     $statement = db()->prepare($sql);
     $statement->execute(array(
         ':name' => $name,
+        ':type' => $type,
         ':info' => $info,
         ':district' => $district,
         ':city_town' => $city_town,
@@ -1431,7 +1425,7 @@ function edit_organization($unique, $name, $info, $projects_info, $city_town, $d
         ':sector' => $sector,
         ':projects_info' => $projects_info,
         ':unique' => $unique,
-        ':logo' => $logo
+        ':logo' => $up
     ));
 
     //$unique = get_unique("organizations", $id);

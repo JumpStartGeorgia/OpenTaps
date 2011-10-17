@@ -1,10 +1,37 @@
 <?php
   $action = href("admin/organizations/update/" . $organization['unique'], TRUE);
 ?>
-    	<form action='<? echo $action; ?>' method='post' enctype="multipart/form-data">
+    	<form action="<? echo $action; ?>" method='post' enctype="multipart/form-data" style="padding-top: 5px;">
   	   <label for='pname'>Name: </label>
   	    <br />
   	    <input name='p_name' id='pname' type='text' value="<?php echo $organization['name']; ?>" />
+  	    <br /><br />
+
+  	    <label>
+		Type:
+		<br />
+		<select name='p_type' style="width: 150px;">
+		    <?php $s = 'selected="selected"'; ?>
+		    <option <?php $organization['type'] == "organization" AND print $s; ?> value="organization">Organization</option>
+		    <option <?php $organization['type'] == "donor" AND print $s; ?> value="donor">Donor</option>
+		</select>
+	    </label>
+  	    <br /><br />
+
+  	    <label for='plogo'>Logo: </label>
+  	    <?php if (!empty($organization['logo'])): ?>
+  	    	<span>
+  	    	<span>
+  	    	    <br />
+	  	    current logo :
+	  	    <a target="_blank" href="<?php echo href() . $organization['logo'] ?>" class="region_link">here</a>
+  	    	    &nbsp;<a onclick="$(this).parent().parent().find('input').val('yes'); $(this).parent().slideUp('normal', function(){ $(this).remove(); });" class="region_link" style="cursor: pointer; text-decoration: underline; color: black">remove</a>
+  	    	</span>
+  	    	<input type="hidden" name="delete_logo" value="no" />
+  	    	</span>
+  	    <?php endif; ?>
+  	    <br />
+  	    <input name='p_logo' id='plogo' type='file' />
   	    <br /><br />
 
   	    <label for='porg_info'>Organization Info: </label>
