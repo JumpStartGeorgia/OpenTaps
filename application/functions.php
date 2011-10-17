@@ -1332,32 +1332,37 @@ function add_organization($name, $type, $description, $projects_info, $city_town
     $unique = generate_unique("organizations");
     foreach ($languages as $lang)
     {
-        $sql = "INSERT INTO organizations(
-				name,
-				type,
-				description,
-				district,
-				city_town,
-				grante,
-				sector,
-				projects_info,
-				logo,
-				lang,
-				`unique`
-			)
-			VALUES(
-				:name,
-				:type,
-				:description,
-				:district,
-				:city_town,
-				:grante,
-				:sector,
-				:projects_info,
-				:logo,
-				:lang,
-				:unique
-			)";
+        $sql = "
+            INSERT INTO organizations
+            (
+		name,
+		type,
+		description,
+		district,
+		city_town,
+		grante,
+		sector,
+		projects_info,
+		logo,
+		lang,
+		`unique`
+            )
+            VALUES
+            (
+		:name,
+		:type,
+		:description,
+		:district,
+		:city_town,
+		:grante,
+		:sector,
+		:projects_info,
+		:logo,
+		:lang,
+		:unique
+            )
+            ;
+        ";
         $data = array(
             ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
             ':type' => $type,
@@ -1377,8 +1382,10 @@ function add_organization($name, $type, $description, $projects_info, $city_town
         //print_r($data);
         //exit;
         $statement = db()->prepare($sql);
+        var_dump($statement);
         $exec = $statement->execute($data);
-
+        var_dump($exec);
+        var_dump($data);
         add_tag_connector('org', $unique, $tags, $tag_names);
     }
     if ($exec AND !empty($org_key))
