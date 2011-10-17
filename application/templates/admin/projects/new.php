@@ -30,17 +30,14 @@
   	    </select>
   	    <br /><br />-->*/ ?>
 
-        <label for='pplace'>Place:</label>
+	    <label for='pplace'>Place:</label>
   	    <br />
   	    <select name='p_place' class="chosen-select" id='pplace'>
-  	      <?php
-  	        foreach($places as $place):
-  	            ?><option value="<?php echo $place['unique'] ?>"><?php echo $place['name'] ?></option><?php
-  	        endforeach;
-  	      ?>
+  	    <?php foreach($places as $place): ?>
+  	    	<option value="<?php echo $place['unique'] ?>"><?php echo $place['name'] ?></option>
+	    <?php endforeach; ?>
   	    </select>
   	    <br /><br />
-
 
   	    <label for='pcity'>City: </label>
   	    <br />
