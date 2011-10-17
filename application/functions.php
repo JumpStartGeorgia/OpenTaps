@@ -1376,16 +1376,10 @@ function add_organization($name, $type, $description, $projects_info, $city_town
             ':lang' => $lang,
             ':unique' => $unique
         );
-        foreach ($data as $key => $value)
-            $sql = str_replace($key, "'{$value}'", $sql);
-        exit($sql);
-        //print_r($data);
-        //exit;
+        //foreach ($data as $key => $value)
+        //$sql = str_replace($key, "'{$value}'", $sql);
         $statement = db()->prepare($sql);
-        var_dump($statement);
         $exec = $statement->execute($data);
-        var_dump($exec);
-        var_dump($data);
         add_tag_connector('org', $unique, $tags, $tag_names);
     }
     if ($exec AND !empty($org_key))
