@@ -1375,6 +1375,9 @@ function add_organization($name, $type, $description, $projects_info, $city_town
         );
         foreach ($data as $key => $d)
             $sql = str_replace($key, "'" . $d . "'", $sql);
+        echo $sql;
+        print_r($data);
+        exit;
         $statement = db()->prepare($sql);
         $exec = $statement->execute($data);
 
