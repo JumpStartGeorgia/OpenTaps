@@ -405,7 +405,7 @@ Slim::post('/admin/projects/create/', function(){
     {
         add_project(
         	$_POST['p_title'],
-        	$_POST['p_desc'],
+        	NULL, //$_POST['p_desc'],
         	$budgets,
 		/*$_POST['p_region'],*/
 		$_POST['p_place'],
@@ -414,7 +414,7 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_sector'],
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
-        	$_POST['p_info'],
+        	NULL, //$_POST['p_info'],
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
@@ -449,7 +449,7 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
 	update_project(
 	    	$unique,
         	$_POST['p_title'],
-        	$_POST['p_desc'],
+        	NULL, //$_POST['p_desc'],
         	$budgets,
 /*        	$_POST['p_region'],*/
 		$_POST['p_place'],
@@ -458,7 +458,7 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
         	$_POST['p_sector'],
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
-        	$_POST['p_info'],
+        	NULL, //$_POST['p_info'],
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],

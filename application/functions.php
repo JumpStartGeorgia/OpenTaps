@@ -1166,10 +1166,11 @@ function delete_project($unique)
 
     //$unique = get_unique("projects", $id);
     $sql = "
-    		DELETE FROM `projects` WHERE  `projects`.`unique` = '" . $unique . "';
+    		DELETE FROM `projects` WHERE  `projects`.`unique` = :unique;
     		DELETE FROM tag_connector WHERE proj_unique = :unique;
 		DELETE FROM project_organizations WHERE project_unique = :unique;
 		DELETE FROM pages_data WHERE owner = 'project' AND owner_unique = :unique;
+		DELETE FROM project_budgets WHERE project_unique = :unique;
 	   ";
     $statement = db()->prepare($sql);
     $delete = $statement->execute(array(':unique' => $unique));

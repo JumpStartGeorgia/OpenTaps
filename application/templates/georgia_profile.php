@@ -6,10 +6,16 @@
 		
 		<div id='project_details' style="min-height: 93px;">
 
+			<?php if (!empty($main_data)): ?>
 			<div id='project_budget'>
 				<p><?php echo $main_data['key'] ?></p>
 				<p style='font-size: 27px; color: #FFF;'><?php echo $main_data['value'] ?></p>
 			</div>
+			<?php else: ?>
+			<div id='project_budget' style="height: 93px">
+				<p style='font-size: 22px; color: #FFF;'>No Data</p>
+			</div>
+			<?php endif; ?>
 
 			<?php foreach ($data as $index => $item): ?>
 

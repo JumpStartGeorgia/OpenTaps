@@ -8,7 +8,7 @@
   	    <input name='p_title' id='ptitle' type='text' value="<?php echo $project['title'] ?>" />
   	    <br /><br />
 
-  	    <label for='pdesc'>Description: </label>
+  	    <?php /*<label for='pdesc'>Description: </label>
   	    <br />
   	    <textarea name='p_desc' id='pdesc' cols='30' rows='3'><?php echo $project['description'] ?></textarea>
   	    <br />
@@ -16,7 +16,7 @@
   	    <label for='pinfo'>Project info: </label>
   	    <br />
   	    <textarea name='p_info' id='pinfo' cols='30' rows='3'><?php echo $project['info'] ?></textarea>
-  	    <br />
+  	    <br />*/ ?>
 
   	    Budgets: <br /><?php $s = 'selected="selected"'; ?>
 	    <div style="margin: 0px; width: 300px;" class="group" id="budget_fields_container">
