@@ -1376,9 +1376,9 @@ function add_organization($name, $type, $description, $projects_info, $city_town
             ':lang' => $lang,
             ':unique' => $unique
         );
-        //foreach ($data as $key => $d)
-        //$sql = str_replace($key, "'" . $d . "'", $sql);
-        //echo $sql;
+        foreach ($data as $key => $value)
+            $sql = str_replace($key, "'{$value}'", $sql);
+        exit($sql);
         //print_r($data);
         //exit;
         $statement = db()->prepare($sql);
