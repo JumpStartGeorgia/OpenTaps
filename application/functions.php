@@ -1006,8 +1006,7 @@ function add_project($title, $desc, $budgets, $place_unique, $city, $grantee, $s
 
 
         if (!empty($tag_uniques) OR !empty($tag_names))
-            if (!add_tag_connector('proj', $unique, $tag_uniques, $tag_names))
-                return "tag connection error";
+            add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
     }
 
     if ($success)
