@@ -1,6 +1,10 @@
 <?
   echo "
   	<div class='panel'>
+  		<div class='titlepanel'>
+  		    <div class='tleft'>Menu</div>
+  		    <div class='rright'>Manage</div>
+  		</div>
   ";
 
   $parents = read_menu(0, NULL, $readhidden = TRUE);

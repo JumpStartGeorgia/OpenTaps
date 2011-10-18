@@ -1,6 +1,10 @@
 <?
   echo "
   	<div class='panel'>
+  		<div class='titlepanel'>
+  		    <div class='tleft'>User</div>
+  		    <div class='rright'>Manage</div>
+  		</div>
   ";
     
   foreach($users as $user)
