@@ -1,7 +1,7 @@
 <?php $link_to_item = strtolower($def); $def == 'news' OR $link_to_item = substr($link_to_item, 0, -1); ?>
 
 <div id='tag_content'>
-    <div id='left_list'>
+    <div id='left_list' style="width: 100%;">
     	<div class='group headers'>
     	    <div class='headers_left'>TAGS</div>
     	    <div class='headers_right'><!--SORT BY ▾--></div>
@@ -10,13 +10,13 @@
     	<div class='group' id='titletype'>
     	    <div id='titletype_left' style='padding: 10px; padding-left: 17px;'>
     	    <?php $def = strtoupper($def); ?>
-    	    	<a href='<?php echo href('tag/project/' . $tag_name, TRUE) ?>'
+    	    	<a href='<?php echo href('tag/project/' . $tag_name, TRUE, 'tags') ?>'
     	    		class='choosedef<?php ($def == "PROJECTS") AND print("_selected") ?>'>PROJECTS
     	    	</a>
-    	    	<a href='<?php echo href('tag/organization/' . $tag_name, TRUE) ?>'
+    	    	<a href='<?php echo href('tag/organization/' . $tag_name, TRUE, 'tags') ?>'
     	    		class='choosedef<?php ($def == "ORGANIZATIONS") AND print("_selected") ?>'>ORGANIZATIONS
     	    	</a>
-    	    	<a href='<?php echo href('tag/news/' . $tag_name, TRUE) ?>'
+    	    	<a href='<?php echo href('tag/news/' . $tag_name, TRUE, 'tags') ?>'
     	    		class='choosedef<?php ($def == "NEWS") AND print("_selected") ?>'>NEWS
     	    	</a>
     	    </div>
@@ -39,7 +39,9 @@
 		    break;
 	endswitch;
 ?>
-	    	<div class='content_each_left' style='border-right: 7px solid <?php echo $color ?>'>
+		<a name="tags"></a>
+
+	    	<div class='content_each_left' style='width: 800px; border-right: 7px solid <?php echo $color ?>'>
 	    	    <a href="<?php echo href($link_to_item . '/' . $result['unique'], TRUE) ?>" style="">
 		    	    <div class='content_each_title'>
 		    	    	<?php echo (empty($result['name'])) ? $result['title'] : $result['name']; ?>
@@ -69,12 +71,12 @@
 <?php if ($total_pages > 1): ?>
     	<div id='pages'>
     	    <?php if ($current_page > 1): ?>
-    	    	<a href="<?php echo href('tag/' . $def . '/' . $tag_name . '/' . ($current_page - 1), TRUE) ?>" class='prevnext'><</a>
+    	    	<a href="<?php echo href('tag/' . $link_to_item . '/' . $tag_name . '/' . ($current_page - 1), TRUE, 'tags') ?>" class='prevnext'><</a>
     	    <?php endif; ?>
     	    <?php
     	    for ($page = 1; $page <= $total_pages; $page ++):
     	      if ($page != $current_page): ?>
-    	    	<a href='<?php echo href("tag/" . $def . "/" . $tag_name . "/" . $page, TRUE) ?>'>
+    	    	<a href='<?php echo href("tag/" . $link_to_item . "/" . $tag_name . "/" . $page, TRUE, 'tags') ?>'>
     	    		<?php echo $page; ($total_pages == $page) OR print(" |"); ?>
     	    	</a>
     	    <?php
@@ -83,13 +85,14 @@
     	      endif;
     	    endfor;
     	    if ($current_page < $total_pages): ?>
-    	    	<a href="<?php echo href('tag/' . $def . '/' . $tag_name . '/' . ($current_page + 1), TRUE) ?>" class='prevnext'>></a>
+    	    	<a href="<?php echo href('tag/' . $link_to_item . '/' . $tag_name . '/' . ($current_page + 1), TRUE, 'tags') ?>" class='prevnext'>></a>
     	    <?php endif; ?>
     	</div>
 <?php endif; ?>
 
     </div>
 
+    <?php /*
     <div id='right_list'>
         <div class='right_box'>
     	    <div class='headers'>
@@ -101,4 +104,6 @@
 	    </div>
 	</div>
     </div>
+    */ ?>
+
 </div>

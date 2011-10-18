@@ -8,8 +8,8 @@
 			$p = substr($organization['logo'], 0, 7);
 			if ($p != 'http://' AND $p != 'https:/')
 				$logo = URL . $organization['logo'];
-			?><div style="width: 282px; float: left;">
-				<img width="282px" src="<?php echo $logo; ?>" />
+			?><div style="width: 262px; float: left; margin: 10px;">
+				<img width="262px" src="<?php echo $logo; ?>" />
 			</div><?php
 		    }
 		    else

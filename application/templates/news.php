@@ -71,13 +71,13 @@
     	<div id='pages'>
     	    <?php if ($current_page > 1):
     	        $pagelink = empty($this_type) ? 'page/' . ($current_page - 1) : ($current_page - 1); ?>
-    	    	<a href='<?php echo href("news/" . $this_type . $pagelink, TRUE) ?>' class='prevnext'><</a>
+    	    	<a href='<?php echo href("news/" . $this_type . $pagelink, TRUE, "news") ?>' class='prevnext'><</a>
     	    <?php endif; ?>
     	    <?php
     	    for ($page = 1; $page <= $total_pages; $page ++):
     	      $pagelink = empty($this_type) ? 'page/' . $page : $page;
     	      if ($page != $current_page): ?>
-    	    	<a href='<?php echo href("news/" . $this_type . $pagelink, TRUE) ?>'>
+    	    	<a href='<?php echo href("news/" . $this_type . $pagelink, TRUE, "news") ?>'>
     	    		<?php echo $page; ($total_pages == $page) OR print(" |"); ?>
     	    	</a>
     	    <?php
@@ -87,13 +87,14 @@
     	    endfor;
     	    if ($current_page < $total_pages):
     	        $pagelink = empty($this_type) ? 'page/' . ($current_page + 1) : ($current_page + 1); ?>
-    	    	<a href='<?php echo href("news/" . $this_type . $pagelink, TRUE) ?>' class='prevnext'>></a>
+    	    	<a href='<?php echo href("news/" . $this_type . $pagelink, TRUE, "news") ?>' class='prevnext'>></a>
     	    <?php endif; ?>
     	</div>
 <?php endif; ?>
 
     </div>
 
+    <?php if (!empty($tags)): ?>
     <div id='right_list'>
         <div class='right_box'>
     	    <div class='headers'>
@@ -104,7 +105,7 @@
 		<?php
 			foreach($tags as $tag):
 				echo 
-					"<a href='".href('tag/news/' . $tag['name'], TRUE)."'>" .
+					"<a href='".href('tag/news/' . $tag['name'], TRUE, 'tags')."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;
@@ -113,4 +114,6 @@
 	    </div>
 	</div>
     </div>
+    <?php endif; ?>
+
 </div>
