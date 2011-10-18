@@ -70,6 +70,9 @@
 				</div>
 			</div>
 		</div>
+
+		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/regions/' . $region['unique'], TRUE) . "'>Edit</a>"); ?>
+
 	</div>
 		
 	<div id='project_description'>

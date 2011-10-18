@@ -24,7 +24,7 @@
 		    }
 		?>
 
-		
+
 		<div id='project_details' style="min-height:150px;">
 			<div id='project_budget'>
 				<p>Overall Project Budget</p>
@@ -62,8 +62,11 @@
 					<?php echo $organization['sector']; ?>
 				</div>
 			</div>
-			
+
 		</div>
+
+		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/organizations/' . $organization['unique'], TRUE) . "'>Edit</a>"); ?>
+
 	</div>
 
 	<div id='project_description' style="margin-top:75px;">

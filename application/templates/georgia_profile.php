@@ -27,5 +27,8 @@
 			<?php endforeach; ?>
 			
 		</div>
+
+		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/georgia_profile/', TRUE) . "'>Edit</a>"); ?>
+
 	</div>
 </div>
