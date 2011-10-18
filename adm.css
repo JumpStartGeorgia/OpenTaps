@@ -8,7 +8,8 @@ div#showtables
 
 #showtables table
 {
-	width:100%;
+	width: 100%;
+	float: left;
 }
 
 #showtables h3
@@ -107,6 +108,7 @@ div.rcenter{
 div.rleftsub{
   margin-left:13px;
 }
+
 div.newrecord{
   float:left;
   width:100%;

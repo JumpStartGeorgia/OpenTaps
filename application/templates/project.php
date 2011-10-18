@@ -18,9 +18,11 @@
 
 	<div style="float: left;">
 		<div id="map" style="width: 638px; height: 160px; border-top: 0;"></div>
-		<div style="background:url(<?php echo href().'images/bg.jpg' ?>) repeat; width: 610px; height: 35px; padding: 8px 15px;">
+		<div style="background:url(<?php echo URL . 'images/bg.jpg' ?>) repeat; width: 610px; height: 31px; padding: 8px 15px;">
 			<span style="font-size: 16px;"><?php echo $project['title'] ?></span>
+			<?php /*
 			<span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span>
+			*/ ?>
 		</div>
 		<div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px; line-height: 18px;">
 			<div>
@@ -36,7 +38,10 @@
 					Location - City/Town: <?php echo $project['city']; ?><br />
 					Grantee: <?php echo $project['grantee']; ?><br />
 					Sector: <?php echo $project['sector']; ?><br />
-					Budget: <?php echo $project['budget']; ?><br />
+					<?php foreach ($budgets as $budget):
+					    echo 'Budget ' . $budget['name'] . ' - ' . $budget['budget'] . ' ' .
+					    	 strtoupper($budget['currency']) . '<br />';
+					endforeach; ?>
 					Beginning: <?php echo substr($project['start_at'], 8, 2) . '-' . substr($project['start_at'], 5, 2) . '-' . substr($project['start_at'], 0, 4); ?><br />
 					Ending: <?php echo substr($project['end_at'], 8, 2) . '-' . substr($project['end_at'], 5, 2) . '-' . substr($project['end_at'], 0, 4); ?><br />
 					Type: <?php echo $project['type']; ?>
@@ -51,6 +56,7 @@
 			</div>
 		<?php endforeach; ?>
 
+			<?php if (!empty($organizations)): ?>
 			<div>
 				<span class="expand_title"><span class="racxa">►</span> Organizations</span>
 				<div class="expandable">
@@ -61,13 +67,13 @@
 				<?php endforeach; ?>
 				</div>
 			</div>
+			<?php endif; ?>
 
 		</div>
 
 
 
 	</div><!--LEFT PANEL END-->
-
 
 	<div style="float: right;"><!--DATA-->
 	<?php $i = 0; foreach ($side_data as $d): $i ++; ?>
@@ -103,7 +109,6 @@
 
 
 <?php /*
-
     <div id='charts'>
 
     </div>

@@ -54,6 +54,11 @@ Slim::get('/project/:unique/', function($unique)
 	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
 	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
 
+	$budgets = fetch_db("
+		SELECT pb.*, o.name FROM project_budgets AS pb INNER JOIN organizations AS o ON o.`unique` = pb.organization_unique WHERE project_unique = :unique AND o.lang = '" . LANG . "' ORDER BY id;",
+		array(':unique' => $unique)
+	);
+
     	Storage::instance()->content = template('project', array(
     		'project' => read_projects($unique),
     		'organizations' => get_project_organizations($unique),
@@ -61,7 +66,8 @@ Slim::get('/project/:unique/', function($unique)
     		'chart_data' => get_project_chart_data($unique),
     		'side_data' => $side_data,
     		'tags' => $tags,
-    		'edit_permission' => userloggedin()
+    		'edit_permission' => userloggedin(),
+    		'budgets' => $budgets
     	));
 });
 
@@ -357,11 +363,11 @@ Slim::get('/admin/projects/:unique/', function($unique){
 	$currency_list_jsarray .= "]";
 
 	echo '
-	<script type="text/javascript" language="javascript">
-	    var organization_names = ' . $orgnames_jsarray . ',
-	    organization_uniques = ' . $orguniques_jsarray . ',
-	    currency_list = ' . $currency_list_jsarray . ';
-	</script>
+		<script type="text/javascript" language="javascript">
+		    var organization_names = ' . $orgnames_jsarray . ',
+		    organization_uniques = ' . $orguniques_jsarray . ',
+		    currency_list = ' . $currency_list_jsarray . ';
+		</script>
 	';
 
 	$regions = fetch_db("SELECT * FROM regions WHERE lang = '" . LANG . "';");

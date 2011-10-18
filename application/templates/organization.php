@@ -135,15 +135,13 @@
 			TAG CLOUD
 		</div>
 		<div class='value' style="line-height: 25px;">
-		    <?php
-			foreach ($tags as $tag):
+		<?php foreach ($tags as $tag):
 				echo 
 					"<a href='".href('tag/organization/' . $tag['name'], TRUE)."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".
 					"</a><br />"
 				;
-			endforeach;
-		    ?>
+			endforeach; ?>
 		</div>
 	</div>
 	<?php endif; ?>

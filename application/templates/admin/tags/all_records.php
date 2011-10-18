@@ -1,6 +1,10 @@
 <?
   echo "
   	<div class='panel'>
+  		<div class='titlepanel'>
+  		    <div class='tleft'>Tag</div>
+  		    <div class='rright'>Manage</div>
+  		</div>
   ";
 
   $tags = read_tags();

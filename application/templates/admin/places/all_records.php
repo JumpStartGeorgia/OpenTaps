@@ -1,6 +1,10 @@
 <?
   echo "
   	<div class='panel'>
+  		<div class='titlepanel'>
+  		    <div class='tleft'>Place</div>
+  		    <div class='rright'>Manage</div>
+  		</div>
   ";
 
 

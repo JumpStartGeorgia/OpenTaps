@@ -1255,6 +1255,12 @@ function word_limiter($text, $limit = 30, $chars = 'აბგდევზთი�
     }
     return $text;
 }
+function char_limit($string, $limit = 30)
+{
+	$enc = mb_detect_encoding($string);
+	mb_strlen($string, $enc) > $limit AND $string = mb_substr($string, 0, $limit - 3, $enc) . "...";
+	return $string;
+}
 
 function get_project_chart_data($unique)
 {
@@ -1788,8 +1794,8 @@ function get_region_chart_data($unique)
 function get_project_organizations($unique)
 {
     $query = "SELECT o.name, o.`unique` FROM projects AS p
-	      LEFT JOIN project_organizations AS po ON po.project_unique = p.`unique`
-	      LEFT JOIN organizations AS o ON o.lang = p.lang AND o.`unique` = po.organization_unique
+	      INNER JOIN project_organizations AS po ON po.project_unique = p.`unique`
+	      INNER JOIN organizations AS o ON o.lang = p.lang AND o.`unique` = po.organization_unique
 	      WHERE p.lang = '" . LANG . "' AND p.`unique` = :unique
 	      ORDER BY o.name;";
     $query = db()->prepare($query);
