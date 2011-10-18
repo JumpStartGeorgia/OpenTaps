@@ -1435,22 +1435,19 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
     $org = get_organization($unique);
     in_array($type, array('donor', 'organization')) OR $type = "organization";
 
+    $up = $org['logo'];
     if ($filedata)
     {
-        if (file_exists($org['logo']))
-            unlink($org['logo']);
-        if ($filedata['delete_only'] == TRUE)
+	if ($filedata['size'] > 0)
+	{
+	    file_exists($org['logo']) AND unlink($org['logo']);
+	    $up = image_upload($filedata);
+	}
+	elseif (!empty($filedata['delete']) AND $filedata['delete'] == TRUE)
         {
-            $up = ($filedata['size'] > 0) ? image_upload($filedata) : NULL;
+	    file_exists($org['logo']) AND unlink($org['logo']);
+	    $up = NULL;
         }
-        else
-        {
-            $up = image_upload($filedata);
-        }
-    }
-    else
-    {
-        $up = $org['logo'];
     }
 
 
