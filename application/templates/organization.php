@@ -94,10 +94,13 @@
 
 	</div>
     </div>
+
+    <?php if (!empty($tags) OR !empty($projets) OR !empty($side_data)): ?>
     <div style="float: right; width: 240px; border:0px solid #a6a6a6;" >
     	<div class="organization_right">
 
 	<div class='data_block group' style="border-bottom: 0px;">
+	    <?php if (!empty($projects)): ?>
 		<div class='key'>
 			ORGANIZATION PROJECTS
 		</div>
@@ -110,6 +113,7 @@
 			</a>
 		<?php endforeach; ?>
 		</div>
+	    <?php endif; ?>
 	</div>
 
 	<?php $i = 0; foreach ($side_data as $d): $i ++; ?>
@@ -144,8 +148,9 @@
 	</div>
 	<?php endif; ?>
 
-   </div>
+	</div>
 
     </div>
+    <?php endif; ?>
 
 </div>
