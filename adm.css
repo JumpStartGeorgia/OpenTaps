@@ -8,7 +8,8 @@ div#showtables
 
 #showtables table
 {
-	width:100%;
+	width: 100%;
+	float: left;
 }
 
 #showtables h3
