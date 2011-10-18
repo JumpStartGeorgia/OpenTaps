@@ -41,7 +41,7 @@
 ?>
 		<a name="tags"></a>
 
-	    	<div class='content_each_left' style='width: 800px; border-right: 7px solid <?php echo $color ?>'>
+	    	<div class='content_each_left' style='width: 800px; min-height: 52px; border-right: 7px solid <?php echo $color ?>'>
 	    	    <a href="<?php echo href($link_to_item . '/' . $result['unique'], TRUE) ?>" style="">
 		    	    <div class='content_each_title'>
 		    	    	<?php echo (empty($result['name'])) ? $result['title'] : $result['name']; ?>
