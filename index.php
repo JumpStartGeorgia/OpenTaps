@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * 
+ * To all those geeks who try to dig deep inside a source code:
+ * Life's short, save your nerves and health!
+ * 
+ */
+
 if (!isset($_SESSION) OR (isset($_SESSION) AND empty($_SESSION)))
     session_start();
 
@@ -11,7 +18,7 @@ require_once DIR . 'application/storage.php';
 
 // Declare and define environments by URI string.
 foreach (array(
- 'localhost.com' => 'development',
+'localhost.com' => 'development',
  'deda.omc.ge' => 'testing',
  'opentaps.ge' => 'production'
 ) AS $uri => $env)
@@ -26,11 +33,10 @@ $env_config = DIR . 'application/config_' . ENV . '.php';
 file_exists($env_config) OR exit('Environment configuration not found.');
 Storage::instance()->config_env = require_once $env_config;
 
-
 define('URL', Storage::instance()->config_env['url']);
 
 Storage::instance()->config = require_once DIR . 'application/config.php';
-/*require_once DIR . 'application/firephp/fb.php';*/
+//require_once DIR . 'application/firephp/fb.php';
 
 define('LANG', (isset($_GET['lang']) AND in_array($_GET['lang'], array('en', 'ka'))) ? $_GET['lang'] : 'ka');
 
@@ -53,32 +59,45 @@ require_once DIR . 'application/Slim/Slim.php';
 Slim::init();
 
 Storage::instance()->title = 'Home Page';
-Storage::instance()->menu = read_menu();
-Storage::instance()->viewmenu = template('menu');
 Storage::instance()->show_map = (strpos($_SERVER['REQUEST_URI'], '/admin/') !== FALSE OR strpos($_SERVER['REQUEST_URI'], '/login/') !== FALSE) ? FALSE : TRUE;
-Storage::instance()->viewsubmenu = template('submenu', array(
-    'submenus' => read_submenu(),
-    'projects' => read_projects(),
-    'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
-));
-Storage::instance()->content = template('home');
+
+if (Slim::request()->isGet())
+{
+    Storage::instance()->menu = read_menu();
+    Storage::instance()->viewmenu = template('menu');
+    Storage::instance()->viewsubmenu = template('submenu', array(
+        'submenus' => read_submenu(),
+        'projects' => read_projects(),
+        'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
+            ));
+    Storage::instance()->content = template('home');
+}
 
 foreach (glob(DIR . 'application/routes/*.php') AS $route)
     require_once $route;
 
-$about_uniques = config('about_us_uniques');
-$about_sql = "SELECT text FROM menu WHERE `unique` = ";
-$lang_sql = "AND lang = '" . LANG . "' LIMIT 1;";
+if (Slim::request()->isGet())
+{
+    $about_uniques = config('about_us_uniques');
+    $about_sql = "SELECT text FROM menu WHERE `unique` = ";
+    $lang_sql = "AND lang = '" . LANG . "' LIMIT 1;";
+}
 
 Slim::run();
 
-echo template('layout', array(
-    'about_us' => array(
-        'main' => fetch_db("{$about_sql} '{$about_uniques['main']}' {$lang_sql}", NULL, TRUE),
-        'open_information' => fetch_db("{$about_sql} '{$about_uniques['open_information']}' {$lang_sql}", NULL, TRUE),
-        'participation' => fetch_db("{$about_sql} '{$about_uniques['participation']}' {$lang_sql}", NULL, TRUE),
-        'innovation' => fetch_db("{$about_sql} '{$about_uniques['innovation']}' {$lang_sql}", NULL, TRUE)
-    ),
-    'slide_news' => read_news(),
-    'languages' => config('languages')
-));
+if (Slim::request()->isGet())
+{
+    echo template('layout', array(
+        'about_us' => array(
+            'main' => fetch_db("{$about_sql} '{$about_uniques['main']}' {$lang_sql}", NULL, TRUE),
+            'open_information' => fetch_db("{$about_sql} '{$about_uniques['open_information']}' {$lang_sql}", NULL, TRUE),
+            'participation' => fetch_db("{$about_sql} '{$about_uniques['participation']}' {$lang_sql}", NULL, TRUE),
+            'innovation' => fetch_db("{$about_sql} '{$about_uniques['innovation']}' {$lang_sql}", NULL, TRUE)
+        ),
+        'slide_news' => read_news(),
+        'languages' => config('languages')
+    ));
+}
+
+exit;
+// Stop right here!
