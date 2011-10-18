@@ -130,7 +130,14 @@ function read_submenu()
 
 function get_menu($short_name)
 {
-    $sql = "SELECT * FROM menu WHERE short_name = :short_name AND lang = '" . LANG . "' LIMIT 1;";
+    if (is_numeric($short_name))
+    {
+	$sql = "SELECT * FROM menu WHERE `unique` = :short_name AND lang = '" . LANG . "' LIMIT 1;";
+    }
+    else
+    {
+	$sql = "SELECT * FROM menu WHERE short_name = :short_name AND lang = '" . LANG . "' LIMIT 1;";
+    }
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
         ':short_name' => $short_name
