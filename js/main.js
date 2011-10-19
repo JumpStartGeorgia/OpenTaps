@@ -19,11 +19,13 @@ var img_style = "";
 var click_done = false;
 
 function getArray(){
-	for (var i=1;i<projects.length;i++)
-			if( projects[i][0] == marker_id  ){
-				console.log(projects[i]);
-			}
-		
+	for (var i = 1; i < projects.length; i ++)
+	{
+		if( projects[i][0] == marker_id  )
+		{
+			/*console.log(projects[i]);*/
+		}
+	}		
 }
 
 

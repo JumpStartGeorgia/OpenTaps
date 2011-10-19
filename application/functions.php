@@ -325,8 +325,8 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
     fetch_db("DELETE FROM tag_connector WHERE news_unique = $unique");
     if (!empty($tags) OR !empty($tag_names))
         add_tag_connector('news', $unique, $tags, $tag_names);
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
-    return ($exec) ? $metarefresh : "couldn't update record/database error";
+    Slim::redirect(href("admin/news", TRUE));
+    return $exec;
 }
 
 function delete_news($unique)
