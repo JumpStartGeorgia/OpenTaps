@@ -73,16 +73,16 @@ function userloggedin()
     return (isset($_SESSION['id']) && isset($_SESSION['username']) && !empty($_SESSION['username']));
 }
 
+
 function generate_unique($table)
 {
     $table = htmlspecialchars(str_replace(";", "", $table));
-    $query = "SELECT `unique` from `" . $table . "` ORDER BY `unique` DESC LIMIT 0,1";
-    $query = db()->prepare($query);
-    $query->execute();
-    $query = $query->fetch(PDO::FETCH_ASSOC);
-    if (empty($query) OR empty($query['unique']))
-        return 1;
-    return ($query['unique'] + 1);
+    $max = fetch_db('SELECT MAX(`unique`) AS u FROM `' . $table . '`;', NULL, TRUE);
+    if (empty($max) OR empty($max['u']))
+    {
+	return 1;
+    }
+    return ($max['u'] + 1);
 }
 
 function get_unique($table, $id)
@@ -463,7 +463,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
                     $success = TRUE;
                 }
                 else
-                    $succes = FALSE;
+                    $success = FALSE;
             }
             $success AND !in_array($result['unique'], $tag_uniques) AND $tag_uniques[] = $result['unique'];
         }
@@ -489,13 +489,11 @@ function add_tag($name, $redirect = TRUE)
     if (strlen($name) < 2)
         return "name too short" . $back;
 
-    $languages = config('languages');
     $unique = generate_unique("tags");
-    foreach ($languages as $lang)
+    $sql = "INSERT INTO  `opentaps`.`tags` (`name`, lang, `unique`) VALUES(:name, :lang, :unique)";
+    $statement = db()->prepare($sql);
+    foreach (config('languages') as $lang)
     {
-        $sql = "INSERT INTO  `opentaps`.`tags` (`name`, lang, `unique`) VALUES(:name, :lang, :unique)";
-        $statement = db()->prepare($sql);
-
         $exec = $statement->execute(array(
                     ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
                     ':lang' => $lang,
@@ -1236,7 +1234,7 @@ function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value)
                     ':lang' => $lang,
                     ':unique' => $unique
                 );
-                $statement->execute($data);
+		$statement->execute($data);
             }
         }
     }
@@ -1323,8 +1321,8 @@ function get_organization($unique)
 function get_organization_projects($unique)
 {
     $sql = "SELECT DISTINCT(p.`unique`) AS `unique`, p.id,p.title,p.type FROM projects AS p
-		LEFT JOIN project_organizations AS po ON p.`unique` = po.project_unique
-		LEFT JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
+	    INNER JOIN project_organizations AS po ON p.`unique` = po.project_unique
+		INNER JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
 		WHERE o.`unique` = :unique AND o.lang = '" . LANG . "'";
     $statement = db()->prepare($sql);
     $statement->execute(array(
@@ -1336,13 +1334,12 @@ function get_organization_projects($unique)
 
 function count_organization_project_types($unique)
 {
-    $types = config('project_types');
     $total_types_count = 0;
-    foreach ($types AS $type)
+    foreach (config('project_types') AS $type)
     {
         $sql = "SELECT COUNT(p.`unique`) AS num FROM projects AS p
-		LEFT JOIN project_organizations AS po ON p.`unique` = po.project_unique
-		LEFT JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
+		INNER JOIN project_organizations AS po ON p.`unique` = po.project_unique
+		INNER JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
 		WHERE o.`unique` = :unique AND p.type = :type AND o.lang = '" . LANG . "'";
         $statement = db()->prepare($sql);
         $statement->execute(array(
@@ -1456,7 +1453,8 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
     $sql = "UPDATE organizations SET name=:name,type=:type,description=:info,district=:district,city_town=:city_town,
 		grante=:grante,sector=:sector,projects_info=:projects_info
 		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
-	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;";
+	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;
+	    DELETE FROM tag_connector WHERE org_unique = :unique;";
     $statement = db()->prepare($sql);
     $statement->execute(array(
         ':name' => $name,
@@ -1472,7 +1470,8 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
     ));
 
     //$unique = get_unique("organizations", $id);
-    fetch_db("DELETE FROM tag_connector WHERE org_unique = $unique");
+    //fetch_db("DELETE FROM tag_connector WHERE org_unique = :unique;", array(':unique' => $unique));
+    
     if (!empty($tag_uniques) OR !empty($tag_names))
         add_tag_connector('org', $unique, $tag_uniques, $tag_names);
 }

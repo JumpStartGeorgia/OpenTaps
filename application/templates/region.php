@@ -16,11 +16,12 @@
 		</script>
 		<div id='map' style='width:282px;border:1px dotted #a6a6a6;border-top:0;height:244px;float:left;'></div>
 		
-		<div id='project_details' style='height:244px;'>
+		<div id='project_details' style='min-height: 15px; max-height: 244px; border-bottom: 0px;'>
 			<div id='project_budget'>
 				<p>Overall Region Budget</p>
 				<p style='font-size:27px;color:#FFF;'><?php echo $region_budget ?></p>
 			</div>
+			<?php if (!empty($region['city']) AND strlen($region['city']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					City :
@@ -29,6 +30,7 @@
 					<?php echo $region['city']; ?>
 				</div>
 			</div>
+			<?php endif; ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					Population :
@@ -37,6 +39,7 @@
 					<?php echo $region['population']; ?>
 				</div>
 			</div>
+			<?php if (!empty($region['square_meters']) AND strlen($region['square_meters']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					Square Meters :
@@ -45,6 +48,8 @@
 					<?php echo $region['square_meters']; ?>
 				</div>
 			</div>
+			<?php endif; ?>
+			<?php if (!empty($region['settlement']) AND strlen($region['settlement']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					Settlement Type :
@@ -53,6 +58,8 @@
 					<?php echo $region['settlement']; ?>
 				</div>
 			</div>
+			<?php endif; ?>
+			<?php if (!empty($region['villages']) AND strlen($region['villages']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					The Village :
@@ -61,7 +68,9 @@
 					<?php echo $region['villages']; ?>
 				</div>
 			</div>
-			<div class='project_details_line' style='border-bottom:0px;'>
+			<?php endif; ?>
+			<?php if (!empty($region['districts']) AND strlen($region['districts']) > 0): ?>
+			<div class='project_details_line'>
 				<div class='line_left'>
 					District :
 				</div>
@@ -69,6 +78,7 @@
 					<?php echo $region['districts']; ?>
 				</div>
 			</div>
+			<?php endif; ?>
 		</div>
 
 		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/regions/' . $region['unique'], TRUE) . "'>Edit</a>"); ?>
