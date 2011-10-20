@@ -5,8 +5,8 @@
 	</h1>
 	<span style="font-size: 15px; text-align: justify"><?php echo $news[0]['body']; ?></span>
         <p style="padding-top: 20px;">
-        <font style="font-size: 13px;">Type: <?php echo $news[0]['category']; ?></font><br />
-        <font style="font-size: 12px;">Published at: <?php echo $news[0]['published_at']; ?><font>
+        <font style="font-size: 13px;"><?php echo l('type') ?>: <?php echo $news[0]['category']; ?></font><br />
+        <font style="font-size: 12px;"><?php echo l('news_date') ?>: <?php echo $news[0]['published_at']; ?><font>
         </p>
 
 	<div id='project_description'>
@@ -35,7 +35,7 @@
 
 	<?php if (!empty($tags)): ?>
 		<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
-			<div class='key'>TAG CLOUD</div>
+			<div class='key'><?php echo l('tag_cloud') ?></div>
 			<div class='value group'>
 <?php			foreach($tags as $tag):
 			    echo 

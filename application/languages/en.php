@@ -18,7 +18,55 @@ return array(
     
     'contact_us' => 'contact us',
     
-    'all_news'  => 'All News'
+    'all_news'  => 'All News',
+    
+    'user_name' => 'Username',
+    
+    'password' => 'Password',
+    
+    'login' => 'Log in',
+    
+    'tag_cloud' => 'tag cloud',
+    
+    'type' => 'Type',
+    
+    'news_date' => 'Published at',
+    
+    'region_budget' => 'Overall Region Budget',
+    
+    'რეგიონ_ციტყ' => 'City',
+    
+    'region_population' => 'Population',
+    
+    'region_square_meters' => 'Square Meters',
+    
+    'region_settlement_type' => 'Settlement Type',
+    
+    'region-villages' => 'The Villages',
+    
+    'region_district' => 'District',
+    
+    'region_edit' => 'edit',
+    
+    'projects_info' => 'INFO ON PROJECTS',
+    
+    'region_projects' => 'PROJECTS IN THIS REGION',
+    
+    'project_name' => 'Project Name',
+    
+    'location_region' => 'Location - Region',
+    
+    'location_city_town' => 'Location - City/Town',
+    
+    'grantee' => 'Grantee',
+    
+    'sector' => 'Sector',
+    
+    'beginning' => 'Beginning',
+    
+    'ends' => 'Ends',
+    
+    'organizations' => 'Organizations'
 
 );
 
