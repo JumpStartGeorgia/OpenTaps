@@ -30,7 +30,7 @@ return array(
     
     'tag_cloud' => 'tag cloud',
     
-    'news_type' => 'Type',
+    'type' => 'Type',
     
     'news_date' => 'Published at',
     
@@ -52,7 +52,23 @@ return array(
     
     'projects_info' => 'INFO ON PROJECTS',
     
-    'region_projects' => 'PROJECTS IN THIS REGION'
+    'region_projects' => 'PROJECTS IN THIS REGION',
+    
+    'project_name' => 'Project Name',
+    
+    'location_region' => 'Location - Region',
+    
+    'location_city_town' => 'Location - City/Town',
+    
+    'grantee' => 'Grantee',
+    
+    'sector' => 'Sector',
+    
+    'beginning' => 'Beginning',
+    
+    'ends' => 'Ends',
+    
+    'organizations' => 'Organizations'
 
 );
 

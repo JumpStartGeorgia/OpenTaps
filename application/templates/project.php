@@ -27,24 +27,24 @@
 		<div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px; line-height: 18px;">
 			<div>
 				<span class="expand_title">
-					<span class="racxa">▼</span> Project Name: <?php echo $project['title'] ?>
+					<span class="racxa">▼</span> <?php echo l('project_name') ?>: <?php echo $project['title'] ?>
 				</span>
 				<abbr><?php $edit_permission AND print edit_button('basic_info'); ?></abbr>
 				<div class="expandable" style="display: block;">
-					Location - Region:
+					<?php echo l('location_region') ?>:
 					<a id="region_link" href="<?php echo href('region/'.$project['region_unique'], TRUE); ?>">
 						<?php echo $project['region_name']; ?>
 					</a><br />
-					Location - City/Town: <?php echo $project['city']; ?><br />
-					Grantee: <?php echo $project['grantee']; ?><br />
-					Sector: <?php echo $project['sector']; ?><br />
+					<?php echo l('location_city_town') ?>: <?php echo $project['city']; ?><br />
+					<?php echo l('grantee') ?>: <?php echo $project['grantee']; ?><br />
+					<?php echo l('sector') ?>: <?php echo $project['sector']; ?><br />
 					<?php foreach ($budgets as $budget):
 					    echo 'Budget ' . $budget['name'] . ' - ' . $budget['budget'] . ' ' .
 					    	 strtoupper($budget['currency']) . '<br />';
 					endforeach; ?>
-					Beginning: <?php echo substr($project['start_at'], 8, 2) . '-' . substr($project['start_at'], 5, 2) . '-' . substr($project['start_at'], 0, 4); ?><br />
-					Ending: <?php echo substr($project['end_at'], 8, 2) . '-' . substr($project['end_at'], 5, 2) . '-' . substr($project['end_at'], 0, 4); ?><br />
-					Type: <?php echo $project['type']; ?>
+					<?php echo l('beginning') ?>: <?php echo substr($project['start_at'], 8, 2) . '-' . substr($project['start_at'], 5, 2) . '-' . substr($project['start_at'], 0, 4); ?><br />
+					<?php echo l('ends') ?>: <?php echo substr($project['end_at'], 8, 2) . '-' . substr($project['end_at'], 5, 2) . '-' . substr($project['end_at'], 0, 4); ?><br />
+					<?php echo l('type') ?>: <?php echo $project['type']; ?>
 				</div>
 			</div>
 
@@ -58,7 +58,7 @@
 
 			<?php if (!empty($organizations)): ?>
 			<div>
-				<span class="expand_title"><span class="racxa">►</span> Organizations</span>
+				<span class="expand_title"><span class="racxa">►</span> <?php echo l('organizations') ?></span>
 				<div class="expandable">
 				<?php foreach ($organizations AS $org): ?>
 					<a class="region_link" href="<?php echo href('organization/' . $org['unique'], TRUE); ?>">

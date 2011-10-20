@@ -5,7 +5,7 @@
 	</h1>
 	<span style="font-size: 15px; text-align: justify"><?php echo $news[0]['body']; ?></span>
         <p style="padding-top: 20px;">
-        <font style="font-size: 13px;"><?php echo l('news_type') ?>: <?php echo $news[0]['category']; ?></font><br />
+        <font style="font-size: 13px;"><?php echo l('type') ?>: <?php echo $news[0]['category']; ?></font><br />
         <font style="font-size: 12px;"><?php echo l('news_date') ?>: <?php echo $news[0]['published_at']; ?><font>
         </p>
 

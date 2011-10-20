@@ -30,7 +30,7 @@ return array(
     
     'tag_cloud' => 'ტეგების ღრუბელი',
     
-    'news_type' => 'ტიპი',
+    'type' => 'ტიპი',
     
     'news_date' => 'თარიღი',
     
@@ -52,7 +52,23 @@ return array(
     
     'projects_info' => 'ინფორმაცია პროექტებგზე',
     
-    'region_projects' => 'პროექტები ამ რეგიონში'
+    'region_projects' => 'პროექტები ამ რეგიონში',
+    
+    'project_name' => 'პროექტის სახელი',
+    
+    'location_region' => 'ადგილმდებარეობა - რეგიონი',
+    
+    'location_city_town' => 'ადგილმდებარეობა - ქალაქი',
+    
+    'grantee' => 'გრანტი',
+    
+    'sector' => 'სექტორი',
+    
+    'beginning' => 'დასაწყისი',
+    
+	'ends' => 'დასასრული',
+	
+	'organizations' => 'ორგანიზაციები'
 
 );
 
