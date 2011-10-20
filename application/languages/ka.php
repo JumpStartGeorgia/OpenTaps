@@ -20,7 +20,39 @@ return array(
     
     'contact_us' => 'კონტაქტი',
     
-    'all_news' => 'ყველა'
+    'all_news' => 'ყველა',
+    
+    'user_name' => 'მომხმარებელი',
+    
+    'password' => 'პაროლი',
+    
+    'login' => 'შესვლა',
+    
+    'tag_cloud' => 'ტეგების ღრუბელი',
+    
+    'news_type' => 'ტიპი',
+    
+    'news_date' => 'თარიღი',
+    
+    'region_budget' => 'საშუალო რეგიონის ბიუჯეტი',
+    
+    'region_city' => 'ქალაქი',
+    
+    'region_population' => 'პოპულაცია',
+    
+    'region_square_meters' => 'კვადრატული მეტრი',
+    
+    'region_settlement_type' => 'დასახლების ტიპი',
+    
+    'region_villages' => 'სოფლები',
+    
+    'region_district' => 'რაიონი',
+    
+    'region_edit' => 'შეცვლა',
+    
+    'projects_info' => 'ინფორმაცია პროექტებგზე',
+    
+    'region_projects' => 'პროექტები ამ რეგიონში'
 
 );
 

@@ -18,13 +18,13 @@
 		
 		<div id='project_details' style='min-height: 15px; max-height: 244px; border-bottom: 0px;'>
 			<div id='project_budget'>
-				<p>Overall Region Budget</p>
+				<p><?php echo l('region_budget') ?></p>
 				<p style='font-size:27px;color:#FFF;'><?php echo $region_budget ?></p>
 			</div>
 			<?php if (!empty($region['city']) AND strlen($region['city']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					City :
+					<?php echo l('region_city') ?> :
 				</div>
 				<div>
 					<?php echo $region['city']; ?>
@@ -33,7 +33,7 @@
 			<?php endif; ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					Population :
+					<?php echo l('region_population') ?> :
 				</div>
 				<div>
 					<?php echo $region['population']; ?>
@@ -42,7 +42,7 @@
 			<?php if (!empty($region['square_meters']) AND strlen($region['square_meters']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					Square Meters :
+					<?php echo l('region_square_meters') ?> :
 				</div>
 				<div>
 					<?php echo $region['square_meters']; ?>
@@ -52,7 +52,7 @@
 			<?php if (!empty($region['settlement']) AND strlen($region['settlement']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					Settlement Type :
+					<?php echo l('region_settlement_type') ?> :
 				</div>
 				<div>
 					<?php echo $region['settlement']; ?>
@@ -62,7 +62,7 @@
 			<?php if (!empty($region['villages']) AND strlen($region['villages']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					The Village :
+					<?php echo l('region_villages') ?> :
 				</div>
 				<div>
 					<?php echo $region['villages']; ?>
@@ -72,7 +72,7 @@
 			<?php if (!empty($region['districts']) AND strlen($region['districts']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					District :
+					<?php echo l('district') ?> :
 				</div>
 				<div>
 					<?php echo $region['districts']; ?>
@@ -81,7 +81,7 @@
 			<?php endif; ?>
 		</div>
 
-		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/regions/' . $region['unique'], TRUE) . "'>Edit</a>"); ?>
+		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/regions/' . $region['unique'], TRUE) . "'>" . l('region_edit') . "</a>"); ?>
 
 	</div>
 		
@@ -89,7 +89,7 @@
 		<p class='desc'><?php echo $region['name']; ?></p>
 		<div><?php echo $region['region_info']; ?></div>
 
-		<p class='desc'>INFO ON PROJECTS</p>
+		<p class='desc'><?php echo l('projects_info') ?></p>
 		<div><?php echo $region['projects_info']; ?></div>
 
 		<?php foreach ($data as $d): ?>
@@ -99,7 +99,7 @@
 	</div>
 
 	<div id='project_description' style="margin-bottom: 35px;">
-		<p class='desc'>PROJECTS IN THIS REGION</p>
+		<p class='desc'><?php echo l('') ?><?php echo l('region_projects') ?></p>
 		<table style="margin-left: 0px; margin-bottom: 30px; float: left;">
 			<?php foreach($projects AS $project): ?>
 			<tr>	

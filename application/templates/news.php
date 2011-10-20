@@ -16,7 +16,7 @@
 <div id='tag_content'>
     <div id='left_list'>
     	<div class='group headers'>
-    	    <div class='headers_left'>NEWS</div>
+    	    <div class='headers_left'><?php echo strtoupper(l('news')) ?></div>
     	    <?php /*<div class='headers_right' style='cursor: pointer;' onclick='$("#newstype_filter").slideToggle("fast");'>SORT BY ▾</div>*/ ?>
     	</div>
 
@@ -98,7 +98,7 @@
     <div id='right_list'>
         <div class='right_box'>
     	    <div class='headers'>
-    		<div class='right_box_title'>TAG CLOUD</div>
+    		<div class='right_box_title'><?php echo strtoupper(l('tag_cloud')) ?></div>
     	    </div>
 
 	    <div class='right_box_content' id='right_box_tags'>
