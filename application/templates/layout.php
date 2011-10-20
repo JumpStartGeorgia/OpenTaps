@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 ﻿<html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>main.css" media="all" />
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>adm.css" media="all" />
@@ -118,7 +118,7 @@
         $scripts[] = 'jquery_ui_slide_effect.js';
         $scripts[] = 'bottom_toggles.js';
         foreach ($scripts AS $script)
-            echo '<script type="text/javascript" src="' . URL . 'js/' . $script . '"></script>';
+            echo '<script type="text/javascript" src="' . URL . 'js/' . $script . '"></script>' . PHP_EOL;
         ?>
 
     </body>
