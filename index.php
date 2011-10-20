@@ -1,10 +1,10 @@
 <?php
 
 /*
- * 
+ *
  * To all those geeks who try to dig deep inside a source code:
  * Life's short, save your nerves and health!
- * 
+ *
  */
 
 if (!isset($_SESSION) OR (isset($_SESSION) AND empty($_SESSION)))
@@ -59,7 +59,7 @@ require_once DIR . 'application/Slim/Slim.php';
 Slim::init();
 
 Storage::instance()->title = 'Home Page';
-Storage::instance()->show_map = (strpos($_SERVER['REQUEST_URI'], '/admin/') !== FALSE OR strpos($_SERVER['REQUEST_URI'], '/login/') !== FALSE) ? FALSE : TRUE;
+Storage::instance()->show_map = (Slim_Http_Uri::getUri(TRUE) === '/');
 
 if (Slim::request()->isGet())
 {
