@@ -17,7 +17,7 @@
 			?>
 			<div style="width: 282px; height: 170px; background: url(<?php echo URL ?>images/bg.jpg); float: left;">
 			    <div style="width: 100%; padding-top: 65px; height: 105px; text-align: center; color: #FFF; font-weight: bold; background: rgba(12, 181, 245, 1); letter-spacing: 1px; font-size: 25px;">
-				NO LOGO
+				<?php echo l('no_logo') ?>
 			    </div>
 			</div>
 			<?php

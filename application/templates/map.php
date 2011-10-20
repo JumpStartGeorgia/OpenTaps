@@ -1,6 +1,6 @@
 <div id="map_and_menus" style="position: relative; cursor:pointer;">
                     <div id="map" style="height:360px;"></div>
-    <div id="map-overlay">Click to activate a map</div>
+    <div id="map-overlay"><?php echo strtoupper(l('map_active')) ?></div>
         	        <div id="map_menu" style="position:absolute;top:40px;right:20px;z-index:6000;width:170px;height:0px;visibility:hidden;">
         	        <div id="filter_projects" onclick="map_menu_filter_click('projects');" onmouseover="map_menu_filter_over(this.id,'projects');" onmouseout="map_menu_filter_out(this.id,'projects');" style="z-index:5000;border:0px solid #000;width:170px;height:27px;background-color:#F5F5F5;">
         	        	<!--<input id="filter_checkbox_projects" style="position:absolute;top:10px;left:5px;float:left;" type="checkbox" />-->
