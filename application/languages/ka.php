@@ -18,7 +18,7 @@ return array(
 
     'contact_us' => 'კონტაქტი',
 
-    'all_news' => 'ყველა სიახლე'
+    'all_news' => 'ყველა სიახლე',
 
     'user_name' => 'მომხმარებელი',
 
