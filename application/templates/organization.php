@@ -8,8 +8,8 @@
 			$p = substr($organization['logo'], 0, 7);
 			if ($p != 'http://' AND $p != 'https:/')
 				$logo = URL . $organization['logo'];
-			?><div style="width: 282px; float: left;">
-				<img width="282px" src="<?php echo $logo; ?>" />
+			?><div style="width: 262px; float: left; margin: 10px;">
+				<img width="262px" src="<?php echo $logo; ?>" />
 			</div><?php
 		    }
 		    else
@@ -24,12 +24,13 @@
 		    }
 		?>
 
-		
-		<div id='project_details' style="min-height:150px;">
+
+		<div id='project_details' style="min-height: 15px; border-bottom: 0px;">
 			<div id='project_budget'>
 				<p>Overall Project Budget</p>
 				<p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
 			</div>
+			<?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					District :
@@ -38,6 +39,8 @@
 					<?php echo $organization['district']; ?>
 				</div>
 			</div>
+			<?php endif; ?>
+			<?php if (!empty($organization['city_town']) AND strlen($organization['city_town']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					City/Town :
@@ -46,6 +49,8 @@
 					<?php echo $organization['city_town']; ?>
 				</div>
 			</div>
+			<?php endif; ?>
+			<?php if (!empty($organization['grante']) AND strlen($organization['grante']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
 					Grante :
@@ -54,7 +59,9 @@
 					<?php echo $organization['grante']; ?>
 				</div>
 			</div>
-			<div class='project_details_line' style='border-bottom:0px;'>
+			<?php endif; ?>
+			<?php if (!empty($organization['sector']) AND strlen($organization['sector']) > 0): ?>
+			<div class='project_details_line'>
 				<div class='line_left'>
 					Sector :
 				</div>
@@ -62,8 +69,12 @@
 					<?php echo $organization['sector']; ?>
 				</div>
 			</div>
-			
+			<?php endif; ?>
+
 		</div>
+
+		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/organizations/' . $organization['unique'], TRUE) . "'>Edit</a>"); ?>
+
 	</div>
 
 	<div id='project_description' style="margin-top:75px;">
@@ -95,7 +106,7 @@
 	</div>
     </div>
 
-    <?php if (!empty($tags) OR !empty($projets) OR !empty($side_data)): ?>
+    <?php if (!empty($tags) OR !empty($projects) OR !empty($side_data)): ?>
     <div style="float: right; width: 240px; border:0px solid #a6a6a6;" >
     	<div class="organization_right">
 

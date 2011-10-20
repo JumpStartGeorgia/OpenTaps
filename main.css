@@ -48,7 +48,6 @@ input[type="text"]:focus, input[type="password"]:focus
 
 
 body, div.header_right { background-image:url('@baseurl/images/bg.jpg'); }
-div.projects_organization, div.news{ background: @opentaps_default_color; }
 .main
 {
     width: 930px;
@@ -160,16 +159,16 @@ div#map:before, div.menu:after
     height: 0;
 }
 
-div.projects_organization{ width:296px; float: left; }
+div.projects_organization{ width: 282px; float: left; }
 
 #organization_project_types{ width: 100%; border-top: 1px dotted #a6a6a6; border-bottom: 1px dotted #a6a6a6; margin: 0px; }
 #organization_project_types a{ display: block; margin: 12px 12px 16px; float: left; text-decoration: none; text-align: center; color: #0CB5F5;  padding: 0px; }
 #organization_project_types a:hover{ text-decoration: underline; }
 #organization_project_types img{ display: block; width: 23px; }
 
-div.news{ width: 559px; padding-left: 27px; text-align:left; margin: 0; float:right; }
+div.news{ width: 573px; margin: 0; float:right; }
 
-div.news, div.projects_organization{ height:27px; padding-top:4px; }
+div.news, div.projects_organization{ padding: 6px 0px 6px 13px; font-weight: bold; text-align: left; background: @opentaps_default_color; }
 
 
 a.organization_project_link{ display: block; border-bottom: 1px dotted #a6a6a6; padding: 3px 17px 3px 8px; }

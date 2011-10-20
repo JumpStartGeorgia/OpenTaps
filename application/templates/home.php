@@ -1,11 +1,7 @@
 <div class="group">
-    <div class='projects_organization'>
-        <strong>PROJECTS ORGANIZATION</strong>
-    </div>
+    <div class='projects_organization'>PROJECTS ORGANIZATION</div>
 
-    <div class='news group'>
-        <span><strong><?php echo l('news') ?></strong></span>
-    </div>
+    <div class='news group'><?php echo strtoupper(l('news')) ?></div>
 
     <div id="chart" class='chart'></div>
 
@@ -92,7 +88,7 @@ for ($index = 2; $index < 6; $index++):
 
 <div style="margin-top: 27px; " class="group">
     <div style="float: left; width: 293px; text-align: justify; font-size: 11px; color: #808080">
-	The OpenTaps project is made possible thanks to the generous support of information Program and the Think Tank Fund of Open Society Foundations and O'Sullivan Foundation.
+	<?php echo l('home_page_bottom_text'); ?>
     </div>
     <div style="float: left; margin-left: 85px; font-size: 14px; font-weight: bold; color: #00AFF2;">
         <a href="<?php echo href("water_supply", TRUE) ?>">

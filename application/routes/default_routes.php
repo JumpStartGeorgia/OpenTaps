@@ -1,5 +1,4 @@
 <?php
-
 Slim::get('/', function()
         {
 
@@ -8,10 +7,7 @@ Slim::get('/', function()
 
 Slim::get('/page/:short_name/', function($short_name)
         {
-            if (is_string($short_name))
-            {
-                Storage::instance()->content = template('menu_text', get_menu($short_name));
-            }
+		Storage::instance()->content = template('menu_text', array('menu' => get_menu($short_name)));
         }
 );
 

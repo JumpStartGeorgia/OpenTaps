@@ -17,13 +17,14 @@ var img_src = null;
 var img_style = null;
 var click_done = false;
 
-function getArray()
-{
-    for (var i = 1, len = projects.length; i < len; i++)
+function getArray(){
+    for (var i = 1; i < projects.length; i ++)
     {
-        if( projects[i][0] == marker_id)
-            console.log(projects[i]);
-    }
+	if( projects[i][0] == marker_id  )
+	{
+	    /*console.log(projects[i]);*/
+	}
+    }		
 }
 
 
