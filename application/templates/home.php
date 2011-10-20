@@ -1,5 +1,5 @@
 <div class="group">
-    <div class='projects_organization'>PROJECTS ORGANIZATION</div>
+    <div class='projects_organization'><?php echo strtoupper(l('projects_org')); ?></div>
 
     <div class='news group'><?php echo strtoupper(l('news')) ?></div>
 
@@ -78,7 +78,7 @@ for ($index = 2; $index < 6; $index++):
         </div>
 
         <div id="news_bottom_content">
-            <a href="<?php echo href("news", TRUE); ?>">▸ All News</a>
+            <a href="<?php echo href("news", TRUE); ?>">▸ <?php echo l('all_news') ?></a>
         </div>
     </div>
 </div>
