@@ -10,17 +10,15 @@ return array(
     
     'projects_org' => 'პროექტების ორგანიზება',
     
-    'map_active' => 'დააჭირე რო გააქტიურო რუკა',
+    'map_active' => 'დააჭირე რომ გააქტიურო რუკა',
     
-    'designe_and_develop' => 'დიზაინი და დეველოპმენტი გაკეთებულია',
-    
-    'by' => 'Jumpstart Georgia-ს მიერ',
+    'copyright_jumpstart' => 'დიზაინი და დეველოპმენტი - :link JumpStart Georgia :endlink',
     
     'about_us' => 'ჩვენს შესახებ',
     
     'contact_us' => 'კონტაქტი',
     
-    'all_news' => 'ყველა'
+    'all_news' => 'ყველა სიახლე'
 
 );
 

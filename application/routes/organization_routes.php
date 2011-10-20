@@ -86,57 +86,70 @@ Slim::get('/admin/organizations/:unique/delete/', function($unique){
      else Storage::instance()->content = template('login');
 });
 
-Slim::post('/admin/organizations/create/', function(){
-   empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
-   if(userloggedin()){
-	     add_organization(
-        	$_POST['p_name'],
-        	$_POST['p_type'],
-        	$_POST['p_org_info'],
-        	$_POST['p_org_projects_info'],
-        	$_POST['p_city_town'],
-        	$_POST['p_district'],
-        	$_POST['p_grante'],
-        	/*$_POST['p_donors'],*/
-        	$_POST['p_sector'],
-        	$_POST['p_tag_uniques'],
-        	$_POST['p_tag_names'],
-        	(empty($_FILES['p_logo']) ? FALSE : $_FILES['p_logo']),
-        	(empty($_POST['data_key']) ? NULL : $_POST['data_key']),
-        	(empty($_POST['data_sort']) ? NULL : $_POST['data_sort']),
-        	(empty($_POST['data_value']) ? NULL : $_POST['data_value']),
-        	(empty($_POST['sidebar']) ? NULL : $_POST['sidebar'])
-       	     );
-       	     Slim::redirect(href('admin/organizations', TRUE));
-       	}
-	else Storage::instance()->content = template('login');
+Slim::post('/admin/organizations/create/', function()
+{
+    empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
+
+    if(userloggedin())
+    {
+	add_organization(
+	    $_POST['p_name'],
+	    $_POST['p_type'],
+	    $_POST['p_org_info'],
+	    $_POST['p_org_projects_info'],
+	    $_POST['p_city_town'],
+	    $_POST['p_district'],
+	    $_POST['p_grante'],
+	    /*$_POST['p_donors'],*/
+	    $_POST['p_sector'],
+	    $_POST['p_tag_uniques'],
+	    $_POST['p_tag_names'],
+	    (empty($_FILES['p_logo']) ? FALSE : $_FILES['p_logo']),
+	    (empty($_POST['data_key']) ? NULL : $_POST['data_key']),
+	    (empty($_POST['data_sort']) ? NULL : $_POST['data_sort']),
+	    (empty($_POST['data_value']) ? NULL : $_POST['data_value']),
+	    (empty($_POST['sidebar']) ? NULL : $_POST['sidebar'])
+	);
+	Slim::redirect(href('admin/organizations', TRUE));
+    }
+    else
+    {
+	Storage::instance()->content = template('login');
+    }
 	
 });
 
-Slim::post('/admin/organizations/update/:unique/', function($unique){
+Slim::post('/admin/organizations/update/:unique/', function($unique)
+{
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     if(userloggedin())
     {
-	    delete_page_data('organization', $unique);
-	    empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
-	    empty($_FILES['p_logo']) OR $_FILES['p_logo']['delete'] = (bool)(!empty($_POST['delete_logo']) AND $_POST['delete_logo'] == "yes");
-	    if (!empty($_POST['data_key']))
-	    	add_page_data('organization',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
-   	    edit_organization(
-	    	$unique,
-        	$_POST['p_name'],
-        	$_POST['p_type'],
-        	$_POST['p_org_info'],
-        	$_POST['p_org_projects_info'],
-        	$_POST['p_city_town'],
-        	$_POST['p_district'],
-        	$_POST['p_grante'],
-        	$_POST['p_sector'],
-        	(empty($_FILES['p_logo']) ? FALSE : $_FILES['p_logo']),
-        	$_POST['p_tag_uniques'],
-        	$_POST['p_tag_names']
-       	     );
-       	     Slim::redirect(href('admin/organizations', TRUE));
+	delete_page_data('organization', $unique);
+
+	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
+	empty($_FILES['p_logo']) OR $_FILES['p_logo']['delete'] = (bool)(!empty($_POST['delete_logo']) AND $_POST['delete_logo'] == "yes");
+
+	if (!empty($_POST['data_key']))
+	{
+	    add_page_data('organization',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	}
+
+	edit_organization(
+	    $unique,
+	    $_POST['p_name'],
+	    $_POST['p_type'],
+	    $_POST['p_org_info'],
+	    $_POST['p_org_projects_info'],
+	    $_POST['p_city_town'],
+	    $_POST['p_district'],
+	    $_POST['p_grante'],
+	    $_POST['p_sector'],
+	    (empty($_FILES['p_logo']) ? FALSE : $_FILES['p_logo']),
+	    $_POST['p_tag_uniques'],
+	    $_POST['p_tag_names']
+	);
+
+	Slim::redirect(href('admin/organizations', TRUE));
     }
     else
     	Storage::instance()->content = template('login');

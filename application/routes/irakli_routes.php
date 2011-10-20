@@ -1,6 +1,6 @@
 <?php
 
-$news = fetch_db("SELECT n.*,p.longitude,p.latitude FROM news n INNER JOIN places p ON n.place_unique = p.`unique` WHERE places.lang = '" . LANG . "' AND news.lang = '" . LANG . "'");
+$news = fetch_db("SELECT n.*,p.longitude,p.latitude FROM news as n INNER JOIN places AS p ON n.place_unique = p.`unique` WHERE p.lang = '" . LANG . "' AND n.lang = '" . LANG . "'");
 $js_news = array();
 foreach( $news as $new )
     $js_news[] = '[' . $new['unique'] . ',' . $new['longitude'] . ',' . $new['latitude'] .',"' . $new['title'] . '", new Date("' . $new['published_at'] . '") ]';
@@ -16,16 +16,10 @@ foreach($projects as $project)
 Storage::instance()->js_projects = $js_projects;
 
 $years_sql = "
-    SELECT DISTINCT
-        YEAR(start_at) AS start,
-        YEAR(end_at) AS end
-    FROM
-        projects
-    ORDER BY
-        start_at,
-        end_at
-    WHERE
-    	lang = '" . LANG . "';
+    SELECT DISTINCT YEAR(start_at) AS start, YEAR(end_at) AS end
+    FROM projects
+    WHERE lang = '" . LANG . "'
+    ORDER BY start_at, end_at;
 ";
 $years_res = fetch_db($years_sql);
 $years_storage = array();

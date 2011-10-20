@@ -49,6 +49,9 @@ try
     $db_conf = Storage::instance()->config_env['db'];
     Storage::instance()->db = new PDO('mysql:dbname=' . $db_conf['name'] . ';host=' . $db_conf['host'], $db_conf['user'], $db_conf['pass']);
     Storage::instance()->db->prepare('SET NAMES utf8;')->execute();
+
+    /* ENABLE EXITING WHENEVER THERE IS AN ERROR IN PDO */
+    Storage::instance()->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch (PDOException $exception)
 {
