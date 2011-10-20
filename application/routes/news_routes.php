@@ -171,9 +171,9 @@ Slim::get('/admin/news/new/', function()
                 exit;
             }
             Storage::instance()->content = template('admin/news/new', array(
-						'all_tags' => read_tags(),
-						'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
-                    ));
+		'all_tags' => read_tags(),
+		'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
+            ));
         }
 );
 
@@ -272,6 +272,7 @@ Slim::post('/admin/news/create/', function(){
 	empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
 	Storage::instance()->content = add_news(
 		$_POST['n_title'],
+		(empty($_POST['n_show_in_slider']) ? 0 : 1),
 		$_POST['n_body'],
 		$filedata,
 		$_POST['n_category'],
@@ -301,7 +302,16 @@ Slim::post('/admin/news/:unique/update/', function($unique){
 	    "tmp_name" => $_FILES['n_file']['tmp_name']
 	);
 	empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
-	Storage::instance()->content = update_news($unique, $_POST['n_title'], $_POST['n_body'], $filedata , $_POST['n_category'], $_POST['n_place'], $_POST['p_tag_uniques'], $_POST['p_tag_names']);
+	Storage::instance()->content = update_news(
+		$unique,
+		$_POST['n_title'],
+		(empty($_POST['n_show_in_slider']) ? 0 : 1),
+		$_POST['n_body'],
+		$filedata,
+		$_POST['n_category'],
+		$_POST['n_place'],
+		$_POST['p_tag_uniques'],
+		$_POST['p_tag_names']);
     }
     else
 	Storage::instance()->content = template('login');

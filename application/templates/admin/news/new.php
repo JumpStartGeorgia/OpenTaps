@@ -4,6 +4,12 @@
   	    <input name='n_title' id='ntitle' type='text' />
   	    <br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input name='n_show_in_slider' id='ntitle' type='checkbox' value="yes" />
+		Show in top slider
+  	    </label>
+  	    <br /><br />
+
   	    <label for='nfile'>Picture : </label>
   	    <br/>
   	    <input name='n_file' type='file' id='nfile' />
@@ -63,9 +69,6 @@
 	    <div id="data_fields_container" style="padding-left: 55px;">
 	    </div>
 	    <a style="color: #4CBEFF; cursor: pointer; font-size: 13px;" id="add_data_field">+Add data</a><br /><br />
-
-  	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />
-  	    <br /><br />
 
   	    <input type='submit' value='Submit' onclick='return document.getElementById("ntitle").value != ""' />
   	    <br /><br />

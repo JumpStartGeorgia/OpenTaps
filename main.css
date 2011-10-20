@@ -80,9 +80,9 @@ div.header_right
 .slide_switcher_left{ margin-left: 9px; }
 
 
-div.header_right p{ font-size:1.55em; font-family:Arial; margin-bottom:6px; }
+div.header_right p{ font-size: 1.55em; font-family: Arial; margin-bottom: 6px; }
 
-div.after_header{ height:7px; margin-top:22px; background-image:url('@baseurl/images/bg_after_header.jpg'); }
+div.after_header{ height: 7px; margin-top: 22px; background-image: url('@baseurl/images/bg_after_header.jpg'); }
 
 div.menu{  }
 div.menu ul{ list-style-type: none; padding:0; float:left; }

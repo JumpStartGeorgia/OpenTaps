@@ -243,7 +243,7 @@ function read_news_one_page($from, $limit, $type = FALSE)
     return $statement->fetchAll();
 }
 
-function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
+function add_news($title, $show_in_slider, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
     if (strlen($title) < 1)
         return "title can't be empty";
@@ -256,12 +256,13 @@ function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names
     $unique = generate_unique("news");
     foreach ($languages as $lang)
     {
-        $sql = "INSERT INTO  `opentaps`.`news` (`title`, `body`, `published_at`, `image`, category, place_unique, lang, `unique`)
-		    VALUES(:title, :body, :published_at, :image, :category, :place, :lang, :unique)";
+        $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`)
+		VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique)";
         $statement = db()->prepare($sql);
 
         $exec = $statement->execute(array(
                     ':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
+                    ':show_in_slider' => $show_in_slider,
                     ':body' => $body,
                     ':published_at' => date("Y-m-d H:i"),
                     ':image' => $up,
@@ -275,17 +276,19 @@ function add_news($title, $body, $filedata, $category, $place, $tags, $tag_names
 
     (empty($tags) AND empty($tag_names)) OR add_tag_connector('news', $unique, $tags, $tag_names);
 
-    $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/news", TRUE) . "' />";
     if ($success)
     {
         empty($data_key) OR add_page_data('news', $unique, $data_key, $data_sort, $sidebar, $data_value);
-        return $metarefresh;
+        Slim::redirect(href('admin/news', TRUE));
     }
     else
-        return "couldn't insert into database";
+    {
+        var_dump("couldn't insert into database");
+        die;
+    }
 }
 
-function update_news($unique, $title, $body, $filedata, $category, $place, $tags, $tag_names)
+function update_news($unique, $title, $show_in_slider, $body, $filedata, $category, $place, $tags, $tag_names)
 {
     if (strlen($title) < 1 OR !is_numeric($unique))
         return "title is empty or invalid id";
@@ -295,11 +298,12 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
         return $up;
     elseif ($up == "")
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, show_in_slider = :show_in_slider, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
             ':body' => $body,
+            ':show_in_slider' => $show_in_slider,
             ':category' => $category,
             ':place' => $place
         );
@@ -307,13 +311,14 @@ function update_news($unique, $title, $body, $filedata, $category, $place, $tags
     else
     {
         delete_image($unique);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, show_in_slider = :show_in_slider, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
         	UPDATE  `opentaps`.`news` SET  `image` =  :image WHERE  `news`.`unique` = :unique;";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
             ':body' => $body,
             ':image' => $up,
+            ':show_in_slider' => $show_in_slider,
             ':category' => $category,
             ':place' => $place
         );

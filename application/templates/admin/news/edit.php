@@ -8,10 +8,14 @@
   	    <input name='n_title' id='ntitle' type='text' value='<?php echo $news[0]['title']; ?>' />
   	    <br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input name='n_show_in_slider' id='ntitle' type='checkbox' value="yes" <?php $news[0]['show_in_slider'] == '1' AND print 'checked="checked"'; ?> />
+		Show in top slider
+  	    </label>
+  	    <br /><br />
+
   	    Picture: <br />
-  	<?php
-  	    echo (!$img) ?  "No current picture <br/>" : "Current: <br /><image src='" . $img . "' width='100' /><br />";
-  	?>
+  	    <?php echo (!$img) ?  "No current picture <br/>" : "Current: <br /><image src='" . $img . "' width='100' /><br />"; ?>
   	    <label for='nfile' onclick='document.getElementById("nfile").style.display = "block";' class='newpiclabel'>
   	        New picture
   	    </label>
