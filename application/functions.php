@@ -282,7 +282,10 @@ function add_news($title, $show_in_slider, $body, $filedata, $category, $place, 
         Slim::redirect(href('admin/news', TRUE));
     }
     else
-        return "couldn't insert into database";
+    {
+        var_dump("couldn't insert into database");
+        die;
+    }
 }
 
 function update_news($unique, $title, $show_in_slider, $body, $filedata, $category, $place, $tags, $tag_names)
