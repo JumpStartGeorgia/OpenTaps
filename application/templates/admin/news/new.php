@@ -4,6 +4,12 @@
   	    <input name='n_title' id='ntitle' type='text' />
   	    <br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input name='n_show_in_slider' id='ntitle' type='checkbox' value="yes" />
+		Show in top slider
+  	    </label>
+  	    <br /><br />
+
   	    <label for='nfile'>Picture : </label>
   	    <br/>
   	    <input name='n_file' type='file' id='nfile' />
