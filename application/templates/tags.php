@@ -11,13 +11,13 @@
     	    <div id='titletype_left' style='padding: 10px; padding-left: 17px;'>
     	    <?php $def = strtoupper($def); ?>
     	    	<a href='<?php echo href('tag/project/' . $tag_name, TRUE, 'tags') ?>'
-    	    		class='choosedef<?php ($def == "PROJECTS") AND print("_selected") ?>'>PROJECTS
+    	    		class='choosedef<?php ($def == "PROJECTS") AND print("_selected") ?>'><?php echo strtoupper(l('tags_projects')) ?>
     	    	</a>
     	    	<a href='<?php echo href('tag/organization/' . $tag_name, TRUE, 'tags') ?>'
-    	    		class='choosedef<?php ($def == "ORGANIZATIONS") AND print("_selected") ?>'>ORGANIZATIONS
+    	    		class='choosedef<?php ($def == "ORGANIZATIONS") AND print("_selected") ?>'><?php strtoupper(l('tags_organizations')) ?>
     	    	</a>
     	    	<a href='<?php echo href('tag/news/' . $tag_name, TRUE, 'tags') ?>'
-    	    		class='choosedef<?php ($def == "NEWS") AND print("_selected") ?>'>NEWS
+    	    		class='choosedef<?php ($def == "NEWS") AND print("_selected") ?>'><?php echo strtoupper(l('tags_news')) ?>
     	    	</a>
     	    </div>
     	</div>

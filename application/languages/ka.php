@@ -68,7 +68,25 @@ return array(
     
 	'ends' => 'დასასრული',
 	
-	'organizations' => 'ორგანიზაციები'
+	'organizations' => 'ორგანიზაციები',
+	
+	'overall_project_budget' => 'საშუალო პროექტების ბიუჯეტი',
+	
+	'org_city' => 'ქალაქი',
+	
+	'org_desc' => 'ორგანიზაციის აღწერა',
+	
+	'org_projects' => 'ორგანიზაციის პროექტები',
+	
+	'gp_no_data' => 'არ არის მონაცემები',
+	
+	'tags_projects' => 'პროექტები',
+    
+    'tags_organizations' => 'ორგანიზაციები',
+	
+	'tags_news' => 'ტეგების ამბები',
+	
+	'ws_hiy' => 'თქვენ რამდენად გაინტერესებთ'
 
 );
 
