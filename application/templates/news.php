@@ -63,8 +63,8 @@
     		    </div>
     		</div>
     	    </div>
-    	<?php endforeach; ?>
-    	  </a>
+    	<?php endforeach; ?>          
+            
     	</div>
 
 <?php if ($total_pages > 1): ?>
