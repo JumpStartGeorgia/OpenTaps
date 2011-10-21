@@ -89,10 +89,12 @@ Slim::get('/admin/organizations/:unique/delete/', function($unique){
 Slim::post('/admin/organizations/create/', function()
 {
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
+    !empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
 
     if(userloggedin())
     {
 	add_organization(
+	    $_POST['record_language'],
 	    $_POST['p_name'],
 	    $_POST['p_type'],
 	    $_POST['p_org_info'],

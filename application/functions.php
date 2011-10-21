@@ -146,7 +146,7 @@ function get_menu($short_name)
     return empty($result) ? array() : $result;
 }
 
-function add_menu($name, $short_name, $parent_unique, $title, $text, $hide, $footer)
+function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $hide, $footer)
 {
     if (strlen($name) < 2)
         return false;
@@ -160,7 +160,7 @@ function add_menu($name, $short_name, $parent_unique, $title, $text, $hide, $foo
     foreach (config('languages') as $lang)
     {
         $exec = $statement->execute(array(
-                    ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
+                    ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
                     ':short_name' => $short_name,
                     ':parent_unique' => $parent_unique,
                     ':title' => $title,
@@ -1370,7 +1370,7 @@ function delete_organization($unique)
         unlink($org['logo']);
 }
 
-function add_organization($name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $filedata, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
+function add_organization($adding_lang, $name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $filedata, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
 {
     $up = image_upload($filedata);
     in_array($type, array('donor', 'organization')) OR $type = "organization";
@@ -1422,7 +1422,7 @@ function add_organization($name, $type, $description, $projects_info, $city_town
 
     foreach (config('languages') as $lang)
     {
-	$data[':name'] = $name . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':name'] = $name . (($adding_lang == $lang) ? NULL : " ({$lang})");
 	$data[':lang'] = $lang;
         $exec = $statement->execute($data);
     }
