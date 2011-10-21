@@ -31,7 +31,8 @@ return array(
         7,
         9,
         10,
-        11
+        11,
+        12
     ),
     'whitelist_ips' => array(
         '127.0.0.1',
