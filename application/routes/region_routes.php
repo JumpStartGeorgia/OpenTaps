@@ -74,8 +74,10 @@ Slim::get('/admin/regions/:unique/delete/', function($unique){
 
 Slim::post('/admin/regions/create/', function(){
    // empty($_POST['p_tags']) AND $_POST['p_tags'] = array();
+   !empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
    if(userloggedin()){
 	     add_region(
+	        $_POST['record_language'],
         	$_POST['p_name'],
         	$_POST['p_reg_info'],
         	$_POST['p_reg_projects_info'],
@@ -86,10 +88,10 @@ Slim::post('/admin/regions/create/', function(){
         	$_POST['p_villages'],
         	$_POST['p_districts'],
 		$_POST['p_watersupply'],
-        	$_POST['data_key'],
-        	$_POST['data_sort'],
-        	$_POST['data_value'],
-        	$_POST['sidebar']
+	        (empty($_POST['data_key']) ? NULL : $_POST['data_key']),
+	        (empty($_POST['data_sort']) ? NULL : $_POST['data_sort']),
+	        (empty($_POST['data_value']) ? NULL : $_POST['data_value']),
+	        (empty($_POST['sidebar']) ? NULL : $_POST['sidebar'])
        	     );
        	     Slim::redirect(href('admin/regions', TRUE));
        	}
