@@ -89,7 +89,7 @@
         <?php
         $scripts = array(
             'OpenLayers/OpenLayers.js',
-            'jq',
+            'jq.js',
             'chosen.jquery.min.js',
             'jquery.slideQuery.js',
                 //'raphael.js',
