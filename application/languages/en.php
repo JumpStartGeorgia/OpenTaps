@@ -34,7 +34,7 @@ return array(
     
     'region_budget' => 'Overall Region Budget',
     
-    'რეგიონ_ციტყ' => 'City',
+    'region_city' => 'City',
     
     'region_population' => 'Population',
     
@@ -66,7 +66,25 @@ return array(
     
     'ends' => 'Ends',
     
-    'organizations' => 'Organizations'
+    'organizations' => 'Organizations',
+    
+    'overall_project_budget' => 'Overall Project Budget',
+    
+    'org_city' => 'City/Town',
+    
+    'org_desc' => 'organization description',
+    
+    'org_projects' => 'organization projects',
+    
+    'gp_no_data' => 'No Data',
+    
+    'tags_projects' => 'PROJECTS',
+    
+    'tags_organizations' => 'ORGANIZATIONS',
+    
+    'tags_news' => 'tags news',
+    
+    'ws_hiy' => 'How Interest You'
 
 );
 

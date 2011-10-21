@@ -27,13 +27,13 @@
 
 		<div id='project_details' style="min-height: 15px; border-bottom: 0px;">
 			<div id='project_budget'>
-				<p>Overall Project Budget</p>
+				<p><?php echo l('overall_project_budget') ?></p>
 				<p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
 			</div>
 			<?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					District :
+					<?php echo l('region_district') ?> :
 				</div>
 				<div>
 					<?php echo $organization['district']; ?>
@@ -43,7 +43,7 @@
 			<?php if (!empty($organization['city_town']) AND strlen($organization['city_town']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					City/Town :
+					<?php echo l('org_city') ?> :
 				</div>
 				<div>
 					<?php echo $organization['city_town']; ?>
@@ -53,7 +53,7 @@
 			<?php if (!empty($organization['grante']) AND strlen($organization['grante']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					Grante :
+					<?php echo l('grantee') ?> :
 				</div>
 				<div>
 					<?php echo $organization['grante']; ?>
@@ -63,7 +63,7 @@
 			<?php if (!empty($organization['sector']) AND strlen($organization['sector']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					Sector :
+					<?php echo l('sector') ?> :
 				</div>
 				<div>
 					<?php echo $organization['sector']; ?>
@@ -78,7 +78,7 @@
 	</div>
 
 	<div id='project_description' style="margin-top:75px;">
-		<p class='desc'>ORGANIZATION DESCRIPTION</p>
+		<p class='desc'><?php echo strtoupper(l('org_desc')) ?></p>
 		<div><?php echo $organization['description']; ?></div>
 
 		<div style="width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
@@ -113,7 +113,7 @@
 	<?php if (!empty($projects)): ?>
 	<div class='data_block group' style="border-bottom: 0px; border-top: 0px;">
 		<div class='key'>
-			ORGANIZATION PROJECTS
+			<?php echo strtoupper(l('org_projects')) ?>
 		</div>
 		<div class='value' style='padding: 0px;'>
 		<?php foreach ($projects AS $project):
@@ -143,7 +143,7 @@
 	<?php if (!empty($tags)): ?>
 	<div class='data_block group'>
 		<div class='key'>
-			TAG CLOUD
+			<?php echo strtoupper(l('tag_cloud')) ?>
 		</div>
 		<div class='value' style="line-height: 25px;">
 		<?php foreach ($tags as $tag):
