@@ -78,10 +78,10 @@ function edit_button($edit_id = NULL)
 		<?php endif; ?>
 
 
-                <div>
+                <div style="display: none;">
                     <span class="expand_title"><span class="racxa">►</span>chart</span>
                     <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
-			<div id="chart-container" style="width: 640px; height: 400px"></div>
+			<div id="chart-container" style="padding: 0; margin: 0; width: 640px; height: 400px"></div>
                     </div>
                 </div>
 

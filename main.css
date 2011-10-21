@@ -175,7 +175,9 @@ a.organization_project_link{ display: block; border-bottom: 1px dotted #a6a6a6; 
 a.organization_project_link img{ vertical-align: middle; margin-right: 3px; margin-bottom: 3px; width: 23px; }
 
 
+#home-chart-container{ padding: 0; float: left; margin: 0; width: 293px; height: 321px; }
 /* 			IRAKLI HERE 		*/
+/*
 div.chartall
 {
     width:263px;
@@ -189,7 +191,7 @@ div.chartall{ 	float:right; }
 
 div.chart svg{ margin-left:-10px; }
 div.chart svg:after{ content:"."; display:block; height:1; clear:both; }
-
+*/
 
 
 div.newsall_body
@@ -538,5 +540,7 @@ div.tagsItemInactive{
     font-weight: bold;
     font-size: 200%
 }
+
+.highcharts-container svg > text { display: none !important }
 
 <?php ob_end_flush(); ?>

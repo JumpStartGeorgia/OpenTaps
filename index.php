@@ -73,7 +73,7 @@ if (Slim::request()->isGet())
         'projects' => read_projects(),
         'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
     ));
-    Storage::instance()->content = template('home');
+    Storage::instance()->content = template('home', array('chart_data' => home_chart_data()));
 }
 
 foreach (glob(DIR . 'application/routes/*.php') AS $route)

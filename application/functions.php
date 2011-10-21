@@ -1304,6 +1304,25 @@ function char_limit($string, $limit = 30)
 	return $string;
 }
 
+function home_chart_data()
+{
+    $sql = "SELECT
+    		o.name,
+    		(SELECT SUM(budget) FROM project_budgets AS pb WHERE o.`unique` = pb.organization_unique AND currency = 'gel') AS total_budget
+    	    FROM organizations AS o
+    	    WHERE o.lang = '" . LANG . "';";
+
+    $data = fetch_db($sql);
+    $newdata = array();
+    foreach ($data as $d)
+    {
+	if (!empty($d['total_budget']))
+	    $newdata[] = array($d['name'], (integer) $d['total_budget']);
+    }
+
+    return json_encode($newdata);
+}
+
 function get_project_chart_data($unique)
 {
     $results = array();

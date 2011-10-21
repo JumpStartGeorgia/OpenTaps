@@ -1,13 +1,25 @@
-var chart;
-var chart_options = {
+var chart,
+home_chart,
+chart_options = {
       chart: {
-         renderTo: 'chart-container',
+         renderTo: '',
          plotBackgroundColor: null,
          plotBorderWidth: null,
          plotShadow: false
       },
+      colors: [
+	 '#1ac3f8',
+	 '#15b4f0',
+	 '#83e8ff',
+	 '#b2f4ff',
+	 '#5bd8ff',
+	 '#63e1f5',
+	 '#5acaf5',
+	 '#8be4ff',
+	 '#0cb5f5'
+      ],
       title: {
-         text: 'Browser market shares at a specific website, 2010'
+         text: ''
       },
       tooltip: {
          formatter: function() {
@@ -24,34 +36,29 @@ var chart_options = {
             showInLegend: true
          }
       },
-       series: [{
-         type: 'pie',
-         name: 'Browser share',
-         data: [
-            ['Firefox',   45.0],
-            ['IE',       26.8],
-            {
-               name: 'Chrome',    
-               y: 322.8,
-               sliced: true,
-               selected: true
-            },
-            ['Safari',    8.5],
-            ['Opera',     6.2],
-            ['Others',   0.7]
-         ]
-      }]
+       series: []
    };
-
+/*
 $(document).ready(function() {
    chart = new Highcharts.Chart(chart_options);
 });
+*/
 
+$(document).ready(function() {
 
+    if (home_page)
+    {
+	chart_options.chart.renderTo = 'home-chart-container';
+	chart_options.series.push({
+		type: 'pie',
+		name: 'org_budgets',
+		data: data
+      });
 
+	home_chart = new Highcharts.Chart(chart_options);
+    }
 
-
-
+});
 
 
 

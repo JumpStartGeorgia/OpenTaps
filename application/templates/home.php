@@ -1,9 +1,15 @@
+<script type="text/javascript">
+    var home_page = true,
+    data = <?php echo $chart_data; ?>;
+</script>
+
+
 <div class="group">
     <div class='projects_organization'><?php echo strtoupper(l('projects_org')); ?></div>
 
     <div class='news group'><?php echo strtoupper(l('news')) ?></div>
 
-    <div id="chart" class='chart'></div>
+    <div class="group" style="float: left; border: 1px dotted #a6a6a6; border-top: none;"><div id="home-chart-container"></div></div>
 
     <?php
     $news_all = fetch_db("SELECT * FROM news WHERE lang = '" . LANG . "' AND image != '' ORDER BY published_at DESC LIMIT 0,6");
