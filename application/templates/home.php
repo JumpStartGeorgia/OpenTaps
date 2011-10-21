@@ -50,21 +50,21 @@
                     <div class="over_background">
                         <img style="width:38px; height:55px; border: 0px;" src="<?php echo $type_src ?>" />
                         <br />
-    <?php echo strtoupper($news['title']); ?>
+                        <?php echo strtoupper($news['title']); ?>
                     </div>
                     <a href="<?php echo href("news/" . $news['unique'], TRUE); ?>">
                         <img src="<?php echo $src ?>" />
                     </a>
                 </div>
-<?php endfor; ?>
+            <?php endfor; ?>
 
         </div>
         <div id="news_middle_content">
-<?php if ($count > 2): ?>
+            <?php if ($count > 2): ?>
                 <div id="left_image_box">
                     <img src="<?php $count > 2 AND print $third_src ?>" />
                 </div>
-                <?php endif; ?>
+            <?php endif; ?>
             <div id="right_titles_box">
                 <?php
                 for ($index = 2; $index < 6; $index++):
@@ -85,7 +85,7 @@
                     <?php if ($index != 5): ?>
                         <hr style="background: transparent; border: 0px; height: 2px;" />
                     <?php endif; ?>
-<?php endfor; ?>
+                <?php endfor; ?>
             </div>
         </div>
 
@@ -100,14 +100,14 @@
 
 <div style="margin-top: 27px; " class="group">
     <div style="float: left; width: 293px; text-align: justify; font-size: 11px; color: #808080">
-<?php echo l('home_page_bottom_text'); ?>
+        <?php echo l('home_page_bottom_text'); ?>
     </div>
     <div style="float: left; margin-left: 85px; font-size: 14px; font-weight: bold; color: #00AFF2;">
         <a href="<?php echo href('water_supply', TRUE) ?>?lang=<?php echo LANG ?>"><img src="<?php echo href('images') . 'water-supply' . $filenameend ?>" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER SUPPLY SCHEDULE</h4>
     </div>
     <div style="display: inline-block; margin-left: 56px; height: 57px; padding-left: 56px; font-size: 14px; font-weight: bold; color: #00AFF2; border-left: 1px dotted #a6a6a6;">
-        <a href="<?php echo href() ?>page/?lang=<?php echo LANG ?>"><img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" /></a>
+        <a href="<?php echo href() ?>page/water-diseases/?lang=<?php echo LANG ?>"><img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER AND DISEASES</h4>
     </div>
 </div>
