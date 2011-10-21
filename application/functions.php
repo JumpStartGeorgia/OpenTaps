@@ -146,7 +146,7 @@ function get_menu($short_name)
     return empty($result) ? array() : $result;
 }
 
-function add_menu($name, $short_name, $parent_unique, $title, $text, $hide, $footer)
+function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $hide, $footer)
 {
     if (strlen($name) < 2)
         return false;
@@ -160,7 +160,7 @@ function add_menu($name, $short_name, $parent_unique, $title, $text, $hide, $foo
     foreach (config('languages') as $lang)
     {
         $exec = $statement->execute(array(
-                    ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
+                    ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
                     ':short_name' => $short_name,
                     ':parent_unique' => $parent_unique,
                     ':title' => $title,
@@ -243,7 +243,7 @@ function read_news_one_page($from, $limit, $type = FALSE)
     return $statement->fetchAll();
 }
 
-function add_news($title, $show_in_slider, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
+function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
     if (strlen($title) < 1)
         return "title can't be empty";
@@ -269,7 +269,7 @@ function add_news($title, $show_in_slider, $body, $filedata, $category, $place, 
 
     foreach (config('languages') as $lang)
     {
-	$data[':title'] = $title . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':title'] = $title . (($adding_lang == $lang) ? NULL : " ({$lang})");
 	$data[':lang'] = $lang;
         $exec = $statement->execute($data);
         $success = (bool) $exec;
@@ -328,7 +328,7 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     $exec = $statement->execute($data);
     //$unique = get_unique("news", $id);
 
-    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique", array(':unique' => $unique));
+    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique;", array(':unique' => $unique));
     if (!empty($tags) OR !empty($tag_names))
     {
         add_tag_connector('news', $unique, $tags, $tag_names);
@@ -483,16 +483,6 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     $check = TRUE;
 
 
-/*	$statement = db()->prepare("INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);");
-	$statement->closeCursor();
-        $statement->bindValue(':f_unique', $f_unique);
-	foreach ($tag_uniques AS $tag_unique)
-	{
-	    $statement->bindValue(':tag_unique', $tag_unique);
-	    if (FALSE === $statement->execute())
-	        $check = FALSE;
-	}
-*/
     $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
@@ -571,15 +561,22 @@ function delete_tag($unique)
 function fetch_db($sql, $data = NULL, $fetch_one = FALSE)
 {
     $statement = db()->prepare($sql);
+    $statement->closeCursor();
     $statement->execute($data);
     if ($fetch_one)
     {
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+	if (strpos(strtolower($sql), "select") !== FALSE AND strpos(strtolower($sql), "from") !== FALSE)
+	{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+	}
         return empty($result) ? array() : $result;
     }
     else
     {
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	if (strpos(strtolower($sql), "select") !== FALSE AND strpos(strtolower($sql), "from") !== FALSE)
+	{
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
         return empty($result) ? array() : $result;
     }
 }
@@ -671,22 +668,19 @@ function add_place($post)
 {
     $unique = generate_unique("places");
 
-    $sql = "INSERT INTO places (longitude,latitude,name,region_unique,raion_unique,project_unique,pollution_unique, lang, `unique`)
-	    VALUES(:lon,:lat,:name,:region,:raion,:project,:pollution, :lang, :unique)";
+    $sql = "INSERT INTO places (longitude,latitude,name,region_unique, lang, `unique`)
+	    VALUES(:lon, :lat, :name,:region, :lang, :unique)";
     $statement = db()->prepare($sql);
     $data = array(
 	':lon' => $post['pl_longitude'],
 	':lat' => $post['pl_latitude'],
 	':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
-	':raion' => 0,
-	':project' => 0,
-	':pollution' => 0,
 	':unique' => $unique
     );
 
     foreach (config('languages') as $lang)
     {
-	$data[':name'] = $post['pl_name'] . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':name'] = $post['pl_name'] . (($post['record_language'] == $lang) ? NULL : " ({$lang})");
 	$data[':lang'] = $lang;
         $statement->execute($data);
     }
@@ -1028,6 +1022,7 @@ function add_project($title, $desc, $budgets, $beneficiary_people, $place_unique
             $query = "INSERT INTO `project_organizations`(project_unique, organization_unique)
             	      VALUES(:project_unique, :organization_unique);";
             $query = db()->prepare($query);
+            $query->closeCursor();
             $query = $query->execute(array(':project_unique' => $unique, ':organization_unique' => $org_unique));
         }
 
@@ -1372,7 +1367,7 @@ function delete_organization($unique)
         unlink($org['logo']);
 }
 
-function add_organization($name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $filedata, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
+function add_organization($adding_lang, $name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $tags, $tag_names, $filedata, $org_key = NULL, $org_sort = NULL, $org_value = NULL, $sidebar = NULL)
 {
     $up = image_upload($filedata);
     in_array($type, array('donor', 'organization')) OR $type = "organization";
@@ -1424,7 +1419,7 @@ function add_organization($name, $type, $description, $projects_info, $city_town
 
     foreach (config('languages') as $lang)
     {
-	$data[':name'] = $name . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':name'] = $name . (($adding_lang == $lang) ? NULL : " ({$lang})");
 	$data[':lang'] = $lang;
         $exec = $statement->execute($data);
     }

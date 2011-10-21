@@ -33,14 +33,15 @@ Slim::get('/admin/places/new/',function()
           }
     );
 Slim::post('/admin/places/create/',function()
-           {
-               if (userloggedin())
-               {
-                   add_place($_POST);
-                   Slim::redirect(href('admin/places', TRUE));
-               }
-               else Storage::instance()->content = template('login');
-           }
+{
+	!empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
+	if (userloggedin())
+	{
+	    add_place($_POST);
+	    Slim::redirect(href('admin/places', TRUE));
+	}
+	else Storage::instance()->content = template('login');
+}
    );
 Slim::get('/admin/places/:unique/',function($unique)
           {
