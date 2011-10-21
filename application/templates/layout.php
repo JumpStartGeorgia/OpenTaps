@@ -113,7 +113,7 @@
         {
             $scripts[] = 'tinymce/jscripts/tiny_mce/tiny_mce.js';
             $scripts[] = 'tinymce/jscripts/tiny_mce/init.js';
-            $scripts[] = 'admin_edit.js';
+            //$scripts[] = 'admin_edit.js';
         }
         $scripts[] = 'jquery_ui_slide_effect.js';
         $scripts[] = 'bottom_toggles.js';

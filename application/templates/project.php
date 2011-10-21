@@ -29,12 +29,13 @@ function edit_button($edit_id = NULL)
   <span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span>
  */ ?>
         </div>
+        <?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/projects/' . $project['unique'], TRUE) . "'>Edit</a>"); ?>
         <div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px; line-height: 18px;">
             <div>
                 <span class="expand_title">
                     <span class="racxa">▼</span> <?php echo l('project_name') ?>: <?php echo $project['title'] ?>
                 </span>
-                <abbr><?php $edit_permission AND print edit_button('basic_info'); ?></abbr>
+                <?php /*<abbr><?php $edit_permission AND print edit_button('basic_info'); ?></abbr>*/ ?>
                 <div class="expandable" style="display: block;">
                     <?php echo l('location_region') ?>:
                     <a id="region_link" href="<?php echo href('region/' . $project['region_unique'], TRUE); ?>">
