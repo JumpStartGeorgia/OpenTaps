@@ -59,13 +59,13 @@
             <?php endfor; ?>
 
         </div>
-        <div id="news_middle_content">
-            <?php if ($count > 2): ?>
-                <div id="left_image_box">
-                    <img src="<?php $count > 2 AND print $third_src ?>" />
-                </div>
-            <?php endif; ?>
-            <?php if (isset($news_all[2]) AND $news_all[5]): ?>
+        <?php if (isset($news_all[2]) AND $news_all[5]): ?>
+            <div id="news_middle_content">
+                <?php if ($count > 2): ?>
+                    <div id="left_image_box">
+                        <img src="<?php $count > 2 AND print $third_src ?>" />
+                    </div>
+                <?php endif; ?>
                 <div id="right_titles_box">
                     <?php
                     for ($index = 2; $index < 6; $index++):
@@ -88,8 +88,8 @@
                         <?php endif; ?>
                     <?php endfor; ?>
                 </div>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
 
         <div id="news_bottom_content">
             <a href="<?php echo href("news", TRUE); ?>">▸ <?php echo l('all_news') ?></a>
