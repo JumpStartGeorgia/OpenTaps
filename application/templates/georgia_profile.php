@@ -13,7 +13,7 @@
 			</div>
 			<?php else: ?>
 			<div id='project_budget' style="height: 93px">
-				<p style='font-size: 22px; color: #FFF;'>No Data</p>
+				<p style='font-size: 22px; color: #FFF;'><?php echo strtoupper(l('gp_no_data')) ?></p>
 			</div>
 			<?php endif; ?>
 

@@ -2,7 +2,7 @@
     <div style='float:left;width:673px;'>
         <div class='group'>
             <br /><br />
-     <p><font style="font-size:10pt;">How Interest You:</font>&nbsp;<font style="color:#000;font-size:10pt;">REGION</font>
+     <p><font style="font-size:10pt;"><?php echo l('ws_hiy') ?>:</font>&nbsp;<font style="color:#000;font-size:10pt;">REGION</font>
         <select onchange="$(this).children('option').each(function(){
                            if( $(this).is(':selected') ){
                                  window.location = '<?php echo href('water_supply'); ?>'+$(this).attr('value');
