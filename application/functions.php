@@ -1162,7 +1162,10 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
         $query->closeCursor();
         foreach ($org_ids AS $org_unique)
         {
-            $query->execute(array(':project' => $unique, ':organization' => $org_unique));
+            if (!empty($org_unique))
+            {
+		$query->execute(array(':project' => $unique, ':organization' => $org_unique));
+	    }
         }
     }
 
