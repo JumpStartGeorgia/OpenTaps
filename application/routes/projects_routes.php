@@ -411,7 +411,9 @@ Slim::post('/admin/projects/create/', function(){
 
     if (userloggedin())
     {
+	!empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
         add_project(
+        	$_POST['record_language'],
         	$_POST['p_title'],
         	'', //$_POST['p_desc'],
         	$budgets,

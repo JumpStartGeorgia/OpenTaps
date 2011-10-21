@@ -161,7 +161,8 @@ Slim::get('/admin/tags/:unique/delete/', function($unique){
 });
 
 Slim::post('/admin/tags/create/', function(){
-    Storage::instance()->content = userloggedin() ? add_tag($_POST['t_name']) : template('login');
+    !empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
+    Storage::instance()->content = userloggedin() ? add_tag($_POST['record_language'], $_POST['t_name']) : template('login');
 });
 
 Slim::post('/admin/tags/:unique/update/', function($unique){

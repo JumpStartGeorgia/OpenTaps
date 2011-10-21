@@ -1,4 +1,12 @@
   	<form method='post' enctype="multipart/form-data" action="<?php echo href('admin/projects/create', TRUE); ?>">
+    	   Language: &nbsp;
+	   <select style="width: 70px;" name="record_language">
+	   <?php foreach (config('languages') AS $lang): $s = 'selected="selected"';?>
+	   	<option <?php LANG == $lang AND print $s; ?> value="<?php echo $lang; ?>"><?php echo $lang; ?></option>
+	   <?php endforeach; ?>
+	   </select><br /><br />
+
+
   	    <label for='ptitle'>Title<span style="color: red">*</span>: </label>
   	    <br />
   	    <input name='p_title' id='ptitle' type='text' />
