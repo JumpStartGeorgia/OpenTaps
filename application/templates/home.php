@@ -6,20 +6,24 @@
     <div id="chart" class='chart'></div>
 
     <?php
-    $news_all = read_news(6);
-    if (!empty($news_all))
+    $news_all = fetch_db("SELECT * FROM news WHERE lang = '" . LANG . "' AND image != '' ORDER BY published_at DESC LIMIT 0,6");
+    $count = count($news_all);
+    if ($count > 2)
     {
 	$image = $news_all[2]['image'];
 	$third_src = substr($image, 0, 7);
-	$third_src = ($third_src == "http://" OR $third_src == "https:/") ? $image : href() . $image;
+	$third_src = ($third_src == "http://" OR $thirdsrc == "https:/") ? $image : href() . $image;
     }
     ?>
 
     <div class='news_body group'>
         <div style="width: 535px;" class="group">
 
-            <?php
-            for ($index = 0; $index < 2; $index++):
+            <?php for ($index = 0; $index < 2; $index++):
+		if (empty($news_all[$index]))
+		{
+    		    break;
+    		}
                 $news = $news_all[$index];
                 $src = substr($news['image'], 0, 7);
                 $src = ($src == "http://" OR $src == "https:/") ? $news['image'] : href() . $news['image'];
@@ -45,24 +49,28 @@
                     <div class="over_background">
                         <img style="width:38px; height:55px; border: 0px;" src="<?php echo $type_src ?>" />
                         <br />
-    <?php echo strtoupper($news['title']); ?>
+	    		<?php echo strtoupper($news['title']); ?>
                     </div>
                     <a href="<?php echo href("news/" . $news['unique'], TRUE); ?>">
                         <img src="<?php echo $src ?>" />
                     </a>
                 </div>
-                <?php endfor; ?>
+            <?php endfor; ?>
 
         </div>
         <div id="news_middle_content">
+            <?php if ($count > 2): ?>
             <div id="left_image_box">
-                <img src="<?php echo $third_src ?>" />
+                <img src="<?php $count > 2 AND print $third_src ?>" />
             </div>
+            <?php endif; ?>
             <div id="right_titles_box">
 <?php
 for ($index = 2; $index < 6; $index++):
     if (!isset($news_all[$index]) OR empty($news_all[$index]))
+    {
         break;
+    }
     $news = $news_all[$index];
     $src = substr($news['image'], 0, 7);
     $src = ($src == "http://" OR $src == "https:/") ? $news['image'] : href() . $news['image'];

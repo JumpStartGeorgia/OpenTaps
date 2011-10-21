@@ -4,13 +4,11 @@
         <?php							//PROJECTS
             $idx = 0;
             $num = count($projects);
-//            fb($num, 'Menu Count');
             foreach ($projects AS $item):
                 $breakable = ($idx % 5 == 4);
 
 		$rem = ($num % 5 == 0) ? 5 : 0;
  	        $last_row = ($idx >= ($num - ($num % 5) - $rem ));
-//		fb($last_row, $idx . ' last row');
 
 	        echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
 	    		<a href="' . href('project/' . $item['unique'], TRUE) . '">' . $item['title'] . '</a>

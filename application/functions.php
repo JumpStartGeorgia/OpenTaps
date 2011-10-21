@@ -264,7 +264,6 @@ function add_news($title, $show_in_slider, $body, $filedata, $category, $place, 
             ':image' => $up,
             ':category' => $category,
             ':place' => $place,
-            ':lang' => $lang,
             ':unique' => $unique
 	);
 
