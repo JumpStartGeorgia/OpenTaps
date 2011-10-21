@@ -328,7 +328,7 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     $exec = $statement->execute($data);
     //$unique = get_unique("news", $id);
 
-    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique", array(':unique' => $unique));
+    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique;", array(':unique' => $unique));
     if (!empty($tags) OR !empty($tag_names))
     {
         add_tag_connector('news', $unique, $tags, $tag_names);
@@ -483,16 +483,6 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     $check = TRUE;
 
 
-/*	$statement = db()->prepare("INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);");
-	$statement->closeCursor();
-        $statement->bindValue(':f_unique', $f_unique);
-	foreach ($tag_uniques AS $tag_unique)
-	{
-	    $statement->bindValue(':tag_unique', $tag_unique);
-	    if (FALSE === $statement->execute())
-	        $check = FALSE;
-	}
-*/
     $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
@@ -571,15 +561,22 @@ function delete_tag($unique)
 function fetch_db($sql, $data = NULL, $fetch_one = FALSE)
 {
     $statement = db()->prepare($sql);
+    $statement->closeCursor();
     $statement->execute($data);
     if ($fetch_one)
     {
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
+	if (strpos(strtolower($sql), "select") !== FALSE AND strpos(strtolower($sql), "from") !== FALSE)
+	{
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+	}
         return empty($result) ? array() : $result;
     }
     else
     {
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	if (strpos(strtolower($sql), "select") !== FALSE AND strpos(strtolower($sql), "from") !== FALSE)
+	{
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
         return empty($result) ? array() : $result;
     }
 }
@@ -1028,6 +1025,7 @@ function add_project($title, $desc, $budgets, $beneficiary_people, $place_unique
             $query = "INSERT INTO `project_organizations`(project_unique, organization_unique)
             	      VALUES(:project_unique, :organization_unique);";
             $query = db()->prepare($query);
+            $query->closeCursor();
             $query = $query->execute(array(':project_unique' => $unique, ':organization_unique' => $org_unique));
         }
 
