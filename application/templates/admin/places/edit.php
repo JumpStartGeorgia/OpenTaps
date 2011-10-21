@@ -14,6 +14,13 @@
          <option value="<?php echo $region['unique']; ?>"<?php echo $selected; ?> ><?php echo $region['name']; ?></option>
          <?php endforeach; ?>
          </select>
+         <br /><br />
+         <select name="pl_district" id="pldistrict">
+            <option></option>
+         <?php foreach ($districts as $district): ?>
+			<option <?php echo  ( $place[0]['district_id'] == $district['id'] )  ?  'selected=selected' : NULL; ?> value="<?php echo $district['id']; ?>"><?php echo $district['name']; ?></option>
+         <?php endforeach; ?>
+         </select>
         <br /><br />
          <label for='pllongitude'>Longitude: </label>
   	    <br />
