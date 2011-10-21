@@ -14,15 +14,15 @@ RewriteRule ^(.*)$ index.php [QSA]
 </IfModule>
 
 # Expire headers
-<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
-    Header set Expires "Thu, 15 Jun 2012 20:00:00 GMT"
-</FilesMatch>
+#<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+#    Header set Expires "Thu, 15 Jun 2012 20:00:00 GMT"
+#</FilesMatch>
 
 # Turn Off eTags
-Header unset ETag
-FileETag None
+#Header unset ETag
+#FileETag None
 
 # Compress files
-<FilesMatch ".(js|css|html|htm|php|xml)$">
-    SetOutputFilter DEFLATE
-</FilesMatch>
+#<FilesMatch ".(js|css|html|htm|php|xml)$">
+#    SetOutputFilter DEFLATE
+#</FilesMatch>
