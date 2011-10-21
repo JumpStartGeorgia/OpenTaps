@@ -7,9 +7,12 @@
 
     <?php
     $news_all = read_news(6);
-    $image = $news_all[2]['image'];
-    $third_src = substr($image, 0, 7);
-    $third_src = ($third_src == "http://" OR $third_src == "https:/") ? $image : href() . $image;
+    if (!empty($news_all))
+    {
+	$image = $news_all[2]['image'];
+	$third_src = substr($image, 0, 7);
+	$third_src = ($third_src == "http://" OR $third_src == "https:/") ? $image : href() . $image;
+    }
     ?>
 
     <div class='news_body group'>

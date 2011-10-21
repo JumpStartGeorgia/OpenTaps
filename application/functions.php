@@ -461,6 +461,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
             $query = db()->prepare("SELECT `unique`, id FROM tags WHERE name = :name LIMIT 1");
             $query->execute(array(':name' => $tag_name));
             $result = $query->fetch(PDO::FETCH_ASSOC);
+            $query->closeCursor();
             $success = TRUE;
             if (empty($result))
             {
@@ -468,6 +469,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
                 {
                     $stmt = db()->prepare("SELECT `unique` FROM tags WHERE name = :name LIMIT 1");
                     $stmt->execute(array(':name' => $tag_name));
+                    $stmt->closeCursor();
                     $inserted_unique = $stmt->fetch(PDO::FETCH_ASSOC);
                     $result['unique'] = $inserted_unique['unique'];
                     $success = TRUE;
@@ -480,13 +482,24 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     }
 
     $check = TRUE;
+
+
+/*	$statement = db()->prepare("INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);");
+	$statement->closeCursor();
+        $statement->bindValue(':f_unique', $f_unique);
+	foreach ($tag_uniques AS $tag_unique)
+	{
+	    $statement->bindValue(':tag_unique', $tag_unique);
+	    if (FALSE === $statement->execute())
+	        $check = FALSE;
+	}
+*/
     $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);";
     $statement = db()->prepare($sql);
-    db()->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    foreach ($tag_uniques as $tag_unique)
+    $statement->closeCursor();
+    foreach ($tag_uniques AS $tag_unique)
     {
-        $data = array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique);
-        $exec = $statement->execute($data);
+        $exec = $statement->execute(array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique));
         $check AND $check = (bool) $exec;
     }
 
