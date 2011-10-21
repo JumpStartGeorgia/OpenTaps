@@ -1,6 +1,12 @@
-<?
-  echo "
-  	<form action='" . href("admin/menu/create", TRUE) . "' method='post'>
+  	<form action="<?php echo href('admin/menu/create', TRUE); ?>" method='post'>
+    	   Language: &nbsp;
+	   <select style="width: 70px;" name="record_language">
+	   <?php foreach (config('languages') AS $lang): $s = 'selected="selected"';?>
+	   	<option <?php LANG == $lang AND print $s; ?> value="<?php echo $lang; ?>"><?php echo $lang; ?></option>
+	   <?php endforeach; ?>
+	   </select><br /><br />
+
+
   	    <label for='mname'>Name: </label>
   	    <br />
   	    <input name='m_name' id='mname' type='text' />
@@ -20,8 +26,8 @@
   	    Parent: 
   	    <select name='m_parent_unique'>
   	        <option selected value='0'>None</option>
-  ";
 
+<?php
   foreach(Storage::instance()->menu as $parent)
     echo       "<option value=\"" . $parent['unique'] . "\">" . $parent['name'] . "</option>";
 

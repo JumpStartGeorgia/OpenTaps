@@ -1,8 +1,8 @@
 
 function init()
 {
-    map_init();
-    chart_init();
+    //map_init();
+    //chart_init();
 }
 
 String.prototype.reverse = function()

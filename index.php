@@ -72,7 +72,7 @@ if (Slim::request()->isGet())
         'submenus' => read_submenu(),
         'projects' => read_projects(),
         'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
-            ));
+    ));
     Storage::instance()->content = template('home');
 }
 

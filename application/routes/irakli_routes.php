@@ -45,12 +45,12 @@ unset($types_tmp);
 Storage::instance()->js_types = $types;
 
 
-require_once DIR.'application/routes/organization_routes.php';
+//require_once DIR.'application/routes/organization_routes.php';
 
-require_once DIR.'application/routes/users_routes.php';
+//require_once DIR.'application/routes/users_routes.php';
 
-require_once DIR.'application/routes/places_routes.php';
+//require_once DIR.'application/routes/places_routes.php';
 
-require_once DIR.'application/routes/watersupply_routes.php';
+//require_once DIR.'application/routes/watersupply_routes.php';
 
 

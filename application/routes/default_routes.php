@@ -9,7 +9,7 @@ Slim::get('/page/:short_name/', function($short_name)
         {
 		Storage::instance()->content = template('menu_text', array('menu' => get_menu($short_name)));
         }
-);
+)->name('static-page');
 
 Slim::get('/login/', function()
         {
