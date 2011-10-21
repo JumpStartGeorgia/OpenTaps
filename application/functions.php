@@ -716,10 +716,7 @@ function edit_place($unique, $post)
 			longitude = :lon,
 			latitude = :lat,
 			name = :place_name,
-			region_unique = :region,
-			raion_unique = :raion,
-			project_unique = :project,
-			pollution_unique = :pollution
+			region_unique = :region
 		WHERE
 			`unique` = :unique
 		AND
@@ -732,9 +729,6 @@ function edit_place($unique, $post)
         ':lat' => $post['pl_latitude'],
         ':place_name' => $post['pl_name'],
         ':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
-        ':raion' => 0,
-        ':project' => 0,
-        ':pollution' => 0,
         ':unique' => $unique
     ));
 }

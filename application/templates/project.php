@@ -62,20 +62,29 @@ function edit_button($edit_id = NULL)
                     <abbr style="display: none;"><?php $edit_permission AND print edit_button('project_data'); ?></abbr>
                     <div class="expandable" data_unique="<?php echo $d['unique']; ?>"><?php echo $d['value']; ?></div>
                 </div>
-                        <?php endforeach; ?>
+            <?php endforeach; ?>
 
-                    <?php if (!empty($organizations)): ?>
+            <?php if (!empty($organizations)): ?>
                 <div>
                     <span class="expand_title"><span class="racxa">►</span> <?php echo l('organizations') ?></span>
                     <div class="expandable">
-                <?php foreach ($organizations AS $org): ?>
-                            <a class="region_link" href="<?php echo href('organization/' . $org['unique'], TRUE); ?>">
-        <?php echo $org['name']; ?>
-                            </a><br />
-    <?php endforeach; ?>
+		        <?php foreach ($organizations AS $org): ?>
+		                    <a class="region_link" href="<?php echo href('organization/' . $org['unique'], TRUE); ?>">
+					<?php echo $org['name']; ?>
+		                    </a><br />
+	    		<?php endforeach; ?>
                     </div>
                 </div>
-<?php endif; ?>
+		<?php endif; ?>
+
+
+                <div>
+                    <span class="expand_title"><span class="racxa">►</span>chart</span>
+                    <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
+			<div id="chart-container" style="width: 640px; height: 400px"></div>
+                    </div>
+                </div>
+
 
             <br />
             <div id="disqus_thread"></div>

@@ -1,4 +1,93 @@
-pieData = [50,30,20,10,5,34,74];
+var chart;
+var chart_options = {
+      chart: {
+         renderTo: 'chart-container',
+         plotBackgroundColor: null,
+         plotBorderWidth: null,
+         plotShadow: false
+      },
+      title: {
+         text: 'Browser market shares at a specific website, 2010'
+      },
+      tooltip: {
+         formatter: function() {
+            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+         }
+      },
+      plotOptions: {
+         pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+               enabled: false
+            },
+            showInLegend: true
+         }
+      },
+       series: [{
+         type: 'pie',
+         name: 'Browser share',
+         data: [
+            ['Firefox',   45.0],
+            ['IE',       26.8],
+            {
+               name: 'Chrome',    
+               y: 322.8,
+               sliced: true,
+               selected: true
+            },
+            ['Safari',    8.5],
+            ['Opera',     6.2],
+            ['Others',   0.7]
+         ]
+      }]
+   };
+
+$(document).ready(function() {
+   chart = new Highcharts.Chart(chart_options);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*pieData = [50,30,20,10,5,34,74];
 pieLegend = ["%% - text1","%% - text2","%% - text3","%% - text4","%% - text5", "%% - text6", "%% - text7"];	
 
 var r = Raphael("chart");
@@ -33,4 +122,4 @@ function pieChart(){
                         this.label[1].attr({"font-weight": 400});
                     }
                 });
-}
+}*/
