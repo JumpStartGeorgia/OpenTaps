@@ -17,7 +17,14 @@
          <select name="pl_region" id="plregion">
             <option></option>
          <?php foreach ($regions as $region): ?>
-         <option value="<?php echo $region['unique']; ?>"><?php echo $region['name']; ?></option>
+			<option value="<?php echo $region['unique']; ?>"><?php echo $region['name']; ?></option>
+         <?php endforeach; ?>
+         </select>
+         <br /><br />
+         <select name="pl_district" id="pldistrict">
+            <option></option>
+         <?php foreach ($districts as $district): ?>
+			<option value="<?php echo $district['id']; ?>"><?php echo $district['name']; ?></option>
          <?php endforeach; ?>
          </select>
         <br /><br />
