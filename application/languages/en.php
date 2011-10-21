@@ -84,7 +84,78 @@ return array(
     
     'tags_news' => 'tags news',
     
-    'ws_hiy' => 'How Interest You'
-
+    'ws_hiy' => 'How Interest You',
+    
+    'ws_region' => 'region',
+    
+    'ws_last_updated' => 'Last Updated',
+    
+    'ws_region_projects' => 'REGION PROJECTS',
+    
+    'pl_add_place' => 'add place',
+    
+    'pl_places' => 'places',
+    
+    'projects_sort_by' => 'sort by',
+    
+    'projects_filter_by' => 'filter by',
+    
+    'mt_under_construction' => 'Under construction',
+    
+    'mt_edit' => 'Edit',
+    
+    'tags_tags' => 'tags',
+    
+    'admin_menu_management' => 'Menu Management',
+    
+    'admin_add_menu' => 'Add Menu',
+    
+    'admin_list_menu' => 'List Menu',
+    
+    'admin_news_management' => 'News Management',
+    
+    'admin_add_news' => 'Add News',
+    
+    'admin_list_news' => 'List News',
+    
+    'admin_tags_management' => 'Tags Management',
+    
+    'admin_add_tag' => 'Add Tag',
+    
+    'admin_list_tags' => 'Tags Listing',
+    
+    'admin_user_management' => 'User Management',
+    
+    'admin_add_user' => 'Add User',
+    
+    'admin_list_users' => 'Users Listing',
+    
+    'admin_places_management' => 'Places Management',
+    
+    'admin_add_place' => 'Add place',
+    
+    'admin_list_places' => 'Places Listing',
+    
+    'admin_projects_management' => 'Projects Management',
+    
+    'admin_add_project' => 'Add Project',
+    
+    'admin_list_projects' => 'Projects Listing',
+    
+    'admin_organizations_management' => 'Organisations Management',
+    
+    'admin_add_organization' => 'Add Organization',
+    
+    'admin_list_organizations' => 'Organizations Listing',
+    
+    'admin_regions_management' => 'Regions Management',
+    
+    'admin_add_region' => 'Add Region',
+    
+    'admin_list_regions' => 'Regions Listing',
+    
+    'admin_georgia_profile' => 'Georgia Profile',
+    
+    'admin_manage_georgia_profile' => 'Manage Georgia Profile'
 );
 

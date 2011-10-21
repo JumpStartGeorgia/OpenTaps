@@ -88,7 +88,78 @@ return array(
 
     'ends' => 'დასასრული',
 
-    'organizations' => 'ორგანიზაციები'
-
-);
+    'organizations' => 'ორგანიზაციები',
+    
+    'ws_region' => 'რეგიონ',
+    
+    'ws_last_updated' => 'ბოლოს განახლებული',
+    
+    'ws_region_projects' => 'რეგიონის პროექტები',
+    
+    'pl_add_place' => 'ადგილის დამატება',
+    
+    'pl_places' => 'ადგილები',
+    
+    'projects_sort_by' => 'სორტირება',
+    
+    'projects_filter_by' => 'გაფილტრე',
+    
+    'mt_under_construction' => 'კოსტრუქციის ქვეშაა',
+    
+    'mt_edit' => 'შეცვლა',
+    
+    'tags_tags' => 'ტეგები',
+    
+    'admin_menu_management' => 'მენიუს მართვა',
+    
+    'admin_add_menu' => 'მენიუს დამატება',
+    
+    'admin_list_menu' => 'მენიუს სია',
+    
+    'admin_news_management' => 'ახალი ამბების მართვა',
+    
+    'admin_add_news' => 'ახალი ამბის დამატებას',
+    
+    'admin_list_news' => 'ახალი ამბების სია',
+    
+    'admin_tags_management' => 'ტეგების მართვა',
+    
+    'admin_add_tag' => 'ტეგის დამატება',
+    
+    'admin_list_tags' => 'ტეგების სია',
+    
+    'admin_user_management' => 'მომხმარებლების მართვა',
+    
+    'admin_add_user' => 'მომხმარებლის დამატება',
+    
+    'admin_list_users' => 'მომხმარებლების სია',
+    
+    'admin_places_management' => 'ადგილების მრთვა',
+    
+    'admin_add_place' => 'ადგილის დამატება',
+    
+    'admin_list_places' => 'ადგილების სია',
+    
+    'admin_projects_management' => 'პროექტების მართვა',
+    
+    'admin_add_project' => 'პროექტის დამატება',
+    
+    'admin_list_projects' => 'პროექტების სია',
+    
+    'admin_organizations_management' => 'ორგანბიზაციების მართვა',
+    
+    'admin_add_organization' => 'ორგანიზაციის დამატება',
+    
+    'admin_list_organizations' => 'ორგანიოზაციების სია',
+    
+    'admin_regions_management' => 'რეგიონების მართვა',
+    
+    'admin_add_region' => 'რეგიონის დამატება',
+    
+    'admin_list_regions' => 'რეგიონების სია',
+    
+    'admin_georgia_profile' => 'საქართველოს პროფილი',
+	
+    'admin_manage_georgia_profile' => 'საქართველოს პროფილის მრთვა'
+ );
 

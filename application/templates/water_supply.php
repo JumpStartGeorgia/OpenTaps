@@ -2,7 +2,7 @@
     <div style='float:left;width:673px;'>
         <div class='group'>
             <br /><br />
-     <p><font style="font-size:10pt;"><?php echo l('ws_hiy') ?>:</font>&nbsp;<font style="color:#000;font-size:10pt;">REGION</font>
+     <p><font style="font-size:10pt;"><?php echo l('ws_hiy') ?>:</font>&nbsp;<font style="color:#000;font-size:10pt;"><?php echo strtoupper(l('ws_region')) ?></font>
         <select onchange="$(this).children('option').each(function(){
                            if( $(this).is(':selected') ){
                                  window.location = '<?php echo href('water_supply'); ?>'+$(this).attr('value');
@@ -29,7 +29,7 @@
                          <br />
                     <p style="padding-left:10px;margin-top:-7px;">
                          <font style="color:#A6A6A6;">
-                         Last Updated: <?php echo $ws['last_updated']; ?>
+                         <?php echo l('ws_last_updated') ?>: <?php echo $ws['last_updated']; ?>
                          </font>
                     </p>
             <?php
@@ -46,7 +46,7 @@
 
 		<div class='data_block group' style="border-bottom: 0px;">
 			<div class='key'>
-				REGION PROJECTS
+				<?php echo strtoupper(l('ws_region_projects')) ?>
 			</div>
 			<div class='value' style='padding: 0px;'>
 			<?php foreach ($projects AS $project):

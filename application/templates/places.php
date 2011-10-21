@@ -1,8 +1,8 @@
 <center>
 <div>
 
- <a href="javascript:hideOthers(['place_list'],['add_places'])">add place</a>
- <a href="javascript:hideOthers(['add_places'],['place_list'])">places</a>
+ <a href="javascript:hideOthers(['place_list'],['add_places'])"><?php echo l('pl_add_place') ?></a>
+ <a href="javascript:hideOthers(['add_places'],['place_list'])"><?php echo l('pl_places') ?></a>
 </div>
 <div id="add_places" style="display:block;border:1px solid #000;width:500px;height:100px;"> 
 	<div style="background-color:#CCC;">Add Places</div>	

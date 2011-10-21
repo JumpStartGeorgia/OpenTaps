@@ -8,9 +8,9 @@
 <div id='tag_content'>
     <div id='left_list'>
     	<div class='group headers'>
-    	    <div class='headers_left'>PROJECTS</div>
+    	    <div class='headers_left'><?php echo strtoupper(l('tags_projects')) ?></div>
     	    <div class='headers_right' style="padding-top: 5px; padding-right: 5px;">
-    	        filter by
+    	        <?php echo l('projects_filter_by') ?>
 	        <?php $location = href('projects', TRUE, 'projects'); ?>
 		<select style="width: 170px;" onchange="window.location.href = '<?php echo $location; ?>';">
 <?php		foreach ($types AS $type)
@@ -25,7 +25,7 @@
 
     	<div class='group' id='newstype_filter' style='width: 100%; border-bottom: 1px solid #eee;'>
     	    <div class='titletype_left' style='font-size: 9px; padding-left: 11px;'>
-		    <span style="font-size: 11px; margin-right: 7px;">sort by</span>
+		    <span style="font-size: 11px; margin-right: 7px;"><?php echo l('projects_sort_by') ?></span>
 	    <?php
 		$orders = array('region', 'district', 'years', 'categories', 'a-z');
 		foreach ($orders as $order):
@@ -100,7 +100,7 @@
     <div id='right_list'>
         <div class='right_box'>
     	    <div class='headers'>
-    		<div class='right_box_title'>TAG CLOUD</div>
+    		<div class='right_box_title'><?php echo strtoupper(l('tag_cloud')) ?></div>
     	    </div>
 
 	    <div class='right_box_content' id='right_box_tags'>

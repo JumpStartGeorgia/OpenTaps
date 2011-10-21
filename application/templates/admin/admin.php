@@ -2,69 +2,69 @@
     <table>
 	<tr>
 		<td>
-			<h3>Menu Management</h3>
+			<h3><?php echo l('admin_menu_management') ?></h3>
 			<ul>
-				<li><a href="<?php echo href("admin/menu/new", TRUE) ?>">Add Menu</a></li>
-				<li><a href="<?php echo href("admin/menu", TRUE) ?>">List Menu</a></li>
+				<li><a href="<?php echo href("admin/menu/new", TRUE) ?>"><?php echo l('admin_add_menu') ?></a></li>
+				<li><a href="<?php echo href("admin/menu", TRUE) ?>"><?php echo l('admin_list_menu') ?></a></li>
 			</ul>
 		</td>
 		<td>
-			<h3>News Management</h3>
+			<h3><?php echo l('admin_news_management') ?></h3>
 			<ul>
-				<li><a href="<?php echo href("admin/news/new", TRUE) ?>">Add News</a></li>
-				<li><a href="<?php echo href("admin/news", TRUE) ?>">List News</a></li>
+				<li><a href="<?php echo href("admin/news/new", TRUE) ?>"><?php echo l('admin_add_news') ?></a></li>
+				<li><a href="<?php echo href("admin/news", TRUE) ?>"><?php echo l('admin_list_news') ?></a></li>
 			</ul>
 		</td>
 		<td>
-			<h3>Tags Management</h3>
+			<h3><?php echo l('admin_tags_management') ?></h3>
 			<ul>
-				<li><a href="<?php echo href("admin/tags/new", TRUE) ?>">Add Tag</a></li>
-				<li><a href="<?php echo href("admin/tags", TRUE) ?>">Tags Listing</a></li>
-			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<h3>User Management</h3>
-			<ul>
-				<li><a href="<?php echo href("admin/users/new", TRUE) ?>">Add User</a></li>
-				<li><a href="<?php echo href("admin/users", TRUE) ?>">Users listing</a></li>
-			</ul>
-		</td>
-		<td>
-			<h3>Places Management</h3>
-			<ul>
-				<li><a href="<?php echo href("admin/places/new", TRUE) ?>">Add place</a></li>
-				<li><a href="<?php echo href("admin/places", TRUE) ?>">Places</a></li>
-			</ul>
-		</td>
-		<td>
-			<h3>Projects Management</h3>
-			<ul>
-				<li><a href="<?php echo href("admin/projects/new", TRUE) ?>">Add Project</a></li>
-				<li><a href="<?php echo href("admin/projects", TRUE) ?>">Projects listing</a></li>
+				<li><a href="<?php echo href("admin/tags/new", TRUE) ?>"><?php echo l('admin_add_tag') ?></a></li>
+				<li><a href="<?php echo href("admin/tags", TRUE) ?>"><?php echo l('admin_list_tags') ?></a></li>
 			</ul>
 		</td>
 	</tr>
 	<tr>
 		<td>
-			<h3>Organisations Management</h3>
+			<h3><?php echo l('admin_user_management') ?></h3>
 			<ul>
-				<li><a href="<?php echo href("admin/organizations", TRUE) ?>">Organisations</a></li>
-				<li><a href="<?php echo href("admin/organizations/new", TRUE) ?>">Add organisation</a></li>
+				<li><a href="<?php echo href("admin/users/new", TRUE) ?>"><?php echo l('admin_add_user') ?></a></li>
+				<li><a href="<?php echo href("admin/users", TRUE) ?>"><?php echo l('admin_list_users') ?></a></li>
 			</ul>
 		</td>
 		<td>
-			<h3>Regions Management</h3>
+			<h3><?php echo l('admin_places_management')?></h3>
 			<ul>
-				<li><a href="<?php echo href("admin/regions", TRUE) ?>">Regions</a></li>
-				<li><a href="<?php echo href("admin/regions/new", TRUE) ?>">Add Region</a></li>
+				<li><a href="<?php echo href("admin/places/new", TRUE) ?>"><?php echo l('admin_add_place') ?></a></li>
+				<li><a href="<?php echo href("admin/places", TRUE) ?>"><?php echo l('admin_list_places') ?></a></li>
 			</ul>
 		</td>
 		<td>
-			<h3>Georgia Profile</h3>
+			<h3><?php echo l('admin_projects_management') ?></h3>
 			<ul>
-				<li><a href="<?php echo href("admin/georgia_profile", TRUE) ?>">Manage Georgia Profile</a></li>
+				<li><a href="<?php echo href("admin/projects/new", TRUE) ?>"><?php echo l('admin_add_project') ?></a></li>
+				<li><a href="<?php echo href("admin/projects", TRUE) ?>"><?php echo l('admin_list_projects') ?></a></li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<h3><?php echo l('admin_organizations_management') ?></h3>
+			<ul>
+				<li><a href="<?php echo href("admin/organizations/new", TRUE) ?>"><?php echo l('admin_add_organization') ?></a></li>
+				<li><a href="<?php echo href("admin/organizations", TRUE) ?>"><?php  echo l('admin_list_organizations') ?></a></li>
+			</ul>
+		</td>
+		<td>
+			<h3><?php  echo l('admin_regions_management') ?></h3>
+			<ul>				
+				<li><a href="<?php echo href("admin/regions/new", TRUE) ?>"><?php echo l('admin_add_region') ?></a></li>
+				<li><a href="<?php echo href("admin/regions", TRUE) ?>"><?php echo l('admin_list_regions') ?></a></li>
+			</ul>
+		</td>
+		<td>
+			<h3><?php echo l('admin_georgia_profile') ?></h3>
+			<ul>
+				<li><a href="<?php echo href("admin/georgia_profile", TRUE) ?>"><?php echo l('admin_manage_georgia_profile') ?></a></li>
 			</ul>
 		</td>
 	</tr>

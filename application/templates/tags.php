@@ -3,7 +3,7 @@
 <div id='tag_content'>
     <div id='left_list' style="width: 100%;">
     	<div class='group headers'>
-    	    <div class='headers_left'>TAGS</div>
+    	    <div class='headers_left'><?php echo strtoupper(l('tags_tags')) ?></div>
     	    <div class='headers_right'><!--SORT BY ▾--></div>
     	</div>
 
