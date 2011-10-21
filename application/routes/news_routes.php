@@ -270,7 +270,9 @@ Slim::post('/admin/news/create/', function(){
 	    "tmp_name" => $_FILES['n_file']['tmp_name']
 	);
 	empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
+	!empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
 	Storage::instance()->content = add_news(
+		$_POST['record_language'],
 		$_POST['n_title'],
 		(empty($_POST['n_show_in_slider']) ? 0 : 1),
 		$_POST['n_body'],

@@ -243,7 +243,7 @@ function read_news_one_page($from, $limit, $type = FALSE)
     return $statement->fetchAll();
 }
 
-function add_news($title, $show_in_slider, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
+function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $category, $place, $tags, $tag_names, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
     if (strlen($title) < 1)
         return "title can't be empty";
@@ -269,7 +269,7 @@ function add_news($title, $show_in_slider, $body, $filedata, $category, $place, 
 
     foreach (config('languages') as $lang)
     {
-	$data[':title'] = $title . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':title'] = $title . (($adding_lang == $lang) ? NULL : " ({$lang})");
 	$data[':lang'] = $lang;
         $exec = $statement->execute($data);
         $success = (bool) $exec;
@@ -668,22 +668,19 @@ function add_place($post)
 {
     $unique = generate_unique("places");
 
-    $sql = "INSERT INTO places (longitude,latitude,name,region_unique,raion_unique,project_unique,pollution_unique, lang, `unique`)
-	    VALUES(:lon,:lat,:name,:region,:raion,:project,:pollution, :lang, :unique)";
+    $sql = "INSERT INTO places (longitude,latitude,name,region_unique, lang, `unique`)
+	    VALUES(:lon, :lat, :name,:region, :lang, :unique)";
     $statement = db()->prepare($sql);
     $data = array(
 	':lon' => $post['pl_longitude'],
 	':lat' => $post['pl_latitude'],
 	':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
-	':raion' => 0,
-	':project' => 0,
-	':pollution' => 0,
 	':unique' => $unique
     );
 
     foreach (config('languages') as $lang)
     {
-	$data[':name'] = $post['pl_name'] . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':name'] = $post['pl_name'] . (($post['record_language'] == $lang) ? NULL : " ({$lang})");
 	$data[':lang'] = $lang;
         $statement->execute($data);
     }
