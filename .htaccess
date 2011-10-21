@@ -1,6 +1,28 @@
+# Rewrite URLs
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule ^(.*)$ index.php [QSA]
+
+# Non-WWW to WWW
+#RewriteEngine On
+#RewriteCond %{HTTP_HOST} ^opentaps.ge
+#RewriteRule (.*) http://www.opentaps.ge/$1 [R=301,L]
+
+# Run PHP parser on CSS files
 <IfModule mod_mime.c>
-AddType application/x-httpd-php .css
+    AddType application/x-httpd-php .css
 </IfModule>
+
+# Expire headers
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+    Header set Expires "Thu, 15 Jun 2012 20:00:00 GMT"
+</FilesMatch>
+
+# Turn Off eTags
+Header unset ETag
+FileETag None
+
+# Compress files
+<FilesMatch ".(js|css|html|htm|php|xml)$">
+    SetOutputFilter DEFLATE
+</FilesMatch>
