@@ -399,6 +399,7 @@ Slim::get('/admin/projects/:unique/delete/', function($unique){
 Slim::post('/admin/projects/create/', function(){
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array();
+
     if (empty($_POST['p_budget']) OR empty($_POST['p_budget_org']) OR empty($_POST['p_budget_currency']))
     {
 	$budgets = NULL;
@@ -407,20 +408,21 @@ Slim::post('/admin/projects/create/', function(){
     {
 	$budgets = array($_POST['p_budget'], $_POST['p_budget_org'], $_POST['p_budget_currency']);
     }
+
     if (userloggedin())
     {
         add_project(
         	$_POST['p_title'],
-        	NULL, //$_POST['p_desc'],
+        	'', //$_POST['p_desc'],
         	$budgets,
-		/*$_POST['p_region'],*/
+		$_POST['p_beneficiary_people'],
 		$_POST['p_place'],
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
-        	NULL, //$_POST['p_info'],
+        	'', //$_POST['p_info'],
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],
@@ -438,6 +440,7 @@ Slim::post('/admin/projects/create/', function(){
 Slim::post('/admin/projects/:unique/update/', function($unique){
     empty($_POST['p_tag_uniques']) AND $_POST['p_tag_uniques'] = array();
     empty($_POST['p_orgs']) AND $_POST['p_orgs'] = array(NULL);
+
     if (empty($_POST['p_budget']) OR empty($_POST['p_budget_org']) OR empty($_POST['p_budget_currency']))
     {
 	$budgets = NULL;
@@ -446,25 +449,29 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
     {
 	$budgets = array($_POST['p_budget'], $_POST['p_budget_org'], $_POST['p_budget_currency']);
     }
+
     if (userloggedin())
     {
 	delete_page_data('project', $unique);
+
 	if (!empty($_POST['data_key']))
-		add_page_data('project',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	{
+		add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	}
 
 	update_project(
 	    	$unique,
         	$_POST['p_title'],
-        	NULL, //$_POST['p_desc'],
+        	'', //$_POST['p_desc'],
         	$budgets,
-/*        	$_POST['p_region'],*/
+		$_POST['p_beneficiary_people'],
 		$_POST['p_place'],
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],
         	$_POST['p_start_at'],
         	$_POST['p_end_at'],
-        	NULL, //$_POST['p_info'],
+        	'', //$_POST['p_info'],
         	$_POST['p_tag_uniques'],
         	$_POST['p_tag_names'],
         	$_POST['p_orgs'],

@@ -1,8 +1,8 @@
 <?php
 
-  $action = href("admin/projects/" . $project['unique'] . "/update", TRUE);
+  $action = href('admin/projects/' . $project['unique'] . '/update', TRUE);
 ?>
-    	<form action='<? echo $action; ?>' method='post'>
+    	<form action="<? echo $action; ?>" method='post'>
   	    <label for='ptitle'>Title<span style="color: red">*</span>: </label>
   	    <br />
   	    <input name='p_title' id='ptitle' type='text' value="<?php echo $project['title'] ?>" />
@@ -17,6 +17,12 @@
   	    <br />
   	    <textarea name='p_info' id='pinfo' cols='30' rows='3'><?php echo $project['info'] ?></textarea>
   	    <br />*/ ?>
+
+	    <label>
+		Beneficiary People: <br />
+		<input name="p_beneficiary_people" type="text" value="<?php echo $project['beneficiary_people'] ?>" />
+	    </label>
+  	    <br /><br />
 
   	    Budgets: <br /><?php $s = 'selected="selected"'; ?>
 	    <div style="margin: 0px; width: 300px;" class="group" id="budget_fields_container">

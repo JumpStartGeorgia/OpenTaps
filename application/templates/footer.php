@@ -56,7 +56,13 @@
 </div>
 
 <div class='bottom group'>
-    <div class='bottom1'>&copy; <?php echo date('Y') > 2011 ? '2011-' . date('Y') : 2011 ?> OPEN TAPS. &nbsp; <?php echo l('designe_and_develop') ?> <a href="http://www.jumpstart.ge/" title="JumpStart Georgia" style="text-decoration: underline"><?php echo l('by') ?></a></div>
+    <div class='bottom1'>
+	&copy; <?php echo date('Y') > 2011 ? '2011-' . date('Y') : 2011 ?> OPEN TAPS. &nbsp;
+	<?php echo l('copyright_jumpstart', array(
+		    ':link' => '<a href="http://www.jumpstart.ge/" title="JumpStart Georgia" style="text-decoration: underline">',
+		    ':endlink' => '</a>'
+		)) ?>
+    </div>
     <div class="bottom2">
         <?php if (userloggedin()): ?><span id="admin_button" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>admin';">ADMINISTRATION</span>&nbsp;&nbsp;|&nbsp;&nbsp;<?php endif; ?>
         <span id="about_us_button"><?php echo strtoupper(l('about_us')) ?></span> &nbsp;&nbsp;|&nbsp;&nbsp;

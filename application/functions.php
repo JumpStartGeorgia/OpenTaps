@@ -151,14 +151,14 @@ function add_menu($name, $short_name, $parent_unique, $title, $text, $hide, $foo
     if (strlen($name) < 2)
         return false;
 
-    $languages = config('languages');
     $unique = generate_unique("menu");
-    foreach ($languages as $lang)
-    {
-        $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hide, footer, lang, `unique`)
-	    	    VALUES(:parent_unique, :name, :short_name, :title, :text, :hide, :footer, :lang, :unique)";
-        $statement = db()->prepare($sql);
 
+    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hide, footer, lang, `unique`)
+    	    VALUES(:parent_unique, :name, :short_name, :title, :text, :hide, :footer, :lang, :unique)";
+    $statement = db()->prepare($sql);
+
+    foreach (config('languages') as $lang)
+    {
         $exec = $statement->execute(array(
                     ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
                     ':short_name' => $short_name,
@@ -252,32 +252,33 @@ function add_news($title, $show_in_slider, $body, $filedata, $category, $place, 
     if (substr($up, 0, 8) != "uploads/" && $up != "")  //return if any errors
         return $up;
 
-    $languages = config('languages');
     $unique = generate_unique("news");
-    foreach ($languages as $lang)
-    {
-        $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`)
-		VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique)";
-        $statement = db()->prepare($sql);
 
-        $exec = $statement->execute(array(
-                    ':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
-                    ':show_in_slider' => $show_in_slider,
-                    ':body' => $body,
-                    ':published_at' => date("Y-m-d H:i"),
-                    ':image' => $up,
-                    ':category' => $category,
-                    ':place' => $place,
-                    ':lang' => $lang,
-                    ':unique' => $unique
-                ));
+    $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`)
+	    VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique)";
+    $statement = db()->prepare($sql);
+    $data = array(
+            ':show_in_slider' => $show_in_slider,
+            ':body' => $body,
+            ':published_at' => date("Y-m-d H:i"),
+            ':image' => $up,
+            ':category' => $category,
+            ':place' => $place,
+            ':lang' => $lang,
+            ':unique' => $unique
+	);
+
+    foreach (config('languages') as $lang)
+    {
+	$data[':title'] = $title . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':lang'] = $lang;
+        $exec = $statement->execute($data);
         $success = (bool) $exec;
     }
 
-    (empty($tags) AND empty($tag_names)) OR add_tag_connector('news', $unique, $tags, $tag_names);
-
     if ($success)
     {
+        (empty($tags) AND empty($tag_names)) OR add_tag_connector('news', $unique, $tags, $tag_names);
         empty($data_key) OR add_page_data('news', $unique, $data_key, $data_sort, $sidebar, $data_value);
         Slim::redirect(href('admin/news', TRUE));
     }
@@ -327,9 +328,13 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     $statement = db()->prepare($sql);
     $exec = $statement->execute($data);
     //$unique = get_unique("news", $id);
-    fetch_db("DELETE FROM tag_connector WHERE news_unique = $unique");
+
+    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique", array(':unique' => $unique));
     if (!empty($tags) OR !empty($tag_names))
+    {
         add_tag_connector('news', $unique, $tags, $tag_names);
+    }
+
     Slim::redirect(href("admin/news", TRUE));
     return $exec;
 }
@@ -456,6 +461,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
             $query = db()->prepare("SELECT `unique`, id FROM tags WHERE name = :name LIMIT 1");
             $query->execute(array(':name' => $tag_name));
             $result = $query->fetch(PDO::FETCH_ASSOC);
+            $query->closeCursor();
             $success = TRUE;
             if (empty($result))
             {
@@ -463,6 +469,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
                 {
                     $stmt = db()->prepare("SELECT `unique` FROM tags WHERE name = :name LIMIT 1");
                     $stmt->execute(array(':name' => $tag_name));
+                    $stmt->closeCursor();
                     $inserted_unique = $stmt->fetch(PDO::FETCH_ASSOC);
                     $result['unique'] = $inserted_unique['unique'];
                     $success = TRUE;
@@ -474,17 +481,29 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
         }
     }
 
-    foreach ($tag_uniques as $tag_unique)
+    $check = TRUE;
+
+
+/*	$statement = db()->prepare("INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);");
+	$statement->closeCursor();
+        $statement->bindValue(':f_unique', $f_unique);
+	foreach ($tag_uniques AS $tag_unique)
+	{
+	    $statement->bindValue(':tag_unique', $tag_unique);
+	    if (FALSE === $statement->execute())
+	        $check = FALSE;
+	}
+*/
+    $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);";
+    $statement = db()->prepare($sql);
+    $statement->closeCursor();
+    foreach ($tag_uniques AS $tag_unique)
     {
-        $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES (:tag_unique, :f_unique);";
-        $data = array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique);
-        $statement = db()->prepare($sql);
-        $exec = $statement->execute($data);
-        if (!$exec)
-            return false;
+        $exec = $statement->execute(array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique));
+        $check AND $check = (bool) $exec;
     }
 
-    return true;
+    return $check;
 }
 
 function add_tag($name, $redirect = TRUE)
@@ -497,6 +516,7 @@ function add_tag($name, $redirect = TRUE)
     $unique = generate_unique("tags");
     $sql = "INSERT INTO  `opentaps`.`tags` (`name`, lang, `unique`) VALUES(:name, :lang, :unique)";
     $statement = db()->prepare($sql);
+
     foreach (config('languages') as $lang)
     {
         $exec = $statement->execute(array(
@@ -650,24 +670,26 @@ function upload_files($files_data, $file_destination, $files_names = NULL, $rest
 
 function add_place($post)
 {
-    $languages = config('languages');
     $unique = generate_unique("places");
-    foreach ($languages as $lang)
+
+    $sql = "INSERT INTO places (longitude,latitude,name,region_unique,raion_unique,project_unique,pollution_unique, lang, `unique`)
+	    VALUES(:lon,:lat,:name,:region,:raion,:project,:pollution, :lang, :unique)";
+    $statement = db()->prepare($sql);
+    $data = array(
+	':lon' => $post['pl_longitude'],
+	':lat' => $post['pl_latitude'],
+	':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
+	':raion' => 0,
+	':project' => 0,
+	':pollution' => 0,
+	':unique' => $unique
+    );
+
+    foreach (config('languages') as $lang)
     {
-        $sql = "INSERT INTO places (longitude,latitude,name,region_unique,raion_unique,project_unique,pollution_unique, lang, `unique`)
-		VALUES(:lon,:lat,:name,:region,:raion,:project,:pollution, :lang, :unique)";
-        $statement = db()->prepare($sql);
-        $statement->execute(array(
-            ':lon' => $post['pl_longitude'],
-            ':lat' => $post['pl_latitude'],
-            ':name' => $post['pl_name'] . ((LANG == $lang) ? NULL : " ({$lang})"),
-            ':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
-            ':raion' => 0,
-            ':project' => 0,
-            ':pollution' => 0,
-            ':lang' => $lang,
-            ':unique' => $unique
-        ));
+	$data[':name'] = $post['pl_name'] . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':lang'] = $lang;
+        $statement->execute($data);
     }
 }
 
@@ -710,39 +732,46 @@ function delete_place($unique)
 
 function add_region($name, $region_info, $region_projects_info, $city, $population, $squares, $settlement, $villages, $districts, $water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
-    $languages = config('languages');
     $unique = generate_unique("regions");
-    foreach ($languages as $lang)
+
+    $sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts,lang,`unique`)
+	    VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
+    $statement = db()->prepare($sql);
+    $data = array(
+		':region_info' => $region_info,
+		':region_projects' => $region_projects_info,
+		':city' => $city,
+		':population' => $population,
+		':squares' => $squares,
+		':settlement' => $settlement,
+		':villages' => $villages,
+		':districts' => $districts,
+		':unique' => $unique
+	    );
+
+    foreach (config('languages') as $lang)
     {
-        $sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts, lang, `unique`)
-		VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
-        $statement = db()->prepare($sql);
-        $exec = $statement->execute(array(
-                    ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
-                    ':region_info' => $region_info,
-                    ':region_projects' => $region_projects_info,
-                    ':city' => $city,
-                    ':population' => $population,
-                    ':squares' => $squares,
-                    ':settlement' => $settlement,
-                    ':villages' => $villages,
-                    ':districts' => $districts,
-                    ':lang' => $lang,
-                    ':unique' => $unique
-                ));
+	$data[':name'] = $name . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':lang'] = $lang;
+        $exec = $statement->execute($data);
     }
 
     //$lastid = Storage::instance()->db->lastInsertId();
-    $sql = "INSERT INTO water_supply (text, region_unique)
-                        VALUE(:text, :region_unique)";
-    $stmt = Storage::instance()->db->prepare($sql);
-    $stmt->execute(array(
-        ':text' => $water_supply,
-        ':region_unique' => $unique
-    ));
 
-    if ($exec AND !empty($data_key))
-        add_page_data('region', $unique, $data_key, $data_sort, $sidebar, $data_value);
+    if ($exec)
+    {
+	if(!empty($data_key))
+	{
+            add_page_data('region', $unique, $data_key, $data_sort, $sidebar, $data_value);
+        }
+
+	$sql = "INSERT INTO water_supply (text, region_unique) VALUE(:text, :region_unique)";
+	$stmt = db()->prepare($sql);
+	$stmt->execute(array(
+		':text' => $water_supply,
+		':region_unique' => $unique
+	));
+    }
 }
 
 function delete_region($unique)
@@ -932,95 +961,82 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
     return $statement->fetchAll();
 }
 
-function add_project($title, $desc, $budgets, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
+function add_project($title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
-    $back = "<br /><a href=\"" . href("admin/projects/new", TRUE) . "\">Back</a>";
-
-    $fields = array();
-    (strlen($title) < 4) AND $fields[] = 'title';
-
-    $f = implode(", ", $fields);
-
-    $fields_new = array();
-    foreach ($fields as $field)
-        if ($field != NULL)
-            $fields_new[] = $field;
-
-    $fields = $fields_new;
-
-    if (count($fields) > 0)
-        return $f . " too short" . $back;
-
-
-    $languages = config('languages');
     $unique = generate_unique("projects");
-    foreach ($languages as $lang)
+
+    $sql = "
+    	INSERT INTO `opentaps`.`projects`(
+    		`title`,
+    		"/*`description`,*/. "
+    		`beneficiary_people`,
+    		`city`,
+    		`grantee`,
+    		`sector`,
+    		`start_at`,
+    		`end_at`,
+    		"/*`info`,*/. "
+    		`type`,
+	        `place_unique`,
+	        `lang`,
+	        `unique`
+    	)
+    	VALUES(
+    		:title,
+    		"/*:description,*/. "
+    		:beneficiary_people,
+    		:city,
+    		:grantee,
+    		:sector,
+    		:start_at,
+    		:end_at,
+    		"/*:info,*/. "
+    		:type,
+	        :place_unique,
+	        :lang,
+	        :unique
+    	);
+    ";
+    $statement = db()->prepare($sql);
+
+    $data = array(
+                //':description' => $desc,
+                ':beneficiary_people' => $beneficiary_people,
+                ':city' => $city,
+                ':grantee' => $grantee,
+                ':sector' => $sector,
+                ':start_at' => $start_at,
+                ':end_at' => $end_at,
+                //':info' => $info,
+                ':type' => $type,
+                ':place_unique' => $place_unique,
+                ':unique' => $unique
+            );
+
+
+    foreach (config('languages') as $lang)
     {
-        $sql = "
-	    	INSERT INTO `opentaps`.`projects` (
-	    		title,
-	    		description,
-	    		city,
-	    		grantee,
-	    		sector,
-	    		start_at,
-	    		end_at,
-	    		info,
-	    		type,
-		        place_unique,
-		        lang,
-		        `unique`
-	    	)
-	    	VALUES(
-	    		:title,
-	    		:description,
-	    		:city,
-	    		:grantee,
-	    		:sector,
-	    		:start_at,
-	    		:end_at,
-	    		:info,
-	    		:type,
-		        :place_unique,
-		        :lang,
-		        :unique
-	    	);
-	    ";
-
-        $statement = db()->prepare($sql);
-
-        $exec = $statement->execute(array(
-                    ':title' => $title . ((LANG == $lang) ? NULL : " ({$lang})"),
-                    ':description' => $desc,
-                    ':city' => $city,
-                    ':grantee' => $grantee,
-                    ':sector' => $sector,
-                    ':start_at' => $start_at,
-                    ':end_at' => $end_at,
-                    ':info' => $info,
-                    ':type' => $type,
-                    ':place_unique' => $place_unique,
-                    ':lang' => $lang,
-                    ':unique' => $unique
-                ));
-        $success = (bool) $exec;
-
-        //$last_insert_id = db()->lastInsertId();
-
-        foreach ($org_uniques as $org_unique)
-        {
-            $query = "INSERT INTO `project_organizations` ( project_unique, organization_unique ) VALUES( :project_unique, :organization_unique );";
-            $query = db()->prepare($query);
-            $query = $query->execute(array(':project_unique' => $unique, ':organization_unique' => $org_unique));
-        }
-
-
-        if (!empty($tag_uniques) OR !empty($tag_names))
-            add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
+	$data[':title'] = $title . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':lang'] = $lang;
+	//foreach ($data as &$d){ $d = "'{$d}'"; } print_r(strtr($sql, $data));// die;
+        $success = (bool) $statement->execute($data);
     }
 
     if ($success)
     {
+        foreach ($org_uniques as $org_unique)
+        {
+            $query = "INSERT INTO `project_organizations`(project_unique, organization_unique)
+            	      VALUES(:project_unique, :organization_unique);";
+            $query = db()->prepare($query);
+            $query = $query->execute(array(':project_unique' => $unique, ':organization_unique' => $org_unique));
+        }
+
+        if (!empty($tag_uniques) OR !empty($tag_names))
+        {
+            add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
+        }
+
 	empty($project_key) OR add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
 	if (!empty($budgets))
 	{
@@ -1042,35 +1058,18 @@ function add_project($title, $desc, $budgets, $place_unique, $city, $grantee, $s
 	    }
 	}
     }
+
     Slim::redirect(href("admin/projects", TRUE));
 }
 
-function update_project($unique, $title, $desc, $budgets, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
+function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/" . $unique, TRUE) . "\">Back</a>";
 
-    $fields = array();
-    (strlen($title) < 4) AND $fields[] = 'title';
-    /* $fields[] = (strlen($desc) < 4) ? 'description' : NULL;
-      $fields[] = (strlen($budget) < 4) ? 'budget' : NULL;
-      $fields[] = (strlen($city) < 4) ? 'city' : NULL;
-      $fields[] = (strlen($grantee) < 4) ? 'grantee' : NULL;
-      $fields[] = (strlen($sector) < 4) ? 'sector' : NULL;
-      $fields[] = (strlen($start_at) < 4) ? 'start_at' : NULL;
-      $fields[] = (strlen($end_at) < 4) ? 'end_at' : NULL;
-      $fields[] = (strlen($info) < 4) ? 'info' : NULL; */
-
-    $fields_new = array();
-    foreach ($fields as $field)
-        if ($field != NULL)
-            $fields_new[] = $field;
-
-    $fields = $fields_new;
-
-    $f = implode(", ", array_values($fields));
-
-    if (count($fields) > 0)
-        return $f . " too short" . $back;
+    if (strlen($title) == 0)
+    {
+	return;
+    }
 
     $sql = "
     	UPDATE
@@ -1078,6 +1077,7 @@ function update_project($unique, $title, $desc, $budgets, $place_unique, $city, 
     	SET
     		title = :title,
     		description = :description,
+    		beneficiary_people = :beneficiary_people,
     		city = :city,
     		grantee = :grantee,
     		sector = :sector,
@@ -1110,6 +1110,7 @@ function update_project($unique, $title, $desc, $budgets, $place_unique, $city, 
                 ':unique' => $unique,
                 ':title' => $title,
                 ':description' => $desc,
+                ':beneficiary_people' => $beneficiary_people,
                 ':city' => $city,
                 ':grantee' => $grantee,
                 ':sector' => $sector,
@@ -1141,9 +1142,12 @@ function update_project($unique, $title, $desc, $budgets, $place_unique, $city, 
     }
 
 //    $unique = get_unique("projects", $id);
+
     fetch_db("DELETE FROM tag_connector WHERE proj_unique = $unique");
     if (!empty($tag_uniques) OR !empty($tag_names))
+    {
         add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
+    }
 
     if (!empty($budgets))
     {
@@ -1217,6 +1221,11 @@ function delete_page_data($owner, $unique)
 function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value)
 {
     $languages = config('languages');
+
+    $sql = "INSERT INTO `opentaps`.`pages_data` (`key`, `value`, `owner`, owner_unique, `sort`, `sidebar`, lang, `unique`)
+	    VALUES (:key, :value, :owner, :owner_unique, :sort, :sidebar, :lang, :unique);";
+    $statement = db()->prepare($sql);
+
     for ($i = 0, $c = count($key); $i < $c; $i++)
     {
         if (!empty($key[$i]) AND !empty($value[$i]))
@@ -1224,11 +1233,6 @@ function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value)
             $unique = generate_unique("pages_data");
             foreach ($languages as $lang)
             {
-                $sql = "
-			 INSERT INTO `opentaps`.`pages_data` (`key`, `value`, `owner`, owner_unique, `sort`, `sidebar`, lang, `unique`)
-			 VALUES (:key, :value, :owner, :owner_unique, :sort, :sidebar, :lang, :unique);
-			";
-                $statement = db()->prepare($sql);
                 $data = array(
                     ':owner' => $owner,
                     ':owner_unique' => $owner_unique,
@@ -1374,62 +1378,70 @@ function add_organization($name, $type, $description, $projects_info, $city_town
     $up = image_upload($filedata);
     in_array($type, array('donor', 'organization')) OR $type = "organization";
 
-    $languages = config('languages');
     $unique = generate_unique("organizations");
-    foreach ($languages as $lang)
+
+    $sql = "
+	INSERT INTO organizations
+	(
+	    name,
+	    type,
+	    description,
+	    district,
+	    city_town,
+	    grante,
+	    sector,
+	    projects_info,
+	    logo,
+	    lang,
+	    `unique`
+	)
+	VALUES
+	(
+	    :name,
+	    :type,
+	    :description,
+	    :district,
+	    :city_town,
+	    :grante,
+	    :sector,
+	    :projects_info,
+	    :logo,
+	    :lang,
+	    :unique
+	);
+    ";
+    $data = array(
+	':type' => $type,
+	':description' => $description,
+	':projects_info' => $projects_info,
+	':city_town' => $city_town,
+	':district' => $district,
+	':grante' => $grante,
+	':sector' => $sector,
+	':logo' => $up,
+	':unique' => $unique
+    );
+    $statement = db()->prepare($sql);
+
+    foreach (config('languages') as $lang)
     {
-        $sql = "
-            INSERT INTO organizations
-            (
-		name,
-		type,
-		description,
-		district,
-		city_town,
-		grante,
-		sector,
-		projects_info,
-		logo,
-		lang,
-		`unique`
-            )
-            VALUES
-            (
-		:name,
-		:type,
-		:description,
-		:district,
-		:city_town,
-		:grante,
-		:sector,
-		:projects_info,
-		:logo,
-		:lang,
-		:unique
-            )
-            ;
-        ";
-        $data = array(
-            ':name' => $name . ((LANG == $lang) ? NULL : " ({$lang})"),
-            ':type' => $type,
-            ':description' => $description,
-            ':projects_info' => $projects_info,
-            ':city_town' => $city_town,
-            ':district' => $district,
-            ':grante' => $grante,
-            ':sector' => $sector,
-            ':logo' => $up,
-            ':lang' => $lang,
-            ':unique' => $unique
-        );
-        //foreach ($data as $key => $value)
-        //$sql = str_replace($key, "'{$value}'", $sql);
-        $statement = db()->prepare($sql);
+	$data[':name'] = $name . ((LANG == $lang) ? NULL : " ({$lang})");
+	$data[':lang'] = $lang;
         $exec = $statement->execute($data);
-        add_tag_connector('org', $unique, $tags, $tag_names);
     }
-    if ($exec AND !empty($org_key))
-        add_page_data('organization', $unique, $org_key, $org_sort, $sidebar, $org_value);
+
+    if ($exec)
+    {
+	if (!empty($org_key))
+	{
+	    add_page_data('organization', $unique, $org_key, $org_sort, $sidebar, $org_value);
+	}
+
+	if (!empty($tags) OR !empty($tag_names))
+	{
+	    add_tag_connector('org', $unique, $tags, $tag_names);
+	}
+    }
 }
 
 function edit_organization($unique, $name, $type, $info, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
@@ -1478,7 +1490,9 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
     //fetch_db("DELETE FROM tag_connector WHERE org_unique = :unique;", array(':unique' => $unique));
     
     if (!empty($tag_uniques) OR !empty($tag_names))
+    {
         add_tag_connector('org', $unique, $tag_uniques, $tag_names);
+    }
 }
 
 /* ===================================================	  Organizations Fontpage	=============================== */

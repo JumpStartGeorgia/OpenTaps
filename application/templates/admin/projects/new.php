@@ -1,4 +1,4 @@
-  	<form method='post' enctype="multipart/form-data" action='<?php echo href("admin/projects/create", TRUE); ?>'>
+  	<form method='post' enctype="multipart/form-data" action="<?php echo href('admin/projects/create', TRUE); ?>">
   	    <label for='ptitle'>Title<span style="color: red">*</span>: </label>
   	    <br />
   	    <input name='p_title' id='ptitle' type='text' />
@@ -13,6 +13,12 @@
   	    <br />
   	    <textarea name='p_info' id='pinfo' cols='30' rows='3'></textarea>
   	    <br />*/ ?>
+
+	    <label>
+		Beneficiary People: <br />
+		<input name="p_beneficiary_people" type="text" value="" />
+	    </label>
+  	    <br /><br />
 
   	    Budgets:
   	    <span style="font-size: 12px;">

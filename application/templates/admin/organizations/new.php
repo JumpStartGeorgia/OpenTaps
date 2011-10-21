@@ -1,10 +1,10 @@
   	<form method='post' enctype="multipart/form-data" action="<?php echo href('admin/organizations/create', TRUE); ?>">
-    	   Language: &nbsp;
+    	   <?php /*Language: &nbsp;
 	   <select style="width: 70px;" name="record_language">
 	   <?php foreach (Storage::instance()->config['languages'] AS $lang): $s = 'selected="selected"';?>
 	   	<option <?php LANG == $lang AND print $s; ?> value=""><?php echo $lang; ?></option>
 	   <?php endforeach; ?>
-	   </select><br /><br />
+	   </select><br /><br />*/ ?>
 
   	    <label for='pname'>Name: </label>
   	    <br />

@@ -12,9 +12,7 @@ return array(
     
     'map_active' => 'click to activeate map',
     
-    'designe_and_develop' => 'Designed and developed by',
-    
-    'by' => 'Jumpstart Georgia',
+    'copyright_jumpstart' => 'Designed and developed by :link JumpStart Georgia :endlink',
     
     'about_us' => 'about us',
     
