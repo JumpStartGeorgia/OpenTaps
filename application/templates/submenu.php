@@ -1,69 +1,74 @@
 <div id="sub_projects_dropdown" class="submenu">
     <table>
         <tr>
-        <?php							//PROJECTS
+            <?php
+            //PROJECTS
             $idx = 0;
             $num = count($projects);
             foreach ($projects AS $item):
+
+                if ($idx == 14)
+                    break;
+
                 $breakable = ($idx % 5 == 4);
 
-		$rem = ($num % 5 == 0) ? 5 : 0;
- 	        $last_row = ($idx >= ($num - ($num % 5) - $rem ));
+                $rem = ($num % 5 == 0) ? 5 : 0;
+                $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
-	        echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
-	    		<a href="' . href('project/' . $item['unique'], TRUE) . '">' . $item['title'] . '</a>
-	    	      </td>';
-	        $breakable AND print '</tr><tr>';
-	        $idx++;
+                echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' ><a href="' . href('project/' . $item['unique'], TRUE) . '">' . $item['title'] . '</a></td>';
+                $breakable AND print '</tr><tr>';
+                $idx++;
             endforeach;
-        ?>
-	</tr>
+            echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . '><a href="' . href('projects') . '" style="font-weight: bold">' . l('all_projects') . '</a></td>';
+            ?>
+        </tr>
     </table>
 </div>
 
 <div id="sub_organizations_dropdown" class="submenu">
     <table>
         <tr>
-        <?php							//ORGANIZATIONS
+            <?php
+            //ORGANIZATIONS
             $idx = 0;
- 	    $num = count($organizations);
+            $num = count($organizations);
             foreach ($organizations AS $item):
                 $breakable = ($idx % 5 == 4);
 
-		$rem = ($num % 5 == 0) ? 5 : 0;
- 	        $last_row = ($idx >= ($num - ($num % 5) - $rem ));
+                $rem = ($num % 5 == 0) ? 5 : 0;
+                $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
-	        echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
+                echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
 	    		<a href="' . href('organization/' . $item['unique'], TRUE) . '">' . $item['name'] . '</a>
 	    	      </td>';
-	        $breakable AND print '</tr><tr>';
-	        $idx++;
+                $breakable AND print '</tr><tr>';
+                $idx++;
             endforeach;
-        ?>
-	</tr>
+            ?>
+        </tr>
     </table>
 </div>
 
 <?php foreach ($submenus AS $parent_unique => $items): ?>
 
-<div id="sub_<?php echo $parent_unique ?>" class="submenu">
-    <table><tr><?php
-        $idx = 0;
-        $num = count($items);
-        foreach ($items AS $item):
-            $breakable = ($idx % 5 == 4);
+    <div id="sub_<?php echo $parent_unique ?>" class="submenu">
+        <table><tr><?php
+            $idx = 0;
+            $num = count($items);
+            foreach ($items AS $item):
+                $breakable = ($idx % 5 == 4);
 
-	    $rem = ($num % 5 == 0) ? 5 : 0;
- 	    $last_row = ($idx >= ($num - ($num % 5) - $rem ));
+                $rem = ($num % 5 == 0) ? 5 : 0;
+                $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
-	    echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
+                echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
 	    		<a href="' . href('page/' . $item['unique'], TRUE) . '">' . $item['name'] . '</a>
 	    	  </td>';
-	    $breakable AND print '</tr><tr>';
-	    $idx++;
-        endforeach;
-    ?></tr></table>
-</div>
-<div id='override_border'></div>
+                $breakable AND print '</tr><tr>';
+                $idx++;
+            endforeach;
+            ?></tr></table>
+    </div>
+    <div id='override_border'></div>
 <?php endforeach; ?>
 

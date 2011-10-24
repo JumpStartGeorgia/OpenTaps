@@ -12,4 +12,3 @@ foreach (Storage::instance()->menu AS $menu):
         <a href="<?php echo href('page/' . $menu['short_name'], TRUE) ?>"><?php echo strtoupper($menu['name']) . ($has ? $span : NULL) ?></a>
     </li>
 <?php endforeach; ?>
-

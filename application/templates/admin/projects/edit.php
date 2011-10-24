@@ -47,12 +47,12 @@
 			    	<input name='p_budget[]' value="<?php echo $budget['budget']; ?>" type='text' />
 			    </div>
 		  	</div>
-		  	<div style="width: 100%; height: 25px;">
+		  	<div style="width: 100%; height: 25px; display: none;">
 		  	    <div style="margin-top: 1px; float:left;">Currency</div>
 			    <div style="float:right;">
 				<select class="chosen-select" name='p_budget_currency[]' style="width: 160px;">
 				<?php foreach($currency_list as $currency): ?>
-				    <option <?php $budget['currency'] == $currency AND print $s; ?> value="<?php echo $currency ?>">
+				    <option <?php /*$budget['currency']*/'gel' == $currency AND print $s; ?> value="<?php echo $currency ?>">
 				    	<?php echo $currency ?>
 				    </option>
 				<?php endforeach; ?>

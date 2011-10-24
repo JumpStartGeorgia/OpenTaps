@@ -12,8 +12,7 @@
   	    <input name='pl_name' id='plname' type='text' />
   	    <br /><br />
          
-         <label for='plregion'>Regions: </label>
-
+         <label for='plregion'>Region: </label><br />
          <select name="pl_region" id="plregion">
             <option></option>
          <?php foreach ($regions as $region): ?>
@@ -21,10 +20,12 @@
          <?php endforeach; ?>
          </select>
          <br /><br />
+
+	 District: <br />
          <select name="pl_district" id="pldistrict">
             <option></option>
          <?php foreach ($districts as $district): ?>
-			<option value="<?php echo $district['id']; ?>"><?php echo $district['name']; ?></option>
+			<option value="<?php echo $district['unique']; ?>"><?php echo $district['name']; ?></option>
          <?php endforeach; ?>
          </select>
         <br /><br />

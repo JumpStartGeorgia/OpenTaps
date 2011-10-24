@@ -34,7 +34,7 @@ return array(
     'beginning' => 'დასაწყისი',
     'ends' => 'დასასრული',
     'organizations' => 'ორგანიზაციები',
-    'overall_project_budget' => 'საშუალო პროექტების ბიუჯეტი',
+    'overall_project_budget' => 'ორგანიზაციის სრული ბიუჯეტი',
     'org_city' => 'ქალაქი',
     'org_desc' => 'ორგანიზაციის აღწერა',
     'org_projects' => 'ორგანიზაციის პროექტები',
@@ -67,7 +67,7 @@ return array(
     'admin_user_management' => 'მომხმარებლების მართვა',
     'admin_add_user' => 'მომხმარებლის დამატება',
     'admin_list_users' => 'მომხმარებლების სია',
-    'admin_places_management' => 'ადგილების მრთვა',
+    'admin_places_management' => 'ადგილების მართვა',
     'admin_add_place' => 'ადგილის დამატება',
     'admin_list_places' => 'ადგილების სია',
     'admin_projects_management' => 'პროექტების მართვა',
@@ -80,6 +80,7 @@ return array(
     'admin_add_region' => 'რეგიონის დამატება',
     'admin_list_regions' => 'რეგიონების სია',
     'admin_georgia_profile' => 'საქართველოს პროფილი',
-    'admin_manage_georgia_profile' => 'საქართველოს პროფილის მრთვა'
+    'admin_manage_georgia_profile' => 'საქართველოს პროფილის მართვა',
+    'all_projects' => 'ყველა პროექტი'
 );
 
