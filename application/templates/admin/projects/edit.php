@@ -71,10 +71,10 @@
 
 	    <label for='pplace'>Place: </label>
   	    <br />
-  	    <select name='p_place' class="chosen-select" id='pplace'>
+  	    <select name='p_place[]' multiple="multiple" class="chosen-select" id='pplace'>
   	      <?php
       foreach($places as $place):
-  	            $selected = ($place['unique'] == $project['place_unique']) ? "selected='selected'" : NULL;
+  	            $selected = (in_array($place['unique'],  unserialize($project['place_unique']))) ? "selected='selected'" : NULL;
   	            ?><option value="<?php echo $place['unique'] ?>" <?php echo $selected ?>><?php echo $place['name'] ?></option><?php
   	        endforeach;
   	      ?>
