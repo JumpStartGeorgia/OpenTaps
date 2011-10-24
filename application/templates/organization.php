@@ -61,11 +61,11 @@
                     </div>
                 <?php endif; ?>
                 <?php if (!empty($organization['sector']) AND strlen($organization['sector']) > 0): ?>
-                    <div class='project_details_line'>
+                    <div class='project_details_line clearfix'>
                         <div class='line_left'>
                             <?php echo l('sector') ?> :
                         </div>
-                        <div>
+                        <div style="word-break:break-word;width:235px;">
                             <?php echo $organization['sector']; ?>
                         </div>
                     </div>
