@@ -487,6 +487,12 @@ $(function(){
 });
 */
 
+// Focus on username field on login page
+$(function(){
+    var field = $('#login-username');
+    field.length && field.focus();
+});
+
 // Block Errors
 $(function(){
     $(window).error(function(event){
