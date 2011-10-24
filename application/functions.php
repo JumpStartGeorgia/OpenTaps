@@ -1606,13 +1606,14 @@ function get_organization_chart_data($unique)
     $results = array();
 
     $sql = "SELECT
-		projects.title,
+		DISTINCT(projects.`unique`), projects.title,
 		(SELECT SUM(budget) FROM project_budgets
 		 WHERE organization_unique = :unique AND project_unique = projects.`unique` AND currency = 'gel')
 		 AS budget
 	    FROM projects
-	    WHERE projects.lang = '" . LANG . "'
-	    ORDER BY budget;";
+	    INNER JOIN project_budgets AS pb ON pb.project_unique = projects.`unique`
+	    WHERE projects.lang = '" . LANG . "' AND pb.organization_unique = :unique
+	    ORDER BY budget";
 
     $query = db()->prepare($sql);
     $query->closeCursor();
@@ -1627,10 +1628,39 @@ function get_organization_chart_data($unique)
 		$newdata[] = array($d['title'], (integer) $d['budget']);
 	}
 	$data = json_encode($newdata);
+	//strlen($data) < 3 AND $data = NULL;
     }
     $results['organization_projects'] = array(
         'description' => 'Projects of this organization.',
         'title' => 'Organization Projects',
+        'data' => $data
+    );
+
+    $sql = "SELECT
+		org.name,
+		(SELECT SUM(budget) FROM project_budgets WHERE organization_unique = org.`unique` AND currency = 'gel') AS budget
+	    FROM organizations AS org
+	    WHERE org.lang = '" . LANG . "'
+	    ORDER BY budget;";
+
+    $query = db()->prepare($sql);
+    $query->closeCursor();
+    $query->execute(array(':unique' => $unique));
+    $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    if (!empty($data))
+    {
+	$newdata = array();
+	foreach ($data as $d)
+	{
+	    if (!empty($d['budget']))
+		$newdata[] = array($d['name'], (integer) $d['budget']);
+	}
+	$data = json_encode($newdata);
+	//strlen($data) < 3 AND $data = NULL;
+    }
+    $results['organizations_budgets'] = array(
+        'description' => 'All organizations with their total budget.',
+        'title' => 'Organizations Budgets',
         'data' => $data
     );
 
