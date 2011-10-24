@@ -31,7 +31,7 @@
                     <p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
                 </div>
                 <?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
-                    <div class='project_details_line'>
+                <div class='project_details_line clearfix' style=width:100%;">
                         <div class='line_left'>
                             <?php echo l('region_district') ?> :
                         </div>
@@ -41,21 +41,22 @@
                     </div>
                 <?php endif; ?>
                 <?php if (!empty($organization['city_town']) AND strlen($organization['city_town']) > 0): ?>
-                    <div class='project_details_line'>
-                        <div class='line_left'>
+					<br />
+                    <div class='project_details_line clearfix'>
+                        <div class='line_left' >
                             <?php echo l('org_city') ?> :
                         </div>
-                        <div>
+                        <div class="wordwrap">
                             <?php echo $organization['city_town']; ?>
                         </div>
                     </div>
                 <?php endif; ?>
                 <?php if (!empty($organization['grante']) AND strlen($organization['grante']) > 0): ?>
-                    <div class='project_details_line'>
+                    <div class='project_details_line clearfix'>
                         <div class='line_left'>
                             <?php echo l('grantee') ?> :
                         </div>
-                        <div>
+                        <div class="wordwrap">
                             <?php echo $organization['grante']; ?>
                         </div>
                     </div>
@@ -65,7 +66,7 @@
                         <div class='line_left'>
                             <?php echo l('sector') ?> :
                         </div>
-                        <div style="word-break:break-word;width:235px;">
+                        <div class="wordwrap">
                             <?php echo $organization['sector']; ?>
                         </div>
                     </div>
