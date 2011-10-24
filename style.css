@@ -102,14 +102,14 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 /* Projects */
 #project_content { font-size: 12px; font-family: arial }
 #project_details { float: left; width: 386px; min-height: 244px; border-right: 1px dotted @opentaps_default_bordercolor; border-bottom: 1px dotted @opentaps_default_bordercolor }
-#project_description { margin-top: 30px; text-align: justify }
+#project_description { margin-top: 30px; /*text-align: justify*/ }
 #project_description div { margin-bottom: 21px; margin-top: 6px }
 #project_description .desc { font-weight: bold; font-size: 19px }
 #project_budget { background: @opentaps_default_color; height: 55px; border-bottom : 1px dotted @opentaps_default_bordercolor; padding-left: 16px; padding-top: 10px; color: rgba(255,255,255, .9) }
 .project_details_line { min-height: 21px; border-bottom: 1px dotted @opentaps_default_bordercolor; padding-top: 4px }
 .project_details_line div { float: left }
 .line_left { width: 135px; padding-left: 16px }
-.data_block { width: 240px; min-height: 45px; border: 1px dotted @opentaps_default_bordercolor; margin-bottom: 10px; text-align: justify }
+.data_block { width: 240px; min-height: 45px; border: 1px dotted @opentaps_default_bordercolor; margin-bottom: 10px; /*text-align: justify*/ }
 .data_block .key { background: @opentaps_default_color; color: rgba(255, 255, 255, 1); padding: 10px 0px 10px 17px; font-size: 13px; border-bottom: 1px dotted @opentaps_default_bordercolor }
 .data_block .value { padding: 10px 17px 10px 17px; word-wrap: break-word }
 .data_block .value a, #right_box_tags a { color: #565656; text-decoration: none }
@@ -170,14 +170,14 @@ div.bottom1 { margin-left: 1px }
 #about-us, #contact-us { background: #fff; display: none; position: absolute; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
 #contact-us { height: 338px }
 #contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000 }
-#about-us { font-size: 12px; width: 930px; text-align: justify }
+#about-us { font-size: 12px; width: 930px; /*text-align: justify*/ }
 #about-us-main-title-container, .about-us-main-title-container { color: #fff; background: #0CB5F6; padding: 11px 16px 11px 16px; font-weight: bold }
 .about-us-main-title-container { border-bottom: 1px dotted @opentaps_default_bordercolor }
 .about-us-title { font-size: 13px }
 #about-us-main-title-container { width: 898px }
 #about-us-main-title { font-size: 16px; display: inline-block }
 .about-us-inner-box { margin-top: 40px; float: left; width: 262px; margin-left: 49px; border: 1px dotted @opentaps_default_bordercolor; margin-bottom: 25px }
-.inner-text-box { padding: 14px 16px 11px 15px; text-align: justify; display: none; position: relative; width: 231px }
+.inner-text-box { padding: 14px 16px 11px 15px; /*text-align: justify;*/ display: none; position: relative; width: 231px }
 .about-us-inner-button { cursor: pointer }
 .about-us-inner-button:active { background: #2f8aac }
 #map_image { width: 930px; height: 300px }

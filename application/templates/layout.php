@@ -61,7 +61,7 @@
 
                 <div class='search' style="display: none">
                     <form method='GET' action=''>
-                           <input class='search' type='text' value='Search...' onfocus='this.value=""' onblur='if(this.value=="")
+                        <input class='search' type='text' value='Search...' onfocus='this.value=""' onblur='if(this.value=="")
                                this.value="Search..."' name='' />
                         <input class='submit' type='submit' value='' />
                     </form>
@@ -87,13 +87,16 @@
 
         <?php
         $scripts = array(
-            'http://openlayers.org/api/OpenLayers.js',
             'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',
             'jquery.chosen.js',
             'jquery.slideQuery.js',
             'jquery.ui.effects.js'
         );
-        Storage::instance()->show_map AND $scripts[] = 'map.js';
+        if (Storage::instance()->show_map)
+        {
+            $scripts[] = 'http://openlayers.org/api/OpenLayers.js';
+            $scripts[] = 'map.js';
+        }
         $scripts[] = 'common.js';
         userloggedin() AND $scripts[] = 'tinymce/tiny_mce.js';
         foreach ($scripts AS $script)

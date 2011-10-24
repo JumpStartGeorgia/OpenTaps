@@ -38,7 +38,20 @@ define('URL', Storage::instance()->config_env['url']);
 Storage::instance()->config = require_once DIR . 'application/config.php';
 //require_once DIR . 'application/firephp/fb.php';
 
-define('LANG', (isset($_GET['lang']) AND in_array($_GET['lang'], array('en', 'ka'))) ? $_GET['lang'] : 'ka');
+define('LANG', (isset($_GET['lang']) AND in_array($_GET['lang'], array('en', 'ka'))) ? $_GET['lang'] : FALSE);
+if (FALSE === LANG)
+{
+    if (empty($_SERVER['QUERY_STRING']))
+        $url = '?lang=ka';
+    else
+    {
+        parse_str($_SERVER['QUERY_STRING'], $parts);
+        $url = '?' . http_build_query(array('lang' => 'ka') + $parts);
+    }
+    header('HTTP/1.1 301 Moved Permanently');
+    header('Location: ' . URL . $url);
+    exit;
+}
 
 Storage::instance()->language_items = require_once DIR . 'application/languages/' . LANG . '.php';
 
@@ -72,7 +85,7 @@ if (Slim::request()->isGet())
         'submenus' => read_submenu(),
         'projects' => read_projects(),
         'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
-    ));
+            ));
     Storage::instance()->content = template('home', array('chart_data' => home_chart_data()));
 }
 
