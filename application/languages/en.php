@@ -78,6 +78,6 @@ return array(
     'admin_add_region' => 'Add Region',
     'admin_list_regions' => 'Regions Listing',
     'admin_georgia_profile' => 'Georgia Profile',
-    'admin_manage_georgia_profile' => 'Manage Georgia Profile'
+    'admin_manage_georgia_profile' => 'Manage Georgia Profile',
+    'all_projects' => 'All Projects'
 );
-

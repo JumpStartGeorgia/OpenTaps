@@ -440,38 +440,35 @@ $(function(){
 });
 
 // Resize height for submenu items
-/*
-$(function(){
-    var projects = $('#sub_projects_dropdown td > a'),
-    tallest_project = 0,
-    organizations = $('#sub_organizations_dropdown td > a'),
-    tallest_organization = 0;
+$(function()
+{
 
-    projects.each(function(){
-        console.log($(this).height());
-        if ($(this).height() > tallest_project)
-            tallest_project = $(this).height();
+    /*
+    var group = $('#sub_organizations_dropdown table td'),
+    tallest = 0;
+    group.each(function()
+    {
+        var current_height = $(this).height();
+        if(current_height > tallest)
+            tallest = current_height;
     });
-    projects.height(tallest_project);
+    group.height(tallest);
+    */
 
-    organizations.each(function(){
-        console.log($(this).height());
-        if ($(this).height() > tallest_organization)
-            tallest_organization = $(this).height();
     });
-    organizations.height(tallest_organization);
-
-});
-*/
 
 // Focus on username field on login page
-$(function(){
+$(function()
+{
+
     var field = $('#login-username');
     field.length && field.focus();
+
 });
 
 /* Bottom Toggles */
-$(function(){
+$(function()
+{
 
     about_button = $('#about_us_button');
     contact_button = $('#contact_us_button');
@@ -567,7 +564,8 @@ function contact_us_input_blur(element, value)
 }
 
 /* Menus */
-$(function(){
+$(function()
+{
 
     var submenu = $('#submenu');
 
@@ -636,7 +634,7 @@ $(function()
 
     $(document).keypress(function(event)
     {
-        if (event.ctrlKey && event.shiftKey && event.which == 13)
+        if (event.ctrlKey && event.shiftKey && (event.keyCode ? event.keyCode : event.which) == 13)
             window.location = baseurl + 'admin/';
     });
 
