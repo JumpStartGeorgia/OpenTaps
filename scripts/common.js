@@ -630,6 +630,17 @@ $(function()
 
 });
 
+// Keyboard shortcut to admin panel
+$(function()
+{
+
+    $(document).keypress(function(event)
+    {
+        if (event.ctrlKey && event.shiftKey && event.which == 13)
+            window.location = baseurl + 'admin/';
+    });
+
+});
 
 // Block Errors
 $(function()

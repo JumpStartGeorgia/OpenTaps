@@ -201,11 +201,11 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 .page-container { padding: 1em; width: 550px; margin-left: 0px; float: left }
 #map-overlay { position: absolute; top: 0; left: 0; z-index: 9999; height: 362px; line-height: 362px; width: 100.3%; background-color: #0CB5F6; color: #FFF; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
 .highcharts-container svg > text { display: none !important }
-div#showtables { width: 750px; font-family: Arial }
+#showtables { /*width: 750px;*/ font-family: Arial }
 #showtables table { width: 100%; float: left }
-#showtables h3 { font-size: 14px; color: #565656 }
+#showtables h3 { font-size: 14px; color: #565656; margin-top: .75em }
 #showtables ul { list-style-type: none; margin: 0; padding: 0 }
-#showtables ul li { margin: 0; padding: 0; width: 155px }
+#showtables ul li { margin: 0; padding: 0; width: 60% }
 #showtables a { display: block; font-size: 12px; /*height: 18px;*/ color: #00AFF2; padding: 4px 4px 5px; padding-left: 10px; text-decoration: none; border-bottom: 1px dotted #DDD }
 #showtables a:hover { background-color: #00AFF2; color: white }
 div.panel { width: 100%; float: left; border-top: 1px solid grey; padding: 0; color: white; font-size: 15px }

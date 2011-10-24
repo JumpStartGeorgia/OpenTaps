@@ -38,6 +38,9 @@ define('URL', Storage::instance()->config_env['url']);
 Storage::instance()->config = require_once DIR . 'application/config.php';
 //require_once DIR . 'application/firephp/fb.php';
 
+require_once DIR . 'application/Slim/Slim.php';
+Slim::init();
+
 define('LANG', (isset($_GET['lang']) AND in_array($_GET['lang'], array('en', 'ka'))) ? $_GET['lang'] : FALSE);
 if (FALSE === LANG)
 {
@@ -49,7 +52,7 @@ if (FALSE === LANG)
         $url = '?' . http_build_query(array('lang' => 'ka') + $parts);
     }
     header('HTTP/1.1 301 Moved Permanently');
-    header('Location: ' . URL . $url);
+    header('Location: ' . URL . ltrim(Slim_Http_Uri::getUri(TRUE), '/') . $url);
     exit;
 }
 
@@ -62,17 +65,12 @@ try
     $db_conf = Storage::instance()->config_env['db'];
     Storage::instance()->db = new PDO('mysql:dbname=' . $db_conf['name'] . ';host=' . $db_conf['host'], $db_conf['user'], $db_conf['pass']);
     Storage::instance()->db->prepare('SET NAMES utf8;')->execute();
-
-    /* ENABLE EXITING WHENEVER THERE IS AN ERROR IN PDO */
     Storage::instance()->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
 catch (PDOException $exception)
 {
     exit($exception->getMessage());
 }
-
-require_once DIR . 'application/Slim/Slim.php';
-Slim::init();
 
 Storage::instance()->title = 'Home Page';
 Storage::instance()->show_map = (Slim_Http_Uri::getUri(TRUE) === '/');

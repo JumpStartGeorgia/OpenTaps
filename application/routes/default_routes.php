@@ -1,4 +1,5 @@
 <?php
+
 Slim::get('/', function()
         {
 
@@ -7,7 +8,7 @@ Slim::get('/', function()
 
 Slim::get('/page/:short_name/', function($short_name)
         {
-		Storage::instance()->content = template('menu_text', array('menu' => get_menu($short_name)));
+            Storage::instance()->content = template('menu_text', array('menu' => get_menu($short_name)));
         }
 )->name('static-page');
 
@@ -36,7 +37,7 @@ Slim::get('/logout/', function()
         {
             if (userloggedin())
                 unset($_SESSION['id'], $_SESSION['username']);
-            echo "<meta http-equiv='refresh' content='0; url=" . href(NULL, TRUE) . "' />";
+            exit("<meta http-equiv='refresh' content='0; url=" . href(NULL, TRUE) . "' />");
         }
 )->name('logout');
 

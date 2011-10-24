@@ -64,7 +64,10 @@
 		)) ?>
     </div>
     <div class="bottom2">
-        <?php if (userloggedin()): ?><span id="admin_button" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>admin';">ADMINISTRATION</span>&nbsp;&nbsp;|&nbsp;&nbsp;<?php endif; ?>
+        <?php if (userloggedin()): ?>
+            <span id="admin_button_logout" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>logout';">LOG OUT</span>&nbsp;&nbsp;|&nbsp;
+            <span id="admin_button" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>admin';">ADMINISTRATION</span>&nbsp;&nbsp;|&nbsp;
+        <?php endif; ?>
         <span id="about_us_button"><?php echo strtoupper(l('about_us')) ?></span> &nbsp;&nbsp;|&nbsp;&nbsp;
         <span id="contact_us_button"><?php echo strtoupper(l('contact_us')) ?><span style='cursor: pointer'></span><img width='10px' src='<?php echo href() ?>images/contact-line.gif' id='contact_us_toggle' /></span>
     </div>
