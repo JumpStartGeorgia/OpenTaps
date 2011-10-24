@@ -1029,6 +1029,7 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
+    
     $data = array(
                 //':description' => $desc,
                 ':beneficiary_people' => $beneficiary_people,
@@ -1039,7 +1040,7 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
                 ':end_at' => $end_at,
                 //':info' => $info,
                 ':type' => $type,
-                ':place_unique' => $place_unique,
+                ':place_unique' => serialize($place_unique),
                 ':unique' => $unique
             );
 
@@ -1150,7 +1151,7 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
                 ':end_at' => $end_at,
                 ':info' => $info,
                 ':type' => $type,
-                ':place_unique' => $place_unique
+                ':place_unique' => serialize($place_unique)
 	);
     $exec = $statement->execute($data);
 
@@ -1912,4 +1913,26 @@ function change_language($lang)
     $uri = $uri . "?" . $querystring;
 
     return 'http://' . $_SERVER['HTTP_HOST'] . $uri;
+}
+
+/*  Admin Water Supply  */
+function get_supply($id)
+{
+    $sql = "SELECT * FROM water_supply WHERE place_unique = :id LIMIT 1;";
+    $stmt = db()->prepare($sql);
+    $stmt->execute(array(
+        ':id' => $id
+    ));
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return (empty($result)) ? array() : $result;
+}
+
+function update_supply($text,$unique)
+{
+    $sql = "UPDATE water_supply SET text = :text WHERE place_unique = :unique LIMIT 1;";
+    $stmt = db()->prepare($sql);
+    $stmt->execute(array(
+        ':text' => $text,
+        ':unique' => $unique
+    ));
 }

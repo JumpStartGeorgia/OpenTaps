@@ -35,7 +35,7 @@
                         <div class='line_left'>
                             <?php echo l('region_district') ?> :
                         </div>
-                        <div>
+                        <div class="wordwrap">
                             <?php echo $organization['district']; ?>
                         </div>
                     </div>

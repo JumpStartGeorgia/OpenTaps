@@ -65,7 +65,7 @@
 
 	    <label for='pplace'>Place:</label>
   	    <br />
-  	    <select name='p_place' class="chosen-select" id='pplace'>
+  	    <select name='p_place[]' multiple="multiple" class="chosen-select" id='pplace'>
   	    <?php foreach($places as $place): ?>
   	    	<option value="<?php echo $place['unique'] ?>"><?php echo $place['name'] ?></option>
 	    <?php endforeach; ?>
