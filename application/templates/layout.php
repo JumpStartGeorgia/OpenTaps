@@ -4,8 +4,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
+	<link rel="icon" href="<?php echo URL ?>fff.ico">
         <script type="text/javascript">
-            var baseurl = '<?php echo href() ?>';
+        var baseurl = '<?php echo href() ?>';
 <?php if (Storage::instance()->show_map): ?>
         var region_map_boundsLeft = false,
         region_map_boundsRight = false,
@@ -72,10 +73,7 @@
 
             <div class='after_menu'></div>
 
-            <?php
-            if (Storage::instance()->show_map)
-                require_once 'map.php';
-            ?>
+            <?php if (Storage::instance()->show_map) require_once 'map.php'; ?>
 
             <div class='content group'>
                 <?php echo Storage::instance()->content ?>
@@ -90,7 +88,12 @@
             'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',
             'jquery.chosen.js',
             'jquery.slideQuery.js',
-            'jquery.ui.effects.js'
+            'jquery.ui.effects.js',
+            'charts/highcharts.js',
+            'charts/chart_config.js',
+            'charts/chart_home.js',
+            'charts/chart_project.js',
+            'charts/chart_org.js'
         );
         if (Storage::instance()->show_map)
         {

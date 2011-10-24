@@ -58,7 +58,7 @@ Slim::get('/project/:unique/', function($unique)
 		SELECT pb.*, o.name FROM project_budgets AS pb INNER JOIN organizations AS o ON o.`unique` = pb.organization_unique WHERE project_unique = :unique AND o.lang = '" . LANG . "' ORDER BY id;",
 		array(':unique' => $unique)
 	);
-
+///print_r(get_project_chart_data($unique));die;
     	Storage::instance()->content = template('project', array(
     		'project' => read_projects($unique),
     		'organizations' => get_project_organizations($unique),

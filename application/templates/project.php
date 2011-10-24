@@ -25,9 +25,8 @@ function edit_button($edit_id = NULL)
         <div id="map" style="width: 638px; height: 160px; border-top: 0;"></div>
         <div style="background:url(<?php echo URL . 'images/bg.jpg' ?>) repeat; width: 610px; height: 31px; padding: 8px 15px;">
             <span style="font-size: 16px;"><?php echo $project['title'] ?></span>
-<?php /*
-  <span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span>
- */ ?>
+<?php /* <span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span> */ ?>
+
         </div>
         <?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/projects/' . $project['unique'], TRUE) . "'>Edit</a>"); ?>
         <div class="group" style="width: 640px; padding: 8px 0px; margin-top: 30px; line-height: 18px;">
@@ -78,12 +77,25 @@ function edit_button($edit_id = NULL)
 		<?php endif; ?>
 
 
-                <div style="display: none;">
-                    <span class="expand_title"><span class="racxa">►</span>chart</span>
+		<?php if (!empty($chart_data['organization_projects']['data'])): ?>
+		<script> var project_page = true, data_1 = <?php echo $chart_data['organization_projects']['data'] ?>; </script>
+                <div>
+                    <span class="expand_title"><span class="racxa">►</span><?php echo $chart_data['organization_projects']['title'] ?></span>
                     <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
-			<div id="chart-container" style="padding: 0; margin: 0; width: 640px; height: 400px"></div>
+			<div id="project-chart-container-1" style="padding: 0; margin: 0; width: 640px; height: 400px"></div>
                     </div>
                 </div>
+                <?php endif; ?>
+
+		<?php if (!empty($chart_data['all_projects']['data'])): ?>
+		<script> var project_page = true, data_2 = <?php echo $chart_data['all_projects']['data'] ?>; </script>
+                <div>
+                    <span class="expand_title"><span class="racxa">►</span><?php echo $chart_data['all_projects']['title'] ?></span>
+                    <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
+			<div id="project-chart-container-2" style="padding: 0; margin: 0; width: 640px; height: 400px"></div>
+                    </div>
+                </div>
+                <?php endif; ?>
 
 
             <br />

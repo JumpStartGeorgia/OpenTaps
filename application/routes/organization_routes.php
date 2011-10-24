@@ -42,6 +42,7 @@ Slim::get('/organization/:unique/',function($unique){
     		'side_data' => $side_data,
     		'tags' => $tags,
 		'projects' => get_organization_projects($unique),
+		'chart_data' => get_organization_chart_data($unique),
 		'count' => count_organization_project_types($unique)
 	));
     	

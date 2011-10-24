@@ -1,6 +1,6 @@
 <script type="text/javascript">
     var home_page = true,
-    data = <?php echo $chart_data; ?>;
+    data = <?php echo $home_chart_data; ?>;
 </script>
 
 

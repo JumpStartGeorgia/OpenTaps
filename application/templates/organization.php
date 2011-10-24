@@ -104,6 +104,26 @@
                 </div>
             <?php endif; ?>
 
+		<?php if (!empty($chart_data['organization_projects']['data'])): ?>
+		<script> var org_page = true, data_1 = <?php echo $chart_data['organization_projects']['data'] ?>; </script>
+                <div style="width: 336px; text-align: center; display: inline-block; border-right: 1px dotted #a6a6a6;">
+                    <p class='desc'><?php echo $chart_data['organization_projects']['title'] ?></p>
+                    <div style="margin-left: 0px; padding-left: 0px; text-align: center; width: 100%;">
+			<div id="org-chart-container-1" style="padding: 0; margin: 0 auto; width: 273px; height: 300px"></div>
+                    </div>
+                </div>
+                <?php endif; ?>
+
+		<?php if (!empty($chart_data['organization_projects']['data'])): ?>
+		<script> var org_page = true, data_1 = <?php echo $chart_data['organization_projects']['data'] ?>; </script>
+                <div style="width: 336px; text-align: center; display: inline-block; border-right: 1px dotted #a6a6a6;">
+                    <p class='desc'><?php echo $chart_data['organization_projects']['title'] ?></p>
+                    <div style="margin-left: 0px; padding-left: 0px; text-align: center; width: 100%;">
+			<div id="org-chart-container-1" style="padding: 0; margin: 0 auto; width: 273px; height: 300px"></div>
+                    </div>
+                </div>
+                <?php endif; ?>
+
                 <br />
                 <div id="disqus_thread"></div>
                 <script type="text/javascript">

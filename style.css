@@ -172,7 +172,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .content_each:hover { text-shadow: 1px 1px 8px rgba(0, 0, 0, .2) }
 .with_bg { background: url('@baseurl/images/bg.jpg') }
 .content_each_left { float: left; width: 509px; padding: 17px 40px 22px 15px }
-.content_each_title { color: #01adef; font-size: 15px }
+.content_each_title { color: #01adef; font-size: 14px }
 .content_each_body { font-size: 12px; margin-top: 5px }
 .content_each_right { float: right; width: 69px; min-height: 91px; height: 100% }
 #pages { text-align: center; font-size: 12px; word-spacing: 2px }

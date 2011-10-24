@@ -83,8 +83,8 @@ if (Slim::request()->isGet())
         'submenus' => read_submenu(),
         'projects' => read_projects(),
         'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
-            ));
-    Storage::instance()->content = template('home', array('chart_data' => home_chart_data()));
+    ));
+    Storage::instance()->content = template('home', array('home_chart_data' => home_chart_data()));
 }
 
 foreach (glob(DIR . 'application/routes/*.php') AS $route)
