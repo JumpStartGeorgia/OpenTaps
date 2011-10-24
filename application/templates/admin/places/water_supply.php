@@ -3,7 +3,7 @@
     
 ?>
 
-<div>
+
     
     <form action="<?php echo href('admin/places/'.$unique.'/water_supply/update', TRUE) ?>" method="POST">
         <textarea name="pl_water_supply">
@@ -11,4 +11,5 @@
         </textarea><br />
         <input type="submit" value="Update" />
     </form>
-</div>
+<br />
+<a href="<?php echo href("admin/places", TRUE); ?>">Back</a>

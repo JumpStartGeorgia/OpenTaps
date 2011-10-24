@@ -418,7 +418,7 @@ Slim::post('/admin/projects/create/', function(){
         	'', //$_POST['p_desc'],
         	$budgets,
 		$_POST['p_beneficiary_people'],
-		$_POST['p_place'],
+		(empty($_POST['p_place']) ? array() : $_POST['p_place']),
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],
