@@ -1,8 +1,8 @@
 
 function init()
 {
-    //map_init();
-    //chart_init();
+//map_init();
+//chart_init();
 }
 
 String.prototype.reverse = function()
@@ -20,11 +20,11 @@ var click_done = false;
 function getArray(){
     for (var i = 1; i < projects.length; i ++)
     {
-	if( projects[i][0] == marker_id  )
-	{
-	    /*console.log(projects[i]);*/
-	}
-    }		
+        if( projects[i][0] == marker_id  )
+        {
+    /*console.log(projects[i]);*/
+    }
+    }
 }
 
 
@@ -462,9 +462,35 @@ $(function(){
     });
 });
 
+// Resize height for submenu items
+/*
+$(function(){
+    var projects = $('#sub_projects_dropdown td > a'),
+    tallest_project = 0,
+    organizations = $('#sub_organizations_dropdown td > a'),
+    tallest_organization = 0;
+
+    projects.each(function(){
+        console.log($(this).height());
+        if ($(this).height() > tallest_project)
+            tallest_project = $(this).height();
+    });
+    projects.height(tallest_project);
+
+    organizations.each(function(){
+        console.log($(this).height());
+        if ($(this).height() > tallest_organization)
+            tallest_organization = $(this).height();
+    });
+    organizations.height(tallest_organization);
+
+});
+*/
+
 // Block Errors
 $(function(){
-    $(window).error(function(){
+    $(window).error(function(event){
+        event.preventDefault();
         return true;
     });
 });

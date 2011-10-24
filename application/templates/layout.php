@@ -3,9 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
-        <link type="text/css" rel="stylesheet" href="<?php echo URL ?>main.css" media="all" />
-        <link type="text/css" rel="stylesheet" href="<?php echo URL ?>adm.css" media="all" />
-        <link type="text/css" rel="stylesheet" href="<?php echo URL ?>chosen.css" media="all" />
+        <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
         <script type="text/javascript">
             var baseurl = '<?php echo href() ?>';
 <?php if (Storage::instance()->show_map): ?>
@@ -92,7 +90,7 @@
             'jq.js',
             'chosen.jquery.min.js',
             'jquery.slideQuery.js',
-            'highcharts.js',
+            'highcharts/highcharts.js',
                 //'raphael.js',
                 //'graphael.js',
                 //'g.bar.js',
@@ -114,7 +112,6 @@
         {
             $scripts[] = 'tinymce/jscripts/tiny_mce/tiny_mce.js';
             $scripts[] = 'tinymce/jscripts/tiny_mce/init.js';
-            //$scripts[] = 'admin_edit.js';
         }
         $scripts[] = 'jquery_ui_slide_effect.js';
         $scripts[] = 'bottom_toggles.js';
