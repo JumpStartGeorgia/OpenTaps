@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
-	<link rel="icon" href="<?php echo URL ?>fff.ico">
+	<link rel="icon" href="<?php echo URL ?>images/favicon.ico">
         <script type="text/javascript">
         var baseurl = '<?php echo href() ?>';
 <?php if (Storage::instance()->show_map): ?>
