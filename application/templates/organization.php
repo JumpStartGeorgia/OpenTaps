@@ -28,7 +28,7 @@
             <div id='project_details' style="min-height: 15px; border-bottom: 0px;">
                 <div id='project_budget'>
                     <p><?php echo l('overall_project_budget') ?></p>
-                    <p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
+                    <p style='font-size:27px;color:#FFF;'><?php echo $organization['total_budget'] ?></p>
                 </div>
                 <?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
                     <div class='project_details_line'>
@@ -61,11 +61,11 @@
                     </div>
                 <?php endif; ?>
                 <?php if (!empty($organization['sector']) AND strlen($organization['sector']) > 0): ?>
-                    <div class='project_details_line'>
+                    <div class='project_details_line clearfix'>
                         <div class='line_left'>
                             <?php echo l('sector') ?> :
                         </div>
-                        <div>
+                        <div style="word-break:break-word;width:235px;">
                             <?php echo $organization['sector']; ?>
                         </div>
                     </div>

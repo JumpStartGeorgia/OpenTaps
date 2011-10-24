@@ -34,7 +34,7 @@ return array(
     'beginning' => 'დასაწყისი',
     'ends' => 'დასასრული',
     'organizations' => 'ორგანიზაციები',
-    'overall_project_budget' => 'საშუალო პროექტების ბიუჯეტი',
+    'overall_project_budget' => 'ორგანიზაციის სრული ბიუჯეტი',
     'org_city' => 'ქალაქი',
     'org_desc' => 'ორგანიზაციის აღწერა',
     'org_projects' => 'ორგანიზაციის პროექტები',

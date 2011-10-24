@@ -36,7 +36,7 @@ Slim::get('/organization/:unique/',function($unique){
 	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
 
     	Storage::instance()->content = template('organization', array(
-    		'organization' => get_organization($unique),
+    		'organization' => get_organization($unique, TRUE),
     		'organization_budget' => organization_total_budget($unique),
     		'data' => $data,
     		'side_data' => $side_data,

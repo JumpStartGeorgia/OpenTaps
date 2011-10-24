@@ -19,6 +19,28 @@ function parse_damn_css($content)
 ob_start('parse_damn_css');
 
 ?>
+
+.clearfix:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clearfix {
+	display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+	display: block;
+}
+ 
+* html .clearfix {
+	height: 1%;
+}
+
 /* General */
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
