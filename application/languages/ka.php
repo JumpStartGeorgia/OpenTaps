@@ -80,6 +80,7 @@ return array(
     'admin_add_region' => 'რეგიონის დამატება',
     'admin_list_regions' => 'რეგიონების სია',
     'admin_georgia_profile' => 'საქართველოს პროფილი',
-    'admin_manage_georgia_profile' => 'საქართველოს პროფილის მრთვა'
+    'admin_manage_georgia_profile' => 'საქართველოს პროფილის მრთვა',
+    'all_projects' => 'ყველა პროექტი'
 );
 

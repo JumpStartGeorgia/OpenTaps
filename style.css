@@ -53,11 +53,11 @@ div.projects_organization, div.news, div.spacer { display: table-cell; vertical-
 #override_border { width: 0px; height: 1px; position: absolute; top: 0; left: 0; background: #fff }
 
 /* Submenus */
-#submenu div.submenu { display: none; width: 100%; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0 }
-#submenu div.submenu table { width: 100% }
-#submenu div.submenu td { width: 149px; float: left; margin-left: 17px; margin-right: 17px; font-size: 11px; font-family: arial; border-bottom: 1px dotted @opentaps_default_bordercolor }
-#submenu div.submenu td:hover { background-color: rgba(95,204,243,.2); border-color: rgba(0,0,0,.1) }
-#submenu div.submenu td a { display: block; color: #7c7c7c; width: 100%; height: 100%; padding: 3px; padding-bottom: 5px; text-decoration: none }
+#submenu .submenu { display: none; width: 100%; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0 }
+#submenu .submenu table { width: 100% }
+#submenu .submenu td { vertical-align: middle; width: 149px; float: left; margin-left: 17px; margin-right: 17px; font-size: 11px; font-family: arial; border-bottom: 1px dotted @opentaps_default_bordercolor }
+#submenu .submenu td a { display: block; color: #7c7c7c; padding: 3px; padding-bottom: 5px; text-decoration: none }
+#submenu .submenu td a:hover { background-color: rgba(95,204,243,.2); border-color: rgba(0,0,0,.1) }
 
 div.search { float: right; border-left: 1px solid grey; margin-top: 5px; padding-left: 2px }
 div.search input.search { border: 0px; height: 25px; width: 122px; color: grey }
