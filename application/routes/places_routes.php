@@ -51,15 +51,16 @@ Slim::get('/admin/places/:unique/',function($unique)
                   $sql = "SELECT * FROM places WHERE `unique` = $unique AND lang = '" . LANG . "'";
                   $sql_regions = "SELECT * FROM regions WHERE lang = '" . LANG . "'";
                   $sql_regions_this = " SELECT r.id,r.`unique`,r.name FROM regions r
-                  			INNER JOIN places pl ON pl.`unique` = $unique AND pl.region_unique = r.`unique`
+                  			INNER JOIN places pl ON pl.`unique` = :unique AND pl.region_unique = r.`unique`
                   			WHERE r.lang = '" . LANG . "' AND pl.lang = '" . LANG . "';";
                   $sql_districts = "SELECT * FROM districts_new WHERE lang='" . LANG . "'";
+
                   Storage::instance()->content = template('admin/places/edit',array(
-                                                              'place' => fetch_db($sql),
-                                                              'regions' => fetch_db($sql_regions),
-                                                              'region_this' => fetch_db($sql_regions_this),
-                                                              'districts' => fetch_db($sql_districts)
-                                                 ));
+                         'place' => fetch_db($sql),
+                         'regions' => fetch_db($sql_regions),
+                         'region_this' => fetch_db($sql_regions_this, array(':unique' => $unique)),
+                         'districts' => fetch_db($sql_districts)
+                  ));
               }
               else Storage::instance()->content = template('login');
           }

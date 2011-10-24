@@ -691,8 +691,8 @@ function add_place($post)
 {
     $unique = generate_unique("places");
 
-    $sql = "INSERT INTO places (longitude,latitude,name,region_unique, lang, `unique`, district_id)
-	    VALUES(:lon, :lat, :name,:region, :lang, :unique,:district_id)";
+    $sql = "INSERT INTO places (longitude,latitude,name,region_unique, lang, `unique`, district_unique)
+	    VALUES(:lon, :lat, :name,:region, :lang, :unique,:district_unique)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $data = array(
@@ -700,7 +700,7 @@ function add_place($post)
 	':lat' => $post['pl_latitude'],
 	':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
 	':unique' => $unique,
-	':district_id' => $post['pl_district']
+	':district_unique' => $post['pl_district']
     );
 
     foreach (config('languages') as $lang)
@@ -718,7 +718,7 @@ function edit_place($unique, $post)
 			latitude = :lat,
 			name = :place_name,
 			region_unique = :region,
-			district_id = :district_id
+			district_unique = :district_unique
 		WHERE
 			`unique` = :unique
 		AND
@@ -732,7 +732,7 @@ function edit_place($unique, $post)
         ':place_name' => $post['pl_name'],
         ':region' => isset($post['pl_region']) ? $post['pl_region'] : 0,
         ':unique' => $unique,
-        ':district_id' => $post['pl_district']
+        ':district_unique' => $post['pl_district']
     ));
 }
 
