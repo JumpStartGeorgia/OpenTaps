@@ -1369,14 +1369,13 @@ function get_project_chart_data($unique)
 
 /* ================================================	Admin Organizations	============================================ */
 
-function get_organization($unique)
+function get_organization($unique, $return_total_budget = FALSE)
 {
-    $sql = "SELECT * FROM organizations WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;";
+    $tbsql = $return_total_budget ? ",(SELECT SUM(budget) FROM project_budgets WHERE organization_unique = :unique AND currency = 'gel') AS total_budget " : NULL;
+    $sql = "SELECT *{$tbsql} FROM organizations WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
-    $statement->execute(array(
-        ':unique' => $unique
-    ));
+    $statement->execute(array(':unique' => $unique));
     return $statement->fetch(PDO::FETCH_ASSOC);
 }
 

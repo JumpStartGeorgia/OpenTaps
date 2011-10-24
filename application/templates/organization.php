@@ -28,7 +28,7 @@
             <div id='project_details' style="min-height: 15px; border-bottom: 0px;">
                 <div id='project_budget'>
                     <p><?php echo l('overall_project_budget') ?></p>
-                    <p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
+                    <p style='font-size:27px;color:#FFF;'><?php echo $organization['total_budget'] ?></p>
                 </div>
                 <?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
                     <div class='project_details_line'>
