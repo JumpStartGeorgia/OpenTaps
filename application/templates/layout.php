@@ -7,24 +7,25 @@
         <script type="text/javascript">
             var baseurl = '<?php echo href() ?>';
 <?php if (Storage::instance()->show_map): ?>
-    var region_map_boundsLeft = false,
-    region_map_boundsRight = false,
-    region_map_boundsTop = false,
-    region_map_boundsBottom = false,
-    region_map_zoom = false,
-    region_map_maxzoomout = false,
-    region_map_longitude = false,
-    region_map_latitude = false,
-    region_make_def_markers = false,
-    region_show_def_buttons = true,
-    region_marker_click = true,
-    places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>],
-    news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>],
-    projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
+        var region_map_boundsLeft = false,
+        region_map_boundsRight = false,
+        region_map_boundsTop = false,
+        region_map_boundsBottom = false,
+        region_map_zoom = false,
+        region_map_maxzoomout = false,
+        region_map_longitude = false,
+        region_map_latitude = false,
+        region_make_def_markers = false,
+        region_show_def_buttons = true,
+        region_marker_click = true,
+        places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>],
+        news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>],
+        projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
 <?php endif; ?>
         </script>
     </head>
-    <body onload="init()">
+    <body>
+
         <div class='main group'>
 
             <div class='header' style="position: relative">
@@ -61,7 +62,7 @@
                 <div class='search' style="display: none">
                     <form method='GET' action=''>
                            <input class='search' type='text' value='Search...' onfocus='this.value=""' onblur='if(this.value=="")
-                        this.value="Search..."' name='' />
+                               this.value="Search..."' name='' />
                         <input class='submit' type='submit' value='' />
                     </form>
                 </div>
@@ -86,37 +87,17 @@
 
         <?php
         $scripts = array(
-            'OpenLayers/OpenLayers.js',
-            'jq.js',
-            'chosen.jquery.min.js',
+            'http://openlayers.org/api/OpenLayers.js',
+            'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',
+            'jquery.chosen.js',
             'jquery.slideQuery.js',
-                //'highcharts/highcharts.js',
-                //'raphael.js',
-                //'graphael.js',
-                //'g.bar.js',
-                //'g.pie.js',
-                //'chart.js',
-                ////'map.js',
-                ////'main.js',
-                ////'tinymce/jscripts/tiny_mce/tiny_mce.js',
-                ////'tinymce/jscripts/tiny_mce/init.js',
-                ////'menu.js',
-                ////'jquery_ui_slide_effect.js',
-                ////'bottom_toggles.js',
-                ////'admin_edit.js'
+            'jquery.ui.effects.js'
         );
         Storage::instance()->show_map AND $scripts[] = 'map.js';
-        $scripts[] = 'main.js';
-        $scripts[] = 'menu.js';
-        if (userloggedin())
-        {
-            $scripts[] = 'tinymce/jscripts/tiny_mce/tiny_mce.js';
-            $scripts[] = 'tinymce/jscripts/tiny_mce/init.js';
-        }
-        $scripts[] = 'jquery_ui_slide_effect.js';
-        $scripts[] = 'bottom_toggles.js';
+        $scripts[] = 'common.js';
+        userloggedin() AND $scripts[] = 'tinymce/tiny_mce.js';
         foreach ($scripts AS $script)
-            echo '<script type="text/javascript" src="' . URL . 'js/' . $script . '"></script>' . PHP_EOL;
+            echo '<script type="text/javascript" src="' . (substr($script, 0, 4) === 'http' ? $script : URL . 'scripts/' . $script) . '"></script>' . PHP_EOL;
         ?>
 
     </body>
