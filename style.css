@@ -125,7 +125,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 #project_content { font-size: 12px; font-family: arial }
 #project_details { float: left; width: 386px; min-height: 244px; border-right: 1px dotted @opentaps_default_bordercolor; border-bottom: 1px dotted @opentaps_default_bordercolor }
 #project_description { margin-top: 30px; /*text-align: justify*/ }
-#project_description div { margin-bottom: 21px; margin-top: 6px }
+#project_description div.withmargin { margin-bottom: 21px; margin-top: 6px; }
 #project_description .desc { font-weight: bold; font-size: 19px }
 #project_budget { background: @opentaps_default_color; height: 55px; border-bottom : 1px dotted @opentaps_default_bordercolor; padding-left: 16px; padding-top: 10px; color: rgba(255,255,255, .9) }
 .project_details_line { min-height: 21px; border-bottom: 1px dotted @opentaps_default_bordercolor; padding-top: 4px }
@@ -222,7 +222,7 @@ div.setsItemInactive { background-repeat: no-repeat; width: 25px; height: 20px; 
 div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/images/tags.jpg"); opacity: .8; margin-top: -20px; margin-left: 905px; cursor: pointer }
 .page-container { padding: 1em; width: 550px; margin-left: 0px; float: left }
 #map-overlay { position: absolute; top: 0; left: 0; z-index: 9999; height: 362px; line-height: 362px; width: 100.3%; background-color: #0CB5F6; color: #FFF; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
-.highcharts-container svg > text { display: none !important }
+/*.highcharts-container svg > text { display: none !important }*/
 #showtables { /*width: 750px;*/ font-family: Arial }
 #showtables table { width: 100%; float: left }
 #showtables h3 { font-size: 14px; color: #565656; margin-top: .75em }

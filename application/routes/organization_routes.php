@@ -43,7 +43,8 @@ Slim::get('/organization/:unique/',function($unique){
     		'tags' => $tags,
 		'projects' => get_organization_projects($unique),
 		'chart_data' => get_organization_chart_data($unique),
-		'count' => count_organization_project_types($unique)
+		'count' => count_organization_project_types($unique),
+		'donors' => fetch_db("SELECT DISTINCT(p.`unique`),p.title,p.type FROM projects AS p INNER JOIN project_budgets AS pb ON pb.project_unique = p.`unique` WHERE pb.organization_unique = :unique AND p.lang = '" . LANG . "';", array(':unique' => $unique))
 	));
     	
 });

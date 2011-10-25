@@ -1,6 +1,6 @@
 
 <div id='project_content'>
-    <div style='float:left;width:673px;'>
+    <div style='float: left; width: 673px;'>
         <div class='group'>
             <?php
             if (!empty($organization['logo']))
@@ -80,19 +80,19 @@
 
         <div id='project_description' style="margin-top:75px;">
             <p class='desc'><?php echo strtoupper(l('org_desc')) ?></p>
-            <div><?php echo $organization['description']; ?></div>
+            <div class="withmargin"><?php echo $organization['description']; ?></div>
 
-            <div style="width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
+            <div class="withmargin" style="width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
 
             <?php /* <p class='desc'>INFO ON PROJECTS</p> */ ?>
-            <div><?php echo $organization['projects_info']; ?></div>
+            <div class="withmargin"><?php echo $organization['projects_info']; ?></div>
 
-            <?php foreach ($data as $d): ?>
+		<?php foreach ($data as $d): ?>
                 <p class='desc'><?php echo strtoupper($d['key']); ?></p>
-                <div><?php echo $d['value']; ?></div>
-            <?php endforeach; ?>
+                <div class="withmargin"><?php echo $d['value']; ?></div>
+		<?php endforeach; ?>
 
-            <?php if ($count !== FALSE AND is_array($count)): ?>
+		<?php if ($count !== FALSE AND is_array($count)): ?>
                 <div id="organization_project_types" class="group">
                     <?php foreach (config('project_types') AS $type): ?>
                         <?php if ($count[$type] == 0)
@@ -103,27 +103,35 @@
                         </a>
                     <?php endforeach; ?>
                 </div>
-            <?php endif; ?>
+		<?php endif; ?>
 
+	<?php if (!empty($chart_data['organizations_budgets'])): ?>
+	    <div class="group">
 		<?php if (!empty($chart_data['organization_projects']['data'])): ?>
-		<script> var org_page = true, data_1 = <?php echo $chart_data['organization_projects']['data'] ?>; </script>
-                <div style="width: 336px; text-align: center; display: inline-block; float: left; border-right: 1px dotted #a6a6a6;">
+		<script type="text/javascript">
+			var org_page = true,
+			data_1 = <?php echo $chart_data['organization_projects']['data'] ?>,
+			serialized_data_1 = "<?php echo base64_encode(serialize(json_decode($chart_data['organization_projects']['data']))); ?>";
+		</script>
+                <div class="withmargin" style="width: 336px; text-align: center; display: inline-block; float: left; border-right: 1px dotted #a6a6a6;">
                     <p class='desc'><?php echo $chart_data['organization_projects']['title'] ?></p>
-                    <div style="margin-left: 0px; padding-left: 0px; text-align: center; width: 100%;">
-			<div id="org-chart-container-1" style="padding: 0; margin: 0 auto; width: 273px; height: 300px"></div>
-                    </div>
+		    <div id="org-chart-container-1" style="padding: 0; margin: 0 auto; width: 335px;"></div>
                 </div>
                 <?php endif; ?>
 
 		<?php if (!empty($chart_data['organizations_budgets']['data'])): ?>
-		<script> var org_page = true, data_2 = <?php echo $chart_data['organizations_budgets']['data'] ?>; </script>
-                <div style="width: 335px; text-align: center; display: inline-block;">
+		<script type="text/javascript">
+			var org_page = true,
+			data_2 = <?php echo $chart_data['organizations_budgets']['data'] ?>,
+			serialized_data_2 = "<?php echo base64_encode(serialize(json_decode($chart_data['organizations_budgets']['data']))); ?>";
+		</script>
+                <div class="withmargin" style="width: 335px; text-align: center; display: inline-block;">
                     <p class='desc'><?php echo $chart_data['organizations_budgets']['title'] ?></p>
-                    <div style="margin-left: 0px; padding-left: 0px; text-align: center; width: 100%;">
-			<div id="org-chart-container-2" style="padding: 0; margin: 0 auto; width: 273px;"></div>
-                    </div>
+		    <div id="org-chart-container-2" style="padding: 0; margin: 0 auto; width: 335px;"></div>
                 </div>
                 <?php endif; ?>
+            </div>
+	<?php endif; ?>
 
                 <br />
                 <div id="disqus_thread"></div>
@@ -141,7 +149,7 @@
         </div>
     </div>
 
-    <?php if (!empty($tags) OR !empty($projects) OR !empty($side_data)): ?>
+    <?php if (!empty($tags) OR !empty($projects) OR !empty($side_data) OR !empty($donors)): ?>
         <div style="float: right; width: 240px; border:0px solid #a6a6a6;" >
             <div class="organization_right">
 
@@ -156,6 +164,23 @@
                                 <a class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
                                     <img src="<?php echo href('images') . $ptype ?>.png" />
                                     <?php echo $project['title'] ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (!empty($donors)): ?>
+                    <div class='data_block group' style="border-bottom: 0px; border-top: 0px;">
+                        <div class='key'>
+                            <?php echo 'DONOR' ?>
+                        </div>
+                        <div class='value' style='padding: 0px;'>
+                            <?php foreach ($donors AS $donor):
+                                $ptype = str_replace(" ", "-", strtolower(trim($donor['type']))); ?>
+                                <a class="organization_project_link" href="<?php echo href('project/' . $donor['unique'], TRUE) ?>">
+                                    <img src="<?php echo href('images') . $ptype ?>.png" />
+                                    <?php echo $donor['title'] ?>
                                 </a>
                             <?php endforeach; ?>
                         </div>

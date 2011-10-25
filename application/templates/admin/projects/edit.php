@@ -73,8 +73,10 @@
   	    <br />
   	    <select name='p_place[]' multiple="multiple" class="chosen-select" id='pplace'>
   	      <?php
-      foreach($places as $place):
-  	            $selected = (in_array($place['unique'],  unserialize($project['place_unique']))) ? "selected='selected'" : NULL;
+  	      	$us = @unserialize($project['place_unique']);
+  	      	is_array($us) OR $us = array();
+		foreach($places as $place):
+  	            $selected = (in_array($place['unique'], $us)) ? "selected='selected'" : NULL;
   	            ?><option value="<?php echo $place['unique'] ?>" <?php echo $selected ?>><?php echo $place['name'] ?></option><?php
   	        endforeach;
   	      ?>

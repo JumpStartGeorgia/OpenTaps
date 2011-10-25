@@ -1,6 +1,7 @@
 <script type="text/javascript">
     var home_page = true,
     data = <?php echo $home_chart_data; ?>;
+    serialized_data = "<?php echo base64_encode(serialize(json_decode($home_chart_data))); ?>";
 </script>
 
 

@@ -10,6 +10,25 @@ $(document).ready(function() {
 			name: 'org_projects',
 			data: data_1
 		}];
+		if (typeof(serialized_data_1) !== 'undefined')
+		{
+			menuitem3 = {
+				text: 'Download CSV document',
+				onclick: function() {
+					window.location.href = baseurl + 'export/csv/' + serialized_data_1 + '/chart/';
+				}
+			};
+		}
+		else
+		{
+			menuitem3 = null;
+		}
+		pie_chart_options.exporting.buttons.exportButton.menuItems = [
+		      {},
+		      {},
+		      menuitem3,
+		      {}
+		];
 
 		var org_chart_1 = new Highcharts.Chart(pie_chart_options);
 	}
@@ -22,6 +41,25 @@ $(document).ready(function() {
 			name: 'org_budgets',
 			data: data_2
 		}];
+		if (typeof(serialized_data_2) !== 'undefined')
+		{
+			menuitem3 = {
+				text: 'Download CSV document',
+				onclick: function() {
+					window.location.href = baseurl + 'export/csv/' + serialized_data_2 + '/chart/';
+				}
+			};
+		}
+		else
+		{
+			menuitem3 = null;
+		}
+		pie_chart_options.exporting.buttons.exportButton.menuItems = [
+		      {},
+		      {},
+		      menuitem3,
+		      {}
+		];
 
 		var org_chart_2 = new Highcharts.Chart(pie_chart_options);
 	}

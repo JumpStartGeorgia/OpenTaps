@@ -3,7 +3,11 @@ var pie_chart_options = {
          renderTo: '',
          plotBackgroundColor: null,
          plotBorderWidth: null,
-         plotShadow: false
+         plotShadow: false,
+         marginBottom: 90
+      },
+      credits: {
+      	 enabled: false
       },
       colors: [
 	 '#0CB5F5',
@@ -18,7 +22,13 @@ var pie_chart_options = {
 	 '#E6F7FE'
       ],
       title: {
-         text: ''
+         text: null,
+         floating: true,
+         margin: null
+      },
+      subtitle: {
+	 floating: true,
+	 text: null
       },
       tooltip: {
          formatter: function() {
@@ -35,7 +45,28 @@ var pie_chart_options = {
             showInLegend: true
          }
       },
-       series: []
+      legend: {
+	 floating: true,
+	 layout: "vertical"
+      },
+      series: [],
+      exporting: {
+	  enabled: true,
+          buttons: {
+	      printButton: {
+		  enabled: false
+	      },
+	      exportButton: {
+		  menuItems: [
+		      {},
+		      {},
+		      {},
+		      {}
+		  ]
+	      }
+	  }
+      }
+
    };
 
 

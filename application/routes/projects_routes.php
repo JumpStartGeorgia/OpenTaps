@@ -237,11 +237,9 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 
                 $data = unserialize(base64_decode($data));
 
-		$list = array();
-		$list[0] = $data['names'];
 		//foreach ( $data['values'] as $key => $value )
 		//	$list[1][] = empty($value['budget']) ? $value : $value['budget'];
-		$list[1] = $data['values'];
+		$list = $data;
 
 		$fp = fopen(DIR . 'uploads/' . $name, 'w');
 
@@ -254,7 +252,7 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 		fpassthru($file);
 		fclose($file);
 
-		unlink(DIR . 'uploads/' . $name);
+		file_exists(DIR . 'uploads/' . $name) AND unlink(DIR . 'uploads/' . $name);
 
 	        break;
 	}

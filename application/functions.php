@@ -1408,8 +1408,8 @@ function get_organization_projects($unique)
 {
     $sql = "SELECT DISTINCT(p.`unique`) AS `unique`, p.id,p.title,p.type FROM projects AS p
 	    INNER JOIN project_organizations AS po ON p.`unique` = po.project_unique
-		INNER JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
-		WHERE o.`unique` = :unique AND o.lang = '" . LANG . "'";
+	    INNER JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
+	    WHERE o.`unique` = :unique AND o.lang = '" . LANG . "'";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(

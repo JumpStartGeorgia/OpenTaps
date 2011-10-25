@@ -78,7 +78,11 @@ function edit_button($edit_id = NULL)
 
 
 		<?php if (!empty($chart_data['organization_projects']['data'])): ?>
-		<script> var project_page = true, data_1 = <?php echo $chart_data['organization_projects']['data'] ?>; </script>
+		<script type="text/javascript">
+			var project_page = true,
+			data_1 = <?php echo $chart_data['organization_projects']['data'] ?>,
+			serialized_data_1 = "<?php echo base64_encode(serialize(json_decode($chart_data['organization_projects']['data']))); ?>";;
+		</script>
                 <div>
                     <span class="expand_title"><span class="racxa">►</span><?php echo $chart_data['organization_projects']['title'] ?></span>
                     <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
@@ -88,7 +92,11 @@ function edit_button($edit_id = NULL)
                 <?php endif; ?>
 
 		<?php if (!empty($chart_data['all_projects']['data'])): ?>
-		<script> var project_page = true, data_2 = <?php echo $chart_data['all_projects']['data'] ?>; </script>
+		<script type="text/javascript">
+			var project_page = true,
+			data_2 = <?php echo $chart_data['all_projects']['data'] ?>,
+			serialized_data_2 = "<?php echo base64_encode(serialize(json_decode($chart_data['all_projects']['data']))); ?>";
+		</script>
                 <div>
                     <span class="expand_title"><span class="racxa">►</span><?php echo $chart_data['all_projects']['title'] ?></span>
                     <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">

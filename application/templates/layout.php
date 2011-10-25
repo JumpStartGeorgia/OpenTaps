@@ -90,6 +90,7 @@
             'jquery.slideQuery.js',
             'jquery.ui.effects.js',
             'charts/highcharts.js',
+            'charts/modules/exporting.js',
             'charts/chart_config.js',
             'charts/chart_home.js',
             'charts/chart_project.js',
