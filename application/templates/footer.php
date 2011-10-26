@@ -64,6 +64,7 @@
 		)) ?>
     </div>
     <div class="bottom2">
+        <a href="http://pdfcrowd.com/url_to_pdf/">Convert this page to a PDF</a>&nbsp;&nbsp;&nbsp;&nbsp;
         <?php if (userloggedin()): ?>
             <span id="admin_button_logout" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>logout';">LOG OUT</span>&nbsp;&nbsp;|&nbsp;
             <span id="admin_button" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>admin';">ADMINISTRATION</span>&nbsp;&nbsp;|&nbsp;
