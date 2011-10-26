@@ -25,7 +25,7 @@
 <?php endif; ?>
         </script>
     </head>
-    <body>
+    <body<?php echo Storage::instance()->show_map ? ' onload="mapping();"' : NULL ?>>
 
         <div class='main group'>
 
@@ -89,15 +89,16 @@
             'jquery.chosen.js',
             'jquery.slideQuery.js',
             'jquery.ui.effects.js',
-            'charts/highcharts.js',
-            'charts/chart_config.js',
-            'charts/chart_home.js',
-            'charts/chart_project.js',
-            'charts/chart_org.js'
+            //'charts/highcharts.js',
+            //'charts/chart_config.js',
+            //'charts/chart_home.js',
+            //'charts/chart_project.js',
+            //'charts/chart_org.js'
         );
         if (Storage::instance()->show_map)
         {
-            $scripts[] = 'http://openlayers.org/api/OpenLayers.js';
+            //$scripts[] = 'http://openlayers.org/api/OpenLayers.js';
+            $scripts[] = 'OpenLayers/OpenLayers.js';
             $scripts[] = 'map.js';
         }
         $scripts[] = 'common.js';
