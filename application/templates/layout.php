@@ -4,9 +4,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
-	<link rel="icon" href="<?php echo URL ?>images/favicon.ico">
+        <link rel="icon" href="<?php echo URL ?>images/favicon.ico">
         <script type="text/javascript">
-        var baseurl = '<?php echo href() ?>';
+            var baseurl = '<?php echo href() ?>';
 <?php if (Storage::instance()->show_map): ?>
         var region_map_boundsLeft = false,
         region_map_boundsRight = false,
@@ -25,7 +25,7 @@
 <?php endif; ?>
         </script>
     </head>
-    <body>
+    <body<?php echo Storage::instance()->show_map ? ' onload="mapping();"' : NULL ?>>
 
         <div class='main group'>
 
@@ -63,7 +63,7 @@
                 <div class='search' style="display: none">
                     <form method='GET' action=''>
                         <input class='search' type='text' value='Search...' onfocus='this.value=""' onblur='if(this.value=="")
-                               this.value="Search..."' name='' />
+                            this.value="Search..."' name='' />
                         <input class='submit' type='submit' value='' />
                     </form>
                 </div>
@@ -73,13 +73,14 @@
 
             <div class='after_menu'></div>
 
-            <?php if (Storage::instance()->show_map) require_once 'map.php'; ?>
+            <?php if (Storage::instance()->show_map)
+                require_once 'map.php'; ?>
 
             <div class='content group'>
-                <?php echo Storage::instance()->content ?>
+<?php echo Storage::instance()->content ?>
             </div>
 
-            <?php require_once 'footer.php' ?>
+<?php require_once 'footer.php' ?>
 
         </div>
 
@@ -98,7 +99,8 @@
         );
         if (Storage::instance()->show_map)
         {
-            $scripts[] = 'http://openlayers.org/api/OpenLayers.js';
+            //$scripts[] = 'http://openlayers.org/api/OpenLayers.js';
+            $scripts[] = 'OpenLayers/OpenLayers.js';
             $scripts[] = 'map.js';
         }
         $scripts[] = 'common.js';

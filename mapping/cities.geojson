@@ -1,0 +1,223 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "OBJECTID_1": 1, "NAME_GEO": "lentexi", "NAME_ENG": "Lentekhi" }, "geometry": { "type": "Point", "coordinates": [ 42.722051, 42.788748 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 2, "NAME_GEO": "mestia", "NAME_ENG": "Mestia" }, "geometry": { "type": "Point", "coordinates": [ 42.723577, 43.043441 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 3, "NAME_GEO": "dmanisi", "NAME_ENG": "Dmanisi" }, "geometry": { "type": "Point", "coordinates": [ 44.196052, 41.329715 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 4, "NAME_GEO": "bediani", "NAME_ENG": "Bediani" }, "geometry": { "type": "Point", "coordinates": [ 44.250925, 41.537823 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 5, "NAME_GEO": "bolnisi", "NAME_ENG": "Bolnisi" }, "geometry": { "type": "Point", "coordinates": [ 44.537051, 41.448966 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 6, "NAME_GEO": "TrialeTi", "NAME_ENG": "Trialeti" }, "geometry": { "type": "Point", "coordinates": [ 44.109068, 41.541826 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 7, "NAME_GEO": "xaragauli", "NAME_ENG": "Kharagauli" }, "geometry": { "type": "Point", "coordinates": [ 43.202930, 42.014263 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 8, "NAME_GEO": "dedofliswyaro", "NAME_ENG": "Dedoplistskaro" }, "geometry": { "type": "Point", "coordinates": [ 46.105749, 41.464606 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 9, "NAME_GEO": "lagodexi", "NAME_ENG": "Lagodekhi" }, "geometry": { "type": "Point", "coordinates": [ 46.274264, 41.822573 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 10, "NAME_GEO": "gori", "NAME_ENG": "Gori" }, "geometry": { "type": "Point", "coordinates": [ 44.111461, 41.982630 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 11, "NAME_GEO": "Saumiani", "NAME_ENG": "Shaumiani" }, "geometry": { "type": "Point", "coordinates": [ 44.761543, 41.352333 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 12, "NAME_GEO": "naruja", "NAME_ENG": "Naruja" }, "geometry": { "type": "Point", "coordinates": [ 41.955431, 41.906046 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 13, "NAME_GEO": "oCxamuri", "NAME_ENG": "Ochkhamuri" }, "geometry": { "type": "Point", "coordinates": [ 41.857637, 41.855420 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 14, "NAME_GEO": "ureki", "NAME_ENG": "Ureki" }, "geometry": { "type": "Point", "coordinates": [ 41.786279, 41.997539 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 15, "NAME_GEO": "laiTuri", "NAME_ENG": "Laituri" }, "geometry": { "type": "Point", "coordinates": [ 41.901102, 41.915517 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 16, "NAME_GEO": "baTumi", "NAME_ENG": "Batumi" }, "geometry": { "type": "Point", "coordinates": [ 41.639213, 41.643249 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 17, "NAME_GEO": "axmeta", "NAME_ENG": "Akhmeta" }, "geometry": { "type": "Point", "coordinates": [ 45.207092, 42.035192 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 18, "NAME_GEO": "axalqalaqi", "NAME_ENG": "Akhalkalaki" }, "geometry": { "type": "Point", "coordinates": [ 43.486720, 41.408848 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 19, "NAME_GEO": "fasanauri", "NAME_ENG": "Pasanauri" }, "geometry": { "type": "Point", "coordinates": [ 44.692061, 42.346901 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 20, "NAME_GEO": "oCamCire", "NAME_ENG": "Ochamchire" }, "geometry": { "type": "Point", "coordinates": [ 41.465959, 42.707754 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 21, "NAME_GEO": "gudauTa", "NAME_ENG": "Gudauta" }, "geometry": { "type": "Point", "coordinates": [ 40.632533, 43.106040 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 22, "NAME_GEO": "gagra", "NAME_ENG": "Gagra" }, "geometry": { "type": "Point", "coordinates": [ 40.255229, 43.304261 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 23, "NAME_GEO": "kvaisi", "NAME_ENG": "Kvaisi" }, "geometry": { "type": "Point", "coordinates": [ 43.647038, 42.521390 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 24, "NAME_GEO": "cxinvali", "NAME_ENG": "Tskhinvali" }, "geometry": { "type": "Point", "coordinates": [ 43.969675, 42.228757 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 25, "NAME_GEO": "aspinZa", "NAME_ENG": "Aspindza" }, "geometry": { "type": "Point", "coordinates": [ 43.251260, 41.573183 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 26, "NAME_GEO": "borjomi", "NAME_ENG": "Borjomi" }, "geometry": { "type": "Point", "coordinates": [ 43.411624, 41.853415 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 27, "NAME_GEO": "axalcixe", "NAME_ENG": "Akhaltsikhe" }, "geometry": { "type": "Point", "coordinates": [ 42.986806, 41.638399 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 28, "NAME_GEO": "ninowminda", "NAME_ENG": "Ninotsminda" }, "geometry": { "type": "Point", "coordinates": [ 43.591927, 41.266543 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 29, "NAME_GEO": "gurjaani", "NAME_ENG": "Gurjaani" }, "geometry": { "type": "Point", "coordinates": [ 45.796749, 41.742589 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 30, "NAME_GEO": "ambrolauri", "NAME_ENG": "Ambrolauri" }, "geometry": { "type": "Point", "coordinates": [ 43.152466, 42.518824 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 31, "NAME_GEO": "yvareli", "NAME_ENG": "Kvareli" }, "geometry": { "type": "Point", "coordinates": [ 45.815070, 41.949211 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 32, "NAME_GEO": "sagarejo", "NAME_ENG": "Sagarejo" }, "geometry": { "type": "Point", "coordinates": [ 45.331190, 41.736851 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 33, "NAME_GEO": "qeda", "NAME_ENG": "Keda" }, "geometry": { "type": "Point", "coordinates": [ 41.944611, 41.597987 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 34, "NAME_GEO": "waRveri", "NAME_ENG": "Tsaghveri" }, "geometry": { "type": "Point", "coordinates": [ 43.483326, 41.799216 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 35, "NAME_GEO": "bakurianis andeziti", "NAME_ENG": "Bakurianis Andeziti" }, "geometry": { "type": "Point", "coordinates": [ 43.471368, 41.734482 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 36, "NAME_GEO": "axaldaba", "NAME_ENG": "Akhaldaba" }, "geometry": { "type": "Point", "coordinates": [ 43.489196, 41.932108 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 37, "NAME_GEO": "gali", "NAME_ENG": "Gali" }, "geometry": { "type": "Point", "coordinates": [ 41.737935, 42.627344 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 38, "NAME_GEO": "xulo", "NAME_ENG": "Khulo" }, "geometry": { "type": "Point", "coordinates": [ 42.310928, 41.647851 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 39, "NAME_GEO": "wnori", "NAME_ENG": "Tsnori" }, "geometry": { "type": "Point", "coordinates": [ 45.973253, 41.616989 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 40, "NAME_GEO": "mcxeTa", "NAME_ENG": "Mtskheta" }, "geometry": { "type": "Point", "coordinates": [ 44.720166, 41.845146 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 41, "NAME_GEO": "sioni", "NAME_ENG": "Sioni" }, "geometry": { "type": "Point", "coordinates": [ 45.026482, 41.991601 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 42, "NAME_GEO": "gardabani", "NAME_ENG": "Gardabani" }, "geometry": { "type": "Point", "coordinates": [ 45.089238, 41.464410 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 43, "NAME_GEO": "siRnaRi", "NAME_ENG": "Sighnaghi" }, "geometry": { "type": "Point", "coordinates": [ 45.922046, 41.619424 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 44, "NAME_GEO": "Telavi", "NAME_ENG": "Telavi" }, "geometry": { "type": "Point", "coordinates": [ 45.482047, 41.918201 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 45, "NAME_GEO": "xarisTvala", "NAME_ENG": "Kharistvala" }, "geometry": { "type": "Point", "coordinates": [ 43.044822, 42.412315 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 46, "NAME_GEO": "agara", "NAME_ENG": "Agara" }, "geometry": { "type": "Point", "coordinates": [ 43.817544, 42.040450 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 47, "NAME_GEO": "qareli", "NAME_ENG": "Kareli" }, "geometry": { "type": "Point", "coordinates": [ 43.893679, 42.021376 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 48, "NAME_GEO": "zestafoni", "NAME_ENG": "Zestaponi" }, "geometry": { "type": "Point", "coordinates": [ 43.043019, 42.110532 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 49, "NAME_GEO": "kaspi", "NAME_ENG": "Kaspi" }, "geometry": { "type": "Point", "coordinates": [ 44.424319, 41.919595 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 50, "NAME_GEO": "kojori", "NAME_ENG": "Kojori" }, "geometry": { "type": "Point", "coordinates": [ 44.704560, 41.655879 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 51, "NAME_GEO": "manglisi", "NAME_ENG": "Manglisi" }, "geometry": { "type": "Point", "coordinates": [ 44.376871, 41.696511 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 52, "NAME_GEO": "Tbilisi", "NAME_ENG": "Tbilisi" }, "geometry": { "type": "Point", "coordinates": [ 44.830466, 41.697000 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 53, "NAME_GEO": "adigeni", "NAME_ENG": "Adigeni" }, "geometry": { "type": "Point", "coordinates": [ 42.697928, 41.681506 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 54, "NAME_GEO": "abasTumani", "NAME_ENG": "Abastumani" }, "geometry": { "type": "Point", "coordinates": [ 42.830859, 41.752630 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 55, "NAME_GEO": "vale", "NAME_ENG": "Vale" }, "geometry": { "type": "Point", "coordinates": [ 42.878189, 41.619194 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 56, "NAME_GEO": "marneuli", "NAME_ENG": "Marneuli" }, "geometry": { "type": "Point", "coordinates": [ 44.799231, 41.488135 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 57, "NAME_GEO": "qveda nasakirali", "NAME_ENG": "Kveda Nasakirali" }, "geometry": { "type": "Point", "coordinates": [ 42.012868, 41.968713 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 58, "NAME_GEO": "ozurgeTi", "NAME_ENG": "Ozurgeti" }, "geometry": { "type": "Point", "coordinates": [ 42.009083, 41.927880 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 59, "NAME_GEO": "Suaxevi", "NAME_ENG": "Shuakhevi" }, "geometry": { "type": "Point", "coordinates": [ 42.188682, 41.626374 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 60, "NAME_GEO": "kazreTi", "NAME_ENG": "Kazreti" }, "geometry": { "type": "Point", "coordinates": [ 44.416985, 41.381296 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 61, "NAME_GEO": "didi lilo", "NAME_ENG": "Didi Lilo" }, "geometry": { "type": "Point", "coordinates": [ 44.964155, 41.737739 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 62, "NAME_GEO": "wyneTi", "NAME_ENG": "Tskneti" }, "geometry": { "type": "Point", "coordinates": [ 44.695523, 41.694371 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 63, "NAME_GEO": "rusTavi", "NAME_ENG": "Rustavi" }, "geometry": { "type": "Point", "coordinates": [ 44.983607, 41.555465 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 64, "NAME_GEO": "mozRuduli", "NAME_ENG": "Mozghuduli" }, "geometry": { "type": "Point", "coordinates": [ 44.746966, 41.439081 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 65, "NAME_GEO": "bakuriani", "NAME_ENG": "Bakuriani" }, "geometry": { "type": "Point", "coordinates": [ 43.529590, 41.754563 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 66, "NAME_GEO": "TeTri wyaro", "NAME_ENG": "Tetri Tskaro" }, "geometry": { "type": "Point", "coordinates": [ 44.461007, 41.543281 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 67, "NAME_GEO": "zahesi", "NAME_ENG": "Zahesi" }, "geometry": { "type": "Point", "coordinates": [ 44.756540, 41.823640 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 68, "NAME_GEO": "ganTiadi", "NAME_ENG": "Gantiadi" }, "geometry": { "type": "Point", "coordinates": [ 40.085368, 43.379411 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 69, "NAME_GEO": "Cxorowyu", "NAME_ENG": "Chkhorotsku" }, "geometry": { "type": "Point", "coordinates": [ 42.137059, 42.531080 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 70, "NAME_GEO": "surami", "NAME_ENG": "Surami" }, "geometry": { "type": "Point", "coordinates": [ 43.561221, 42.021295 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 71, "NAME_GEO": "zugdidi", "NAME_ENG": "Zugdidi" }, "geometry": { "type": "Point", "coordinates": [ 41.873135, 42.505755 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 72, "NAME_GEO": "martvili", "NAME_ENG": "Martvili" }, "geometry": { "type": "Point", "coordinates": [ 42.377963, 42.413690 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 73, "NAME_GEO": "maxinjauri", "NAME_ENG": "Makhinjauri" }, "geometry": { "type": "Point", "coordinates": [ 41.691358, 41.672168 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 74, "NAME_GEO": "xelvaCauri", "NAME_ENG": "Khelvachauri" }, "geometry": { "type": "Point", "coordinates": [ 41.661842, 41.585668 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 75, "NAME_GEO": "Caqvi", "NAME_ENG": "Chakvi" }, "geometry": { "type": "Point", "coordinates": [ 41.732254, 41.729713 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 76, "NAME_GEO": "bzifi", "NAME_ENG": "Bzipi" }, "geometry": { "type": "Point", "coordinates": [ 40.379655, 43.232389 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 77, "NAME_GEO": "saCxere", "NAME_ENG": "Sachkhere" }, "geometry": { "type": "Point", "coordinates": [ 43.409571, 42.341468 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 78, "NAME_GEO": "yornisi", "NAME_ENG": "Kornisi" }, "geometry": { "type": "Point", "coordinates": [ 43.761293, 42.200694 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 79, "NAME_GEO": "baRdaTi", "NAME_ENG": "Baghdati" }, "geometry": { "type": "Point", "coordinates": [ 42.823172, 42.070920 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 80, "NAME_GEO": "abaSa", "NAME_ENG": "Abasha" }, "geometry": { "type": "Point", "coordinates": [ 42.203447, 42.204361 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 81, "NAME_GEO": "TianeTi", "NAME_ENG": "Tianeti" }, "geometry": { "type": "Point", "coordinates": [ 44.966516, 42.110629 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 82, "NAME_GEO": "WiaTura", "NAME_ENG": "Tchiatura" }, "geometry": { "type": "Point", "coordinates": [ 43.283460, 42.290155 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 83, "NAME_GEO": "qobuleTi", "NAME_ENG": "Kobuleti" }, "geometry": { "type": "Point", "coordinates": [ 41.777261, 41.820972 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 84, "NAME_GEO": "axalgori", "NAME_ENG": "Akhalgori" }, "geometry": { "type": "Point", "coordinates": [ 44.486252, 42.124550 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 85, "NAME_GEO": "java", "NAME_ENG": "Java" }, "geometry": { "type": "Point", "coordinates": [ 43.922253, 42.390573 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 86, "NAME_GEO": "duSeTi", "NAME_ENG": "Dusheti" }, "geometry": { "type": "Point", "coordinates": [ 44.695092, 42.085135 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 87, "NAME_GEO": "soxumi", "NAME_ENG": "Sokhumi" }, "geometry": { "type": "Point", "coordinates": [ 40.976294, 42.983198 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 88, "NAME_GEO": "miusera", "NAME_ENG": "Miusera" }, "geometry": { "type": "Point", "coordinates": [ 40.478982, 43.159880 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 89, "NAME_GEO": "biWvinTa", "NAME_ENG": "Bitchvinta" }, "geometry": { "type": "Point", "coordinates": [ 40.343467, 43.158194 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 90, "NAME_GEO": "gulrifSi", "NAME_ENG": "Gulripshi" }, "geometry": { "type": "Point", "coordinates": [ 41.103340, 42.930344 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 91, "NAME_GEO": "oni", "NAME_ENG": "Oni" }, "geometry": { "type": "Point", "coordinates": [ 43.443303, 42.584530 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 92, "NAME_GEO": "quTaisi", "NAME_ENG": "Kutaisi" }, "geometry": { "type": "Point", "coordinates": [ 42.703324, 42.271035 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 93, "NAME_GEO": "wyaltubo", "NAME_ENG": "Tskaltubo" }, "geometry": { "type": "Point", "coordinates": [ 42.610349, 42.321931 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 94, "NAME_GEO": "Sorapani", "NAME_ENG": "Shorapani" }, "geometry": { "type": "Point", "coordinates": [ 43.087533, 42.089169 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 95, "NAME_GEO": "walenjixa", "NAME_ENG": "Tsalenjikha" }, "geometry": { "type": "Point", "coordinates": [ 42.066816, 42.609809 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 96, "NAME_GEO": "stefanwminda", "NAME_ENG": "Stepamtsminda" }, "geometry": { "type": "Point", "coordinates": [ 44.641069, 42.654107 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 97, "NAME_GEO": "Jinvali", "NAME_ENG": "Zhinvali" }, "geometry": { "type": "Point", "coordinates": [ 44.766816, 42.140957 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 98, "NAME_GEO": "lanCxuTi", "NAME_ENG": "Lanchkhuti" }, "geometry": { "type": "Point", "coordinates": [ 42.036054, 42.087339 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 99, "NAME_GEO": "Terjola", "NAME_ENG": "Terjola" }, "geometry": { "type": "Point", "coordinates": [ 42.977553, 42.184975 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 100, "NAME_GEO": "tyibuli", "NAME_ENG": "Tkibuli" }, "geometry": { "type": "Point", "coordinates": [ 42.996009, 42.347913 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 101, "NAME_GEO": "xoni", "NAME_ENG": "Khoni" }, "geometry": { "type": "Point", "coordinates": [ 42.421805, 42.324187 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 102, "NAME_GEO": "cageri", "NAME_ENG": "Tsageri" }, "geometry": { "type": "Point", "coordinates": [ 42.769833, 42.648865 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 103, "NAME_GEO": "xobi", "NAME_ENG": "Khobi" }, "geometry": { "type": "Point", "coordinates": [ 41.901245, 42.318371 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 104, "NAME_GEO": "samtredia", "NAME_ENG": "Samtredia" }, "geometry": { "type": "Point", "coordinates": [ 42.338388, 42.159871 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 105, "NAME_GEO": "senaki", "NAME_ENG": "Senaki" }, "geometry": { "type": "Point", "coordinates": [ 42.064322, 42.269669 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 106, "NAME_GEO": "kulaSi", "NAME_ENG": "Kulashi" }, "geometry": { "type": "Point", "coordinates": [ 42.345082, 42.206569 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 107, "NAME_GEO": "foTi", "NAME_ENG": "Poti" }, "geometry": { "type": "Point", "coordinates": [ 41.673922, 42.140954 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 108, "NAME_GEO": "Coxatauri", "NAME_ENG": "Chokhatauri" }, "geometry": { "type": "Point", "coordinates": [ 42.240271, 42.019146 ] } }
+,
+{ "type": "Feature", "properties": { "OBJECTID_1": 109, "NAME_GEO": "vani", "NAME_ENG": "Vani" }, "geometry": { "type": "Point", "coordinates": [ 42.527687, 42.083167 ] } }
+
+]
+}
