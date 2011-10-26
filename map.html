@@ -3,14 +3,14 @@
     <head>
         <title>Map</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <style type="text/css">
-            body { margin: 5em auto; width: 800px; }
-            #map { width: 800px; height: 480px; border: 2px solid #999 }
-        </style>
+        <link type="text/css" rel="stylesheet" href="style.css" media="all" />
     </head>
     <body onload="mapping()">
 
-        <div id="map"></div>
+        <div id="map">
+            <div id="map-overlay"></div>
+            <ul id="map-filter"></ul>
+        </div>
 
         <script type="text/javascript" src="http://openlayers.org/api/OpenLayers.js"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>

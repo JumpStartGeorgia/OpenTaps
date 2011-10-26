@@ -218,7 +218,7 @@ Slim::get('/map-data/cities', function()
 Slim::get('/map-data/projects/:type', function($type)
         {
             $project_sql = "
-                SELECT title, place_unique
+                SELECT `unique` AS id, title, place_unique
                 FROM projects
                 WHERE type = '{$type}'
                 AND lang = 'en'
@@ -234,6 +234,7 @@ Slim::get('/map-data/projects/:type', function($type)
                 //$place_ids = implode(', ', $place_ids);
                 $sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = 'en';";
                 $json[] = array(
+                    'id' => $item['id'],
                     'title' => $item['title'],
                     'places' => db()->query($sql, PDO::FETCH_ASSOC)->fetchAll()
                 );

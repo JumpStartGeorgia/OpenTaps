@@ -28,7 +28,8 @@ city_marker_size = new OpenLayers.Size(9, 9),
 city_marker = new OpenLayers.Icon('images/map/city.png', hydro_marker_size, new OpenLayers.Pixel(-(hydro_marker_size.w / 2), -hydro_marker_size.h)),
 city_markers = [];
 
-var layers = new Object();
+var layers = new Object(),
+popups = [];
 
 function mapping()
 {
@@ -57,8 +58,9 @@ function mapping()
 
     // Load and initialize vector overlays
     load_regions();
-    load_cities();
+    //load_cities();
     //load_water();
+    load_projects('Sewage');
 
     // Add initialized vector layers to the map
     for (var idx in layers)
@@ -155,21 +157,31 @@ function load_projects(type, status)
     {
         if ($.isEmptyObject(result))
             return;
+        for (var idx in popups)
+            popups[idx].destroy();
+        popups = [];
         var coordinates,
-        marker,
-        popup;
-        for (var idx in result)
+        marker;
+        idx = 0;
+        for (idx in result)
         {
-            popup = OpenLayers.Class(OpenLayers.Popup.AnchoredBubble, {
-                'autoSize': true
-            });
-
-            for (var place_idx in result.places)
+            for (var place_idx in result[idx].places)
             {
-                coordinates = new OpenLayers.LonLat(result.places[place_idx].longitude, result.places[place_idx].latitude);
+                //console.log(result[idx].places);
+                //console.log(result[idx].title + ' ' + result[idx].places[place_idx].name);
+                coordinates = new OpenLayers.LonLat(result[idx].places[place_idx].longitude, result[idx].places[place_idx].latitude);
+                //coordinates.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
+                console.log(coordinates);
+                popups.push(new OpenLayers.Popup('popup-' + result[idx].id, coordinates, new OpenLayers.Size(200, 200), '<b>' + result[idx].title + '</b>', true));
                 marker = new OpenLayers.Marker(coordinates, city_marker.clone());
                 markers.addMarker(marker);
             }
+        }
+        idx = 0;
+        for (idx in popups)
+        {
+            popups[idx].closeOnMove = true;
+            map.addPopup(popups[idx]);
         }
     });
 //feature.geometry.getBounds().getCenterLonLat();
@@ -186,3 +198,11 @@ function on_move(event)
 //.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
 //load_villages(bounds.left, bounds.top, bounds.right, bounds.bottom);
 }
+
+$(function()
+{
+    $('#map-filter-button').click(function()
+    {
+        $('#map-filter').toggle();
+    });
+});
