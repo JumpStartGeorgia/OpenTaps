@@ -17,6 +17,7 @@ Slim::get('/organizations/',function(){
 });*/
 Slim::get('/organization/:unique/',function($unique){
 	Storage::instance()->show_map = FALSE;
+	Storage::instance()->show_organization_chart = TRUE;
 
 	$query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags

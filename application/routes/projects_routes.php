@@ -38,6 +38,7 @@ Slim::get('/projects/', function()
 Slim::get('/project/:unique/', function($unique)
 {
 	Storage::instance()->show_map = FALSE;
+	Storage::instance()->show_project_chart = TRUE;
 
 	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags
