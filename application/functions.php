@@ -1892,21 +1892,43 @@ function update_supply($text, $unique)
     ));
 }
 
-/*
-function word_limiter($text, $limit = 30, $chars = '0123456789აბგდევზთიკლმნოპჟრსტუპქღყშჩცძწხჯჰ')
+function geo_utf8_to_latin($text)
 {
-    if (strlen($text) <= $limit)
-        return $text;
-    $words = str_word_count($text, 2, $chars);
-    $words = array_reverse($words, TRUE);
-    foreach ($words AS $length => $word)
-    {
-        if ($length + strlen($word) < $limit)
-            break;
-        array_shift($words);
-    }
-    $words = array_reverse($words);
-    $text = implode(' ', $words) . '&hellip;';
-    return $text;
+    //აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ
+    $letters = array(
+        'ა' => 'a',
+        'ბ' => 'b',
+        'გ' => 'g',
+        'დ' => 'd',
+        'ე' => 'e',
+        'ვ' => 'v',
+        'ზ' => 'z',
+        'თ' => 'T',
+        'ი' => 'i',
+        'კ' => 'k',
+        'ლ' => 'l',
+        'მ' => 'm',
+        'ნ' => 'n',
+        'ო' => 'o',
+        'პ' => 'p',
+        'ჟ' => 'J',
+        'რ' => 'r',
+        'ს' => 's',
+        'ტ' => 't',
+        'უ' => 'u',
+        'ფ' => 'f',
+        'ქ' => 'q',
+        'ღ' => 'R',
+        'ყ' => 'y',
+        'შ' => 'S',
+        'ჩ' => 'C',
+        'ც' => 'c',
+        'ძ' => 'Z',
+        'წ' => 'w',
+        'ჭ' => 'W',
+        'ხ' => 'x',
+        'ჯ' => 'j',
+        'ჰ' => 'h'
+    );
+    return str_replace(array_keys($letters), array_values($letters), $text);
 }
-*/

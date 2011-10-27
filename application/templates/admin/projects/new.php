@@ -137,7 +137,6 @@
 	    </div>
 	    <a class="region_link" style="font-size: 13px;" id="add_data_field">+Add data</a><br /><br />
 
-
   	    <input type='submit' style='width:90px;' value='Submit' onclick=' return document.getElementById("dname").value != "" ' />
   	    <br /><br />
 
