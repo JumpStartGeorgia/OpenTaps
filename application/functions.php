@@ -1321,7 +1321,7 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
     $newdata = array();
     if (empty($data) OR !is_array($data))
     {
-	return $data;
+	return NULL;
     }
     foreach ($data as $d)
     {
@@ -1331,7 +1331,7 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
             $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
         }
     }
-    return $newdata;
+    return json_encode($newdata);
 }
 
 function home_chart_data()
@@ -1345,7 +1345,7 @@ function home_chart_data()
     	    FROM organizations AS o
     	    WHERE o.lang = '" . LANG . "';";
 
-    return json_encode(convert_to_chart_array(fetch_db($sql), 'name', 'total_budget'));
+    return convert_to_chart_array(fetch_db($sql), 'name', 'total_budget');
 }
 
 function get_project_chart_data($unique)
@@ -1364,7 +1364,7 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'org_total_budget'));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'org_total_budget');
 
     $results['organization_projects'] = array(
         'description' => 'Organizations which run this project, ordered by sum of budgets of all their projects.',
@@ -1381,7 +1381,7 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'total_budget'));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'total_budget');
 
     $results['all_projects'] = array(
         'description' => 'All projects ordered by budget.',
@@ -1618,7 +1618,7 @@ function get_organization_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'budget'));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'budget');
 
     $results['organization_projects'] = array(
         'description' => 'Projects of this organization.',
@@ -1636,7 +1636,7 @@ function get_organization_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget'));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
 
     $results['organizations_budgets'] = array(
         'description' => 'All organizations with their total budget.',
