@@ -4,7 +4,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
-        <link rel="icon" href="<?php echo URL ?>images/favicon.ico">
+        <link rel="icon" href="<?php echo URL ?>images/favicon.ico?<?php echo sha1(uniqid(TRUE) . time() . rand()) ?>">
         <script type="text/javascript"> var baseurl = '<?php echo href() ?>'; </script>
     </head>
     <body<?php echo Storage::instance()->show_map ? ' onload="mapping();"' : NULL ?>>
@@ -59,10 +59,10 @@
                 require_once 'map.php'; ?>
 
             <div class='content group'>
-<?php echo Storage::instance()->content ?>
+                <?php echo Storage::instance()->content ?>
             </div>
 
-<?php require_once 'footer.php' ?>
+            <?php require_once 'footer.php' ?>
 
         </div>
 
