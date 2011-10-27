@@ -452,11 +452,11 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
 
     if (userloggedin())
     {
-	delete_page_data('project', $unique);
+	delete_page_data('project', $unique, LANG);
 
 	if (!empty($_POST['data_key']))
 	{
-		add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+		add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
 	}
 
 	update_project(
@@ -543,7 +543,7 @@ Slim::post('/admin/project-data/:unique/create/',function($unique){
     if(userloggedin())
     {
     	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
-	add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else
@@ -553,9 +553,9 @@ Slim::post('/admin/project-data/:unique/create/',function($unique){
 Slim::post('/admin/project-data/:unique/update/',function($unique){
     if(userloggedin())
     {
-	delete_page_data('project', $unique);
+	delete_page_data('project', $unique, LANG);
 	empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
-        add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+        add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
         Slim::redirect(href('admin/projects', TRUE));
     }
     else

@@ -294,9 +294,9 @@ Slim::post('/admin/news/create/', function(){
 Slim::post('/admin/news/:unique/update/', function($unique){
     if(userloggedin())
     {
-	delete_page_data('news', $unique);
+	delete_page_data('news', $unique, LANG);
 	if (!empty($_POST['data_key']))
-	    add_page_data('news',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	    add_page_data('news', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
 	$filedata = array(
 	    "name" => $_FILES['n_file']['name'],
 	    "type" => $_FILES['n_file']['type'],
