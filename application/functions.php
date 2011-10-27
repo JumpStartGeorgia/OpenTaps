@@ -1309,6 +1309,24 @@ function char_limit($string, $limit = 30)
     return $string;
 }
 
+function convert_to_chart_array($data, $nameindex, $budgetindex)
+{
+    $newdata = array();
+    if (empty($data) OR !is_array($data))
+    {
+	return $data;
+    }
+    foreach ($data as $d)
+    {
+        if (!empty($d[$budgetindex]))
+        {
+            $d[$nameindex] = char_limit($d[$nameindex], 30);
+            $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
+        }
+    }
+    return $newdata;
+}
+
 function home_chart_data()
 {
     $sql = "SELECT
@@ -1320,15 +1338,7 @@ function home_chart_data()
     	    FROM organizations AS o
     	    WHERE o.lang = '" . LANG . "';";
 
-    $data = fetch_db($sql);
-    $newdata = array();
-    foreach ($data as $d)
-    {
-        if (!empty($d['total_budget']))
-            $newdata[] = array($d['name'], (integer) $d['total_budget']);
-    }
-
-    return json_encode($newdata);
+    return json_encode(convert_to_chart_array(fetch_db($sql), 'name', 'total_budget'));
 }
 
 function get_project_chart_data($unique)
@@ -1347,17 +1357,8 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['org_total_budget']))
-                $newdata[] = array($d['name'], (integer) $d['org_total_budget']);
-        }
-        $data = json_encode($newdata);
-    }
+    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'org_total_budget'));
+
     $results['organization_projects'] = array(
         'description' => 'Organizations which run this project, ordered by sum of budgets of all their projects.',
         'title' => 'Organization Projects',
@@ -1373,17 +1374,8 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['total_budget']))
-                $newdata[] = array($d['title'], (integer) $d['total_budget']);
-        }
-        $data = json_encode($newdata);
-    }
+    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'total_budget'));
+
     $results['all_projects'] = array(
         'description' => 'All projects ordered by budget.',
         'title' => 'All Projects Budgets',
@@ -1619,18 +1611,8 @@ function get_organization_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['budget']))
-                $newdata[] = array($d['title'], (integer) $d['budget']);
-        }
-        $data = json_encode($newdata);
-        //strlen($data) < 3 AND $data = NULL;
-    }
+    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'budget'));
+
     $results['organization_projects'] = array(
         'description' => 'Projects of this organization.',
         'title' => 'Organization Projects',
@@ -1647,18 +1629,8 @@ function get_organization_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['budget']))
-                $newdata[] = array($d['name'], (integer) $d['budget']);
-        }
-        $data = json_encode($newdata);
-        //strlen($data) < 3 AND $data = NULL;
-    }
+    $data = json_encode(convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget'));
+
     $results['organizations_budgets'] = array(
         'description' => 'All organizations with their total budget.',
         'title' => 'Organizations Budgets',

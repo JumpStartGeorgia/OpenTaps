@@ -27,7 +27,7 @@ $(document).ready(function() {
 
 		pie_chart_options.exporting.buttons.exportButton.menuItems = [
 		      {},
-		      {},
+		      null,
 		      menuitem3,
 		      {}
 		];
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 		pie_chart_options.exporting.buttons.exportButton.menuItems = [
 		      {},
-		      {},
+		      null,
 		      menuitem3,
 		      {}
 		];
