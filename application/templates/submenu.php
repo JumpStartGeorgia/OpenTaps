@@ -7,18 +7,17 @@
             $num = count($projects);
             foreach ($projects AS $item):
 
-                if ($idx == 14)
-                    break;
-
                 $breakable = ($idx % 5 == 4);
 
                 $rem = ($num % 5 == 0) ? 5 : 0;
                 $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
-                echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' ><a href="' . href('project/' . $item['unique'], TRUE) . '">' . $item['title'] . '</a></td>';
+                echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' ><a href="' . href('project/' . $item['unique'], TRUE) . '">' . word_limiter($item['title'], 100) . '</a></td>';
                 $breakable AND print '</tr><tr>';
+                
                 $idx++;
-            endforeach;
+
+                endforeach;
             echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . '><a href="' . href('projects') . '" style="font-weight: bold">' . l('all_projects') . '</a></td>';
             ?>
         </tr>
@@ -39,7 +38,7 @@
                 $last_row = ($idx >= ($num - ($num % 5) - $rem ));
 
                 echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . ' >
-	    		<a href="' . href('organization/' . $item['unique'], TRUE) . '">' . $item['name'] . '</a>
+	    		<a href="' . href('organization/' . $item['unique'], TRUE) . '">' . word_limiter($item['name'], 90) . '</a>
 	    	      </td>';
                 $breakable AND print '</tr><tr>';
                 $idx++;

@@ -268,6 +268,7 @@ $(function()
         $('select').addClass('chosen-select');
         $(".chosen-select").chosen();
         /*	..		*/
+        wysiwyg();
         container.find('.group:last-child').slideDown('normal');
         data_field_index ++;
     });
@@ -353,7 +354,7 @@ $(function()
 
         for (i = 0, num = currency_list.length; i < num; i ++)
         {
-	    var s = (currency_list[i] == 'gel') ? 'selected="selected"' : '';
+            var s = (currency_list[i] == 'gel') ? 'selected="selected"' : '';
             html += '<option ' + s + ' value="' + currency_list[i] + '">' + currency_list[i] + '</option>';
         }
 
@@ -602,7 +603,7 @@ $(function()
 });
 
 // Initialize TinyMCE
-$(function()
+function wysiwyg()
 {
     if (typeof(tinyMCE) === 'undefined')
         return false;
@@ -626,8 +627,8 @@ $(function()
     };
 
     tinyMCE.init(options);
-
-});
+}
+$(wysiwyg);
 
 // Keyboard shortcut to admin panel
 $(function()

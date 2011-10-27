@@ -4,32 +4,14 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
-        <link rel="icon" href="<?php echo URL ?>images/favicon.ico?<?php echo sha1(uniqid(TRUE) . time() . rand()) ?>">
-        <script type="text/javascript">
-            var baseurl = '<?php echo href() ?>';
-<?php if (Storage::instance()->show_map): ?>
-        var region_map_boundsLeft = false,
-        region_map_boundsRight = false,
-        region_map_boundsTop = false,
-        region_map_boundsBottom = false,
-        region_map_zoom = false,
-        region_map_maxzoomout = false,
-        region_map_longitude = false,
-        region_map_latitude = false,
-        region_make_def_markers = false,
-        region_show_def_buttons = true,
-        region_marker_click = true,
-        places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>],
-        news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>],
-        projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
-<?php endif; ?>
-        </script>
+        <link rel="icon" href="<?php echo URL ?>images/favicon.ico?<?php echo time() ?>">
+        <script type="text/javascript"> var baseurl = '<?php echo href() ?>'; </script>
     </head>
     <body<?php echo Storage::instance()->show_map ? ' onload="mapping();"' : NULL ?>>
 
-        <div class='main group'>
+        <div class="main group">
 
-            <div class='header' style="position: relative">
+            <div class="header" style="position: relative">
 
                 <a href="<?php echo href(NULL, TRUE) ?>" style="text-decoration: none"><img id="site-logo" src="<?php echo URL ?>images/open-taps-logo.gif" /></a>
 
@@ -43,7 +25,7 @@
                     <?php endforeach; ?>
                 </div>
 
-                <div class='header_right slidenews'>
+                <div class="header_right slidenews">
                     <?php foreach ($slide_news as $news): ?>
                         <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
                                 <p><?php echo $news['title']; ?></p>
@@ -55,32 +37,22 @@
 
             </div>
 
-            <div class='after_header'></div>
+            <div class="after_header"></div>
 
-            <div class='menu'>
-                <ul id="menu"><?php echo Storage::instance()->viewmenu ?></ul>
-
-                <div class='search' style="display: none">
-                    <form method='GET' action=''>
-                        <input class='search' type='text' value='Search...' onfocus='this.value=""' onblur='if(this.value=="")
-                            this.value="Search..."' name='' />
-                        <input class='submit' type='submit' value='' />
-                    </form>
-                </div>
-            </div>
+            <div class="menu"><ul id="menu"><?php echo Storage::instance()->viewmenu ?></ul></div>
 
             <div id="submenu"><?php echo Storage::instance()->viewsubmenu ?></div>
 
-            <div class='after_menu'></div>
+            <div class="after_menu"></div>
 
             <?php if (Storage::instance()->show_map)
                 require_once 'map.php'; ?>
 
-            <div class='content group'>
-<?php echo Storage::instance()->content ?>
+            <div class="content group">
+                <?php echo Storage::instance()->content ?>
             </div>
 
-<?php require_once 'footer.php' ?>
+            <?php require_once 'footer.php' ?>
 
         </div>
 
@@ -99,8 +71,9 @@
         );
         if (Storage::instance()->show_map)
         {
-            //$scripts[] = 'http://openlayers.org/api/OpenLayers.js';
-            $scripts[] = 'OpenLayers/OpenLayers.js';
+            $scripts[] = 'http://openlayers.org/api/OpenLayers.js';
+            //$scripts[] = 'OpenLayers/OpenLayers.js';
+            //$scripts[] = 'OpenLayers/lib/OpenLayers/Control/LoadingPanel.js';
             $scripts[] = 'map.js';
         }
         $scripts[] = 'common.js';
