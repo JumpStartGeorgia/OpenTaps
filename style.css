@@ -226,18 +226,26 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 
 
 /* Mapping */
-#map-overlay { display: none; cursor: pointer; position: absolute; top: 0; left: 0; z-index: 9999; height: 362px; line-height: 362px; width: 100.3%; background-color: #0CB5F6; color: #FFF; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
-.map-button { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; z-index: 99998; position: absolute; text-decoration: none; display: block; font-size: 12px; letter-spacing: 1px; padding: 2px 7px 3px; color: #FFF; background: #0CB5F5 }
+#map { background: #DDD }
+#map-overlay { cursor: pointer; position: absolute; top: 0; left: 0; z-index: 99999; height: 362px; line-height: 362px; width: 100.3%; background-color: #0CB5F6; color: #FFF; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
+.map-button { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; z-index: 99998; position: absolute; text-decoration: none; display: block; font-size: 13px; letter-spacing: 1px; padding: 2px 7px 3px; color: #FFF; background: #0CB5F5 }
 .map-button:hover { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"; filter: alpha(opacity=80); -moz-opacity: 0.8; -khtml-opacity: 0.8; opacity: 0.8; }
+.map-button > img { vertical-align: middle }
 #map-minus-button { top: 10px; left: 10px; font-weight: bold }
 #map-plus-button { top: 10px; left: 33px; font-weight: bold }
+#map-overlays-button { top: 10px; right: 85px }
 #map-filter-button { top: 10px; right: 10px }
-#map-filter { display: none; z-index: 99998; position: absolute; right: 10px; top: 35px; }
-#map-filter > ul { list-style: none }
-#map-filter > ul > li { list-style: none; display: block; border-bottom: 1px dotted #999 }
-#map-filter > ul > li.first { border-top: 1px dotted #DDD }
-#map-filter > ul > li > a { display: block; font-size: 12px; padding: 4px 10px 5px; background: #EEE; text-decoration: none; color: #000 }
-
+#map-overlays { right: 85px; top: 35px; }
+#map-filter { right: 10px; top: 35px; }
+.map-drop-menu { display: none; z-index: 99998; position: absolute; }
+.map-drop-menu ul { list-style: none }
+.map-drop-menu li { position: relative; list-style: none; display: block; border-bottom: 1px dashed #CFCFCF }
+.map-drop-menu li.first { border-top: 1px dashed #CFCFCF }
+.map-drop-menu a { display: block; white-space: nowrap; font-size: 12px; padding: 4px 12px 5px; background: #F5F5F5; text-decoration: none; color: #000 }
+.map-drop-menu a.active { font-weight: bold }
+.map-drop-menu a img { margin-right: 5px; vertical-align: middle }
+.map-drop-menu ul ul { display: none; position: absolute; right: 144px; top: 0; border-right: 1px dashed #CFCFCF }
+#map-filter > ul > li > a { cursor: default }
 
 .highcharts-container svg > text { display: none !important }
 #showtables { /*width: 750px;*/ font-family: Arial }
@@ -324,5 +332,18 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .chzn-rtl.chzn-container-active .chzn-single-with-drop div { border-right: none }
 .chzn-rtl .chzn-search input { background: url('images/chosen-sprite.png') no-repeat -38px -22px, #ffffff; background: url('images/chosen-sprite.png') no-repeat -38px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee)); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, linear-gradient(top, #ffffff 85%,#eeeeee 99%); padding: 4px 5px 4px 20px }
 .wordwrap { width: 235px;word-break:break-word; }
+
+.olControlLoadingPanel
+{
+    background-image: url(images/map/loading.gif);
+    margin-left: 30%;
+    margin-top: 50%;
+    position: relative;
+    width: 195px;
+    height: 11px;
+    background-position:center;
+    background-repeat:no-repeat;
+    display: none;
+}
 
 <?php ob_end_flush(); ?>

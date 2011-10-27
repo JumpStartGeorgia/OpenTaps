@@ -5,25 +5,7 @@
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
         <link rel="icon" href="<?php echo URL ?>images/favicon.ico">
-        <script type="text/javascript">
-            var baseurl = '<?php echo href() ?>';
-<?php if (Storage::instance()->show_map): ?>
-        var region_map_boundsLeft = false,
-        region_map_boundsRight = false,
-        region_map_boundsTop = false,
-        region_map_boundsBottom = false,
-        region_map_zoom = false,
-        region_map_maxzoomout = false,
-        region_map_longitude = false,
-        region_map_latitude = false,
-        region_make_def_markers = false,
-        region_show_def_buttons = true,
-        region_marker_click = true,
-        places = [<?php echo implode(', ', empty(Storage::instance()->js_places) ? array() : Storage::instance()->js_places) ?>],
-        news = [<?php echo implode(', ', empty(Storage::instance()->js_news) ? array() : Storage::instance()->js_news) ?>],
-        projects = [<?php echo implode(', ', empty(Storage::instance()->js_projects) ? array() : Storage::instance()->js_projects) ?>];
-<?php endif; ?>
-        </script>
+        <script type="text/javascript"> var baseurl = '<?php echo href() ?>'; </script>
     </head>
     <body<?php echo Storage::instance()->show_map ? ' onload="mapping();"' : NULL ?>>
 
@@ -101,6 +83,7 @@
         {
             //$scripts[] = 'http://openlayers.org/api/OpenLayers.js';
             $scripts[] = 'OpenLayers/OpenLayers.js';
+            //$scripts[] = 'OpenLayers/lib/OpenLayers/Control/LoadingPanel.js';
             $scripts[] = 'map.js';
         }
         $scripts[] = 'common.js';
