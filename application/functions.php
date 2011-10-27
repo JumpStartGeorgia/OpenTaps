@@ -290,7 +290,7 @@ function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $cate
     if ($success)
     {
         (empty($tags) AND empty($tag_names)) OR add_tag_connector('news', $unique, $tags, $tag_names);
-        empty($data_key) OR add_page_data('news', $unique, $data_key, $data_sort, $sidebar, $data_value);
+        empty($data_key) OR add_page_data('news', $unique, $data_key, $data_sort, $sidebar, $data_value, $adding_lang);
         Slim::redirect(href('admin/news', TRUE));
     }
     else
@@ -341,7 +341,7 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     $exec = $statement->execute($data);
     //$unique = get_unique("news", $id);
 
-    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique;", array(':unique' => $unique));
+    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique AND lang = '" . LANG . "';", array(':unique' => $unique));
     if (!empty($tags) OR !empty($tag_names))
     {
         add_tag_connector('news', $unique, $tags, $tag_names);
@@ -439,7 +439,7 @@ function read_tag_connector($field, $unique)
     if ($field != "news" && $field != "proj" && $field != "org")
         return array();
 
-    $sql = "SELECT tag_unique FROM tag_connector WHERE " . $field . "_unique = '" . $unique . "'";
+    $sql = "SELECT tag_unique FROM tag_connector WHERE " . $field . "_unique = '" . $unique . "' AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute();
@@ -489,6 +489,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
                     $stmt = db()->prepare("SELECT `unique` FROM tags WHERE name = :name LIMIT 1");
                     $stmt->closeCursor();
                     $stmt->execute(array(':name' => $tag_name));
+                    
                     $inserted_unique = $stmt->fetch(PDO::FETCH_ASSOC);
                     $result['unique'] = $inserted_unique['unique'];
                     $success = TRUE;
@@ -503,12 +504,16 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     $check = TRUE;
 
 
-    $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);";
+    $sql = "INSERT INTO `opentaps`.`tag_connector` (lang, `tag_unique`, `" . $field . "_unique`) VALUES(:lang, :tag_unique, :f_unique);";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     foreach ($tag_uniques AS $tag_unique)
     {
-        $exec = $statement->execute(array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique));
+        $exec = $statement->execute(array(
+        	':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
+        	':f_unique' => $f_unique,
+        	':tag_unique' => $tag_unique
+        ));
         $check AND $check = (bool) $exec;
     }
 
@@ -541,6 +546,7 @@ function add_tag($adding_lang, $name, $redirect = TRUE)
     {
         Slim::redirect(href("admin/tags", TRUE));
     }
+    return $success;
 }
 
 function update_tag($unique, $name)
@@ -778,7 +784,7 @@ function add_region($adding_lang, $name, $region_info, $region_projects_info, $c
     {
         if (!empty($data_key))
         {
-            add_page_data('region', $unique, $data_key, $data_sort, $sidebar, $data_value);
+            add_page_data('region', $unique, $data_key, $data_sort, $sidebar, $data_value, $adding_lang);
         }
 
         $sql = "INSERT INTO water_supply (text, region_unique) VALUE(:text, :region_unique)";
@@ -794,7 +800,7 @@ function add_region($adding_lang, $name, $region_info, $region_projects_info, $c
 function delete_region($unique)
 {
     $sql = "DELETE FROM regions WHERE `unique` = :unique;
-		DELETE FROM pages_data WHERE owner = 'region' AND owner_unique = :unique;";
+	    DELETE FROM pages_data WHERE owner = 'region' AND owner_unique = :unique;";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(':unique' => $unique));
@@ -1069,7 +1075,7 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
             add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
         }
 
-        empty($project_key) OR add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value);
+        empty($project_key) OR add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value, $adding_lang);
         if (!empty($budgets))
         {
             list($budgets, $organization, $currency) = $budgets;
@@ -1126,7 +1132,7 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     	DELETE FROM
     		tag_connector
     	WHERE
-    		proj_unique = :unique;
+    		proj_unique = :unique AND lang = '" . LANG . "';
     	DELETE FROM
     		project_budgets
     	WHERE
@@ -1171,7 +1177,7 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     }
 
 
-    fetch_db("DELETE FROM tag_connector WHERE proj_unique = $unique");
+    fetch_db("DELETE FROM tag_connector WHERE proj_unique = :unique AND lang = '" . LANG . "'", array(':unique' => $unique));
     if (!empty($tag_uniques) OR !empty($tag_names))
     {
         add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
@@ -1241,42 +1247,43 @@ function read_page_data($owner, $unique)
     return $query;
 }
 
-function delete_page_data($owner, $unique)
+function delete_page_data($owner, $unique, $deleting_lang = FALSE)
 {
-    $sql = "DELETE FROM pages_data WHERE owner = :owner AND owner_unique = :unique;";
+    $sql = "DELETE FROM pages_data WHERE owner = :owner AND owner_unique = :unique";
+    $deleting_lang AND $sql .= " AND lang = '" . $deleting_lang . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(':unique' => $unique, ':owner' => $owner));
 }
 
-function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value)
+function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value, $adding_lang)
 {
-    $languages = config('languages');
+    //$languages = config('languages');
 
     $sql = "INSERT INTO `opentaps`.`pages_data` (`key`, `value`, `owner`, owner_unique, `sort`, `sidebar`, lang, `unique`)
 	    VALUES (:key, :value, :owner, :owner_unique, :sort, :sidebar, :lang, :unique);";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
-    for ($i = 0, $c = count($key); $i < $c; $i++)
+    for ($i = 0, $c = count($key); $i < $c; $i ++)
     {
         if (!empty($key[$i]) AND !empty($value[$i]))
         {
             $unique = generate_unique("pages_data");
-            foreach ($languages as $lang)
-            {
+            //foreach ($languages as $lang)
+            //{
                 $data = array(
                     ':owner' => $owner,
                     ':owner_unique' => $owner_unique,
-                    ':key' => $key[$i] . ((LANG == $lang) ? NULL : " ({$lang})"),
+                    ':key' => $key[$i],// . ((LANG == $lang) ? NULL : " ({$lang})"),
                     ':value' => $value[$i],
                     ':sort' => $sort[$i],
                     ':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i] == "checked") ? 1 : 0),
-                    ':lang' => $lang,
+                    ':lang' => $adding_lang,
                     ':unique' => $unique
                 );
                 $statement->execute($data);
-            }
+            //}
         }
     }
 }
@@ -1309,6 +1316,24 @@ function char_limit($string, $limit = 30)
     return $string;
 }
 
+function convert_to_chart_array($data, $nameindex, $budgetindex)
+{
+    $newdata = array();
+    if (empty($data) OR !is_array($data))
+    {
+	return NULL;
+    }
+    foreach ($data as $d)
+    {
+        if (!empty($d[$budgetindex]))
+        {
+            $d[$nameindex] = char_limit($d[$nameindex], 30);
+            $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
+        }
+    }
+    return json_encode($newdata);
+}
+
 function home_chart_data()
 {
     $sql = "SELECT
@@ -1320,15 +1345,7 @@ function home_chart_data()
     	    FROM organizations AS o
     	    WHERE o.lang = '" . LANG . "';";
 
-    $data = fetch_db($sql);
-    $newdata = array();
-    foreach ($data as $d)
-    {
-        if (!empty($d['total_budget']))
-            $newdata[] = array($d['name'], (integer) $d['total_budget']);
-    }
-
-    return json_encode($newdata);
+    return convert_to_chart_array(fetch_db($sql), 'name', 'total_budget');
 }
 
 function get_project_chart_data($unique)
@@ -1347,17 +1364,8 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['org_total_budget']))
-                $newdata[] = array($d['name'], (integer) $d['org_total_budget']);
-        }
-        $data = json_encode($newdata);
-    }
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'org_total_budget');
+
     $results['organization_projects'] = array(
         'description' => 'Organizations which run this project, ordered by sum of budgets of all their projects.',
         'title' => 'Organization Projects',
@@ -1373,17 +1381,8 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['total_budget']))
-                $newdata[] = array($d['title'], (integer) $d['total_budget']);
-        }
-        $data = json_encode($newdata);
-    }
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'total_budget');
+
     $results['all_projects'] = array(
         'description' => 'All projects ordered by budget.',
         'title' => 'All Projects Budgets',
@@ -1446,7 +1445,7 @@ function delete_organization($unique)
 {
     $org = get_organization($unique);
     $sql = "DELETE FROM organizations WHERE `unique` = :unique;
-		DELETE FROM pages_data WHERE owner = 'organization' AND owner_unique = :unique";
+	    DELETE FROM pages_data WHERE owner = 'organization' AND owner_unique = :unique;";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(':unique' => $unique));
@@ -1516,7 +1515,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
     {
         if (!empty($org_key))
         {
-            add_page_data('organization', $unique, $org_key, $org_sort, $sidebar, $org_value);
+            add_page_data('organization', $unique, $org_key, $org_sort, $sidebar, $org_value, $adding_lang);
         }
 
         if (!empty($tags) OR !empty($tag_names))
@@ -1553,7 +1552,7 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
 		grante=:grante,sector=:sector,projects_info=:projects_info
 		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
 	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;
-	    DELETE FROM tag_connector WHERE org_unique = :unique;";
+	    DELETE FROM tag_connector WHERE org_unique = :unique AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(
@@ -1619,18 +1618,8 @@ function get_organization_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['budget']))
-                $newdata[] = array($d['title'], (integer) $d['budget']);
-        }
-        $data = json_encode($newdata);
-        //strlen($data) < 3 AND $data = NULL;
-    }
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'budget');
+
     $results['organization_projects'] = array(
         'description' => 'Projects of this organization.',
         'title' => 'Organization Projects',
@@ -1647,18 +1636,8 @@ function get_organization_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    if (!empty($data))
-    {
-        $newdata = array();
-        foreach ($data as $d)
-        {
-            if (!empty($d['budget']))
-                $newdata[] = array($d['name'], (integer) $d['budget']);
-        }
-        $data = json_encode($newdata);
-        //strlen($data) < 3 AND $data = NULL;
-    }
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
+
     $results['organizations_budgets'] = array(
         'description' => 'All organizations with their total budget.',
         'title' => 'Organizations Budgets',

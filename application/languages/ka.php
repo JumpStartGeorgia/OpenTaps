@@ -41,7 +41,7 @@ return array(
     'gp_no_data' => 'არ არის მონაცემები',
     'tags_projects' => 'პროექტები',
     'tags_organizations' => 'ორგანიზაციები',
-    'tags_news' => 'ტეგების ამბები',
+    'tags_news' => 'ნიუსები',
     'ws_hiy' => 'თქვენ რამდენად გაინტერესებთ',
     'ends' => 'დასასრული',
     'organizations' => 'ორგანიზაციები',

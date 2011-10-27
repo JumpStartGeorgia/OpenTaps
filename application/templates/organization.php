@@ -98,7 +98,7 @@
                         <?php if ($count[$type] == 0)
                             continue; ?>
                         <a href="<?php echo href('projects', TRUE) /* filter link here */ ?>">
-                            <img src="<?php echo href('images') . str_replace(' ', '-', strtolower(trim($type))) ?>" />
+                            <img src="<?php echo href('images') . str_replace(' ', '-', strtolower(trim($type))) ?>.png" />
                             <?php echo $type . " (" . $count[$type] . ")" ?>
                         </a>
                     <?php endforeach; ?>

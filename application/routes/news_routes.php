@@ -16,12 +16,12 @@ Slim::get('/news/', function()
 
 	$query = "SELECT DISTINCT tags.id,
 			 tags.name,
-			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND lang = '" . LANG . "')
 			 AS total_tags
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 		  JOIN news ON tag_connector.news_unique = news.`unique`
-		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
+		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -65,12 +65,12 @@ Slim::get('/news/page/:page/', function($page)
 
 	$query = "SELECT DISTINCT tags.id,
 			 tags.name,
-			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
 			 AS total_tags
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 		  JOIN news ON tag_connector.news_unique = news.`unique`
-		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
+		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -99,12 +99,12 @@ Slim::get('/news/type/:type/', function($type)
 	$total_pages = ($total % $nosp == 0) ? $total / $nosp : ($total + ($nosp - $total % $nosp)) / $nosp;
 
 	$query = "SELECT DISTINCT tags.id,tags.name,
-			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
 			 AS total_tags
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 		  JOIN news ON tag_connector.news_unique = news.`unique`
-		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
+		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -135,12 +135,12 @@ Slim::get('/news/type/:type/:page/', function($type, $page)
 	($page > $total_pages) AND die('invalid page');
 
 	$query = "SELECT DISTINCT tags.id,tags.name,
-			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
 			 AS total_tags
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 		  JOIN news ON tag_connector.news_unique = news.`unique`
-		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "';";
+		  WHERE news.category = :type AND tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':type' => $type));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -294,9 +294,9 @@ Slim::post('/admin/news/create/', function(){
 Slim::post('/admin/news/:unique/update/', function($unique){
     if(userloggedin())
     {
-	delete_page_data('news', $unique);
+	delete_page_data('news', $unique, LANG);
 	if (!empty($_POST['data_key']))
-	    add_page_data('news',$unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value']);
+	    add_page_data('news', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
 	$filedata = array(
 	    "name" => $_FILES['n_file']['name'],
 	    "type" => $_FILES['n_file']['type'],

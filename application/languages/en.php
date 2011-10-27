@@ -41,7 +41,7 @@ return array(
     'gp_no_data' => 'No Data',
     'tags_projects' => 'PROJECTS',
     'tags_organizations' => 'ORGANIZATIONS',
-    'tags_news' => 'tags news',
+    'tags_news' => 'news',
     'ws_hiy' => 'How Interest You',
     'ws_region' => 'region',
     'ws_last_updated' => 'Last Updated',

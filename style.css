@@ -105,7 +105,7 @@ div.newsall_body { width: 573px; color: #565656; font-size: 13px; font-family: A
 div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border: 1px dotted @opentaps_default_bordercolor; border-top: 0px }
 .news_body .top_image { width: 249px; height: 151px; display: inline-block; float: left; border-right: 6px solid #0cb5f5 }
 .news_body .top_image img { width: 248px; height: 151px; border-right: 1px solid #fff }
-.news_body .top_image .over_background { position: absolute; width: 248px; height: 113px; padding-top: 38px; text-align: center; color: #fff; background: rgba(@opentaps_default_rgba, .6); font-size: 13px }
+.news_body .top_image .over_background { cursor: pointer; position: absolute; width: 248px; height: 113px; padding-top: 38px; text-align: center; color: #fff; background: rgba(@opentaps_default_rgba, .6); font-size: 13px }
 #news_middle_content { width: 535px; height: 154px; margin-top: 33px; background: url(@baseurl/images/bg.jpg) }
 .news_body #left_image_box { padding: 13px 16px 13px 15px; height: 128px; width: 128px; overflow: hidden; float: left }
 .news_body #left_image_box img { height: 128px; width: 128px }

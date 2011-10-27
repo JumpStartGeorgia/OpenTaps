@@ -19,6 +19,13 @@ Slim::get('/login/', function()
         }
 );
 
+Slim::get('/login/incorrect/', function()
+        {
+            if (!userloggedin())
+                Storage::instance()->content = template('login', array('alert' => 'Incorrect Username/Password'));
+        }
+);
+
 Slim::post('/login/', function()
         {
             $user = authenticate($_POST['username'], $_POST['password']);
@@ -26,10 +33,10 @@ Slim::post('/login/', function()
             {
                 $_SESSION['id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
-                echo "<meta http-equiv='refresh' content='0; url=" . href("admin", TRUE) . "' />";
+                Slim::redirect(href("admin", TRUE));
             }
             else
-                Storage::instance()->content = template('login', array('alert' => 'Incorrect Username/Password'));
+                Slim::redirect(href("login/incorrect", TRUE));
         }
 );
 
