@@ -642,6 +642,10 @@ $(function()
 
 });
 
+// Initialize Cufon
+if (typeof(Cufon) !== 'undefined')
+    Cufon.replace('.menu-item > div').now();
+
 // Block Errors
 $(function()
 {

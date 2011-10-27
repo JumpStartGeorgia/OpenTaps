@@ -73,6 +73,7 @@ div.menu ul li a { display: block; height: 26px; padding: 10px 10px 0px 10px; te
 div.menu ul li a:hover, div.menu ul li:hover { color: white; background-color: #5FCCF3; outline: 0 }
 div.projects_organization, div.news, div.spacer { display: table-cell; vertical-align: middle; text-align: center; color: #fff; font-size: 1.0em; font-family: Arial }
 #override_border { width: 0px; height: 1px; position: absolute; top: 0; left: 0; background: #fff }
+.menu ul li a { font-family: "Babuka Mtavruli", Arial; letter-spacing: 1px }
 
 /* Submenus */
 #submenu .submenu { display: none; width: 100%; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0 }

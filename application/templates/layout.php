@@ -76,6 +76,11 @@
             //$scripts[] = 'OpenLayers/lib/OpenLayers/Control/LoadingPanel.js';
             $scripts[] = 'map.js';
         }
+        if (LANG == 'ka')
+        {
+            $scripts[] = 'cufon.js';
+            $scripts[] = 'babuka_mtavruli.js';
+        }
         $scripts[] = 'common.js';
         userloggedin() AND $scripts[] = 'tinymce/tiny_mce.js';
         foreach ($scripts AS $script)
