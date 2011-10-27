@@ -341,7 +341,7 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     $exec = $statement->execute($data);
     //$unique = get_unique("news", $id);
 
-    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique;", array(':unique' => $unique));
+    fetch_db("DELETE FROM tag_connector WHERE news_unique = :unique AND lang = '" . LANG . "';", array(':unique' => $unique));
     if (!empty($tags) OR !empty($tag_names))
     {
         add_tag_connector('news', $unique, $tags, $tag_names);
@@ -439,7 +439,7 @@ function read_tag_connector($field, $unique)
     if ($field != "news" && $field != "proj" && $field != "org")
         return array();
 
-    $sql = "SELECT tag_unique FROM tag_connector WHERE " . $field . "_unique = '" . $unique . "'";
+    $sql = "SELECT tag_unique FROM tag_connector WHERE " . $field . "_unique = '" . $unique . "' AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute();
@@ -489,6 +489,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
                     $stmt = db()->prepare("SELECT `unique` FROM tags WHERE name = :name LIMIT 1");
                     $stmt->closeCursor();
                     $stmt->execute(array(':name' => $tag_name));
+                    
                     $inserted_unique = $stmt->fetch(PDO::FETCH_ASSOC);
                     $result['unique'] = $inserted_unique['unique'];
                     $success = TRUE;
@@ -503,12 +504,16 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     $check = TRUE;
 
 
-    $sql = "INSERT INTO `opentaps`.`tag_connector` (`tag_unique`, `" . $field . "_unique`) VALUES(:tag_unique, :f_unique);";
+    $sql = "INSERT INTO `opentaps`.`tag_connector` (lang, `tag_unique`, `" . $field . "_unique`) VALUES(:lang, :tag_unique, :f_unique);";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     foreach ($tag_uniques AS $tag_unique)
     {
-        $exec = $statement->execute(array(':f_unique' => $f_unique, ':tag_unique' => $tag_unique));
+        $exec = $statement->execute(array(
+        	':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
+        	':f_unique' => $f_unique,
+        	':tag_unique' => $tag_unique
+        ));
         $check AND $check = (bool) $exec;
     }
 
@@ -541,6 +546,7 @@ function add_tag($adding_lang, $name, $redirect = TRUE)
     {
         Slim::redirect(href("admin/tags", TRUE));
     }
+    return $success;
 }
 
 function update_tag($unique, $name)
@@ -1126,7 +1132,7 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     	DELETE FROM
     		tag_connector
     	WHERE
-    		proj_unique = :unique;
+    		proj_unique = :unique AND lang = '" . LANG . "';
     	DELETE FROM
     		project_budgets
     	WHERE
@@ -1171,7 +1177,7 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     }
 
 
-    fetch_db("DELETE FROM tag_connector WHERE proj_unique = $unique");
+    fetch_db("DELETE FROM tag_connector WHERE proj_unique = :unique AND lang = '" . LANG . "'", array(':unique' => $unique));
     if (!empty($tag_uniques) OR !empty($tag_names))
     {
         add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
@@ -1259,7 +1265,7 @@ function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value, $ad
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
-    for ($i = 0, $c = count($key); $i < $c; $i++)
+    for ($i = 0, $c = count($key); $i < $c; $i ++)
     {
         if (!empty($key[$i]) AND !empty($value[$i]))
         {
@@ -1546,7 +1552,7 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
 		grante=:grante,sector=:sector,projects_info=:projects_info
 		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
 	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;
-	    DELETE FROM tag_connector WHERE org_unique = :unique;";
+	    DELETE FROM tag_connector WHERE org_unique = :unique AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(

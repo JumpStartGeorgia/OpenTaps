@@ -14,12 +14,12 @@ Slim::get('/projects/', function()
 
 	$query = "SELECT DISTINCT tags.id,
 			  tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
-			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -39,11 +39,11 @@ Slim::get('/project/:unique/', function($unique)
 {
 	Storage::instance()->show_map = FALSE;
 
-	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
+	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
-		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique";
+		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -86,12 +86,12 @@ Slim::get('/projects/page/:page/', function($page)
 
 	$query = "SELECT DISTINCT tags.id,
 			  tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
-			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -123,12 +123,12 @@ Slim::get('/projects/order/:order-:direction/', function($order, $direction)
 	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
 
 	$query = "SELECT DISTINCT tags.id,tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
-			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -162,12 +162,12 @@ Slim::get('/projects/order/:order-:direction/:page/', function($order, $directio
 	($page > $total_pages) AND die('invalid page');
 
 	$query = "SELECT DISTINCT tags.id,tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`)
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 			  JOIN projects ON tag_connector.proj_unique = projects.`unique`
-			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "';";
+			  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -465,7 +465,7 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
         	'', //$_POST['p_desc'],
         	$budgets,
 		$_POST['p_beneficiary_people'],
-		$_POST['p_place'],
+		(empty($_POST['p_place']) ? NULL : $_POST['p_place']),
         	$_POST['p_city'],
         	$_POST['p_grantee'],
         	$_POST['p_sector'],
@@ -486,7 +486,7 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
 Slim::get('/admin/project-tags/:unique/',function($unique){
     if(userloggedin())
     {
-	$sql = "SELECT tag_unique FROM tag_connector WHERE proj_unique = :unique;";
+	$sql = "SELECT tag_unique FROM tag_connector WHERE proj_unique = :unique AND tag_connector.lang = '" . LANG . "';";
         $statement = Storage::instance()->db->prepare($sql);
         //$unique = get_unique("projects", $id);
         $statement->execute(array(':unique' => $unique));

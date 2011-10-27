@@ -18,13 +18,14 @@ Slim::get('/organizations/',function(){
 Slim::get('/organization/:unique/',function($unique){
 	Storage::instance()->show_map = FALSE;
 
-	$query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique`) AS total_tags
+	$query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN organizations ON `org_unique` = organizations.`unique`
 		  WHERE organizations.`unique` = :unique
 		  AND tags.lang = '" . LANG . "'
-		  AND organizations.lang = '" . LANG . "';";
+		  AND organizations.lang = '" . LANG . "'
+		  AND tag_connector.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
 	$query->execute(array(':unique' => $unique));
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -82,7 +83,7 @@ else
 Slim::get('/admin/organizations/:unique/delete/', function($unique){
      if(userloggedin()) {
      	delete_organization($unique) ;
-     	fetch_db("DELETE FROM tag_connector WHERE org_unique = $unique");
+     	fetch_db("DELETE FROM tag_connector WHERE org_unique = :unique", array(':unique' => $unique));
      	Slim::redirect(href('admin/organizations', TRUE));
      }
      else Storage::instance()->content = template('login');
