@@ -1,5 +1,13 @@
 <div class="page-container">
-	 <font style="font-size: 12px;"><?php echo l('news_date') ?>: <?php echo date('F d, Y H:i',strtotime($news[0]['published_at'])); ?><font><br />
+	 <font style="font-size: 12px;"><?php echo l('news_date') ?>: 
+	 <?php 
+		if( LANG == 'en' ):
+	 		echo call_user_func(config('getDate'),'en',$news[0]['published_at']);
+	 	else:
+	 		echo call_user_func(config('getDate'),'ka',$news[0]['published_at']);
+	 	endif; 
+	 	
+ 	?><font><br />
     <h1 style="font-size: 18px;">
         <?php echo $news[0]['title'] ?>
         <?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; font-size: 12px;' href='" . href('admin/news/' . $news[0]['unique'], TRUE) . "'>Edit</a>"); ?>

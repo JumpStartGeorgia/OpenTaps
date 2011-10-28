@@ -85,6 +85,6 @@ return array(
 	 'beneficiary_people' => 'ბენეფიციარები',
 	 'budget' => 'ბიუჯეტი',
 	 'region_cities' => 'რეგიონის ქალაქები',
-	 'region_towns' => 'რეგიონის ქალაქები'
+	 'region_towns' => 'რეგიონის ქალაქი'
 );
 

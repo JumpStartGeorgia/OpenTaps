@@ -59,7 +59,13 @@
     		    <div style='padding: 4px; padding-top: 15px; font-size: 10px; text-align: center;'>
     		    	<img src='<?php echo href() . $images[$news['category']] ?>' height='36px' />
     		    	<br />
-    		    	<?php echo date('F d, Y',strtotime($news['published_at'])) ?>
+    		    	<?php 
+    		    		if( LANG == 'en' ):
+    		    			echo call_user_func(config('getDate'),'en',$news['published_at']); 
+    		    		else:
+    		    			echo call_user_func(config('getDate'),'ka',$news['published_at']);
+    		    		endif;
+    		    	?>    		    		
     		    </div>
     		</div>
     	    </div>

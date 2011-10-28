@@ -752,18 +752,20 @@ function delete_place($unique)
 
 /* =======================================================Admin Regions 	============================================================ */
 
-function add_region($adding_lang, $name, $region_info, $region_projects_info, $city, $population, $squares, $settlement, $villages, $districts, $water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
+function add_region($adding_lang, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
     $unique = generate_unique("regions");
 
-    $sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts,lang,`unique`)
-	    VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
+    $sql = "INSERT INTO regions(name,region_info,projects_info,city,cities,towns,population,square_meters,settlement,villages,districts,lang,`unique`)
+	    VALUES(:name,:region_info,:region_projects,:city,:cities,:towns,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $data = array(
         ':region_info' => $region_info,
         ':region_projects' => $region_projects_info,
         ':city' => $city,
+        ':cities' => $cities,
+		  ':towns' => $towns,        
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,
@@ -818,13 +820,15 @@ function get_region($unique)
     return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
-function update_region($unique, $name, $region_info, $region_projects_info, $city, $population, $squares, $settlement, $villages, $districts, $water_supply)
+function update_region($unique, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply)
 {
     $sql = "UPDATE regions SET
 			name = :name,
 			region_info = :region_info,
 			projects_info = :region_projects,
 			city = :city,
+			cities = :cities,
+			towns = :towns,
 			population = :population,
 			square_meters = :squares,
 			settlement = :settlement,
@@ -839,6 +843,8 @@ function update_region($unique, $name, $region_info, $region_projects_info, $cit
         ':region_info' => $region_info,
         ':region_projects' => $region_projects_info,
         ':city' => $city,
+		  ':cities' => $cities,
+		  ':towns' => $towns,
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,

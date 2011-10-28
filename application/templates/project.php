@@ -57,8 +57,23 @@ function edit_button($edit_id = NULL)
                         strtoupper($budget['currency']) . '<br />';
                     endforeach;
                     ?>
-<?php echo l('beginning') ?>: <?php echo date('F d, Y',strtotime($project['start_at'])); ?><br />
-<?php echo l('ends') ?>: <?php echo date('F d, Y',strtotime($project['end_at'])); ?><br />
+<?php echo l('beginning') ?>: <?php 
+	if( LANG  == 'en'):
+		echo call_user_func(config('getDate'),'en',$project['start_at'] );
+	else: 
+		echo call_user_func(config('getDate'),'ka',$project['start_at'] );
+	endif;
+	
+ ?><br />
+<?php echo l('ends') ?>: <?php 
+
+	if( LANG  == 'en'):
+		echo call_user_func(config('getDate'),'en',$project['end_at'] );
+	else: 
+		echo call_user_func(config('getDate'),'ka',$project['end_at'] );
+	endif;
+
+?><br />
 <?php echo l('type') ?>: <?php echo $project['type']; ?>
                 </div>
             </div>
