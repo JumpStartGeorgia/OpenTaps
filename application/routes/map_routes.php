@@ -7,12 +7,43 @@ function check_map_data_access()
         exit('Go to hell!');
 }
 
+Slim::get('/map-data/settlements(/:type)', 'check_map_data_access', function($type = NULL)
+        {
+            $type = empty($type) ? NULL : " WHERE type = '{$type}'";
+            $sql = "SELECT name_" . LANG . " AS name, lon, lat FROM map_settlements{$type};";
+            $result = db()->query($sql, PDO::FETCH_ASSOC);
+
+            if (empty($result))
+                exit(json_encode(array()));
+
+            $geojson = array(
+                'type' => 'FeatureCollection',
+                'features' => array()
+            );
+
+            foreach ($result AS $item)
+            {
+                $geojson['features'][] = array(
+                    'type' => 'Feature',
+                    'properties' => array(
+                        'name' => $item['name']
+                    ),
+                    'geometry' => array(
+                        'type' => 'Point',
+                        'coordinates' => array($item['lat'], $item['lon'])
+                    )
+                );
+            }
+
+            exit(json_encode($geojson));
+        }
+);
+
 Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', function($type, $status = 'all')
         {
             $type = ucwords(str_replace('_', ' ', trim(strtolower($type))));
 
-            $lang = LANG;
-
+            $status_sql = NULL;
             switch ($status)
             {
                 case 'completed':
@@ -24,37 +55,36 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
                 case 'scheduled':
                     $status_sql = "AND DATE(start_at) > CURDATE()";
                     break;
-                default:
-                    $status_sql = NULL;
-                    break;
             }
 
-            $project_sql = "
+            $sql = "
                 SELECT `unique` AS id, title, place_unique
                 FROM projects
                 WHERE type = '{$type}'
                 {$status_sql}
-                AND lang = '{$lang}'
+                AND lang = '" . LANG . "'
             ;";
 
-            $result = db()->query($project_sql, PDO::FETCH_ASSOC);
+            $result = db()->query($sql, PDO::FETCH_ASSOC);
+
+            if (empty($result))
+                exit(json_encode(array()));
 
             $json = array();
 
-            if (!empty($result))
+            foreach ($result AS $item)
             {
-                foreach ($result AS $item)
-                {
-                    $place_ids = $item['place_unique'];
-                    //$place_ids = unserialize($item['place_unique']);
-                    //$place_ids = implode(', ', $place_ids);
-                    $sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = '{$lang}';";
-                    $json[] = array(
-                        'id' => $item['id'],
-                        'title' => $item['title'],
-                        'places' => db()->query($sql, PDO::FETCH_ASSOC)->fetchAll()
-                    );
-                }
+                $place_ids = $item['place_unique'];
+                //$place_ids = unserialize($item['place_unique']);
+                //$place_ids = implode(', ', $place_ids);
+                $places_sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = '" . LANG . "';";
+                $places = db()->query($places_sql, PDO::FETCH_ASSOC)->fetchAll();
+                empty($places) AND $places = array();
+                $json[] = array(
+                    'id' => $item['id'],
+                    'title' => $item['title'],
+                    'places' => $places
+                );
             }
 
             exit(json_encode($json));

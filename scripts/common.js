@@ -1,3 +1,7 @@
+function def(item)
+{
+    return (typeof(item) !== 'undefined');
+}
 
 String.prototype.reverse = function()
 {
@@ -382,7 +386,7 @@ $(function(){
     $('#map-overlay').css('opacity', 0.5).hover(function()
     {
         $(this).stop().animate({
-            opacity: 0.33
+            opacity: 0.2
         }, 'slow');
     }, function()
     {
@@ -396,7 +400,7 @@ $(function(){
         disabling = true;
         $(this).fadeOut('slow', function()
         {
-            deven.setOpacity(1);
+            //deven.setOpacity(1);
             $(this).remove();
         });
     });

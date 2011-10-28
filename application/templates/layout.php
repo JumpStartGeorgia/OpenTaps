@@ -5,9 +5,12 @@
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
         <link rel="icon" href="<?php echo URL ?>images/favicon.ico?<?php echo time() ?>">
-        <script type="text/javascript"> var baseurl = '<?php echo href() ?>'; </script>
+        <script type="text/javascript">
+            var baseurl = '<?php echo href() ?>',
+            lang = '<?php echo LANG ?>';
+        </script>
     </head>
-    <body<?php echo Storage::instance()->show_map ? ' onload="mapping();"' : NULL ?>>
+    <body>
 
         <div class="main group">
 
@@ -65,11 +68,11 @@
         );
         if (isset(Storage::instance()->show_chart))
         {
-	    $scripts[] = 'charts/highcharts.js';
+            $scripts[] = 'charts/highcharts.js';
             $scripts[] = 'charts/modules/exporting.js';
             $scripts[] = 'charts/chart_config.js';
-	}
-	isset(Storage::instance()->show_chart['home']) AND $scripts[] = 'charts/chart_home.js';
+        }
+        isset(Storage::instance()->show_chart['home']) AND $scripts[] = 'charts/chart_home.js';
         isset(Storage::instance()->show_chart['organization']) AND $scripts[] = 'charts/chart_org.js';
         isset(Storage::instance()->show_chart['project']) AND $scripts[] = 'charts/chart_project.js';
         if (Storage::instance()->show_map)

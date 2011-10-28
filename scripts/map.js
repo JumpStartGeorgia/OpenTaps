@@ -1,89 +1,65 @@
+/**
+ * Mapping script for project OpenTaps.
+ * Used plain JavaScript, jQuery, OpenLayers and GeoJSON format.
+ * Otar Chekurishvili - otar@chekurishvili.com
+ */
+
+// Define globals and configurations
 var loaded = false,
 map,
 base,
 map_options = {
-    boundsLeft: 4390630.1231925,
-    boundsTop: 5427277.3672416,
-    boundsRight: 5422472.9529191,
-    boundsBottom: 4999230.0089212,
-    zoom: 8,
+    bounds_left: 4390630.1231925,
+    bounds_top: 5427277.3672416,
+    bounds_right: 5422472.9529191,
+    bounds_bottom: 4999230.0089212,
+    zoom: 7,
     default_lat: 42.23665,
     default_lon: 43.59375,
-    controls: [
-    new OpenLayers.Control.Navigation()
-    //new OpenLayers.Control.MousePosition(),
-    //new OpenLayers.Control.LoadingPanel()
-    ]
+    controls: [new OpenLayers.Control.Navigation()]
 },
 markers = new OpenLayers.Layer.Markers('Markers')
 layers = new Object(),
     icon_size = new OpenLayers.Size(27, 27),
     icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h),
-    icons = new Object();
+    icons = new Object(),
+    project_types = ['sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
+    project_status_types = ['completed', 'current', 'scheduled'],
+    project_status_type_index = 0;
 
-icons.sewage = new Object();
-icons.sewage.completed = new OpenLayers.Icon('images/map/projects/sewage_completed.png', icon_size, icon_offset);
-icons.sewage.current = new OpenLayers.Icon('images/map/projects/sewage_current.png', icon_size, icon_offset);
-icons.sewage.scheduled = new OpenLayers.Icon('images/map/projects/sewage_scheduled.png', icon_size, icon_offset);
-
-icons.water_supply = new Object();
-icons.water_supply.completed = new OpenLayers.Icon('images/map/projects/water_supply_completed.png', icon_size, icon_offset);
-icons.water_supply.current = new OpenLayers.Icon('images/map/projects/water_supply_current.png', icon_size, icon_offset);
-icons.water_supply.scheduled = new OpenLayers.Icon('images/map/projects/water_supply_scheduled.png', icon_size, icon_offset);
-
-icons.water_pollution = new Object();
-icons.water_pollution.completed = new OpenLayers.Icon('images/map/projects/water_pollution_completed.png', icon_size, icon_offset);
-icons.water_pollution.current = new OpenLayers.Icon('images/map/projects/water_pollution_current.png', icon_size, icon_offset);
-icons.water_pollution.scheduled = new OpenLayers.Icon('images/map/projects/water_pollution_scheduled.png', icon_size, icon_offset);
-
-icons.irrigation = new Object();
-icons.irrigation.completed = new OpenLayers.Icon('images/map/projects/irigation_completed.png', icon_size, icon_offset);
-icons.irrigation.current = new OpenLayers.Icon('images/map/projects/irigation_current.png', icon_size, icon_offset);
-icons.irrigation.scheduled = new OpenLayers.Icon('images/map/projects/irigation_scheduled.png', icon_size, icon_offset);
-
-icons.water_quality = new Object();
-icons.water_quality.completed = new OpenLayers.Icon('images/map/projects/water_quality_completed.png', icon_size, icon_offset);
-icons.water_quality.current = new OpenLayers.Icon('images/map/projects/water_quality_current.png', icon_size, icon_offset);
-icons.water_quality.scheduled = new OpenLayers.Icon('images/map/projects/water_quality_scheduled.png', icon_size, icon_offset);
-
-icons.water_accidents = new Object();
-icons.water_accidents.completed = new OpenLayers.Icon('images/map/projects/water_accidents_completed.png', icon_size, icon_offset);
-icons.water_accidents.current = new OpenLayers.Icon('images/map/projects/water_accidents_current.png', icon_size, icon_offset);
-icons.water_accidents.scheduled = new OpenLayers.Icon('images/map/projects/water_accidents_scheduled.png', icon_size, icon_offset);
+// Generate icons
+for (var icon_index in project_types)
+{
+    icons[project_types[icon_index]] = new Object();
+    for (project_status_type_index in project_status_types)
+        icons[project_types[icon_index]][project_status_types[project_status_type_index]] = new OpenLayers.Icon('images/map/projects/' + icons[project_types[icon_index]] + '_' + project_status_types[project_status_type_index] + '.png', icon_size, icon_offset);
+    project_status_type_index = 0;
+}
 
 function mapping()
 {
 
-    // Map
+    // Mr. Map!
     map = new OpenLayers.Map('map', {
         controls: map_options.controls,
-        restrictedExtent: new OpenLayers.Bounds(map_options.boundsLeft, map_options.boundsBottom, map_options.boundsRight, map_options.boundsTop),
+        restrictedExtent: new OpenLayers.Bounds(map_options.bounds_left, map_options.bounds_bottom, map_options.bounds_right, map_options.bounds_top),
         eventListeners: {
-            'loadend': on_load,
-            'moveend': on_move
+            //'movestart': on_zoom,
+            'moveend': on_zoom
         }
     });
 
     // Base Layer
     base = new OpenLayers.Layer.OSM('Georgia', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
         numZoomLevels: 19,
-        opacity: 0
+        opacity: 0 // TO-DO
     });
 
     // Add base and markers overlay layers to the map
     map.addLayers([base, markers]);
 
-    // Load and initialize vector overlays
-    load_regions();
-    load_roads();
-    load_protected_areas();
-    load_water();
-    load_cities();
-    load_hydro();
-
-    // Add initialized vector overlay-layers to the map
-    for (var idx in layers)
-        map.addLayer(layers[idx]);
+    // Load all external layers
+    load_all();
 
     // Center and zoom map to the very heart of Georgia
     map.setCenter(new OpenLayers.LonLat(map_options.default_lon, map_options.default_lat));
@@ -91,13 +67,33 @@ function mapping()
 
 }
 
+function load_all()
+{
+    // Load and initialize vector overlays
+    load_regions();
+    //load_water();
+    load_protected_areas();
+    //load_roads();
+    load_cities();
+    load_urban();
+    load_villages();
+    //load_hydro();
+
+    // Add initialized vector overlay-layers to the map
+    for (var idx in layers)
+        map.addLayer(layers[idx]);
+}
+
 function load_regions()
 {
-    layers.region = new OpenLayers.Layer.GML('Regions', 'mapping/regions.geojson', {
+    if (def(layers.regions))
+        return;
+    layers.regions = new OpenLayers.Layer.GML('Regions', 'mapping/regions.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fillColor: '#FFFFFF',
-            strokeWidth: 0
+            strokeWidth: 0.33,
+            strokeColor: '#B0B0B0'
         })
     });
 }
@@ -115,7 +111,36 @@ function load_water()
 
 function load_cities()
 {
-    layers.cities = new OpenLayers.Layer.GML('Regions', 'mapping/cities.geojson', {
+    if (def(layers.cities))
+        return;
+    layers.cities = new OpenLayers.Layer.GML('Cities', 'map-data/settlements/city', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            pointRadius: 3,
+            fillColor: '#FFFFFF',
+            fillOpacity: 0.9,
+            strokeWidth: 0.5,
+            strokeColor: '#555555',
+            label: '${name}',
+            fontColor: '#787878',
+            fontSize: '10px',
+            labelAlign: 'ct'
+        })
+    });
+}
+
+function load_urban()
+{
+    var is_loaded = def(layers.urban);
+    if (map.zoom == 0 || map.zoom == 7 || map.zoom == 8)
+    {
+        if (is_loaded === true)
+            map.removeLayer(layers.urban);
+        return;
+    }
+    else if (is_loaded === true)
+        return;
+    layers.urban = new OpenLayers.Layer.GML('Urban', 'map-data/settlements/urban', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             pointRadius: 2,
@@ -123,18 +148,42 @@ function load_cities()
             fillOpacity: 0.9,
             strokeWidth: 0.5,
             strokeColor: '#555555',
-            label: '${NAME_ENG}',
-            fontColor: '#AAAAAA',
+            label: '${name}',
+            fontColor: '#787878',
             fontSize: '9px',
-            fontFamily: 'Arial',
             labelAlign: 'ct'
+        })
+    });
+}
+
+function load_villages()
+{
+    var is_loaded = (def(layers.villages));
+    if (map.zoom < 12)
+    {
+        if (is_loaded)
+            map.removeLayer(layers.villages);
+        return;
+    }
+    else if (is_loaded)
+        return;
+    layers.villages = new OpenLayers.Layer.GML('Villages', 'map-data/settlements/village', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            strokeWidth: 0,
+            label: '${name}',
+            fontColor: '#787878',
+            fontSize: '8px',
+            labelAlign: 'cm'
         })
     });
 }
 
 function load_hydro()
 {
-    layers.hydro = new OpenLayers.Layer.GML('Regions', 'mapping/hydro.geojson', {
+    if (def(layers.hydro))
+        return;
+    layers.hydro = new OpenLayers.Layer.GML('Hydro', 'mapping/hydro.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             pointRadius: 4,
@@ -144,7 +193,6 @@ function load_hydro()
             label: '${NAME_ENG}',
             fontColor: '#AAAAAA',
             fontSize: '9px',
-            fontFamily: 'Arial',
             labelAlign: 'ct'
         })
     });
@@ -152,18 +200,14 @@ function load_hydro()
 
 function load_protected_areas()
 {
-    layers.protected_areas = new OpenLayers.Layer.GML('Regions', 'mapping/protected_areas.geojson', {
+    if (def(layers.protected_areas))
+        return;
+    layers.protected_areas = new OpenLayers.Layer.GML('Protected Areas', 'mapping/protected_areas.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            pointRadius: 4,
             fillColor: '#E0E4CC',
-            fillOpacity: 0.9,
-            strokeWidth: 0,
-            label: '${NAME}',
-            fontColor: '#AAAAAA',
-            fontSize: '10px',
-            fontFamily: 'Arial',
-            labelAlign: 'cm'
+            fillOpacity: 0.8,
+            strokeWidth: 0
         })
     });
 }
@@ -193,34 +237,6 @@ function load_water()
     });
 }
 
-function load_villages(left, top, right, bottom)
-{
-    var url = 'map-data/villages/' + left + '/' + top + '/' + right + '/' + bottom;
-    $.getJSON(url, function(result)
-    {
-        var json = result.features,
-        marker,
-        coordinates;
-        if ($.isEmptyObject(json))
-            return;
-        for (var idx in village_markers)
-            markers.removeMarker(village_markers[idx]);
-        idx = 0;
-        for (idx in json)
-        {
-            if (idx == 5)
-                break;
-            coordinates = new OpenLayers.LonLat(json[idx].longitude, json[idx].latitude);
-            //.transform(new OpenLayers.Projection('EPSG:900913'), new OpenLayers.Projection('EPSG:4326'));
-            //console.log(json[idx]);
-            continue;
-            marker = new OpenLayers.Marker(coordinates, village_marker.clone());
-            village_markers.push(marker);
-            markers.addMarker(marker);
-        }
-    });
-}
-
 function load_projects(type, status)
 {
     var request_url = 'map-data/projects/' + type;
@@ -243,7 +259,7 @@ function load_projects(type, status)
             }
         }
     });
-    //feature.geometry.getBounds().getCenterLonLat();
+//feature.geometry.getBounds().getCenterLonLat();
 }
 
 function toggle_projects(type, status)
@@ -253,20 +269,55 @@ function toggle_projects(type, status)
 
 function toggle_layer(object)
 {
-    object.setOpacity(object.opacity == 0 ? 1 : 0);
+    if (def(object))
+        return object.setOpacity(object.opacity == 0 ? 1 : 0);
 }
 
-function on_load()
+function toggle_overlay(name)
 {
-    console.log('Loaded...');
-    $('#map-overlay span').toggle();
+    if (!name)
+        return;
+    if (def(layers[name]))
+        layers[name].setOpacity(layers[name].opacity == 0 ? 1 : 0);
+    switch (name)
+    {
+        case 'hydro':
+            load_hydro();
+            map.addLayer(layers.hydro);
+            break;
+        case 'roads':
+            load_roads();
+            map.addLayer(layers.roads);
+            break;
+    }
 }
 
-function on_move(event)
+function on_zoom(event)
 {
-    var bounds = event.object.baseLayer.getExtent();
-//.transform(new OpenLayers.Projection("EPSG:900913"), new OpenLayers.Projection("EPSG:4326"));
-//load_villages(bounds.left, bounds.top, bounds.right, bounds.bottom);
+    load_all();
+/*
+    switch (event.object.zoom)
+    {
+        case 7:
+
+            break;
+        case 8:
+
+            break;
+        case 9:
+
+            break;
+        case 10:
+
+            break;
+        case 11:
+
+            break;
+        case 12:
+
+            break;
+    }
+ */
 }
 
 function zoom_in()
@@ -279,45 +330,46 @@ function zoom_out()
     return map.zoomOut();
 }
 
-$(function()
+function map_commons()
 {
 
-    var drop_menus = $('.map-drop-menu');
+    mapping();
 
-    $('body').not('.map-drop-menu').click(function(){
-        drop_menus.hide();
-    });
+    var controls = $('#map-controls'),
+    count = 3;
 
-    $('#map-filter-button').click(function(event)
+    // Overlays menu
+    controls.children('li').hover(function()
     {
-        event.stopPropagation();
-        drop_menus.hide();
-        $('#map-filter').toggle();
+        var sub = $(this).children('ul');
+        if (!sub.length)
+            return;
+        sub.toggle().end().find('li > a').click(function()
+        {
+            var me = $(this).toggleClass('active');
+            par = parent().parent().parent().children('a');
+            if (me.hasClass('active'))
+            {
+                ++count;
+                par.addClass('active');
+            }
+            else
+                --count;
+            if (count < 1)
+                par.removeClass('active');
+
+        });
     });
 
-    $('#map-overlays-button').click(function(event)
+    // Projects menu
+    controls.find('li > ul > li').hover(function()
     {
-        event.stopPropagation();
-        drop_menus.hide();
-        $('#map-overlays').toggle();
+        var sub = $(this).children('ul');
+        if (!sub.length)
+            return;
+        sub.css('right', $(this).parent().width()).toggle();
     });
 
-    $('.map-drop-menu ul li a').not('.skip').click(function()
-    {
-        $(this).toggleClass('active');
-    /*
-        if ($(this).hasClass('sub') && $(this).hasClass('active'))
-            $(this).parent().parent().children('a').addClass('active');
-        else
-            $(this).parent().parent().children('a').removeClass('active');
-            */
-    });
+}
 
-    $('.map-drop-menu ul li').hover(function()
-    {
-        var sub_menu = $(this).children('ul');
-        if (sub_menu.length)
-            sub_menu.toggle();
-    });
-
-});
+$(map_commons);
