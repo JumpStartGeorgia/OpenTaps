@@ -45,7 +45,7 @@ return array(
     'ws_hiy' => 'თქვენ რამდენად გაინტერესებთ',
     'ends' => 'დასასრული',
     'organizations' => 'ორგანიზაციები',
-    'ws_region' => 'რეგიონ',
+    'ws_region' => 'რეგიონი',
     'ws_last_updated' => 'ბოლოს განახლებული',
     'ws_region_projects' => 'რეგიონის პროექტები',
     'pl_add_place' => 'ადგილის დამატება',
@@ -85,6 +85,7 @@ return array(
 	 'beneficiary_people' => 'ბენეფიციარები',
 	 'budget' => 'ბიუჯეტი',
 	 'region_cities' => 'რეგიონის ქალაქები',
-	 'region_towns' => 'რეგიონის ქალაქები'
+	 'region_towns' => 'რეგიონის ქალაქები',
+	 'ws_district' => 'რაიონი'
 );
 

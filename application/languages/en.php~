@@ -82,5 +82,6 @@ return array(
     'all_projects' => 'All Projects',
     'beneficiary_people' => 'Beneficiary People',
     'budget' => 'Budget',
-    'region_cities' => 'Region Cities'
+    'region_cities' => 'Region Cities',
+	 'region_towns' => 'Region Towns'
 );

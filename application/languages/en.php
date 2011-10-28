@@ -83,5 +83,6 @@ return array(
     'beneficiary_people' => 'Beneficiary People',
     'budget' => 'Budget',
     'region_cities' => 'Region Cities',
-	 'region_towns' => 'Region Towns'
+	 'region_towns' => 'Region Towns',
+	 'ws_district' => 'district'
 );

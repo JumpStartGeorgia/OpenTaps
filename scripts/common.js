@@ -670,3 +670,22 @@ $(function()
 if( $('#logo_img').length ){
 	$('#logo_img').css('height',$('#project_details').css('height'));
 }
+
+// Watter supply request/response
+$(function()
+{
+	$('#ws_regions').change(function()
+	{
+		$.getJSON(baseurl + 'water_supply/districts/' + $(this).val(), function(json)
+		{
+			$('#ws_districts').html('');
+			$.each(json,function(){
+				$('#ws_districts').append('<option id="'+$(this).attr('id')+'">'+$(this).attr('name')+'</option>');
+			});
+			$('#ws_districts').trigger("liszt:updated");
+		});
+	}); 
+
+});
+	
+	

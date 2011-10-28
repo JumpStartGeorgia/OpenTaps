@@ -45,7 +45,7 @@ return array(
     'ws_hiy' => 'თქვენ რამდენად გაინტერესებთ',
     'ends' => 'დასასრული',
     'organizations' => 'ორგანიზაციები',
-    'ws_region' => 'რეგიონ',
+    'ws_region' => 'რეგიონი',
     'ws_last_updated' => 'ბოლოს განახლებული',
     'ws_region_projects' => 'რეგიონის პროექტები',
     'pl_add_place' => 'ადგილის დამატება',
@@ -82,14 +82,9 @@ return array(
     'admin_georgia_profile' => 'საქართველოს პროფილი',
     'admin_manage_georgia_profile' => 'საქართველოს პროფილის მართვა',
     'all_projects' => 'ყველა პროექტი',
-<<<<<<< HEAD
 	 'beneficiary_people' => 'ბენეფიციარები',
 	 'budget' => 'ბიუჯეტი',
 	 'region_cities' => 'რეგიონის ქალაქები',
 	 'region_towns' => 'რეგიონის ქალაქები'
-=======
-    'beneficiary_people' => 'ბენეფიციარები',
-    'budget' => 'ბიუჯეტი'
->>>>>>> 093f4f898270447b49f31a797cc5edc72cca8867
 );
 
