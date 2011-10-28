@@ -25,7 +25,7 @@ foreach ($organizations as $organization)
 		  <div class='rleft'> " . char_limit($organization['name'], 60) . "</div>
 		  "/* <div class='rcenter' style='width:61%;'> " . $organization['description'] . "</div> */ . "
 		  <div class='rright' style='width:190px'>
-                      <a href=\"" . href() . 'admin/change_visibility/organizations/' . $organization['id'] . "\">" . ((bool) $organization['hidden'] ? 'Show' : 'Hide') . "</a>
+                      <a href=\"" . href('admin/change_visibility/organizations/' . $organization['id'], TRUE) . "\">" . ((bool) $organization['hidden'] ? 'Show' : 'Hide') . "</a>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
 		      <a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>
 		  </div>
