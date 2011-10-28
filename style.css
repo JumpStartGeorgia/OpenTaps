@@ -134,7 +134,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .line_left { width: 135px; padding-left: 16px }
 .data_block { width: 240px; min-height: 45px; border: 1px dotted @opentaps_default_bordercolor; margin-bottom: 10px; /*text-align: justify*/ }
 .data_block .key { background: @opentaps_default_color; color: rgba(255, 255, 255, 1); padding: 10px 0px 10px 17px; font-size: 13px; border-bottom: 1px dotted @opentaps_default_bordercolor }
-.data_block .value { padding: 10px 17px 10px 17px; word-wrap: break-word }
+.data_block .value { padding: 10px 17px 10px 17px; word-wrap: break-word; font-size: 11px; }
 .data_block .value a, #right_box_tags a { color: #565656; text-decoration: none }
 .data_block .value a:hover, #right_box_tags a:hover { text-decoration: underline }
 #charts { float: left; width: 673px }
@@ -332,7 +332,7 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .chzn-rtl .chzn-results .group-option { padding-left: 0; padding-right: 20px }
 .chzn-rtl.chzn-container-active .chzn-single-with-drop div { border-right: none }
 .chzn-rtl .chzn-search input { background: url('images/chosen-sprite.png') no-repeat -38px -22px, #ffffff; background: url('images/chosen-sprite.png') no-repeat -38px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, white), color-stop(0.99, #eeeeee)); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -webkit-linear-gradient(center bottom, white 85%, #eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -moz-linear-gradient(center bottom, white 85%, #eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -o-linear-gradient(bottom, white 85%, #eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, -ms-linear-gradient(top, #ffffff 85%,#eeeeee 99%); background: url('images/chosen-sprite.png') no-repeat -38px -22px, linear-gradient(top, #ffffff 85%,#eeeeee 99%); padding: 4px 5px 4px 20px }
-.wordwrap { width: 235px;word-break:break-word; }
+.wordwrap { width: 235px; word-break: break-word; }
 
 .olControlLoadingPanel
 {

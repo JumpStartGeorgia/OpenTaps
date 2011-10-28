@@ -96,12 +96,26 @@
 			<p class='desc'><?php echo strtoupper($d['key']); ?></p>
 			<div><?php echo $d['value']; ?></div>
 		<?php endforeach; ?>
+
+		<?php if ($count !== FALSE AND is_array($count)): ?>
+                <div id="organization_project_types" class="group" style="margin-top: 25px;">
+                    <?php foreach (config('project_types') AS $type): ?>
+                        <?php if ($count[$type] == 0)
+                            continue; ?>
+                        <a href="<?php echo href('projects', TRUE) /* filter link here */ ?>">
+                            <img src="<?php echo href('images') . str_replace(' ', '-', strtolower(trim($type))) ?>.png" />
+                            <?php echo $type . " (" . $count[$type] . ")" ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+		<?php endif; ?>
+
 	</div>
 
-	<div id='project_description' style="margin-bottom: 35px;">
+	<?php /*<div id='project_description' style="margin-bottom: 35px;">
 		<p class='desc'><?php echo l('') ?><?php echo l('region_projects') ?></p>
 		<table style="margin-left: 0px; margin-bottom: 30px; float: left;">
-			<?php foreach($projects AS $project): ?>
+			<?php foreach($projects AS $key => $project): ?>
 			<tr>	
 			    <td>
 			      <a style='text-decoration:underline;color:#656565' href="<?php echo href('project/' . $project['unique'], TRUE); ?>">
@@ -111,14 +125,39 @@
 			</tr>			
 			<?php endforeach; ?>
 		</table>
-	</div>
+	</div>*/ ?>
 
 
 
     </div>
 
 
+     <?php if (!empty($side_data) OR !empty($projects)): ?>
 	<div style="float: right;"><!--DATA-->
+
+                <?php if (!empty($projects)): ?>
+                    <div class='data_block group' style="border-bottom: 0px; border-top: 0px;">
+                        <div class='key'>
+                            <?php echo strtoupper(l('ws_region_projects')) ?>
+                        </div>
+                        <div class='value' style="padding: 0px;">
+                            <?php foreach ($projects AS $key => $project):
+                                if ($key == config('projects_in_sidebar'))
+                                {
+				    break;
+                                }
+                                $ptype = str_replace(" ", "-", strtolower(trim($project['type']))); ?>
+                                <a class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
+                                    <img src="<?php echo href('images') . $ptype ?>.png" />
+                                    <?php echo char_limit($project['title'], 28) ?>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+
+
 	<?php $i = 0; foreach ($side_data as $d): $i ++; ?>
 
 		<div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
@@ -133,6 +172,7 @@
 	<?php endforeach; ?>
 
 	</div><!--DATA END-->
+     <?php endif; ?>
 
 
 </div>

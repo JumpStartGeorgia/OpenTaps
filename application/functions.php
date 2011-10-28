@@ -1371,7 +1371,8 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'org_total_budget');
+    $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    $data = count($data == 1) ? NULL : convert_to_chart_array($data, 'name', 'org_total_budget');
 
     $results['organization_projects'] = array(
         'description' => 'Organizations which run this project, ordered by sum of budgets of all their projects.',
@@ -1416,7 +1417,7 @@ function get_organization_projects($unique)
     $sql = "SELECT DISTINCT(p.`unique`) AS `unique`, p.id,p.title,p.type FROM projects AS p
 	    INNER JOIN project_organizations AS po ON p.`unique` = po.project_unique
 	    INNER JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
-	    WHERE o.`unique` = :unique AND o.lang = '" . LANG . "'";
+	    WHERE o.`unique` = :unique AND o.lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(
@@ -1443,7 +1444,18 @@ function count_organization_project_types($unique)
         ));
         $total = $statement->fetch(PDO::FETCH_ASSOC);
         $count[$type] = $total['num'];
-        ($count[$type] > 0) AND $total_types_count++;
+        ($count[$type] > 0) AND $total_types_count ++;
+    }
+    return ($total_types_count > 0) ? $count : FALSE;
+}
+function count_region_project_types($unique)
+{
+    $total_types_count = 0;
+    foreach (config('project_types') AS $type)
+    {
+        $total = fetch_db("SELECT COUNT(p.id) AS num FROM projects AS p INNER JOIN places AS pl ON pl.`unique` = p.place_unique AND pl.lang = p.lang WHERE pl.`region_unique` = :unique AND p.type = :type AND p.lang = '" . LANG . "';", array(':unique' => $unique, ':type' => $type), TRUE);
+        $count[$type] = $total['num'];
+        ($count[$type] > 0) AND $total_types_count ++;
     }
     return ($total_types_count > 0) ? $count : FALSE;
 }
@@ -1627,12 +1639,8 @@ function get_organization_chart_data($unique)
         'data' => $data
     );
 
-    $sql = "SELECT
-		org.name,
-		(SELECT SUM(budget) FROM project_budgets WHERE organization_unique = org.`unique` AND currency = 'gel') AS budget
-	    FROM organizations AS org
-	    WHERE org.lang = '" . LANG . "'
-	    ORDER BY budget;";
+    $sql = "SELECT org.name, (SELECT SUM(budget) FROM project_budgets WHERE organization_unique = org.`unique` AND currency = 'gel') AS budget
+	    FROM organizations AS org WHERE org.lang = '" . LANG . "' ORDER BY budget;";
 
     $query = db()->prepare($sql);
     $query->closeCursor();

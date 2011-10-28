@@ -42,5 +42,6 @@ return array(
     'currency_list' => array(
 	'gel',
 	'usd'
-    )
+    ),
+    'projects_in_sidebar' => 10
 );

@@ -80,12 +80,12 @@
 
         <div id='project_description' style="margin-top:75px;">
             <p class='desc'><?php echo strtoupper(l('org_desc')) ?></p>
-            <div class="withmargin"><?php echo $organization['description']; ?></div>
+            <div class="withmargin" style="margin-bottom: 0px; padding-bottom: 0px;"><?php echo $organization['description']; ?></div>
 
-            <div class="withmargin" style="width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
+            <div style="margin: 15px 0px 25px; width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
 
             <?php /* <p class='desc'>INFO ON PROJECTS</p> */ ?>
-            <div class="withmargin"><?php echo $organization['projects_info']; ?></div>
+            <div class="withmargin" style="margin-top: 0px;"><?php echo $organization['projects_info']; ?></div>
 
 		<?php foreach ($data as $d): ?>
                 <p class='desc'><?php echo strtoupper($d['key']); ?></p>
@@ -159,11 +159,15 @@
                             <?php echo strtoupper(l('org_projects')) ?>
                         </div>
                         <div class='value' style='padding: 0px;'>
-                            <?php foreach ($projects AS $project):
+                            <?php foreach ($projects AS $key => $project):
+                                if ($key == config('projects_in_sidebar'))
+                                {
+				    break;
+                                }
                                 $ptype = str_replace(" ", "-", strtolower(trim($project['type']))); ?>
                                 <a class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
                                     <img src="<?php echo href('images') . $ptype ?>.png" />
-                                    <?php echo $project['title'] ?>
+                                    <?php echo char_limit($project['title'], 28); ?>
                                 </a>
                             <?php endforeach; ?>
                         </div>
@@ -180,7 +184,7 @@
                                 $ptype = str_replace(" ", "-", strtolower(trim($donor['type']))); ?>
                                 <a class="organization_project_link" href="<?php echo href('project/' . $donor['unique'], TRUE) ?>">
                                     <img src="<?php echo href('images') . $ptype ?>.png" />
-                                    <?php echo $donor['title'] ?>
+                                    <?php echo char_limit($donor['title'], 28) ?>
                                 </a>
                             <?php endforeach; ?>
                         </div>
@@ -211,7 +215,7 @@
                             foreach ($tags as $tag):
                                 echo
                                 "<a href='" . href('tag/organization/' . $tag['name'], TRUE) . "'>" .
-                                $tag['name'] . " (" . $tag['total_tags'] . ")" .
+                                char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
                                 "</a><br />"
                                 ;
                             endforeach;

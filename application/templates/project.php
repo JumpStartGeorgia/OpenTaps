@@ -92,7 +92,7 @@ function edit_button($edit_id = NULL)
                 </div>
                 <?php endif; ?>
 
-		<?php if (!empty($chart_data['all_projects']['data'])): ?>
+		<?php /*if (!empty($chart_data['all_projects']['data'])): ?>
                 <div>
 		    <script type="text/javascript">
 			var project_page = true,
@@ -104,7 +104,7 @@ function edit_button($edit_id = NULL)
 			<div id="project-chart-container-2" style="padding: 0; margin: 0; width: 640px;"></div>
                     </div>
                 </div>
-                <?php endif; ?>
+                <?php endif;*/ ?>
 
 
             <br />
@@ -128,36 +128,35 @@ function edit_button($edit_id = NULL)
     </div><!--LEFT PANEL END-->
 
     <div style="float: right;"><!--DATA-->
-                <?php $i = 0;
-                foreach ($side_data as $d): $i++; ?>
+            <?php $i = 0; foreach ($side_data as $d): $i ++; ?>
 
             <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
                 <div class='key'>
-            <?php echo strtoupper($d['key']); ?>
+		    <?php echo strtoupper($d['key']); ?>
                 </div>
                 <div class='value group'>
-    <?php echo $d['value']; ?>
+		    <?php echo $d['value']; ?>
                 </div>
             </div>
 
-                <?php endforeach; ?>
+            <?php endforeach; ?>
 
-                <?php if (!empty($tags)): ?>
+            <?php if (!empty($tags)): ?>
             <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
                 <div class='key'>TAG CLOUD</div>
                 <div class='value group' style="line-height: 25px;">
-    <?php
-    foreach ($tags as $tag):
-        echo
-        "<a href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
-        $tag['name'] . " (" . $tag['total_tags'] . ")" .
-        "</a><br />"
-        ;
-    endforeach;
-    ?>
+		    <?php
+		    foreach ($tags as $tag):
+			echo
+			"<a href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
+			char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
+			"</a><br />"
+			;
+		    endforeach;
+		    ?>
                 </div>
             </div>
-    <?php endif; ?>
+	    <?php endif; ?>
 
     </div><!--DATA END-->
 
