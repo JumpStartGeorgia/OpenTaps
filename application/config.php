@@ -43,6 +43,7 @@ return array(
 	'gel',
 	'usd'
     ),
+<<<<<<< HEAD
 	'getDate' => function($lang='en',$timestring){
 		$the_months = array(
 			'January' => 'იანვარი',
@@ -63,4 +64,7 @@ return array(
 		else
 			return str_replace(array_keys($the_months), $the_months, date('F d, Y',strtotime($timestring)));
 	}
+=======
+    'projects_in_sidebar' => 10
+>>>>>>> 093f4f898270447b49f31a797cc5edc72cca8867
 );

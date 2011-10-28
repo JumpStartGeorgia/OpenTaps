@@ -82,9 +82,14 @@ return array(
     'admin_georgia_profile' => 'საქართველოს პროფილი',
     'admin_manage_georgia_profile' => 'საქართველოს პროფილის მართვა',
     'all_projects' => 'ყველა პროექტი',
+<<<<<<< HEAD
 	 'beneficiary_people' => 'ბენეფიციარები',
 	 'budget' => 'ბიუჯეტი',
 	 'region_cities' => 'რეგიონის ქალაქები',
-	 'region_towns' => 'რეგიონის ქალაქი'
+	 'region_towns' => 'რეგიონის ქალაქები'
+=======
+    'beneficiary_people' => 'ბენეფიციარები',
+    'budget' => 'ბიუჯეტი'
+>>>>>>> 093f4f898270447b49f31a797cc5edc72cca8867
 );
 
