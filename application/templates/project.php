@@ -86,7 +86,7 @@ function edit_button($edit_id = NULL)
 		    </script>
                     <span class="expand_title"><span class="racxa">►</span><?php echo $chart_data['organization_projects']['title'] ?></span>
                     <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
-			<div id="project-chart-container-1" style="padding: 0; margin: 0; width: 450px; height: 400px"></div>
+			<div id="project-chart-container-1" style="padding: 0; margin: 0; width: 640px;"></div>
                     </div>
                 </div>
                 <?php endif; ?>
@@ -100,7 +100,7 @@ function edit_button($edit_id = NULL)
 		    </script>
                     <span class="expand_title"><span class="racxa">►</span><?php echo $chart_data['all_projects']['title'] ?></span>
                     <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
-			<div id="project-chart-container-2" style="padding: 0; margin: 0; width: 640px; height: 400px"></div>
+			<div id="project-chart-container-2" style="padding: 0; margin: 0; width: 640px;"></div>
                     </div>
                 </div>
                 <?php endif; ?>
