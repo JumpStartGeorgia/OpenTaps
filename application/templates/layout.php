@@ -65,10 +65,10 @@
             'charts/highcharts.js',
             'charts/modules/exporting.js',
             'charts/chart_config.js',
-            'charts/chart_home.js',
-            'charts/chart_project.js',
-            'charts/chart_org.js'
         );
+        isset(Storage::instance()->show_home_chart) AND $scripts[] = 'charts/chart_home.js';
+        isset(Storage::instance()->show_organization_chart) AND $scripts[] = 'charts/chart_org.js';
+        isset(Storage::instance()->show_project_chart) AND $scripts[] = 'charts/chart_project.js';
         if (Storage::instance()->show_map)
         {
             $scripts[] = 'http://openlayers.org/api/OpenLayers.js';

@@ -1324,6 +1324,12 @@ function char_limit($string, $limit = 30)
     return $string;
 }
 
+function json_replace_unicode($string)
+{
+    $cyrillic =  explode(' ', "\u10e6 \u10ef \u10e3 \u10d9 \u10d4 \u10dc \u10d2 \u10e8 \u10ec \u10d6 \u10ee \u10ea \u10e4 \u10eb \u10d5 \u10d7 \u10d0 \u10de \u10e0 \u10dd \u10da \u10d3 \u10df \u10ed \u10e9 \u10e7 \u10e1 \u10db \u10d8 \u10e2 \u10e5 \u10d1 \u10f0");
+    $georgian = explode(' ', "ღ ჯ უ კ ე ნ გ შ წ ზ ხ ც ფ ძ ვ თ ა პ რ ო ლ დ ჟ ჭ ჩ ყ ს მ ი ტ ქ ბ ჰ");
+    return str_replace($cyrillic, $georgian, $string);
+}
 function convert_to_chart_array($data, $nameindex, $budgetindex)
 {
     $newdata = array();
@@ -1339,11 +1345,12 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
             $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
         }
     }
-    return json_encode($newdata);
+    return json_replace_unicode(json_encode($newdata));
 }
 
 function home_chart_data()
 {
+    Storage::instance()->show_organization_chart = TRUE;
     $sql = "SELECT
     		o.name,
     		(SELECT SUM(budget)
