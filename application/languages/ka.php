@@ -81,6 +81,8 @@ return array(
     'admin_list_regions' => 'რეგიონების სია',
     'admin_georgia_profile' => 'საქართველოს პროფილი',
     'admin_manage_georgia_profile' => 'საქართველოს პროფილის მართვა',
-    'all_projects' => 'ყველა პროექტი'
+    'all_projects' => 'ყველა პროექტი',
+	'beneficiary_people' => 'ბენეფიციარები',
+	'budget' => 'ბიუჯეტი'
 );
 
