@@ -57,3 +57,11 @@ Slim::get('/admin/', function()
                 Storage::instance()->content = template('login');
         }
 );
+
+Slim::get('/admin/change_visibility/:what/:id', function($what, $id)
+        {
+            userloggedin() OR exit("<meta http-equiv='refresh' content='0; url=" . href(NULL, TRUE) . "' />");
+            db()->exec("UPDATE `{$what}` SET `hidden` = IF (`hidden` = 1, 0, 1) WHERE `id` = {$id} LIMIT 1;");
+            exit('<meta http-equiv="refresh" content="0; url=' . href() . 'admin/' . $what . '?lang=' . LANG . '" />');
+        }
+);

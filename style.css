@@ -70,10 +70,10 @@ div.after_header { height: 7px; margin-top: 22px; background-image: url('@baseur
 div.menu ul { list-style-type: none; padding: 0; float: left }
 div.menu ul li { float: left; font-size: 0.85em }
 div.menu ul li a { display: block; height: 26px; padding: 10px 10px 0px 10px; text-decoration: none; color: #565656; font-size: 13px; font-family: Arial; outline: 0 }
-div.menu ul li a:hover, div.menu ul li:hover { color: white; background-color: #5FCCF3; outline: 0 }
+div.menu ul li a:hover, div.menu ul li:hover { background-color: #5FCCF3; outline: 0 }
 div.projects_organization, div.news, div.spacer { display: table-cell; vertical-align: middle; text-align: center; color: #fff; font-size: 1.0em; font-family: Arial }
 #override_border { width: 0px; height: 1px; position: absolute; top: 0; left: 0; background: #fff }
-.menu ul li a { font-family: "Babuka Mtavruli", Arial; letter-spacing: 1px }
+.menu ul li a div { font-family: "Babuka Mtavruli", Arial; letter-spacing: 1px }
 
 /* Submenus */
 #submenu .submenu { display: none; width: 100%; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0 }

@@ -101,8 +101,8 @@ function get_unique($table, $id)
 
 function read_menu($parent_unique = 0, $lang = null, $readhidden = FALSE)
 {
-    $sql = "SELECT id,name,short_name,`unique` FROM menu WHERE parent_unique = :parent_unique AND lang = '" . LANG . "'
-    	   " . ($readhidden ? NULL : " AND hide = '-1' ") . ";";
+    $sql = "SELECT id,name,short_name,`unique`,hidden FROM menu WHERE parent_unique = :parent_unique AND lang = '" . LANG . "'
+    	   " . ($readhidden ? NULL : " AND hide = '-1' ") . " AND hidden = 0;";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(':parent_unique' => $parent_unique));
@@ -121,7 +121,7 @@ function has_submenu($menuunique)
 
 function read_submenu()
 {
-    $sql = "SELECT id,`unique`,name,short_name,parent_unique FROM menu WHERE parent_unique != 0 AND lang = '" . LANG . "' ORDER BY parent_unique,`unique`;";
+    $sql = "SELECT id,`unique`,name,short_name,parent_unique FROM menu WHERE hidden = 0 AND parent_unique != 0 AND lang = '" . LANG . "' ORDER BY parent_unique,`unique`;";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute();
@@ -165,9 +165,10 @@ function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $tex
 
     foreach (config('languages') as $lang)
     {
+        $the_name = $name . (($adding_lang == $lang) ? NULL : " ({$lang})");
         $exec = $statement->execute(array(
-                    ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
-                    ':short_name' => $short_name,
+                    ':name' => $the_name,
+                    ':short_name' => empty($short_name) ? string_to_friendly_url($the_name) : $short_name,
                     ':parent_unique' => $parent_unique,
                     ':title' => $title,
                     ':text' => $text,
@@ -191,10 +192,9 @@ function update_menu($unique, $name, $short_name, $parent_unique, $title, $text,
     $sql = "UPDATE `menu` SET  `parent_unique` =  :parent_unique, `short_name` =  :short_name, `name` =  :name, title=:title, text=:text, hide=:hide, footer=:footer  WHERE  `menu`.`unique` = :unique AND lang = '" . LANG . "'";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
-
     $exec = $statement->execute(array(
                 ':unique' => $unique,
-                ':short_name' => $short_name,
+                ':short_name' => empty($short_name) ? string_to_friendly_url($name) : $short_name,
                 ':name' => $name,
                 ':parent_unique' => $parent_unique,
                 ':title' => $title,
@@ -245,6 +245,7 @@ function read_news($limit = false, $from = 0, $news_unique = false)
 function read_news_one_page($from, $limit, $type = FALSE)
 {
     $sql = "SELECT * FROM news " . ($type ? "WHERE category = :type AND lang = '" . LANG . "'" : "WHERE lang = '" . LANG . "'") . "
+            AND `hidden` = 0
     	    ORDER BY published_at DESC LIMIT " . $from . ", " . $limit . "";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
@@ -489,7 +490,7 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
                     $stmt = db()->prepare("SELECT `unique` FROM tags WHERE name = :name LIMIT 1");
                     $stmt->closeCursor();
                     $stmt->execute(array(':name' => $tag_name));
-                    
+
                     $inserted_unique = $stmt->fetch(PDO::FETCH_ASSOC);
                     $result['unique'] = $inserted_unique['unique'];
                     $success = TRUE;
@@ -510,10 +511,10 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     foreach ($tag_uniques AS $tag_unique)
     {
         $exec = $statement->execute(array(
-        	':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
-        	':f_unique' => $f_unique,
-        	':tag_unique' => $tag_unique
-        ));
+                    ':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
+                    ':f_unique' => $f_unique,
+                    ':tag_unique' => $tag_unique
+                ));
         $check AND $check = (bool) $exec;
     }
 
@@ -924,7 +925,7 @@ function update_user($id, $post)
 //projects
 
 
-function read_projects($project_unique = false)
+function read_projects($project_unique = FALSE, $limit = NULL)
 {
     if ($project_unique)
     {
@@ -948,8 +949,8 @@ function read_projects($project_unique = false)
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return empty($result) ? array() : $result;
     }
-
-    $sql = "SELECT * FROM projects WHERE lang = '" . LANG . "' ORDER BY start_at";
+    empty($limit) OR $limit = " LIMIT {$limit} ";
+    $sql = "SELECT * FROM projects WHERE lang = '" . LANG . "' AND hidden = 0 ORDER BY start_at{$limit}";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute();
@@ -1265,24 +1266,24 @@ function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value, $ad
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
-    for ($i = 0, $c = count($key); $i < $c; $i ++)
+    for ($i = 0, $c = count($key); $i < $c; $i++)
     {
         if (!empty($key[$i]) AND !empty($value[$i]))
         {
             $unique = generate_unique("pages_data");
             //foreach ($languages as $lang)
             //{
-                $data = array(
-                    ':owner' => $owner,
-                    ':owner_unique' => $owner_unique,
-                    ':key' => $key[$i],// . ((LANG == $lang) ? NULL : " ({$lang})"),
-                    ':value' => $value[$i],
-                    ':sort' => $sort[$i],
-                    ':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i] == "checked") ? 1 : 0),
-                    ':lang' => $adding_lang,
-                    ':unique' => $unique
-                );
-                $statement->execute($data);
+            $data = array(
+                ':owner' => $owner,
+                ':owner_unique' => $owner_unique,
+                ':key' => $key[$i], // . ((LANG == $lang) ? NULL : " ({$lang})"),
+                ':value' => $value[$i],
+                ':sort' => $sort[$i],
+                ':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i] == "checked") ? 1 : 0),
+                ':lang' => $adding_lang,
+                ':unique' => $unique
+            );
+            $statement->execute($data);
             //}
         }
     }
@@ -1290,8 +1291,15 @@ function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value, $ad
 
 /* ========================================================================================================== */
 
-function word_limiter($text, $limit = 30, $chars = 'აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ0123456789')
+//function word_limiter($text, $limit = 30, $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzაბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ0123456789')
+function word_limiter($text, $limit = 30)
 {
+    $chars = implode(NULL, array(
+        implode(NULL, range('A', 'Z')),
+        implode(NULL, range('a', 'z')),
+        implode(NULL, range(0, 9)),
+        'აბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰ'
+            ));
     if (strlen($text) > $limit)
     {
         $words = str_word_count($text, 2, $chars);
@@ -1327,7 +1335,7 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
     $newdata = array();
     if (empty($data) OR !is_array($data))
     {
-	return NULL;
+        return NULL;
     }
     foreach ($data as $d)
     {
@@ -1925,4 +1933,17 @@ function geo_utf8_to_latin($text)
         'ჰ' => 'h'
     );
     return str_replace(array_keys($letters), array_values($letters), $text);
+}
+
+function string_to_friendly_url($title, $separator = '-')
+{
+    /*
+      $title = preg_replace('/[^ა-ჰa-z0-9_\s-]/', NULL, strtolower($title));
+      $title = preg_replace('/[\s-]+/', ' ', $title);
+      $title = preg_replace('/[\s_]/', $separator, $title);
+      return trim($title);
+     */
+    $title = preg_replace('![^' . preg_quote($separator) . '\pL\pN\s]+!u', NULL, strtolower($title));
+    $title = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $title);
+    return trim($title, $separator);
 }

@@ -646,6 +646,15 @@ $(function()
 if (typeof(Cufon) !== 'undefined')
     Cufon.replace('.menu-item > div').now();
 
+// Container minimum height
+$(function()
+{
+    var container = $('.content'),
+    minimum = 400;
+    (container.height() < minimum) && container.height(minimum);
+});
+
+
 // Block Errors
 $(function()
 {

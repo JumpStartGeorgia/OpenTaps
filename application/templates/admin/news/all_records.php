@@ -17,10 +17,11 @@
       $news['body'] = ( strlen($news['body']) > 85 ) ? substr($news['body'], 0, 82) . "..." : $news['body'];*/
 
       echo "
-		<div class='record'>
+		<div class='record'" . ((bool) $news['hidden'] ? ' style="background: #90DAF3"' : NULL) . ">
 		  <div class='rleft'> " . char_limit($news['title'], 60) . "</div>
 		  "/*<div class='rcenter'> " . $news['body'] . "</div>-->*/. "
 		  <div class='rright'>
+                      <a href=\"" . href() . 'admin/change_visibility/news/' . $news['id'] . "\">" . ((bool) $news['hidden'] ? 'Show' : 'Hide') . "</a>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
 		      <a href=\"" . $link_del . "\" onclick='return confirm(\"Are you sure?\");'>Delete</a>
 		  </div>

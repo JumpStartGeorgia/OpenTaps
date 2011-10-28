@@ -52,7 +52,7 @@ return array(
     'pl_places' => 'ადგილები',
     'projects_sort_by' => 'სორტირება',
     'projects_filter_by' => 'გაფილტრე',
-    'mt_under_construction' => 'კოსტრუქციის ქვეშაა',
+    'mt_under_construction' => 'გვერდი მიუწვდომელია...',
     'mt_edit' => 'შეცვლა',
     'tags_tags' => 'ტეგები',
     'admin_menu_management' => 'მენიუს მართვა',

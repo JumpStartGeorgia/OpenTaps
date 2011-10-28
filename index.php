@@ -79,7 +79,8 @@ catch (PDOException $exception)
 }
 
 Storage::instance()->title = 'Home Page';
-Storage::instance()->show_map = (Slim_Http_Uri::getUri(TRUE) === '/');
+Storage::instance()->show_map = $homepage = (Slim_Http_Uri::getUri(TRUE) === '/');
+Storage::instance()->show_chart = array('home' => $homepage);
 
 if (Slim::request()->isGet())
 {
@@ -87,8 +88,8 @@ if (Slim::request()->isGet())
     Storage::instance()->viewmenu = template('menu');
     Storage::instance()->viewsubmenu = template('submenu', array(
         'submenus' => read_submenu(),
-        'projects' => read_projects(),
-        'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "';")
+        'projects' => read_projects(FALSE, 14),
+        'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "' AND hidden = 0;")
             ));
     Storage::instance()->content = template('home', array('home_chart_data' => home_chart_data()));
 }
