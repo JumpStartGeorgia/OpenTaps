@@ -9,7 +9,7 @@
                 if ($p != 'http://' AND $p != 'https:/')
                     $logo = URL . $organization['logo'];
                 ?><div style="width: 262px; float: left; margin: 10px;">
-                    <img width="262px" src="<?php echo $logo; ?>" />
+                    <img style="display:block;margin:auto;" id="logo_img" style="height:auto;" src="http://localhost.com/opentaps/image.php?width=262&amp;image=<?php echo $logo; ?>" />
                 </div><?php
         }
         else
