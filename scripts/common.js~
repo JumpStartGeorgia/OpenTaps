@@ -685,6 +685,20 @@ $(function()
 			$('#ws_districts').trigger("liszt:updated");
 		});
 	}); 
+		
+	$('#ws_districts').change(function()
+	{
+		$.getJSON(baseurl + 'water_supply/' + $(this).val(), function(json)
+		{
+			$('#cont').html('');
+			$.each(json,function(){
+				$('#ws_text').append(json);
+			});
+			$('#ws_districts').trigger("liszt:updated");
+		});
+	}); 
+		
+	
 
 });
 	

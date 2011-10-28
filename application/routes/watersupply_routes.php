@@ -4,12 +4,9 @@
 Slim::get('/water_supply/',function()
       {
           Storage::instance()->show_map = FALSE;
-          $regions = fetch_db("SELECT * FROM regions WHERE lang = '" . LANG . "'");
-          $water_supply = fetch_db("SELECT * FROM water_supply WHERE region_unique = ".$regions[0]['unique']." AND lang = '" . LANG . "' LIMIT 1;");
+          $regions = fetch_db("SELECT * FROM regions WHERE lang = '" . LANG . "'");       
           Storage::instance()->content = template('water_supply',array(
-               'regions' => $regions,
-               'water_supply' => $water_supply,
-               'region_unique' => $regions[0]['unique']
+               'regions' => $regions
           ));
       }
 );
@@ -17,7 +14,7 @@ Slim::get('/water_supply/',function()
 
 Slim::get('/water_supply/districts/:id', function($id) 
 	{
-			$districts = fetch_db("SELECT dn.unique id,dn.name name FROM districts_new dn WHERE region_unique='" . $id . "' AND lang='" . LANG . "'");
+			$districts = fetch_db("SELECT dn.unique id,dn.name name FROM districts_new dn WHERE region_unique= :region_unique AND lang='" . LANG . "'",array(':region_unique' => $id));
 			$json = $districts;
 			exit(json_encode($json));
 	}
@@ -26,21 +23,8 @@ Slim::get('/water_supply/districts/:id', function($id)
 
 Slim::get('/water_supply/:unique/', function($unique)
       {
-          Storage::instance()->show_map = FALSE;
-          $regions = fetch_db("SELECT * FROM regions WHERE lang = '" . LANG . "'");
-          $water_supply = fetch_db("SELECT * FROM water_supply WHERE region_unique = :unique AND lang = '" . LANG . "' LIMIT 1;", array(':unique' => $unique));
-
-          $projects = fetch_db("
-          	SELECT p.* FROM projects AS p
-          	INNER JOIN places AS pl ON pl.lang = p.lang AND pl.`unique` = p.place_unique
-          	INNER JOIN regions AS r ON r.`unique` = pl.region_unique AND r.lang = p.lang
-          	WHERE r.`unique` = :unique AND p.lang = '" . LANG . "';", array(':unique' => $unique));
-
-          Storage::instance()->content = template('water_supply',array(
-                   'regions' => $regions,
-                   'water_supply' => $water_supply,
-                   'region_unique' => $unique,
-                   'projects' => $projects
-          ));
+          $water_supply = fetch_db("SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;", array(':unique' => $unique));
+			$json = $water_supply;
+			exit(json_encode($json));
       }
 );
