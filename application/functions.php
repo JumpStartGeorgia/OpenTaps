@@ -925,7 +925,7 @@ function update_user($id, $post)
 //projects
 
 
-function read_projects($project_unique = FALSE, $limit = NULL)
+function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FALSE)
 {
     if ($project_unique)
     {
@@ -950,7 +950,7 @@ function read_projects($project_unique = FALSE, $limit = NULL)
         return empty($result) ? array() : $result;
     }
     empty($limit) OR $limit = " LIMIT {$limit} ";
-    $sql = "SELECT * FROM projects WHERE lang = '" . LANG . "' AND hidden = 0 ORDER BY start_at{$limit}";
+    $sql = "SELECT * FROM projects WHERE lang = '" . LANG . "' " . ($readhidden ? NULL : "AND hidden = 0 ") . " ORDER BY start_at{$limit}";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute();
@@ -988,7 +988,7 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
 	LEFT JOIN regions AS r
 	    ON pl.region_unique = r.`unique` AND pl.lang = r.lang
-        WHERE p.lang = '" . LANG . "'
+        WHERE p.lang = '" . LANG . "' AND hidden = 0
 	" . ($order ? " ORDER BY {$order} " : NULL ) . " LIMIT {$from}, {$limit};";
     $statement = db()->prepare($sql);
     $statement->closeCursor();

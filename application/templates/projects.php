@@ -108,7 +108,7 @@
 			foreach($tags as $tag):
 				echo 
 					"<a href='" . href('tag/projects/' . $tag['name'], TRUE) . "'>" .
-						$tag['name'] . " (" . $tag['total_tags'] . ")" .
+						char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
 					"</a><br />"
 				;
 			endforeach;
