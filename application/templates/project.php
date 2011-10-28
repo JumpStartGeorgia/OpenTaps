@@ -43,9 +43,10 @@ function edit_button($edit_id = NULL)
                     <?php echo l('location_city_town') ?>: <?php echo $project['city']; ?><br />
                     <?php echo l('grantee') ?>: <?php echo $project['grantee']; ?><br />
                     <?php echo l('sector') ?>: <?php echo $project['sector']; ?><br />
+                    <?php echo l('beneficiary_people') ?>: <?php echo $project['beneficiary_people']; ?><br />
                     <?php
                     foreach ($budgets as $budget):
-                        echo 'Budget ' . $budget['name'] . ' - ' . $budget['budget'] . ' ' .
+                        echo l('budget') . ' ' . $budget['name'] . ' - ' . $budget['budget'] . ' ' .
                         strtoupper($budget['currency']) . '<br />';
                     endforeach;
                     ?>

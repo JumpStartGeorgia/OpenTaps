@@ -31,7 +31,7 @@
 					$ben_type['person'] = 'ადამიანი';
 					$ben_type['family'] = 'ოჯახი';
 				endif;
-				if ( isset($ben_people[1]) ): ?>
+				if ( !empty($ben_people[1]) ): ?>
 	    			<option <?php echo (   $ben_people[1] == $ben_type['person'] ) ? 'selected="selected"' : NULL; ?>><?php echo $ben_type['person']; ?></option>
 	    			<option <?php echo (   $ben_people[1] == $ben_type['family'] ) ? 'selected="selected"' : NULL; ?>><?php  echo $ben_type['family']; ?></option>
 	    	<?php else: ?>
