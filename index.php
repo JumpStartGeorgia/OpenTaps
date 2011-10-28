@@ -90,7 +90,7 @@ if (Slim::request()->isGet())
         'submenus' => read_submenu(),
         'projects' => read_projects(FALSE, 14),
         'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "' AND hidden = 0;")
-            ));
+    ));
     Storage::instance()->content = template('home', array('home_chart_data' => home_chart_data()));
 }
 

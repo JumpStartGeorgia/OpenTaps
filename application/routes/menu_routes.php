@@ -47,20 +47,8 @@ Slim::get('/admin/menu/:unique/delete/', function($unique){
 
 Slim::post('/admin/menu/create/', function(){
         if(userloggedin()){
-        if (isset($_POST['m_hide']))
-        {
-            $hide = 0;
-        }
-        else
-            $hide = -1;
-        if (isset($_POST['m_footer']))
-        {
-            $footer = 0;
-        }
-        else
-            $footer = -1;
 	!empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
-        add_menu($_POST['record_language'], $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $hide, $footer);
+        add_menu($_POST['record_language'], $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $footer);
  	Slim::redirect(href('admin/menu', TRUE));
         }
     else
@@ -75,7 +63,7 @@ Slim::post('/admin/menu/:unique/update/', function($unique){
              if( isset($_POST['m_footer']) ){
                  $footer = 0;
             } else $footer = -1;                
-             update_menu($unique, $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $hide, $footer);
+            update_menu($unique, $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], $hide, $footer);
 	    Slim::redirect(href("admin/menu", TRUE));
         }
     else

@@ -26,7 +26,7 @@ foreach ($parents as $parent)
 		<div class='record'" . ((bool) $parent['hidden'] ? ' style="background: #90DAF3"' : NULL) . ">
 		  <div class='rleft'> " . $parent['name'] . "</div>
 		  <div class='rright'>
-                      <a href=\"" . href() . 'admin/change_visibility/menu/' . $parent['id'] . "\">" . ((bool) $parent['hidden'] ? 'Show' : 'Hide') . "</a>
+                      <a href=\"" . href('admin/change_visibility/menu/' . $parent['id'], TRUE) . "\">" . ((bool) $parent['hidden'] ? 'Show' : 'Hide') . "</a>
 		      <a href=\"" . $link_edit . "\">Edit</a>
 		      " . $button_del . "
 		  </div>

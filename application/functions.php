@@ -102,7 +102,7 @@ function get_unique($table, $id)
 function read_menu($parent_unique = 0, $lang = null, $readhidden = FALSE)
 {
     $sql = "SELECT id,name,short_name,`unique`,hidden FROM menu WHERE parent_unique = :parent_unique AND lang = '" . LANG . "'
-    	   " . ($readhidden ? NULL : " AND hide = '-1' ") . " AND hidden = 0;";
+    	   " . ($readhidden ? NULL : " AND hidden = 0") . ";";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(':parent_unique' => $parent_unique));
@@ -151,15 +151,15 @@ function get_menu($short_name)
     return empty($result) ? array() : $result;
 }
 
-function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $hide, $footer)
+function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $footer)
 {
     if (strlen($name) < 2)
         return false;
 
     $unique = generate_unique("menu");
 
-    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hide, footer, lang, `unique`)
-    	    VALUES(:parent_unique, :name, :short_name, :title, :text, :hide, :footer, :lang, :unique)";
+    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hidden, footer, lang, `unique`)
+    	    VALUES(:parent_unique, :name, :short_name, :title, :text, 1, :footer, :lang, :unique)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
@@ -172,7 +172,6 @@ function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $tex
                     ':parent_unique' => $parent_unique,
                     ':title' => $title,
                     ':text' => $text,
-                    ':hide' => $hide,
                     ':footer' => $footer,
                     ':lang' => $lang,
                     ':unique' => $unique
