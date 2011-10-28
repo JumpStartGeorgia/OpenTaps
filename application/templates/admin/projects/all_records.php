@@ -20,7 +20,7 @@
 		  <div class='rleft'> " . char_limit($project['title'], 60) . "</div>
 		  "/*<div class='rcenter' style='width:60%;'> " . word_limiter(strip_tags($project['description']), 50) . "</div>*/. "
 		  <div class='rright' style='width: auto'>
-                    <a href=\"" . href() . 'admin/change_visibility/projects/' . $project['id'] . "\">" . ((bool) $project['hidden'] ? 'Show' : 'Hide') . "</a>
+                      <a href=\"" . href() . 'admin/change_visibility/projects/' . $project['id'] . "\">" . ((bool) $project['hidden'] ? 'Show' : 'Hide') . "</a>
 		      <a href=\"" . $link_edit . "\">Edit/Show</a>
 		      " /*<a href=\"" . $link_add_data . "\">Add Data</a>
 		      <a href=\"" . $link_edit_data . "\">List Data</a>*/ . "
