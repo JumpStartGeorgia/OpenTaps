@@ -31,7 +31,7 @@
                     <p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
                 </div>
                 <?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
-                <div class='project_details_line clearfix' style=width:100%;">
+                <div class='project_details_line clearfix' style="width:100%;">
                         <div class='line_left'>
                             <?php echo l('region_district') ?> :
                         </div>

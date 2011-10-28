@@ -9,7 +9,7 @@
                 if ($p != 'http://' AND $p != 'https:/')
                     $logo = URL . $organization['logo'];
                 ?><div style="width: 262px; float: left; margin: 10px;">
-                    <img style="display:block;margin:auto;" id="logo_img" style="height:auto;" src="http://localhost.com/opentaps/image.php?width=262&amp;image=<?php echo $logo; ?>" />
+                    <img id="logo_img" style="height:auto;" src="http://localhost.com/opentaps/image.php?width=262&amp;image=<?php echo $logo; ?>" />
                 </div><?php
         }
         else
@@ -31,7 +31,7 @@
                     <p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
                 </div>
                 <?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
-                <div class='project_details_line clearfix' style=width:100%;">
+                <div class='project_details_line clearfix' style="width:100%;">
                         <div class='line_left'>
                             <?php echo l('region_district') ?> :
                         </div>
