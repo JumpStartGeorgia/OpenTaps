@@ -38,7 +38,7 @@ Slim::get('/projects/', function()
 Slim::get('/project/:unique/', function($unique)
 {
 	Storage::instance()->show_map = FALSE;
-	Storage::instance()->show_project_chart = TRUE;
+	Storage::instance()->show_chart = array('project' => TRUE);
 
 	$query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags
@@ -416,7 +416,7 @@ Slim::post('/admin/projects/create/', function(){
         	$_POST['p_title'],
         	'', //$_POST['p_desc'],
         	$budgets,
-		$_POST['p_beneficiary_people'],
+		$_POST['p_beneficiary_people'].' '.$_POST['p_beneficiary_type'],
 		(empty($_POST['p_place']) ? array() : $_POST['p_place']),
         	$_POST['p_city'],
         	$_POST['p_grantee'],
@@ -465,7 +465,7 @@ Slim::post('/admin/projects/:unique/update/', function($unique){
         	$_POST['p_title'],
         	'', //$_POST['p_desc'],
         	$budgets,
-		$_POST['p_beneficiary_people'],
+		$_POST['p_beneficiary_people'].' '.$_POST['p_beneficiary_type'],
 		(empty($_POST['p_place']) ? NULL : $_POST['p_place']),
         	$_POST['p_city'],
         	$_POST['p_grantee'],

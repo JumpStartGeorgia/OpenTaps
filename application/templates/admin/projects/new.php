@@ -26,6 +26,10 @@
 		Beneficiary People: <br />
 		<input name="p_beneficiary_people" type="text" value="" />
 	    </label>
+	    <select name="p_beneficiary_type">
+	    	<option><?php echo (LANG == 'en') ? 'Person' : 'ადამიანი'; ?></option>
+	    	<option><?php echo (LANG == 'en') ? 'Family' : 'ოჯახი'?></option>
+	    </select>
   	    <br /><br />
 
   	    Budgets:
