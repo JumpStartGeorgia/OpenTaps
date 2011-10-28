@@ -5,6 +5,7 @@
             //PROJECTS
             $idx = 0;
             $num = count($projects);
+            $last_row = TRUE;
             foreach ($projects AS $item):
 
                 $breakable = ($idx % 5 == 4);

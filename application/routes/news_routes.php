@@ -21,7 +21,7 @@ Slim::get('/news/', function()
 		  FROM tag_connector
 		  JOIN tags ON tag_connector.tag_unique = tags.`unique`
 		  JOIN news ON tag_connector.news_unique = news.`unique`
-		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "';";
+		  WHERE tags.lang = '" . LANG . "' AND news.lang = '" . LANG . "' AND tag_connector.lang = '" . LANG . "' AND news.hidden = 0;";
 	$query = db()->prepare($query);
 	$query->execute();
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
