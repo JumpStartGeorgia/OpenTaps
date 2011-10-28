@@ -62,13 +62,16 @@
             'jquery.chosen.js',
             'jquery.slideQuery.js',
             'jquery.ui.effects.js',
-            'charts/highcharts.js',
-            'charts/modules/exporting.js',
-            'charts/chart_config.js',
         );
-        isset(Storage::instance()->show_home_chart) AND $scripts[] = 'charts/chart_home.js';
-        isset(Storage::instance()->show_organization_chart) AND $scripts[] = 'charts/chart_org.js';
-        isset(Storage::instance()->show_project_chart) AND $scripts[] = 'charts/chart_project.js';
+        if (isset(Storage::instance()->show_chart))
+        {
+	    $scripts[] = 'charts/highcharts.js';
+            $scripts[] = 'charts/modules/exporting.js';
+            $scripts[] = 'charts/chart_config.js';
+	}
+	isset(Storage::instance()->show_chart['home']) AND $scripts[] = 'charts/chart_home.js';
+        isset(Storage::instance()->show_chart['organization']) AND $scripts[] = 'charts/chart_org.js';
+        isset(Storage::instance()->show_chart['project']) AND $scripts[] = 'charts/chart_project.js';
         if (Storage::instance()->show_map)
         {
             $scripts[] = 'http://openlayers.org/api/OpenLayers.js';
