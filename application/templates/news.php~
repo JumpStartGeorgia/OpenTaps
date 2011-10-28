@@ -63,7 +63,7 @@
     		    		if( LANG == 'en' ):
     		    			echo call_user_func(config('getDate'),'en',$news['published_at']); 
     		    		else:
-    		    			echo call_user_func(config('getDate'),'ka',$news['published_at']);
+    		    		
     		    		endif;
     		    	?>    		    		
     		    </div>

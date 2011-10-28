@@ -132,7 +132,7 @@ function edit_button($edit_id = NULL)
             <br />
             <div id="disqus_thread"></div>
             <script type="text/javascript">
-                var disqus_shortname = 'opentapsge';
+                var disqus_shortname = 'opentaps.ge';
                 (function() {
                     var dsq = document.createElement('script');
                     dsq.type = 'text/javascript';

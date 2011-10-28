@@ -1,7 +1,3 @@
-function def(item)
-{
-    return (typeof(item) !== 'undefined');
-}
 
 String.prototype.reverse = function()
 {
@@ -386,7 +382,7 @@ $(function(){
     $('#map-overlay').css('opacity', 0.5).hover(function()
     {
         $(this).stop().animate({
-            opacity: 0.2
+            opacity: 0.33
         }, 'slow');
     }, function()
     {
@@ -400,7 +396,7 @@ $(function(){
         disabling = true;
         $(this).fadeOut('slow', function()
         {
-            //deven.setOpacity(1);
+            deven.setOpacity(1);
             $(this).remove();
         });
     });
@@ -672,38 +668,38 @@ $(function()
 });
 
 if( $('#logo_img').length ){
-    $('#logo_img').css('height',$('#project_details').css('height'));
+	$('#logo_img').css('height',$('#project_details').css('height'));
 }
 
 // Watter supply request/response
 $(function()
 {
-    $('#ws_regions').change(function()
-    {
-        $.getJSON(baseurl + 'water_supply/districts/' + $(this).val(), function(json)
-        {
-            $('#ws_districts').html('');
-            $.each(json,function(){
-                $('#ws_districts').append('<option id="'+$(this).attr('id')+'">'+$(this).attr('name')+'</option>');
-            });
-            $('#ws_districts').trigger("liszt:updated");
-        });
-    });
-
-    $('#ws_districts').change(function()
-    {
-        $.getJSON(baseurl + 'water_supply/' + $(this).val(), function(json)
-        {
-            $('#cont').html('');
-            $.each(json,function(){
-                $('#ws_text').append('appendis magivrad AJAX-s daabrunebine is HTML rac gchirdeba JSON is magivrad da racxa.html(response); qeni');
-            });
-            $('#ws_districts').trigger("liszt:updated");
-        });
-    });
-
-
+	$('#ws_regions').change(function()
+	{
+		$.getJSON(baseurl + 'water_supply/districts/' + $(this).val(), function(json)
+		{
+			$('#ws_districts').html('');
+			$.each(json,function(){
+				$('#ws_districts').append('<option id="'+$(this).attr('id')+'">'+$(this).attr('name')+'</option>');
+			});
+			$('#ws_districts').trigger("liszt:updated");
+		});
+	}); 
+		
+	$('#ws_districts').change(function()
+	{
+		$.getJSON(baseurl + 'water_supply/' + $(this).val(), function(json)
+		{
+			$('#cont').html('');
+			$.each(json,function(){
+				$('#ws_text').append(json);
+			});
+			$('#ws_districts').trigger("liszt:updated");
+		});
+	}); 
+		
+	
 
 });
-
-
+	
+	

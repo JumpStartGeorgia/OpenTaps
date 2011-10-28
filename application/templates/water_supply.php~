@@ -18,7 +18,23 @@
         <br />
 
 		<div id="cont">
-        
+        <div style="margin-left:105px;width:525px;height:55px;border:1px dotted #A6A6A6;">
+            <p style="padding-top:27px;">
+             
+                    <p style="padding-left:10px;margin-top:-15px;">
+                        <font id="ws_text" style="color:#0CB5F5;">
+                            <?php echo $ws['text'];?>
+                        </font>
+                    </p>
+                         <br />
+                    <p style="padding-left:10px;margin-top:-7px;">
+                         <font style="color:#A6A6A6;">
+                         <?php echo l('ws_last_updated') ?>: <?php echo $ws['last_updated']; ?>
+                         </font>
+                    </p>
+            
+            </p>
+        </div>
        </div>
 
    	</div>

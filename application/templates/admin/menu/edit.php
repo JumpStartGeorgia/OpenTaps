@@ -40,12 +40,12 @@
   else
     echo "  <input type='hidden' value='0' name='m_parent_unique' />";
 
-  echo "
+/*  echo "
         <input type='checkbox' ";
 echo $result['hide'] == 0 ? "checked" : NULL;
     echo " name='m_hide' id='mhide'/>
         <label for='mhide'>Hidden</label>&nbsp;&nbsp;";
-        /*<input type='checkbox'";
+        <input type='checkbox'";
 echo $result['footer'] == 0 ? "checked" : NULL;
 echo " name='m_footer' id='mfooter'/>
 <label for='mfooter'>Footer</label>*/

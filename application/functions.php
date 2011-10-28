@@ -102,7 +102,7 @@ function get_unique($table, $id)
 function read_menu($parent_unique = 0, $lang = null, $readhidden = FALSE)
 {
     $sql = "SELECT id,name,short_name,`unique`,hidden FROM menu WHERE parent_unique = :parent_unique AND lang = '" . LANG . "'
-    	   " . ($readhidden ? NULL : " AND hide = '-1' ") . " AND hidden = 0;";
+    	   " . ($readhidden ? NULL : " AND hidden = 0") . ";";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(':parent_unique' => $parent_unique));
@@ -151,15 +151,15 @@ function get_menu($short_name)
     return empty($result) ? array() : $result;
 }
 
-function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $hide, $footer)
+function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $footer)
 {
     if (strlen($name) < 2)
         return false;
 
     $unique = generate_unique("menu");
 
-    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hide, footer, lang, `unique`)
-    	    VALUES(:parent_unique, :name, :short_name, :title, :text, :hide, :footer, :lang, :unique)";
+    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hidden, footer, lang, `unique`)
+    	    VALUES(:parent_unique, :name, :short_name, :title, :text, 1, :footer, :lang, :unique)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
@@ -172,7 +172,6 @@ function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $tex
                     ':parent_unique' => $parent_unique,
                     ':title' => $title,
                     ':text' => $text,
-                    ':hide' => $hide,
                     ':footer' => $footer,
                     ':lang' => $lang,
                     ':unique' => $unique
@@ -752,18 +751,20 @@ function delete_place($unique)
 
 /* =======================================================Admin Regions 	============================================================ */
 
-function add_region($adding_lang, $name, $region_info, $region_projects_info, $city, $population, $squares, $settlement, $villages, $districts, $water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
+function add_region($adding_lang, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
 {
     $unique = generate_unique("regions");
 
-    $sql = "INSERT INTO regions(name,region_info,projects_info,city,population,square_meters,settlement,villages,districts,lang,`unique`)
-	    VALUES(:name,:region_info,:region_projects,:city,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
+    $sql = "INSERT INTO regions(name,region_info,projects_info,city,cities,towns,population,square_meters,settlement,villages,districts,lang,`unique`)
+	    VALUES(:name,:region_info,:region_projects,:city,:cities,:towns,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $data = array(
         ':region_info' => $region_info,
         ':region_projects' => $region_projects_info,
         ':city' => $city,
+        ':cities' => $cities,
+		  ':towns' => $towns,        
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,
@@ -818,13 +819,15 @@ function get_region($unique)
     return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
-function update_region($unique, $name, $region_info, $region_projects_info, $city, $population, $squares, $settlement, $villages, $districts, $water_supply)
+function update_region($unique, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply)
 {
     $sql = "UPDATE regions SET
 			name = :name,
 			region_info = :region_info,
 			projects_info = :region_projects,
 			city = :city,
+			cities = :cities,
+			towns = :towns,
 			population = :population,
 			square_meters = :squares,
 			settlement = :settlement,
@@ -839,6 +842,8 @@ function update_region($unique, $name, $region_info, $region_projects_info, $cit
         ':region_info' => $region_info,
         ':region_projects' => $region_projects_info,
         ':city' => $city,
+		  ':cities' => $cities,
+		  ':towns' => $towns,
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,
@@ -925,7 +930,7 @@ function update_user($id, $post)
 //projects
 
 
-function read_projects($project_unique = FALSE, $limit = NULL)
+function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FALSE)
 {
     if ($project_unique)
     {
@@ -950,7 +955,7 @@ function read_projects($project_unique = FALSE, $limit = NULL)
         return empty($result) ? array() : $result;
     }
     empty($limit) OR $limit = " LIMIT {$limit} ";
-    $sql = "SELECT * FROM projects WHERE lang = '" . LANG . "' AND hidden = 0 ORDER BY start_at{$limit}";
+    $sql = "SELECT * FROM projects WHERE lang = '" . LANG . "' " . ($readhidden ? NULL : "AND hidden = 0 ") . " ORDER BY start_at{$limit}";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute();
@@ -988,7 +993,7 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
 	LEFT JOIN regions AS r
 	    ON pl.region_unique = r.`unique` AND pl.lang = r.lang
-        WHERE p.lang = '" . LANG . "'
+        WHERE p.lang = '" . LANG . "' AND hidden = 0
 	" . ($order ? " ORDER BY {$order} " : NULL ) . " LIMIT {$from}, {$limit};";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
@@ -1379,7 +1384,8 @@ function get_project_chart_data($unique)
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'org_total_budget');
+    $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    $data = count($data == 1) ? NULL : convert_to_chart_array($data, 'name', 'org_total_budget');
 
     $results['organization_projects'] = array(
         'description' => 'Organizations which run this project, ordered by sum of budgets of all their projects.',
@@ -1424,7 +1430,7 @@ function get_organization_projects($unique)
     $sql = "SELECT DISTINCT(p.`unique`) AS `unique`, p.id,p.title,p.type FROM projects AS p
 	    INNER JOIN project_organizations AS po ON p.`unique` = po.project_unique
 	    INNER JOIN organizations AS o ON o.`unique` = po.organization_unique AND o.lang = p.lang
-	    WHERE o.`unique` = :unique AND o.lang = '" . LANG . "'";
+	    WHERE o.`unique` = :unique AND o.lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(
@@ -1451,7 +1457,18 @@ function count_organization_project_types($unique)
         ));
         $total = $statement->fetch(PDO::FETCH_ASSOC);
         $count[$type] = $total['num'];
-        ($count[$type] > 0) AND $total_types_count++;
+        ($count[$type] > 0) AND $total_types_count ++;
+    }
+    return ($total_types_count > 0) ? $count : FALSE;
+}
+function count_region_project_types($unique)
+{
+    $total_types_count = 0;
+    foreach (config('project_types') AS $type)
+    {
+        $total = fetch_db("SELECT COUNT(p.id) AS num FROM projects AS p INNER JOIN places AS pl ON pl.`unique` = p.place_unique AND pl.lang = p.lang WHERE pl.`region_unique` = :unique AND p.type = :type AND p.lang = '" . LANG . "';", array(':unique' => $unique, ':type' => $type), TRUE);
+        $count[$type] = $total['num'];
+        ($count[$type] > 0) AND $total_types_count ++;
     }
     return ($total_types_count > 0) ? $count : FALSE;
 }
@@ -1635,12 +1652,8 @@ function get_organization_chart_data($unique)
         'data' => $data
     );
 
-    $sql = "SELECT
-		org.name,
-		(SELECT SUM(budget) FROM project_budgets WHERE organization_unique = org.`unique` AND currency = 'gel') AS budget
-	    FROM organizations AS org
-	    WHERE org.lang = '" . LANG . "'
-	    ORDER BY budget;";
+    $sql = "SELECT org.name, (SELECT SUM(budget) FROM project_budgets WHERE organization_unique = org.`unique` AND currency = 'gel') AS budget
+	    FROM organizations AS org WHERE org.lang = '" . LANG . "' ORDER BY budget;";
 
     $query = db()->prepare($sql);
     $query->closeCursor();

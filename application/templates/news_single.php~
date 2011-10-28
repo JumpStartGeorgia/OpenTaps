@@ -4,7 +4,7 @@
 		if( LANG == 'en' ):
 	 		echo call_user_func(config('getDate'),'en',$news[0]['published_at']);
 	 	else:
-	 		echo call_user_func(config('getDate'),'ka',$news[0]['published_at']);
+	 	
 	 	endif; 
 	 	
  	?><font><br />

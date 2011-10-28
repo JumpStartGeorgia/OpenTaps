@@ -266,7 +266,7 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 ################################################################ projects admin routes start
 Slim::get('/admin/projects/', function(){
     Storage::instance()->content = userloggedin()
-    	? template('admin/projects/all_records', array('projects' => read_projects()))
+    	? template('admin/projects/all_records', array('projects' => read_projects(FALSE, NULL, TRUE)))
     	: template('login');
 });
 

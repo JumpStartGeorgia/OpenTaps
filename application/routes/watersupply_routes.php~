@@ -19,7 +19,7 @@ Slim::get('/water_supply/districts/:id', function($id)
 			exit(json_encode($json));
 	}
 );
-
+/*
 
 Slim::get('/water_supply/:unique/', function($unique)
       {
@@ -27,4 +27,4 @@ Slim::get('/water_supply/:unique/', function($unique)
 			$json = $water_supply;
 			exit(json_encode($json));
       }
-);
+);*/
