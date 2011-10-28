@@ -43,8 +43,7 @@ return array(
 	'gel',
 	'usd'
     ),
-    'getDate' => function($lang='en',$timestring)
-    {
+	'getDate' => function($lang='en',$timestring){
 		$the_months = array(
 			'January' => 'იანვარი',
 			'February' => 'თებერვალი',
