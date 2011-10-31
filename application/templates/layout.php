@@ -77,8 +77,8 @@
         isset(Storage::instance()->show_chart['project']) AND $scripts[] = 'charts/chart_project.js';
         if (Storage::instance()->show_map)
         {
+            $scripts[] = 'http://maps.google.com/maps/api/js?v=3.5&amp;sensor=false';
             $scripts[] = 'http://openlayers.org/api/OpenLayers.js';
-            //$scripts[] = 'OpenLayers/OpenLayers.js';
             //$scripts[] = 'OpenLayers/lib/OpenLayers/Control/LoadingPanel.js';
             $scripts[] = 'map.js';
         }
