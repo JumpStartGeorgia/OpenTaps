@@ -100,5 +100,7 @@ return array(
     'map_project_water_pollution' => 'Water Pollution',
     'map_project_irrigation' => 'Irrigation',
     'map_project_water_quality' => 'Water Quality',
-    'map_project_water_accidents' => 'Water Accidents'
+    'map_project_water_accidents' => 'Water Accidents',
+	 'admin_districts_management' => 'Districts Management',
+	 'admin_list_districts' => 'Districts Listing'
 );
