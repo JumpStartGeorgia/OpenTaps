@@ -1,10 +1,3 @@
-<?php
-
-function edit_button($edit_id = NULL)
-{
-    return '<span id="' . $edit_id . '" class="admin_edit_button">Edit</span>';
-} ?>
-
 <script type="text/javascript">
     /*var region_map_boundsLeft = 4550479.3343998,
         region_map_boundsRight = 4722921.2701802,
@@ -81,7 +74,6 @@ function edit_button($edit_id = NULL)
             <?php foreach ($data AS $d): ?>
                 <div>
                     <span class="expand_title"><span class="racxa">►</span> <?php echo $d['key'] ?></span>
-                    <abbr style="display: none;"><?php $edit_permission AND print edit_button('project_data'); ?></abbr>
                     <div class="expandable" data_unique="<?php echo $d['unique']; ?>"><?php echo $d['value']; ?></div>
                 </div>
             <?php endforeach; ?>
