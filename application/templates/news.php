@@ -109,7 +109,11 @@
 
 	    <div class='right_box_content' id='right_box_tags'>
 		<?php
-			foreach($tags as $tag):
+			foreach($tags as $key => $tag):
+				if ($key == config('projects_in_sidebar'))
+                                {
+				    break;
+                                }
 				echo 
 					"<a href='".href('tag/news/' . $tag['name'], TRUE, 'tags')."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".

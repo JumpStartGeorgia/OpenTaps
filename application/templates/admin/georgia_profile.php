@@ -2,7 +2,7 @@
 	    <h3>Georgia Profile Data</h3>
 	    <div id="data_fields_container">
 
-<?php	    foreach ($data as $idx => $item):
+<?php foreach ($data as $idx => $item):
 		$main = ($item['main'] == 1);
 	    	$bg = ($idx & 1) ? 'url(' . href() . 'images/bg.jpg) repeat' : 'white'; ?>
 		    <div class='group' style='background: <?php echo $bg; ?>; padding: 13px; border-bottom: 2px solid #ccc;'>
@@ -23,11 +23,15 @@
 	    			- Remove data
 	    		</a><br /><br />
 	    	    </div>
-<?php	    endforeach; ?>
+<?php endforeach; ?>
 
 	    </div>
 
 	    <a id="gp_add_data_field">+Add data</a>
+
+
+	    <input type="file" />
+
 
   	    <input type='submit' value='Save' />
   	</form>

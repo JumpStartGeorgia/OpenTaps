@@ -159,15 +159,17 @@
             <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
                 <div class='key'>TAG CLOUD</div>
                 <div class='value group' style="line-height: 25px;">
-		    <?php
-		    foreach ($tags as $tag):
+		    <?php foreach ($tags as $key = $tag):
+			if ($key == config('projects_in_sidebar'))
+                        {
+			    break;
+                        }
 			echo
 			"<a href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
 			char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
 			"</a><br />"
 			;
-		    endforeach;
-		    ?>
+		    endforeach; ?>
                 </div>
             </div>
 	    <?php endif; ?>
