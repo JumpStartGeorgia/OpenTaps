@@ -1004,7 +1004,6 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
 function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
     $unique = generate_unique("projects");
-
     $sql = "
     	INSERT INTO `opentaps`.`projects`(
     		`title`,
@@ -1032,14 +1031,13 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		:end_at,
     		"/* :info, */ . "
     		:type,
-	        :place_unique,
-	        :lang,
-	        :unique
+	      :place_unique,
+	      :lang,
+	      :unique
     	);
     ";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
-
 
     $data = array(
         //':description' => $desc,
@@ -1888,7 +1886,7 @@ function change_language($lang)
 
 function get_supply($id)
 {
-    $sql = "SELECT * FROM water_supply WHERE place_unique = :id LIMIT 1;";
+    $sql = "SELECT * FROM water_supply WHERE district_unique = :id LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
         ':id' => $id
@@ -1899,7 +1897,7 @@ function get_supply($id)
 
 function update_supply($text, $unique)
 {
-    $sql = "UPDATE water_supply SET text = :text WHERE place_unique = :unique LIMIT 1;";
+    $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
         ':text' => $text,

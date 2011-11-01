@@ -64,7 +64,7 @@
         </li>
 
         <li id="map-overlays">
-            <a class="map-button active"><img src="images/map/layer.png" width="13" height="11" alt="" /><?php echo l('map_overlays') ?></a>
+            <a class="map-button"><img src="images/map/layer.png" width="13" height="11" alt="" /><?php echo l('map_overlays') ?></a>
             <ul>
                 <li class="first"><a class="active" href="javascript:toggle_overlay('cities');toggle_overlay('urban');toggle_overlay('villages');"><img src="images/map/city.png" width="15" height="14" alt="" /><?php echo l('map_settlements') ?></a></li>
                 <li><a href="javascript:toggle_overlay('hydro');"><img src="images/map/hydro.png" width="15" height="14" alt="" /><?php echo l('map_hydro') ?></a></li>

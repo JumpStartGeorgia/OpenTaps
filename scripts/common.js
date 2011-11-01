@@ -1,6 +1,6 @@
 function def(item)
 {
-    return (typeof(item) !== 'undefined');
+    return typeof(item) !== 'undefined';
 }
 
 String.prototype.reverse = function()

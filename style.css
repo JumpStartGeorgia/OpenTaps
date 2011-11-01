@@ -226,7 +226,7 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 /*.highcharts-container svg > text { display: none !important }*/
 
 /* Mapping */
-#map { background: #F9F6EE }
+#map { background: #DBE6EC }
 #map-overlay { cursor: pointer; position: absolute; top: 0; left: 0; z-index: 99999; height: 362px; line-height: 362px; width: 100.3%; /*background-color: #0CB5F6;*/ background-color: #FFF; color: #777; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
 .map-button { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; text-decoration: none; display: block; font-size: 13px; letter-spacing: 1px; padding: 2px 7px 3px; color: #FFF; background: #0CB5F5; cursor: pointer }
 .map-button:hover { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; filter: alpha(opacity=75); -moz-opacity: 0.75; -khtml-opacity: 0.75; opacity: 0.75; }
@@ -352,5 +352,9 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 #logo_img { display:block;margin:auto; }
 .next_text { font-size: 15px; text-align: justify; }
 .news_text img { float:left;padding:10px; }
+
+
+#map-popup { background: #00AFF2; -webkit-border-radius: 64px; -moz-border-radius: 64px; border-radius: 64px; background: #0CB5F5 !important; color: #FFF; text-align: center; font-size: 12px }
+
 
 <?php ob_end_flush(); ?>
