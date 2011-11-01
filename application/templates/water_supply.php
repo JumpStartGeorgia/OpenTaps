@@ -17,10 +17,6 @@
         </div>
         <br />
 
-		<div id="cont">
-        
-       </div>
-
    	</div>
 
 
