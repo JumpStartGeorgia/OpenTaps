@@ -107,11 +107,14 @@
 
 	<?php if (!empty($chart_data['organizations_budgets'])): ?>
 	    <div class="group">
-		<?php if (!empty($chart_data['organization_projects']['data'])): ?>
+		<?php if (!empty($chart_data['organization_projects']['data'])):
+			$csv_uniq = 'chartcsv' . uniqid();
+			$_SESSION[$csv_uniq] = $chart_data['organization_projects']['data'];
+		?>
 		<script type="text/javascript">
 			var org_page = true,
 			data_1 = <?php echo $chart_data['organization_projects']['data'] ?>,
-			serialized_data_1 = "<?php echo base64_encode(serialize(json_decode($chart_data['organization_projects']['data']))); ?>";
+			uniqid_1 = "<?php echo $csv_uniq; ?>";
 		</script>
                 <div class="withmargin" style="width: 336px; text-align: center; display: inline-block; float: left; border-right: 1px dotted #a6a6a6;">
                     <p class='desc'><?php echo $chart_data['organization_projects']['title'] ?></p>
@@ -119,11 +122,15 @@
                 </div>
                 <?php endif; ?>
 
-		<?php if (!empty($chart_data['organizations_budgets']['data'])): ?>
+
+		<?php if (!empty($chart_data['organizations_budgets']['data'])):
+			$csv_uniq = 'chartcsv' . uniqid();
+			$_SESSION[$csv_uniq] = $chart_data['organizations_budgets']['data'];
+		?>
 		<script type="text/javascript">
 			var org_page = true,
 			data_2 = <?php echo $chart_data['organizations_budgets']['data'] ?>,
-			serialized_data_2 = "<?php echo base64_encode(serialize(json_decode($chart_data['organizations_budgets']['data']))); ?>";
+			uniqid_2 = "<?php echo $csv_uniq; ?>";
 		</script>
                 <div class="withmargin" style="width: 335px; text-align: center; display: inline-block;">
                     <p class='desc'><?php echo $chart_data['organizations_budgets']['title'] ?></p>

@@ -102,6 +102,11 @@ if (Slim::request()->isGet())
     $about_uniques = config('about_us_uniques');
     $about_sql = "SELECT text FROM menu WHERE `unique` = ";
     $lang_sql = "AND lang = '" . LANG . "' LIMIT 1;";
+
+    /*## UNSET SESSIONS STORED FOR CHART EXPORTING ##*/
+    foreach ($_SESSION AS $key => $value)
+	if (substr($key, 0, 8) == 'chartcsv')
+	    unset($_SESSION[$key]);
 }
 
 Slim::run();

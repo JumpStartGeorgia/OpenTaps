@@ -1349,11 +1349,12 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
         }
     }
     return json_replace_unicode(json_encode($newdata));
+    //return json_encode($newdata);
 }
 
 function home_chart_data()
 {
-    Storage::instance()->show_organization_chart = TRUE;
+print_r($_SESSION);
     $sql = "SELECT
     		o.name,
     		(SELECT SUM(budget)

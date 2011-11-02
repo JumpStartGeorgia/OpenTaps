@@ -92,12 +92,15 @@
 		<?php endif; ?>
 
 
-		<?php if (!empty($chart_data['organization_projects']['data'])): ?>
+		<?php if (!empty($chart_data['organization_projects']['data'])):
+			$csv_uniq = 'chartcsv' . uniqid();
+			$_SESSION[$csv_uniq] = $chart_data['organization_projects']['data'];
+		?>
                 <div>
 		    <script type="text/javascript">
 			var project_page = true,
 			data_1 = <?php echo $chart_data['organization_projects']['data'] ?>,
-			serialized_data_1 = "<?php echo base64_encode(serialize(json_decode($chart_data['organization_projects']['data']))); ?>";;
+			uniqid_1 = "<?php echo $csv_uniq; ?>";
 		    </script>
                     <span class="expand_title"><span class="racxa">►</span><?php echo $chart_data['organization_projects']['title'] ?></span>
                     <div class="expandable" style="margin-left: 0px; padding-left: 0px; text-align: center; width: 640px;">
@@ -159,7 +162,7 @@
             <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
                 <div class='key'>TAG CLOUD</div>
                 <div class='value group' style="line-height: 25px;">
-		    <?php foreach ($tags as $key = $tag):
+		    <?php foreach ($tags as $key => $tag):
 			if ($key == config('projects_in_sidebar'))
                         {
 			    break;
