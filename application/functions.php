@@ -375,10 +375,10 @@ function image_upload($filedata, $path = "uploads/")
     if ($filedata['size'] > 0)
     {
         if (($filedata['type'] == "image/jpeg" || $filedata['type'] == "image/pjpeg" ||
-                $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 3149)
+             $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 3149)
         {
             $path = "uploads/";
-            $name = mt_rand(0, 1000) . $filedata['name'];
+            $name = substr(sha1(uniqid() . time() . mt_rand(0, 1000)), 0, 15) . substr($filedata['name'], -20);
             if (file_exists($path . $name))
                 $name = mt_rand(0, 99999) . $name;
             $upload = move_uploaded_file($filedata["tmp_name"], $path . $name);
