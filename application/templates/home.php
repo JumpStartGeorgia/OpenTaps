@@ -1,6 +1,6 @@
 <?php
-	$csv_uniq = 'chartcsv' . uniqid();
-	$_SESSION[$csv_uniq] = $home_chart_data;
+    $csv_uniq = 'chartcsv' . uniqid();
+    $_SESSION[$csv_uniq] = $home_chart_data;
 ?>
 <script type="text/javascript">
     var home_page = true,
@@ -27,7 +27,7 @@
     }
     ?>
 
-    <div class='news_body group'>
+    <div class="news_body group">
         <div style="width: 535px;" class="group">
 
             <?php

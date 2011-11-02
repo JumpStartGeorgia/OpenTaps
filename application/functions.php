@@ -1338,15 +1338,15 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
     $newdata = array();
     if (empty($data) OR !is_array($data))
     {
-        return NULL;
+	return NULL;
     }
     foreach ($data as $d)
     {
-        if (!empty($d[$budgetindex]))
-        {
+	if (!empty($d[$budgetindex]))
+	{
             $d[$nameindex] = char_limit($d[$nameindex], 30);
             $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
-        }
+	}
     }
     return json_replace_unicode(json_encode($newdata));
     //return json_encode($newdata);
@@ -1354,7 +1354,6 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
 
 function home_chart_data()
 {
-print_r($_SESSION);
     $sql = "SELECT
     		o.name,
     		(SELECT SUM(budget)

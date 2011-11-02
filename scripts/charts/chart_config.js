@@ -51,7 +51,7 @@ var pie_chart_options = {
       },
       series: [],
       exporting: {
-          //url: 'http://export.highcharts.com/index-utf8-encode.php',
+          //url: baseurl + 'exportserver/?lang=' + lang,
 	  enabled: true,
           buttons: {
 	      printButton: {

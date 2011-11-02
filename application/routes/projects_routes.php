@@ -200,15 +200,13 @@ Slim::get('/projects/order/:order-:direction/:page/', function($order, $directio
 
 
 
+Slim::post('/exportserver/', function()
+{
 
+    header('Content-Type: image/svg+xml; charset=UTF-8');
+    exit($_POST['svg']);
 
-
-
-
-
-
-
-
+});
 
 Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 {
@@ -253,6 +251,11 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 		fclose($file);
 
 		file_exists(DIR . 'uploads/' . $name) AND unlink(DIR . 'uploads/' . $name);
+
+		/*## UNSET SESSIONS STORED FOR CHART EXPORTING ##*/
+		foreach ($_SESSION AS $key => $value)
+		    if (substr($key, 0, 8) == 'chartcsv')
+			unset($_SESSION[$key]);
 
 	        break;
 	}

@@ -27,7 +27,7 @@ $(document).ready(function() {
 		      {},
 		      null,
 		      menuitem3,
-		      {}
+		      null
 		];
 
 		var org_chart_1 = new Highcharts.Chart(pie_chart_options);
@@ -58,7 +58,7 @@ $(document).ready(function() {
 		      {},
 		      null,
 		      menuitem3,
-		      {}
+		      null
 		];
 
 		var org_chart_2 = new Highcharts.Chart(pie_chart_options);
