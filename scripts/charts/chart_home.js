@@ -9,12 +9,12 @@ $(document).ready(function() {
 		data: data
 	});
 
-	if (typeof(serialized_data) !== 'undefined')
+	if (typeof(uniqid) !== 'undefined')
 	{
 		menuitem3 = {
 			text: 'Download CSV document',
 			onclick: function() {
-				window.location.href = baseurl + 'export/csv/' + serialized_data + '/chart/';
+				window.location.href = baseurl + 'export/csv/' + uniqid + '/chart/';
 			}
 		};
 	}
@@ -27,6 +27,7 @@ $(document).ready(function() {
 	      {},
 	      null,
 	      menuitem3,
+	      null
 	];
 		      
 

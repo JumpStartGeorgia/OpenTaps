@@ -200,22 +200,21 @@ Slim::get('/projects/order/:order-:direction/:page/', function($order, $directio
 
 
 
+Slim::post('/exportserver/', function()
+{
 
+    header('Content-Type: image/svg+xml; charset=UTF-8');
+    exit($_POST['svg']);
 
+});
 
-
-
-
-
-
-
-
-Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
+Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 {
         $name = substr(sha1(uniqid(TRUE) . time() . rand()), 0, 5) . '_' . str_replace(' ', '_', strtolower($name)) . '.' . $type;
 
 	switch ($type)
 	{
+	    /*
 	    case 'png':
         	$headers = array(
         		'Content-Type' => 'image/png',
@@ -228,7 +227,10 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 		fpassthru($file);
 		fclose($file);	        
 	        break;
+	    */
 	    case 'csv':
+
+		$data = json_decode($_SESSION[$uniqid], TRUE);
         	$headers = array(
         		'Content-Type' => 'text/csv',
         		'Content-Disposition' => 'attachment; filename=' . $name
@@ -236,15 +238,10 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
         	foreach ($headers AS $key => $value)
 		    header("{$key}: {$value}");
 
-                $data = unserialize(base64_decode($data));
-
-		//foreach ( $data['values'] as $key => $value )
-		//	$list[1][] = empty($value['budget']) ? $value : $value['budget'];
-		$list = $data;
-
 		$fp = fopen(DIR . 'uploads/' . $name, 'w');
+		//chmod(DIR . 'uploads/' . $name, 777);
 
-		foreach ($list as $fields)
+		foreach ($data as $fields)
 		    fputcsv($fp, $fields);
 
 		fclose($fp);
@@ -254,6 +251,11 @@ Slim::get('/export/:type/:data/:name/', function($type, $data, $name)
 		fclose($file);
 
 		file_exists(DIR . 'uploads/' . $name) AND unlink(DIR . 'uploads/' . $name);
+
+		/*## UNSET SESSIONS STORED FOR CHART EXPORTING ##*/
+		foreach ($_SESSION AS $key => $value)
+		    if (substr($key, 0, 8) == 'chartcsv')
+			unset($_SESSION[$key]);
 
 	        break;
 	}

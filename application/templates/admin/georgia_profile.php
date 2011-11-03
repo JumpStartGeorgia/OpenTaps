@@ -1,8 +1,28 @@
-    	<form action="<?php echo href('admin/georgia_profile/', TRUE); ?>" method='post'>
+    	<form action="<?php echo href('admin/georgia_profile/', TRUE); ?>" method='post' enctype="multipart/form-data">
 	    <h3>Georgia Profile Data</h3>
 	    <div id="data_fields_container">
 
-<?php	    foreach ($data as $idx => $item):
+
+	    <div style="margin: 25px 0px;">
+	        <?php if (empty($image['value'])): ?>
+			Photo: <br />
+			<input type="file" name="image" />
+		<?php else: ?>
+			<div id="prevphoto">
+			    Current Photo: <br />
+			    <img src="<?php echo href() . $image['value'] ?>" width="200px" /><br />
+			</div>
+			<span style="cursor: pointer;" onclick="$(this).parent().find('#prevphoto').remove(); $(this).parent().append('<input type=\'file\' name=\'image\' />');">New Photo</span>
+		<?php endif; ?>
+	    </div>
+
+	    <div style="margin: 25px 0px;">
+		Content:
+		<textarea name="content"><?php empty($content['value']) OR print $content['value']; ?></textarea>
+	    </div>
+
+	    <p style="font-weight: bold;">Data</p>
+<?php foreach ($data as $idx => $item):
 		$main = ($item['main'] == 1);
 	    	$bg = ($idx & 1) ? 'url(' . href() . 'images/bg.jpg) repeat' : 'white'; ?>
 		    <div class='group' style='background: <?php echo $bg; ?>; padding: 13px; border-bottom: 2px solid #ccc;'>
@@ -23,7 +43,7 @@
 	    			- Remove data
 	    		</a><br /><br />
 	    	    </div>
-<?php	    endforeach; ?>
+<?php endforeach; ?>
 
 	    </div>
 

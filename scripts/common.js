@@ -696,17 +696,24 @@ $(function()
 
     $('#ws_districts').change(function()
     {
-        $.getJSON(baseurl + 'water_supply/' + $(this).val(), function(json)
+	
+        $.getJSON(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(json)
         {
-            $('#cont').html('');
-            $.each(json,function(){
+	
+		console.log(json);
+            var cont = $('#cont');
+		cont.html(json);
+		
+		
+        /*    $.each(json,function(){
                 $('#ws_text').append('appendis magivrad AJAX-s daabrunebine is HTML rac gchirdeba JSON is magivrad da racxa.html(response); qeni');
             });
-            $('#ws_districts').trigger("liszt:updated");
+            $('#ws_districts').trigger("liszt:updated");*/
+
+		
         });
+	
     });
-
-
 
 });
 

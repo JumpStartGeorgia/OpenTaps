@@ -375,10 +375,10 @@ function image_upload($filedata, $path = "uploads/")
     if ($filedata['size'] > 0)
     {
         if (($filedata['type'] == "image/jpeg" || $filedata['type'] == "image/pjpeg" ||
-                $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 3149)
+             $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 3149)
         {
             $path = "uploads/";
-            $name = mt_rand(0, 1000) . $filedata['name'];
+            $name = substr(sha1(uniqid() . time() . mt_rand(0, 1000)), 0, 15) . substr($filedata['name'], -20);
             if (file_exists($path . $name))
                 $name = mt_rand(0, 99999) . $name;
             $upload = move_uploaded_file($filedata["tmp_name"], $path . $name);
@@ -1004,7 +1004,6 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
 function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
     $unique = generate_unique("projects");
-
     $sql = "
     	INSERT INTO `opentaps`.`projects`(
     		`title`,
@@ -1032,14 +1031,13 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		:end_at,
     		"/* :info, */ . "
     		:type,
-	        :place_unique,
-	        :lang,
-	        :unique
+	      :place_unique,
+	      :lang,
+	      :unique
     	);
     ";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
-
 
     $data = array(
         //':description' => $desc,
@@ -1340,22 +1338,22 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
     $newdata = array();
     if (empty($data) OR !is_array($data))
     {
-        return NULL;
+	return NULL;
     }
     foreach ($data as $d)
     {
-        if (!empty($d[$budgetindex]))
-        {
+	if (!empty($d[$budgetindex]))
+	{
             $d[$nameindex] = char_limit($d[$nameindex], 30);
             $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
-        }
+	}
     }
     return json_replace_unicode(json_encode($newdata));
+    //return json_encode($newdata);
 }
 
 function home_chart_data()
 {
-    Storage::instance()->show_organization_chart = TRUE;
     $sql = "SELECT
     		o.name,
     		(SELECT SUM(budget)
@@ -1888,7 +1886,7 @@ function change_language($lang)
 
 function get_supply($id)
 {
-    $sql = "SELECT * FROM water_supply WHERE place_unique = :id LIMIT 1;";
+    $sql = "SELECT * FROM water_supply WHERE district_unique = :id LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
         ':id' => $id
@@ -1899,7 +1897,7 @@ function get_supply($id)
 
 function update_supply($text, $unique)
 {
-    $sql = "UPDATE water_supply SET text = :text WHERE place_unique = :unique LIMIT 1;";
+    $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
         ':text' => $text,

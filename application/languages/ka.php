@@ -102,6 +102,8 @@ return array(
     'map_project_water_pollution' => 'წყლის დაბინძურება',
     'map_project_irrigation' => 'ირიგაცია',
     'map_project_water_quality' => 'წყლის ხარისხი',
-    'map_project_water_accidents' => 'ავარიები'
+    'map_project_water_accidents' => 'ავარიები',
+    'admin_districts_management' => 'რაიონების მართვა',
+    'admin_list_districts' => 'რაიონების სია'
 );
 

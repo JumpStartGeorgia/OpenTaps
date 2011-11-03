@@ -102,7 +102,7 @@ function get_unique($table, $id)
 function read_menu($parent_unique = 0, $lang = null, $readhidden = FALSE)
 {
     $sql = "SELECT id,name,short_name,`unique`,hidden FROM menu WHERE parent_unique = :parent_unique AND lang = '" . LANG . "'
-    	   " . ($readhidden ? NULL : " AND hide = '-1' ") . " AND hidden = 0;";
+    	   " . ($readhidden ? NULL : " AND hidden = 0") . ";";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(':parent_unique' => $parent_unique));
@@ -151,15 +151,15 @@ function get_menu($short_name)
     return empty($result) ? array() : $result;
 }
 
-function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $hide, $footer)
+function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $footer)
 {
     if (strlen($name) < 2)
         return false;
 
     $unique = generate_unique("menu");
 
-    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hide, footer, lang, `unique`)
-    	    VALUES(:parent_unique, :name, :short_name, :title, :text, :hide, :footer, :lang, :unique)";
+    $sql = "INSERT INTO  `opentaps`.`menu` (`parent_unique`, `name`, `short_name`, title, text, hidden, footer, lang, `unique`)
+    	    VALUES(:parent_unique, :name, :short_name, :title, :text, 1, :footer, :lang, :unique)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
@@ -172,7 +172,6 @@ function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $tex
                     ':parent_unique' => $parent_unique,
                     ':title' => $title,
                     ':text' => $text,
-                    ':hide' => $hide,
                     ':footer' => $footer,
                     ':lang' => $lang,
                     ':unique' => $unique
@@ -843,8 +842,8 @@ function update_region($unique, $name, $region_info, $region_projects_info, $cit
         ':region_info' => $region_info,
         ':region_projects' => $region_projects_info,
         ':city' => $city,
-		  ':cities' => $cities,
-		  ':towns' => $towns,
+	':cities' => $cities,
+	':towns' => $towns,
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,
@@ -1005,7 +1004,6 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
 function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
     $unique = generate_unique("projects");
-
     $sql = "
     	INSERT INTO `opentaps`.`projects`(
     		`title`,
@@ -1033,14 +1031,13 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		:end_at,
     		"/* :info, */ . "
     		:type,
-	        :place_unique,
-	        :lang,
-	        :unique
+	      :place_unique,
+	      :lang,
+	      :unique
     	);
     ";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
-
 
     $data = array(
         //':description' => $desc,
@@ -1889,7 +1886,7 @@ function change_language($lang)
 
 function get_supply($id)
 {
-    $sql = "SELECT * FROM water_supply WHERE place_unique = :id LIMIT 1;";
+    $sql = "SELECT * FROM water_supply WHERE district_unique = :id LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
         ':id' => $id
@@ -1900,7 +1897,7 @@ function get_supply($id)
 
 function update_supply($text, $unique)
 {
-    $sql = "UPDATE water_supply SET text = :text WHERE place_unique = :unique LIMIT 1;";
+    $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
         ':text' => $text,

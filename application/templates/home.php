@@ -1,7 +1,11 @@
+<?php
+    $csv_uniq = 'chartcsv' . uniqid();
+    $_SESSION[$csv_uniq] = $home_chart_data;
+?>
 <script type="text/javascript">
     var home_page = true,
     data = <?php echo $home_chart_data; ?>;
-    serialized_data = "<?php echo base64_encode(serialize(json_decode($home_chart_data))); ?>";
+    uniqid = "<?php echo $csv_uniq; ?>";
 </script>
 
 
@@ -23,7 +27,7 @@
     }
     ?>
 
-    <div class='news_body group'>
+    <div class="news_body group">
         <div style="width: 535px;" class="group">
 
             <?php

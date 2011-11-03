@@ -7,7 +7,7 @@ Slim::get('/region/:unique/', function($unique){
 
 	/*list($values, $names, $real_values) = get_region_chart_data($unique);*/
 
-	$query = "SELECT projects.title,projects.id,projects.`unique` FROM projects
+	$query = "SELECT projects.title,projects.id,projects.type,projects.`unique` FROM projects
 		  LEFT JOIN places ON places.`unique` = projects.place_unique
 		  WHERE places.region_unique = :unique AND projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "';";
 	$query = db()->prepare($query);
@@ -26,7 +26,8 @@ Slim::get('/region/:unique/', function($unique){
     		'region_budget' => region_total_budget($unique),
     		'projects' => $region_projects,
     		'data' => $data,
-    		'side_data' => $side_data
+    		'side_data' => $side_data,
+    		'count' => count_region_project_types($unique)
     	));
 });
 

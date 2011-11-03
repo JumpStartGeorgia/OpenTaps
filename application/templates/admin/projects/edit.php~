@@ -31,7 +31,7 @@
 					$ben_type['person'] = 'ადამიანი';
 					$ben_type['family'] = 'ოჯახი';
 				endif;
-				if ( !empty($ben_people[1]) ): ?>
+				if ( isset($ben_people[1]) ): ?>
 	    			<option <?php echo (   $ben_people[1] == $ben_type['person'] ) ? 'selected="selected"' : NULL; ?>><?php echo $ben_type['person']; ?></option>
 	    			<option <?php echo (   $ben_people[1] == $ben_type['family'] ) ? 'selected="selected"' : NULL; ?>><?php  echo $ben_type['family']; ?></option>
 	    	<?php else: ?>
@@ -92,6 +92,7 @@
   	    <select name='p_place[]' multiple="multiple" class="chosen-select" id='pplace'>
   	      <?php
   	      	$us = @unserialize($project['place_unique']);
+  	      	exit(var_dump($us));
   	      	is_array($us) OR $us = array();
 		foreach($places as $place):
   	            $selected = (in_array($place['unique'], $us)) ? "selected='selected'" : NULL;

@@ -105,7 +105,11 @@
 
 	    <div class='right_box_content' id='right_box_tags'>
 		<?php
-			foreach($tags as $tag):
+			foreach($tags as $key => $tag):
+				if ($key == config('projects_in_sidebar'))
+                                {
+				    break;
+                                }
 				echo 
 					"<a href='" . href('tag/projects/' . $tag['name'], TRUE) . "'>" .
 						char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
