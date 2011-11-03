@@ -20,10 +20,10 @@
 
 			<?php foreach ($data as $index => $item): ?>
 
-					<div class='project_details_line' <?php $index == $num AND print 'style="border: 0;"'; ?>>
-						<div class='line_left'><?php echo $item['key']; ?> :</div>
-						<div><?php echo $item['value']; ?></div>
-					</div>
+				<div class='project_details_line' <?php $index == $num AND print 'style="border: 0;"'; ?>>
+					<div class='line_left'><?php echo $item['key']; ?> :</div>
+					<div><?php echo $item['value']; ?></div>
+				</div>
 
 			<?php endforeach; ?>
 
