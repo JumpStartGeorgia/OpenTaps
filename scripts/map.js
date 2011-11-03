@@ -287,7 +287,6 @@ function load_water()
     });
 }
 
-//load_projects('sewage', 'completed');
 function load_projects(type, status)
 {
     var url = 'map-data/projects/' + type;
@@ -311,24 +310,43 @@ function load_projects(type, status)
                 coordinates = new OpenLayers.LonLat(result[idx].places[pidx].latitude, result[idx].places[pidx].longitude);
                 marker = new OpenLayers.Marker(coordinates, icons[type][status].clone());
                 marker.setOpacity(0.95);
-                marker.events.register('mousedown', marker, (function(title, lonlat)
+                markers.addMarker(marker);
+                marker.events.register('mousedown', marker, (function(title, coordinates, status, id, lang)
                 {
                     return function()
                     {
-                        if (popup !== null)
-                            map.removePopup(popup);
-                        console.log(lonlat);
-                        popup = new OpenLayers.Popup('map-popup', lonlat, new OpenLayers.Size(128, 128), title, true);
-                        //popup.autoSize = true;
-                        map.addPopup(popup);
+                        show_project_tooltip(coordinates, '<a href="project/' + id + '/?lang=' + lang + '">' + title + '</a>', status);
                     }
-                })(result[idx].title, coordinates));
-                project_storage[type][status].push(marker);
-                markers.addMarker(marker);
+                })(result[idx].title, coordinates, status, result[idx].id, lang));
             }
             pidx = 0;
         }
     });
+}
+
+function show_project_tooltip(lonlat, content, status)
+{
+    var offset = map.getPixelFromLonLat(lonlat),
+    tooltip = $('#tooltip')
+    .removeClass('completed')
+    .removeClass('current')
+    .removeClass('scheduled')
+    .addClass(status)
+    .click(function(event)
+    {
+        event.stopPropagation();
+        $(this).fadeOut();
+    })
+    .css({
+        left: parseInt(offset.x - 88),
+        top: parseInt(offset.y - 88)
+    });
+    //////////
+    return tooltip
+    .children('span')
+    .html(content)
+    .end()
+    .fadeIn();
 }
 
 //feature.geometry.getBounds().getCenterLonLat();
@@ -385,10 +403,25 @@ function zoom_out()
     return map.zoomOut();
 }
 
+function popup_assign_class(cls)
+{
+    var pop_goes_my_heart = $('#map-popup');
+    return pop_goes_my_heart
+    .removeClass('completed')
+    .removeClass('current')
+    .removeClass('scheduled')
+    .addClass(cls);
+}
+
 function map_commons()
 {
 
     mapping();
+
+    $('body').click(function()
+    {
+        $('#tooltip').fadeOut();
+    });
 
     var controls = $('#map-controls'),
     count = 3;
@@ -423,6 +456,13 @@ function map_commons()
         if (!sub.length)
             return;
         sub.css('right', $(this).parent().width()).toggle();
+    });
+
+    // Popup Tweaks
+    $('#map-popup').live('click', function()
+    {
+        console.log('hey!');
+    //popup.hide();
     });
 
 }

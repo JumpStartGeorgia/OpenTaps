@@ -4,6 +4,8 @@
 
     <div id="map-overlay" style="display: none"><?php echo strtoupper(l('map_active')) ?></div>
 
+    <div id="tooltip"><span></span></div>
+
     <ul id="map-controls">
 
         <li id="map-minus"><a class="map-button" href="javascript:zoom_out();">-</a></li>

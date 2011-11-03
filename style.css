@@ -353,8 +353,25 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .next_text { font-size: 15px; text-align: justify; }
 .news_text img { float:left;padding:10px; }
 
+/*
+#map-popup { background: #00AEEF !important; -webkit-border-radius: 88px; -moz-border-radius: 88px; border-radius: 88px; color: #FFF; text-align: center; font-size: 12px }
+#map-popup.completed { background: #00AEEF !important }
+#map-popup.current { background: #FF4C4C !important }
+#map-popup.scheduled { background: #01C288 !important }
+#map-popup_contentDiv { padding: 25px }
+*/
 
-#map-popup { background: #00AFF2; -webkit-border-radius: 64px; -moz-border-radius: 64px; border-radius: 64px; background: #0CB5F5 !important; color: #FFF; text-align: center; font-size: 12px }
+#tooltip { position: absolute; width: 175px; height: 175px; -webkit-border-radius: 88px; -moz-border-radius: 88px; border-radius: 88px; color: #FFF; text-align: center; font-size: 12px; z-index: 99999 }
+#tooltip.completed { background: #00AEEF }
+#tooltip.current { background: #FF4C4C }
+#tooltip.scheduled { background: #01C288 }
+#tooltip a { color: #FFF }
+#tooltip a:hover { text-decoration: none }
+#tooltip span { display: block; padding: 25px }
 
+/*#map-popup { background: #00AEEF !important; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; color: #FFF; text-align: center; font-size: 12px }
+#map-popup a { color: #FFF }
+#map-popup a:hover { text-decoration: none }
+#map-popup_close { display: none !important }*/
 
 <?php ob_end_flush(); ?>
