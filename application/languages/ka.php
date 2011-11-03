@@ -24,7 +24,7 @@ return array(
     'region_villages' => 'სოფლები',
     'region_district' => 'რაიონი',
     'region_edit' => 'შეცვლა',
-    'projects_info' => 'ინფორმაცია პროექტებგზე',
+    'projects_info' => 'ინფორმაცია პროექტებზე',
     'region_projects' => 'პროექტები ამ რეგიონში',
     'project_name' => 'პროექტის სახელი',
     'location_region' => 'ადგილმდებარეობა - რეგიონი',
