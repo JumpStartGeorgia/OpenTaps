@@ -8,8 +8,14 @@
                 $p = substr($organization['logo'], 0, 7);
                 if ($p != 'http://' AND $p != 'https:/')
                     $logo = URL . $organization['logo'];
-                ?><div style="width: 262px; float: left; margin: 10px;">
-                    <img id="logo_img" style="height:auto;" src="http://localhost.com/opentaps/image.php?width=262&amp;image=<?php echo $logo; ?>" />
+
+		list($width, $height) = getimagesize($logo);
+		list($maxwidth, $maxheight) = array(262, 174);
+		$k = ($height > $maxheight OR $width > $maxwidth) ? max(($width / $maxwidth), ($height / $maxheight)) : 1;
+		$dimensions = 'width: ' . ($width / $k) . 'px; height: ' . ($height / $k) . 'px;';
+
+                ?><div style="width: 262px; float: left; margin: 0px 10px; text-align: center;">
+                    <img style="<?php echo $dimensions; ?>" src="<?php echo $logo; ?>" />
                 </div><?php
         }
         else
@@ -79,13 +85,17 @@
         </div>
 
         <div id='project_description' style="margin-top:75px;">
-            <p class='desc'><?php echo strtoupper(l('org_desc')) ?></p>
-            <div class="withmargin" style="margin-bottom: 0px; padding-bottom: 0px;"><?php echo $organization['description']; ?></div>
+            <?php if (!empty($organization['description'])): ?>
+		<p class='desc'><?php echo strtoupper(l('org_desc')) ?></p>
+		<div class="withmargin" style="margin-bottom: 15px; padding-bottom: 0px;"><?php echo $organization['description']; ?></div>
+	    <?php endif; ?>
 
-            <div style="margin: 15px 0px 25px; width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
 
             <?php /* <p class='desc'>INFO ON PROJECTS</p> */ ?>
-            <div class="withmargin" style="margin-top: 0px;"><?php echo $organization['projects_info']; ?></div>
+            <?php if (!empty($organization['projects_info'])): ?>
+		<div style="margin: 0px 0px 25px; width: 100%; border-top: 1px solid rgba(12, 181, 245, .5); height: 0px"></div>
+		<div class="withmargin" style="margin-top: 0px;"><?php echo $organization['projects_info']; ?></div>
+            <?php endif; ?>
 
 		<?php foreach ($data as $d): ?>
                 <p class='desc'><?php echo strtoupper($d['key']); ?></p>
@@ -187,7 +197,11 @@
                             <?php echo 'DONOR' ?>
                         </div>
                         <div class='value' style='padding: 0px;'>
-                            <?php foreach ($donors AS $donor):
+                            <?php foreach ($donors AS $key => $donor):
+				if ($key == config('projects_in_sidebar'))
+                                {
+				    break;
+                                }
                                 $ptype = str_replace(" ", "-", strtolower(trim($donor['type']))); ?>
                                 <a class="organization_project_link" href="<?php echo href('project/' . $donor['unique'], TRUE) ?>">
                                     <img src="<?php echo href('images') . $ptype ?>.png" />
@@ -205,7 +219,7 @@
                         <div class='key'>
                             <?php echo strtoupper($d['key']); ?>
                         </div>
-                        <div class='value group'>
+                        <div class="value group">
                             <?php echo $d['value']; ?>
                         </div>
                     </div>

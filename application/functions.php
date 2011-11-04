@@ -1555,7 +1555,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
     }
 }
 
-function edit_organization($unique, $name, $type, $info, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
+function edit_organization($unique, $name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
 {
     $org = get_organization($unique);
     in_array($type, array('donor', 'organization')) OR $type = "organization";
@@ -1578,17 +1578,17 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
 
     //$unique = get_unique("organizations", $id);
 
-    $sql = "UPDATE organizations SET name=:name,type=:type,description=:info,district=:district,city_town=:city_town,
-		grante=:grante,sector=:sector,projects_info=:projects_info
-		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
-	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;
+    $sql = "UPDATE organizations SET name = :name, type = :type, description = :description, district = :district, city_town = :city_town,
+		grante = :grante, sector = :sector, projects_info = :projects_info
+		WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;
+	    UPDATE organizations SET logo = :logo WHERE `unique` = :unique;
 	    DELETE FROM tag_connector WHERE org_unique = :unique AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(
         ':name' => $name,
         ':type' => $type,
-        ':info' => $info,
+        ':description' => $description,
         ':district' => $district,
         ':city_town' => $city_town,
         ':grante' => $grante,

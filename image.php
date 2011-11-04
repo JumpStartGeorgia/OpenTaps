@@ -92,9 +92,10 @@ if (!$image)
 
 // Strip the possible trailing slash off the document root
 $docRoot	= preg_replace('/\/$/', '', DOCUMENT_ROOT);
+//$docRoot = getcwd() . '/';
 
 if (!file_exists($docRoot . $image))
-{
+{ 
 	header('HTTP/1.1 404 Not Found');
 	echo 'Error: image does not exist: ' . $docRoot . $image;
 	exit();
