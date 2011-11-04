@@ -3,7 +3,7 @@
     <div style='float: left; width: 673px;'>
         <div class='group'>
             <?php
-            if (!empty($organization['logo']))
+            if (!empty($organization['logo']) AND file_exists($organization['logo']))
             {
                 $p = substr($organization['logo'], 0, 7);
                 if ($p != 'http://' AND $p != 'https:/')

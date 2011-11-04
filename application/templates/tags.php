@@ -52,7 +52,7 @@
 		    	    <div class='content_each_body'>
 		    	    	<?php
 		    	    	    $body = (empty($result['body'])) ? $result['description'] : $result['body'];
-		    	    	    $body = char_limit($body, 0, 200);
+		    	    	    $body = char_limit(strip_tags($body), 200);
 		    	    	    echo htmlspecialchars($body);
 		    	    	?>
 		    	    </div>
