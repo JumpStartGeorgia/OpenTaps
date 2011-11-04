@@ -107,14 +107,18 @@
 		
 	<div id='project_description'>
 		<p class='desc'><?php echo $region['name']; ?></p>
-		<div><?php echo $region['region_info']; ?></div>
+		<?php if (!empty($region['region_info'])): ?>
+		    <div style="margin: 10px 0 25px;"><?php echo $region['region_info']; ?></div>
+		<?php endif; ?>
 
-		<p class='desc'><?php echo l('projects_info') ?></p>
-		<div><?php echo $region['projects_info']; ?></div>
+		<?php if (!empty($region['projects_info'])): ?>
+		    <p class='desc'><?php echo l('projects_info') ?></p>
+		    <div><?php echo $region['projects_info']; ?></div>
+		<?php endif; ?>
 
 		<?php foreach ($data as $d): ?>
-			<p class='desc'><?php echo strtoupper($d['key']); ?></p>
-			<div><?php echo $d['value']; ?></div>
+		    <p class='desc'><?php echo strtoupper($d['key']); ?></p>
+		    <div><?php echo $d['value']; ?></div>
 		<?php endforeach; ?>
 
 		<?php if ($count !== FALSE AND is_array($count)): ?>

@@ -37,16 +37,23 @@ Slim::get('/organization/:unique/',function($unique){
 	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
 	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
 
+	$donors = fetch_db("SELECT DISTINCT(p.`unique`),p.title,p.type FROM projects AS p INNER JOIN project_budgets AS pb ON pb.project_unique = p.`unique` WHERE pb.organization_unique = :unique AND p.lang = '" . LANG . "';", array(':unique' => $unique));
+	$projects = get_organization_projects($unique);
+	foreach ($projects as $key => $project)
+	    foreach ($donors as $k => $donor)
+		if ($project['unique'] == $donor['unique'])
+		    unset($projects[$key]);
+
     	Storage::instance()->content = template('organization', array(
     		'organization' => get_organization($unique, TRUE),
     		'organization_budget' => organization_total_budget($unique),
     		'data' => $data,
     		'side_data' => $side_data,
     		'tags' => $tags,
-		'projects' => get_organization_projects($unique),
+		'projects' => $projects,
 		'chart_data' => get_organization_chart_data($unique),
 		'count' => count_organization_project_types($unique),
-		'donors' => fetch_db("SELECT DISTINCT(p.`unique`),p.title,p.type FROM projects AS p INNER JOIN project_budgets AS pb ON pb.project_unique = p.`unique` WHERE pb.organization_unique = :unique AND p.lang = '" . LANG . "';", array(':unique' => $unique))
+		'donors' => $donors
 	));
     	
 });

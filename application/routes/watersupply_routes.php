@@ -12,22 +12,25 @@ Slim::get('/water_supply/',function()
 );
 
 
-Slim::get('/water_supply/districts/:id', function($id) 
+Slim::get('/water_supply/:unique/', function($unique)
+      {
+	$water_supply = fetch_db("SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;", array(':unique' => $unique));
+
+	foreach ($water_supply as $ws)
 	{
-			$districts = fetch_db("SELECT dn.unique id,dn.name name FROM districts_new dn WHERE region_unique= :region_unique AND lang='" . LANG . "'",array(':region_unique' => $id));
-			$json = $districts;
-			exit(json_encode($json));
+		echo '<div style="border-radius: 5px; padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . $ws['text'] . '</div>';			
 	}
+	exit;
+     }
 );
 
 
-Slim::get('/water_supply/:unique/', function($unique)
-      {
-          $water_supply = fetch_db("SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;", array(':unique' => $unique));
-			
-			foreach( $water_supply as $ws ){
-				echo '<div style="width:100px;height:100px;border:1px solid #000;">' . print_r($ws) . '</div>';			
-			}
-			exit;
-     }
+Slim::get('/water_supply/districts/:id', function($id) 
+	{
+		$districts = fetch_db(
+			"SELECT dn.unique id,dn.name name FROM places dn WHERE region_unique= :region_unique AND lang='" . LANG . "'",
+			array(':region_unique' => $id)
+		);
+		exit(json_encode($districts));
+	}
 );

@@ -1555,7 +1555,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
     }
 }
 
-function edit_organization($unique, $name, $type, $info, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
+function edit_organization($unique, $name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
 {
     $org = get_organization($unique);
     in_array($type, array('donor', 'organization')) OR $type = "organization";
@@ -1578,17 +1578,17 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
 
     //$unique = get_unique("organizations", $id);
 
-    $sql = "UPDATE organizations SET name=:name,type=:type,description=:info,district=:district,city_town=:city_town,
-		grante=:grante,sector=:sector,projects_info=:projects_info
-		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
-	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;
+    $sql = "UPDATE organizations SET name = :name, type = :type, description = :description, district = :district, city_town = :city_town,
+		grante = :grante, sector = :sector, projects_info = :projects_info
+		WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;
+	    UPDATE organizations SET logo = :logo WHERE `unique` = :unique;
 	    DELETE FROM tag_connector WHERE org_unique = :unique AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(
         ':name' => $name,
         ':type' => $type,
-        ':info' => $info,
+        ':description' => $description,
         ':district' => $district,
         ':city_town' => $city_town,
         ':grante' => $grante,
@@ -1664,179 +1664,59 @@ function get_organization_chart_data($unique)
         'data' => $data
     );
 
+
+    /*$sql = "
+	select
+		r.name,
+		(select sum(budget) from project_budgets as pb
+		 where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
+		) as budget
+	from regions as r
+	inner join places as pl on r.`unique` = pl.region_unique
+	inner join projects as p on p.place_unique = pl.`unique`
+	inner join project_organizations as po on po.project_unique = p.`unique`
+	where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
+    ";
+
+    $query = db()->prepare($sql);
+    $query->closeCursor();
+    $query->execute(array(':unique' => $unique));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
+
+    $results['organizations_budgets'] = array(
+        'description' => '',
+        'title' => '',
+        'data' => $data
+    );*/
+
     return $results;
 }
 
 function get_region_chart_data($unique)
 {
-    /* $result = array();
-      $v = array();
-      $names = array();
 
+    $results = array();
 
+    $sql = "select *, (select sum(pb.budget) as budget from projects as p inner join project_budgets as pb on pb.project_unique = p.`unique` inner join places as pl on pl.`unique` = p.place_unique where region_unique = :unique) from organizations as o ";
+    $sql = "
+	select distinct(o.`unique`), (select sum(budget) from project_budgets as pb where pb.currency = 'gel' and pb.project_unique = p.`unique` and pb.organization_unique = o.`unique`) as org_budget from organizations as o
+	inner join projects as p on p.lang = o.lang
+	inner join project_organizations as po on po.organization_unique = o.`unique` and po.project_unique = p.`unique`
+	inner join places as pl on pl.lang = p.lang and pl.`unique` = p.place_unique where pl.region_unique = :unique and p.lang = '" . LANG . "'
+    ";
 
-      /* =========================		PIE 1		============================= *//*
-      $sql = "
-      SELECT title,budget FROM projects
-      LEFT JOIN places ON projects.place_unique = places.`unique`
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      LIMIT 0,1
-      ;";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique));
+    $query = db()->prepare($sql);
+    $query->closeCursor();
+    $query->execute(array(':unique' => $unique));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
 
-      $results = $query->fetchAll(PDO::FETCH_ASSOC);
+    $results['organizations_budgets'] = array(
+        'description' => 'All organizations with their total budget.',
+        'title' => 'Organizations Budgets',
+        'data' => $data
+    );
 
-      $b = FALSE;
-      $v[1] = array();
-
-      foreach ($results as $r)
-      {
-      $i = $v[1][] = str_replace("$", "", str_replace(",", "", $r['budget']));
-      $b OR $b = ($i > 100);
-      $names[1][] = str_replace(" ", "+", $r['title']);
-      }
-
-      $real_values[1] = $v[1];
-
-      if ($b)
-      {
-      $max = max($v[1]);
-      $depth = 0;
-      while ($max > 100):
-      $max = $max / 100;
-      $depth++;
-      endwhile;
-      for ($i = 0, $n = count($v[1]); $i < $n; $i++)
-      for ($j = 0; $j < $depth; $j++)
-      $v[1][$i] = $v[1][$i] / 100;
-      }
-
-
-
-
-      /* =========================		COLUMN 1		============================= *//*
-
-      $sql = "SELECT start_at FROM projects LEFT JOIN places ON projects.place_unique = places.`unique`
-      AND projects.lang = places.lang
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      ORDER BY start_at LIMIT 0,1;";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique));
-      $first = $query->fetch(PDO::FETCH_ASSOC);
-      $first_year = substr($first['start_at'], 0, 4);
-
-      $sql = "SELECT end_at FROM projects LEFT JOIN places ON projects.place_unique = places.`unique` AND projects.lang = places.lang
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      ORDER BY end_at DESC LIMIT 0,1;";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique));
-      $last = $query->fetch(PDO::FETCH_ASSOC);
-      $last_year = substr($last['end_at'], 0, 4);
-
-      $budgets = array();
-      $names[2] = array();
-
-      $b = FALSE;
-
-      for ($i = $first_year; $i <= $last_year; $i++):
-      $names[2][] = $i;
-
-      $sql = "SELECT budget,end_at,start_at FROM projects LEFT JOIN places ON projects.place_unique = places.`unique`
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "' AND projects.lang = '" . LANG . "'
-      AND start_at <= :start";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique, ':start' => $i . "-12-31"));
-      $fetch = $query->fetchAll(PDO::FETCH_ASSOC);
-      if (empty($fetch))
-      continue;
-
-      $budgets[$i] = 0;
-
-      foreach ($fetch as $project):
-      if (strtotime($project['end_at']) < strtotime($i . "-01-01"))
-      continue;
-      if (strtotime($project['start_at']) >= strtotime($i . "-01-01"))
-      $start = $project['start_at'];
-      else
-      $start = $i . "-01-01";
-      $end = (strtotime($project['end_at']) < strtotime($i . "-12-31")) ? $project['end_at'] : ($i . "-12-31");
-      $budgets[$i] += ( dateDiff($start, $end) + 1) / (dateDiff($project['start_at'], $project['end_at']) + 1)
-     * $project['budget'];
-      endforeach;
-
-      $b = ($budgets[$i] > 100);
-      endfor;
-
-      $real_values[2] = $v[2] = $budgets;
-
-      if ($b):
-      $max = max($v[2]);
-      $depth = 0;
-      while ($max > 100):
-      $max = $max / 100;
-      $depth++;
-      endwhile;
-      for ($i = $first_year; $i <= $last_year; $i++):
-      for ($j = 0; $j < $depth; $j++)
-      $v[2][$i] = $v[2][$i] / 90;
-      $v[2][$i] *= 20;
-      endfor;
-      endif;
-
-
-      /* =========================		PIE 2		============================= *//*
-      $query = "SELECT p.budget, p.title, o.name
-      FROM organizations AS o
-      INNER JOIN project_organizations AS po
-      ON po.organization_unique = o.`unique`
-      INNER JOIN projects AS p
-      ON p.`unique` = po.project_unique
-      LEFT JOIN places
-      ON p.place_unique = places.`unique` AND po.lang = places.lang AND p.lang = places.lang
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      ORDER BY o.name
-      ";
-      $query = db()->prepare($query);
-      $query->execute(array(':unique' => $unique));
-      $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
-      $names[3] = array();
-      $v[3] = array();
-      $grouped = array();
-      $b = FALSE;
-      foreach ($results as $result)
-      {
-      if (!isset($grouped[$result['name']]['budget']) OR empty($grouped[$result['name']]['budget']))
-      $grouped[$result['name']]['budget'] = $result['budget'];
-      else
-      $grouped[$result['name']]['budget'] += $result['budget'];
-      $b = ($grouped[$result['name']]['budget'] > 100);
-      //$grouped[$result['name']]['projects'][] = array('title' => $result['title'], 'budget' => $result['budget']);
-      in_array($result['name'], $names[3]) OR $names[3][] = $result['name'];
-      }
-
-      foreach ($grouped as $budget)
-      $v[3][] = $budget['budget'];
-
-      $real_values[3] = $v[3];
-
-      if ($b)
-      {
-      $max = max($v[3]);
-      $depth = 0;
-      while ($max > 100):
-      $max = $max / 100;
-      $depth++;
-      endwhile;
-      for ($i = 0, $n = count($v[3]); $i < $n; $i++)
-      for ($j = 0; $j < $depth; $j++)
-      $v[3][$i] = $v[3][$i] / 100;
-      }
-
-
-      return array($v, $names, $real_values); */
-    return array(NULL, NULL, NULL);
+    return $results;
 }
 
 function get_project_organizations($unique)
@@ -1884,25 +1764,32 @@ function change_language($lang)
 
 /*  Admin Water Supply  */
 
-function get_supply($id)
+function get_supply($unique)
 {
-    $sql = "SELECT * FROM water_supply WHERE district_unique = :id LIMIT 1;";
+    $sql = "SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
-        ':id' => $id
+        ':unique' => $unique
     ));
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return (empty($result)) ? array() : $result;
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function update_supply($text, $unique)
 {
-    $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique LIMIT 1;";
-    $stmt = db()->prepare($sql);
-    $stmt->execute(array(
-        ':text' => $text,
-        ':unique' => $unique
-    ));
+    $ws = get_supply($unique);
+    if (empty($ws))
+    {
+	fetch_db("INSERT INTO water_supply(text, lang, district_unique) VALUES(:text, '" . LANG . "', :wsunique)", array(':text' => $text, ':wsunique' => $unique));
+    }
+    else
+    {
+	$sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;";
+	$stmt = db()->prepare($sql);
+	$stmt->execute(array(
+	    ':text' => $text,
+	    ':unique' => $unique
+	));
+    }
 }
 
 function geo_utf8_to_latin($text)

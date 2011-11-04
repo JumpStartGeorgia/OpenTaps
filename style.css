@@ -134,7 +134,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .line_left { width: 135px; padding-left: 16px }
 .data_block { width: 240px; min-height: 45px; border: 1px dotted @opentaps_default_bordercolor; margin-bottom: 10px; /*text-align: justify*/ }
 .data_block .key { background: @opentaps_default_color; color: rgba(255, 255, 255, 1); padding: 10px 0px 10px 17px; font-size: 13px; border-bottom: 1px dotted @opentaps_default_bordercolor }
-.data_block .value { padding: 10px 17px 10px 17px; word-wrap: break-word; font-size: 11px; }
+.data_block .value { padding: 10px 17px 10px 17px; text-align: justify; word-wrap: break-word; font-size: 11px; }
 .data_block .value a, #right_box_tags a { color: #565656; text-decoration: none }
 .data_block .value a:hover, #right_box_tags a:hover { text-decoration: underline }
 #charts { float: left; width: 673px }
@@ -351,7 +351,6 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
     display: none;
 }
 
-#logo_img { display:block;margin:auto; }
 .next_text { font-size: 15px; text-align: justify; }
 .news_text img { float:left;padding:10px; }
 
