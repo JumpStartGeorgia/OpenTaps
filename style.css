@@ -234,6 +234,7 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 #map-minus { margin-left: 10px !important }
 #map-plus { margin-left: 5px !important }
 #map-overlays { margin-right: 10px !important; float: right !important }
+#map-overlays > ul > li > a { cursor: pointer !important }
 #map-filter { margin-right: 10px !important; float: right !important }
 #map-controls { position: absolute; top: 10px; left: 0; z-index: 99999; margin: 0; padding: 0; width: 930px; list-style: none}
 #map-controls ul, #map-controls li { margin: 0; padding: 0; list-style: none }
@@ -241,9 +242,10 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 #map-controls > li > ul { display: none; position: absolute; right: 0; top: 21px }
 #map-controls > li > ul > li { position: relative; display: block; border-bottom: 1px dashed #CFCFCF }
 #map-controls > li > ul > li.first { border-top: 1px dashed #CFCFCF }
-#map-controls > li > ul a { display: block; white-space: nowrap; font-size: 12px; padding: 4px 12px 5px; background: #F5F5F5; text-decoration: none; color: #333 }
+#map-controls > li > ul a { letter-spacing: 1px; display: block; white-space: nowrap; font-size: 12px; padding: 4px 12px 5px; background: #F5F5F5; text-decoration: none; color: #333; cursor: default }
+#map-controls > li > ul a.sub { cursor: pointer }
 #map-controls > li > ul a:hover { color: #666 }
-#map-controls a.active { font-weight: bold !important }
+#map-controls a.active { font-weight: bold !important; letter-spacing: normal }
 #map-controls > li > ul a img { margin-right: 5px; vertical-align: middle }
 #map-controls > li > ul > li > ul { display: none; position: absolute; right: 144px; top: 0; border-right: 1px dashed #CFCFCF }
 #map-controls > li > ul > li > ul > li { border-bottom: 1px dashed #CFCFCF }
@@ -367,7 +369,7 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 #tooltip.scheduled { background: #01C288 }
 #tooltip a { color: #FFF }
 #tooltip a:hover { text-decoration: none }
-#tooltip span { display: block; padding: 25px }
+#tooltip span { display: block; padding: 30px }
 
 /*#map-popup { background: #00AEEF !important; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; color: #FFF; text-align: center; font-size: 12px }
 #map-popup a { color: #FFF }
