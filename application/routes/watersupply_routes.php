@@ -18,7 +18,7 @@ Slim::get('/water_supply/:unique/', function($unique)
 
 	foreach ($water_supply as $ws)
 	{
-		echo '<div style="padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . $ws['text'] . '</div>';			
+		echo '<div style="border-radius: 5px; padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . $ws['text'] . '</div>';			
 	}
 	exit;
      }

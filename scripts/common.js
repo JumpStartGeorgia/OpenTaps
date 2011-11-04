@@ -698,7 +698,7 @@ $(function()
     $('#ws_districts').change(function()
     {
         $.get(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(data){
-	    //console.log(json);
+	    /*console.log(json);*/
             var cont = $('#cont');
 	    cont.html(data);
         });

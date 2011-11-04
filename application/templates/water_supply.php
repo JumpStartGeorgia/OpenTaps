@@ -17,7 +17,7 @@
         </div>
         <br />
 
-	<div id="cont" style="width: 400px; margin: 0px; padding: 0px; float: left; height: auto;" class="group"></div>
+	<div id="cont" style="width: 411px; margin: 0px; padding: 0px; float: left; height: auto;" class="group"></div>
 
    	</div>
 
