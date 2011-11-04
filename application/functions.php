@@ -1664,6 +1664,31 @@ function get_organization_chart_data($unique)
         'data' => $data
     );
 
+
+    /*$sql = "
+	select
+		r.name,
+		(select sum(budget) from project_budgets as pb
+		 where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
+		) as budget
+	from regions as r
+	inner join places as pl on r.`unique` = pl.region_unique
+	inner join projects as p on p.place_unique = pl.`unique`
+	inner join project_organizations as po on po.project_unique = p.`unique`
+	where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
+    ";
+
+    $query = db()->prepare($sql);
+    $query->closeCursor();
+    $query->execute(array(':unique' => $unique));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
+
+    $results['organizations_budgets'] = array(
+        'description' => '',
+        'title' => '',
+        'data' => $data
+    );*/
+
     return $results;
 }
 
@@ -1739,25 +1764,32 @@ function change_language($lang)
 
 /*  Admin Water Supply  */
 
-function get_supply($id)
+function get_supply($unique)
 {
-    $sql = "SELECT * FROM water_supply WHERE district_unique = :id LIMIT 1;";
+    $sql = "SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
-        ':id' => $id
+        ':unique' => $unique
     ));
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return (empty($result)) ? array() : $result;
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function update_supply($text, $unique)
 {
-    $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique LIMIT 1;";
-    $stmt = db()->prepare($sql);
-    $stmt->execute(array(
-        ':text' => $text,
-        ':unique' => $unique
-    ));
+    $ws = get_supply($unique);
+    if (empty($ws))
+    {
+	fetch_db("INSERT INTO water_supply(text, lang, district_unique) VALUES(:text, '" . LANG . "', :wsunique)", array(':text' => $text, ':wsunique' => $unique));
+    }
+    else
+    {
+	$sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;";
+	$stmt = db()->prepare($sql);
+	$stmt->execute(array(
+	    ':text' => $text,
+	    ':unique' => $unique
+	));
+    }
 }
 
 function geo_utf8_to_latin($text)
