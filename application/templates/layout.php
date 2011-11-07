@@ -51,7 +51,7 @@
             <?php if (Storage::instance()->show_map)
                 require_once 'map.php'; ?>
 
-            <div class="content group">
+            <div id="content" class="group">
                 <?php echo Storage::instance()->content ?>
             </div>
 

@@ -202,12 +202,23 @@ Slim::get('/projects/order/:order-:direction/:page/', function($order, $directio
 
 Slim::post('/exportserver/', function()
 {
-    header('Content-Type: image/svg+xml; charset=UTF-8');
-    exit($_POST['svg']);
+    //header('Content-Type: image/svg+xml; charset=UTF-8');
+    $_SESSION['svg'] = $_POST['svg'];
+    Slim::redirect(href('exportserver', TRUE));
+    exit();
 });
+
 Slim::get('/exportserver/', function()
 {
-    die('va');
+    $svg = $_SESSION['svg'];
+    $headers = array(
+	'Content-Type' => 'charset=UTF-8',
+	'Content-Disposition' => 'attachment; filename=chart'
+    );
+    foreach ($headers AS $key => $value)
+	header("{$key}: {$value}");
+    echo '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head><body>';
+    exit($svg . '</body></html>');
 });
 
 Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)

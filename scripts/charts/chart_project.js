@@ -26,7 +26,7 @@ $(document).ready(function() {
 		}
 
 		pie_chart_options.exporting.buttons.exportButton.menuItems = [
-		      {},
+		      { text: 'Download HTML document' },
 		      null,
 		      menuitem3,
 		      null
@@ -59,7 +59,7 @@ $(document).ready(function() {
 		}
 
 		pie_chart_options.exporting.buttons.exportButton.menuItems = [
-		      {},
+		      { text: 'Download HTML document' },
 		      null,
 		      menuitem3,
 		      null

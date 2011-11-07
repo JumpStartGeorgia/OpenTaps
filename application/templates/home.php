@@ -116,11 +116,11 @@
         <?php echo l('home_page_bottom_text'); ?>
     </div>
     <div style="float: left; margin-left: 85px; font-size: 14px; font-weight: bold; color: #00AFF2;">
-        <a href="<?php echo href('water_supply', TRUE) ?>?lang=<?php echo LANG ?>"><img src="<?php echo href('images') . 'water-supply' . $filenameend ?>" style="margin-top: 9px;" /></a>
+        <a href="<?php echo href('water_supply', TRUE) ?>"><img src="<?php echo href('images') . 'water-supply' . $filenameend ?>" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER SUPPLY SCHEDULE</h4>
     </div>
     <div style="display: inline-block; margin-left: 56px; height: 57px; padding-left: 56px; font-size: 14px; font-weight: bold; color: #00AFF2; border-left: 1px dotted #a6a6a6;">
-        <a href="<?php echo href() ?>page/water-diseases/?lang=<?php echo LANG ?>"><img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" /></a>
+        <a href="<?php echo href('page/water-diseases', TRUE) ?>"><img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER AND DISEASES</h4>
     </div>
 </div>
