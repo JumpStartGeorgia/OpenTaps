@@ -264,6 +264,7 @@ function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $cate
         return $up;
 
     $unique = generate_unique("news");
+    $date = $_POST['published_at'];
 
     $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`, hidden)
 	    VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique, :hidden)";
@@ -272,7 +273,7 @@ function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $cate
     $data = array(
         ':show_in_slider' => $show_in_slider,
         ':body' => $body,
-        ':published_at' => date("Y-m-d H:i"),
+        ':published_at' => ($date['year'] . '-' . $date['month'] . '-' . ($date['day'] < 10 ? '0' . $date['day'] : $date['day']) . ' ' . $date['hour'] . ':' . $date['minute']),//date("Y-m-d H:i"),
         ':image' => $up,
         ':category' => $category,
         ':place' => $place,
@@ -306,16 +307,18 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     if (strlen($title) < 1 OR !is_numeric($unique))
         return "title is empty or invalid id";
 
+    $date = $_POST['published_at'];
     $up = image_upload($filedata);
     if (substr($up, 0, 8) != "uploads/" && $up != "")   //return if any errors
         return $up;
     elseif ($up == "")
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, hidden = :hidden, show_in_slider = :show_in_slider, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, published_at = :published_at, hidden = :hidden, show_in_slider = :show_in_slider, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
             ':body' => $body,
+            ':published_at' => ($date['year'] . '-' . $date['month'] . '-' . ($date['day'] < 10 ? '0' . $date['day'] : $date['day']) . ' ' . $date['hour'] . ':' . $date['minute']),
             ':show_in_slider' => $show_in_slider,
             ':category' => $category,
             ':place' => $place,
@@ -325,12 +328,13 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     else
     {
         delete_image($unique);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, hidden = :hidden, show_in_slider = :show_in_slider, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, published_at = :published_at, hidden = :hidden, show_in_slider = :show_in_slider, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
         	UPDATE  `opentaps`.`news` SET  `image` =  :image WHERE  `news`.`unique` = :unique;";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
             ':body' => $body,
+            ':published_at' => ($date['year'] . '-' . $date['month'] . '-' . ($date['day'] < 10 ? '0' . $date['day'] : $date['day']) . ' ' . $date['hour'] . ':' . $date['minute']),
             ':image' => $up,
             ':show_in_slider' => $show_in_slider,
             ':category' => $category,
@@ -1007,6 +1011,8 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
 function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
     $unique = generate_unique("projects");
+    $startdate = $_POST['p_start_at'];
+    $enddate = $_POST['p_end_at'];
     $sql = "
     	INSERT INTO `opentaps`.`projects`(
     		`title`,
@@ -1050,8 +1056,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
         ':city' => $city,
         ':grantee' => $grantee,
         ':sector' => $sector,
-        ':start_at' => $start_at,
-        ':end_at' => $end_at,
+        ':start_at' => ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day'])),
+        ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
         //':info' => $info,
         ':type' => $type,
         ':place_unique' => serialize($place_unique),
@@ -1114,6 +1120,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
 function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/" . $unique, TRUE) . "\">Back</a>";
+    $startdate = $_POST['p_start_at'];
+    $enddate = $_POST['p_end_at'];
 
     if (strlen($title) == 0)
     {
@@ -1164,8 +1172,8 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
         ':city' => $city,
         ':grantee' => $grantee,
         ':sector' => $sector,
-        ':start_at' => $start_at,
-        ':end_at' => $end_at,
+        ':start_at' => ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day'])),
+        ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
         ':info' => $info,
         ':type' => $type,
         ':place_unique' => serialize($place_unique),

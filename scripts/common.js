@@ -326,7 +326,7 @@ $(function()
 
 
 
-    $('select').addClass('chosen-select');
+    $('select').not('.chosen_deselector').addClass('chosen-select');
     $(".chosen-select").chosen();
 
 

@@ -202,10 +202,12 @@ Slim::get('/projects/order/:order-:direction/:page/', function($order, $directio
 
 Slim::post('/exportserver/', function()
 {
-
     header('Content-Type: image/svg+xml; charset=UTF-8');
     exit($_POST['svg']);
-
+});
+Slim::get('/exportserver/', function()
+{
+    die('va');
 });
 
 Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)

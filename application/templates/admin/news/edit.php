@@ -18,6 +18,33 @@
   	    </label>
   	    <br /><br />
 
+  	    <div>
+		Published at<br />
+		<?php
+		$date = $news[0]['published_at'];
+		list($y, $m, $d, $h, $min) = array(substr($date, 0, 4), substr($date, 5, 2), substr($date, 8, 2), substr($date, 11, 2), substr($date, 14, 2));
+		$months = array(NULL, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+		?>
+		<input type="text" style="width: 20px;" value="<?php echo $d; ?>" name="published_at[day]" />&nbsp;-
+		<select class="chosen_deselector" name="published_at[month]">
+		<?php for ($i = 1; $i <= 12; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		    <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+		<?php endfor; ?>
+		</select>&nbsp;-
+		<input type="text" style="width: 35px;" value="<?php echo $y; ?>" name="published_at[year]" />&nbsp;&nbsp;&nbsp;&nbsp;
+		<select class="chosen_deselector" name="published_at[hour]">
+		<?php for ($i = 0; $i < 24; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		    <option <?php $i == $h and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $ii; ?></option>
+		<?php endfor; ?>
+		</select>&nbsp;:
+		<select class="chosen_deselector" name="published_at[minute]">
+		<?php for ($i = 0; $i < 60; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		    <option <?php $i == $min and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $ii; ?></option>
+		<?php endfor; ?>
+		</select>
+		<?php /*<input type="text" style="width: 23px;" value="<?php echo $min; ?>" name="published_at[minute]" onfocus="if (this.value == 'min') this.value = '';" onblur="if (this.value == '') this.value = 'min';" />*/ ?>
+	    </div><br />
+
   	    Picture: <br />
   	    <?php echo (!$img) ?  "No current picture <br/>" : "Current: <br /><image src='" . $img . "' width='100' /><br />"; ?>
   	    <label for='nfile' onclick='document.getElementById("nfile").style.display = "block";' class='newpiclabel'>
