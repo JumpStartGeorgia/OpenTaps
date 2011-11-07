@@ -17,7 +17,7 @@ map_options = {
     default_lat: 42.23665,
     default_lon: 43.59375,
     controls: [
-    new OpenLayers.Control.MousePosition(),
+    //new OpenLayers.Control.MousePosition(),
     new OpenLayers.Control.Navigation()
     ]
 },
@@ -65,13 +65,13 @@ function mapping()
         }
     });
 
-    /*
-    base = new OpenLayers.Layer.Google('Google Satellite', {
-        type: google.maps.MapTypeId.SATELLITE,
-        isBaseLayer: false,
-        opacity: 0
+
+    // Base layer for projection
+    /*base = new OpenLayers.Layer.OSM('Georgia', 'http://a.tile.mapspot.ge/ndi_en/${z}/${x}/${y}.png', {
+        isBaseLayer: true,
+        opacity: 1
     });
-    */
+    map.addLayer(base);*/
 
     // Load all external layers
     preload_layers();
@@ -127,14 +127,11 @@ function load_all()
 
     // Load and initialize vector overlays
     load_regions();
-    //load_around();
-    //load_water();
+    load_around();
     load_protected_areas();
-    //load_roads();
     load_cities();
     load_urban();
-    load_villages();
-    //load_hydro();
+    //load_villages();
 
     // Add initialized vector overlay-layers to the map
     for (var idx in layers)
@@ -166,17 +163,6 @@ function load_around()
             fillColor: '#999999',
             strokeWidth: 0.33,
             strokeColor: '#B0B0B0'
-        })
-    });
-}
-
-function load_water()
-{
-    layers.water = new OpenLayers.Layer.GML('Water', 'map-data/water', {
-        format: OpenLayers.Format.GeoJSON,
-        styleMap: new OpenLayers.StyleMap({
-            fillColor: '#6CD1F8',
-            strokeWidth: 0
         })
     });
 }
@@ -277,32 +263,32 @@ function load_roads()
 
 function load_water()
 {
+    if (def(layers.water))
+        return;
     layers.water = new OpenLayers.Layer.GML('Regions', 'mapping/water.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fillColor: '#73BDF8',
             fillOpacity: 0.9,
-            strokeWidth: 0
+            strokeColor: '#73BDF8',
+            strokeWidth: 0.5
         })
     });
 }
 
 function load_projects(type, status)
 {
-    var url = 'map-data/projects/' + type;
-    //if (status)
-    url += '/' + status;
+    var url = 'map-data/projects/' + type + '/' + status;
     $.getJSON(url + '?lang=' + lang, function(result)
     {
         if ($.isEmptyObject(result))
             return;
-        status = status || 'completed';
+        //$('#control-projects').addClass('active');
+        $('#control-' + type).addClass('active');
+        $('#control-' + type + '-' + status).addClass('active');
         var coordinates,
         marker,
         pidx = 0;
-        for (var cidx in project_storage[type][status])
-            markers.removeMarker(project_storage[type][status][cidx]);
-        project_storage[type][status] = [];
         for (var idx in result)
         {
             for (pidx in result[idx].places)
@@ -318,10 +304,34 @@ function load_projects(type, status)
                         show_project_tooltip(coordinates, '<a href="project/' + id + '/?lang=' + lang + '">' + title + '</a>', status);
                     }
                 })(result[idx].title, coordinates, status, result[idx].id, lang));
+                project_storage[type][status].push(marker);
             }
             pidx = 0;
         }
+        $('img[id$="_innerImage"]').css('cursor', 'pointer').hover(function()
+        {
+            $(this).stop().animate({
+                opacity: .65
+            });
+        }, function()
+        {
+            $(this).stop().animate({
+                opacity: 1
+            });
+        });
     });
+}
+
+function unload_projects(type, status)
+{
+    //if (!$('#control-projects').parent().find('ul > li a.active').length)
+    //$('#control-projects').removeClass('active');
+    if (!$('#control-' + type).parent().find('ul li a.active').length)
+        $('#control-' + type).removeClass('active');
+    $('#control-' + type + '-' + status).removeClass('active');
+    for (var idx in project_storage[type][status])
+        markers.removeMarker(project_storage[type][status][idx]);
+    project_storage[type][status] = [];
 }
 
 function show_project_tooltip(lonlat, content, status)
@@ -332,7 +342,7 @@ function show_project_tooltip(lonlat, content, status)
     .removeClass('current')
     .removeClass('scheduled')
     .addClass(status)
-    .click(function(event)
+    .mouseleave(function(event)
     {
         event.stopPropagation();
         $(this).fadeOut();
@@ -353,7 +363,9 @@ function show_project_tooltip(lonlat, content, status)
 
 function toggle_projects(type, status)
 {
-    return load_projects(type, status);
+    console.log(project_storage);
+    console.log(project_storage[type][status].length);
+    return project_storage[type][status].length ? unload_projects(type, status) : load_projects(type, status);
 }
 
 function toggle_layer(object)
@@ -369,22 +381,42 @@ function toggle_overlay(name)
     if (!name)
         return;
     if (def(layers[name]) && layers[name] != 'urban' && layers[name] != 'villages')
-        layers[name].setOpacity(layers[name].opacity == 0 ? 1 : 0);
+    {
+        if (layers[name].opacity == 0)
+        {
+            layers[name].setOpacity(1);
+            $('#overlay-' + name).addClass('active');
+        }
+        else
+        {
+            $('#overlay-' + name).removeClass('active');
+            layers[name].setOpacity(0);
+        }
+    }
     switch (name)
     {
         case 'hydro':
             load_hydro();
+            $('#overlay-hydro').toggleClass('active');
             map.addLayer(layers.hydro);
             break;
         case 'roads':
             load_roads();
+            $('#overlay-roads').toggleClass('active');
             map.addLayer(layers.roads);
             break;
+        case 'water':
+            load_water();
+            $('#overlay-water').toggleClass('active');
+            map.addLayer(layers.water);
+            break;
+    /*
         case 'urban':
             if (map.zoom == 0 || map.zoom == 1)
                 break;
             alert('Gotcha!')
             break;
+            */
     }
 }
 
@@ -401,16 +433,6 @@ function zoom_in()
 function zoom_out()
 {
     return map.zoomOut();
-}
-
-function popup_assign_class(cls)
-{
-    var pop_goes_my_heart = $('#map-popup');
-    return pop_goes_my_heart
-    .removeClass('completed')
-    .removeClass('current')
-    .removeClass('scheduled')
-    .addClass(cls);
 }
 
 function map_commons()
@@ -432,9 +454,10 @@ function map_commons()
         var sub = $(this).children('ul');
         if (!sub.length)
             return;
-        sub.toggle().end().find('li > a').click(function()
+        sub.toggle().end().find('a.sub').click(function()
         {
             var me = $(this).toggleClass('active');
+        /*
             par = parent().parent().parent().children('a');
             if (me.hasClass('active'))
             {
@@ -445,7 +468,7 @@ function map_commons()
                 --count;
             if (count < 1)
                 par.removeClass('active');
-
+*/
         });
     });
 
@@ -456,13 +479,6 @@ function map_commons()
         if (!sub.length)
             return;
         sub.css('right', $(this).parent().width()).toggle();
-    });
-
-    // Popup Tweaks
-    $('#map-popup').live('click', function()
-    {
-        console.log('hey!');
-    //popup.hide();
     });
 
 }
