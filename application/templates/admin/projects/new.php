@@ -6,6 +6,11 @@
 	   <?php endforeach; ?>
 	   </select><br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input type="checkbox" name="hidden" /> Hidden
+	    </label><br /><br />
+
+
 
   	    <label for='ptitle'>Title<span style="color: red">*</span>: </label>
   	    <br />

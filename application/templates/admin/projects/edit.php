@@ -8,6 +8,11 @@
   	    <input name='p_title' id='ptitle' type='text' value="<?php echo $project['title'] ?>" />
   	    <br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input type="checkbox" name="hidden" <?php $project['hidden'] == 1 and print 'checked="checked"' ?> /> Hidden
+	    </label><br /><br />
+
+
   	    <?php /*<label for='pdesc'>Description: </label>
   	    <br />
   	    <textarea name='p_desc' id='pdesc' cols='30' rows='3'><?php echo $project['description'] ?></textarea>

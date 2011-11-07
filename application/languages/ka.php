@@ -59,7 +59,7 @@ return array(
     'admin_add_menu' => 'მენიუს დამატება',
     'admin_list_menu' => 'მენიუს სია',
     'admin_news_management' => 'ახალი ამბების მართვა',
-    'admin_add_news' => 'ახალი ამბის დამატებას',
+    'admin_add_news' => 'ახალი ამბის დამატება',
     'admin_list_news' => 'ახალი ამბების სია',
     'admin_tags_management' => 'ტეგების მართვა',
     'admin_add_tag' => 'ტეგის დამატება',

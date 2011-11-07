@@ -7,6 +7,11 @@
   	    <input name='p_name' id='pname' type='text' value="<?php echo $organization['name']; ?>" />
   	    <br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input type="checkbox" name="hidden" <?php $organization['hidden'] == 1 and print 'checked="checked"' ?> /> Hidden
+	    </label><br /><br />
+
+
   	    <label>
 		Type:
 		<br />

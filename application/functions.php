@@ -265,8 +265,8 @@ function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $cate
 
     $unique = generate_unique("news");
 
-    $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`)
-	    VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique)";
+    $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`, hidden)
+	    VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique, :hidden)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $data = array(
@@ -276,7 +276,8 @@ function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $cate
         ':image' => $up,
         ':category' => $category,
         ':place' => $place,
-        ':unique' => $unique
+        ':unique' => $unique,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
 
     foreach (config('languages') as $lang)
@@ -310,20 +311,21 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
         return $up;
     elseif ($up == "")
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, show_in_slider = :show_in_slider, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, hidden = :hidden, show_in_slider = :show_in_slider, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
             ':body' => $body,
             ':show_in_slider' => $show_in_slider,
             ':category' => $category,
-            ':place' => $place
+            ':place' => $place,
+	    ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
         );
     }
     else
     {
         delete_image($unique);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, show_in_slider = :show_in_slider, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, hidden = :hidden, show_in_slider = :show_in_slider, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
         	UPDATE  `opentaps`.`news` SET  `image` =  :image WHERE  `news`.`unique` = :unique;";
         $data = array(
             ':unique' => $unique,
@@ -332,7 +334,8 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
             ':image' => $up,
             ':show_in_slider' => $show_in_slider,
             ':category' => $category,
-            ':place' => $place
+            ':place' => $place,
+	    ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
         );
     }
 
@@ -1018,7 +1021,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		`type`,
 	        `place_unique`,
 	        `lang`,
-	        `unique`
+	        `unique`,
+	        `hidden`
     	)
     	VALUES(
     		:title,
@@ -1031,9 +1035,10 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		:end_at,
     		"/* :info, */ . "
     		:type,
-	      :place_unique,
-	      :lang,
-	      :unique
+		:place_unique,
+		:lang,
+		:unique,
+		:hidden
     	);
     ";
     $statement = db()->prepare($sql);
@@ -1050,7 +1055,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
         //':info' => $info,
         ':type' => $type,
         ':place_unique' => serialize($place_unique),
-        ':unique' => $unique
+        ':unique' => $unique,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
 
 
@@ -1128,7 +1134,8 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     		end_at = :end_at,
     		info = :info,
     		type = :type,
-		place_unique = :place_unique
+		place_unique = :place_unique,
+		hidden = :hidden
     	WHERE
     		`projects`.`unique` = :unique
     	AND
@@ -1161,7 +1168,8 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
         ':end_at' => $end_at,
         ':info' => $info,
         ':type' => $type,
-        ':place_unique' => serialize($place_unique)
+        ':place_unique' => serialize($place_unique),
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
     $exec = $statement->execute($data);
 
@@ -1503,7 +1511,8 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
 	    projects_info,
 	    logo,
 	    lang,
-	    `unique`
+	    `unique`,
+	    hidden
 	)
 	VALUES
 	(
@@ -1517,7 +1526,8 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
 	    :projects_info,
 	    :logo,
 	    :lang,
-	    :unique
+	    :unique,
+	    :hidden
 	);
     ";
     $data = array(
@@ -1529,7 +1539,8 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
         ':grante' => $grante,
         ':sector' => $sector,
         ':logo' => $up,
-        ':unique' => $unique
+        ':unique' => $unique,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
     $statement = db()->prepare($sql);
     $statement->closeCursor();
@@ -1579,7 +1590,7 @@ function edit_organization($unique, $name, $type, $description, $projects_info, 
     //$unique = get_unique("organizations", $id);
 
     $sql = "UPDATE organizations SET name = :name, type = :type, description = :description, district = :district, city_town = :city_town,
-		grante = :grante, sector = :sector, projects_info = :projects_info
+		grante = :grante, sector = :sector, projects_info = :projects_info, hidden = :hidden
 		WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;
 	    UPDATE organizations SET logo = :logo WHERE `unique` = :unique;
 	    DELETE FROM tag_connector WHERE org_unique = :unique AND lang = '" . LANG . "';";
@@ -1595,7 +1606,8 @@ function edit_organization($unique, $name, $type, $description, $projects_info, 
         ':sector' => $sector,
         ':projects_info' => $projects_info,
         ':unique' => $unique,
-        ':logo' => $up
+        ':logo' => $up,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0)
     ));
 
     //$unique = get_unique("organizations", $id);

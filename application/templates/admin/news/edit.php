@@ -9,6 +9,10 @@
   	    <br /><br />
 
   	    <label style="cursor: pointer;">
+		<input type="checkbox" name="hidden" <?php $news[0]['hidden'] == 1 and print 'checked="checked"' ?> /> Hidden
+	    </label><br /><br />
+
+  	    <label style="cursor: pointer;">
 		<input name='n_show_in_slider' id='ntitle' type='checkbox' value="yes" <?php $news[0]['show_in_slider'] == '1' AND print 'checked="checked"'; ?> />
 		Show in top slider
   	    </label>
