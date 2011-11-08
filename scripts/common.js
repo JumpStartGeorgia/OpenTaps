@@ -472,17 +472,86 @@ $(function()
 
 });
 
+
 /* Bottom Toggles */
+var i = 0, t;
+function timedScroll()
+{
+    if (i > document.body.clientHeight)
+	return;
+    window.scrollTo(0, i);
+    i += 18;
+    t = setTimeout('timedScroll()', 10);
+}
 $(function()
 {
+    var timeout = 500,
+    about_is_visible = false,
+    contact_is_visible = false,
+    about_button = $('#about_us_button'),
+    contact_button = $('#contact_us_button'),
+    about = $('#about-us')
+    about_height = about.height(),
+    contact = $('#contact-us'),
+    contact_height = contact.height();
 
-    about_button = $('#about_us_button');
-    contact_button = $('#contact_us_button');
+
+    about_button.click(function()
+    {
+	if (about_is_visible)
+	{
+	    about.animate({ height: 0 }, function(){ about.hide(); });
+	    about_is_visible = false;
+	}
+	else
+	{
+            if (contact_is_visible)
+	    {
+                contact.animate({ height: 0 }, function(){ contact.hide(); });
+                contact_is_visible = false;
+            }
+	    i = about.position().top;
+	    timedScroll();
+	    about.css('height', 0).show().animate({ height: about_height });
+	    about_is_visible = true;
+	}
+
+	$('body').bind('mousewheel', function()
+	{
+	    clearTimeout(t);
+	    $('body').unbind('mousewheel');
+	});
+    });
+
+    contact_button.click(function()
+    {
+	if (contact_is_visible)
+	{
+	    contact.animate({ height: 0 }, function(){ contact.hide(); });
+	    contact_is_visible = false;
+	}
+	else
+	{
+            if (about_is_visible)
+	    {
+                about.animate({ height: 0 }, function(){ about.hide(); });
+                about_is_visible = false;
+            }
+	    i = contact.position().top;
+	    timedScroll();
+	    contact.css('height', 0).show().animate({ height: contact_height });
+	    contact_is_visible = true;
+	}
+
+	$('body').bind('mousewheel', function()
+	{
+	    clearTimeout(t);
+	    $('body').unbind('mousewheel');
+	});
+    });
+
+/*
     bot = $('#bot-container');
-    about = $('#about-us');
-    contact = $('#contact-us');
-
-    var timeout = 500, about_is_visible = false, contact_is_visible = false;
 
     about_button.click(function(){
         if (about_is_visible)
@@ -534,7 +603,7 @@ $(function()
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
         }
     });
-
+*/
 
     $('#contact-us-close-button').click(function(){
         contact_button.click();
