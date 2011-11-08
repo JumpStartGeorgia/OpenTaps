@@ -502,6 +502,7 @@ $(function()
 	{
 	    about.animate({ height: 0 }, function(){ about.hide(); });
 	    about_is_visible = false;
+	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
 	}
 	else
 	{
@@ -514,6 +515,7 @@ $(function()
 	    timedScroll();
 	    about.css('height', 0).show().animate({ height: about_height });
 	    about_is_visible = true;
+	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
 	}
 
 	$('body').bind('mousewheel', function()
@@ -529,6 +531,7 @@ $(function()
 	{
 	    contact.animate({ height: 0 }, function(){ contact.hide(); });
 	    contact_is_visible = false;
+	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
 	}
 	else
 	{
@@ -541,6 +544,7 @@ $(function()
 	    timedScroll();
 	    contact.css('height', 0).show().animate({ height: contact_height });
 	    contact_is_visible = true;
+	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
 	}
 
 	$('body').bind('mousewheel', function()
@@ -602,22 +606,35 @@ $(function()
             }, timeout);
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
         }
-    });
-*/
+    });*/
 
-    $('#contact-us-close-button').click(function(){
-        contact_button.click();
-    });
+    $('#contact-us-close-button').click(function(){ contact_button.click(); });
+    $('#about-us-close-button').click(function(){ about_button.click(); });
 
-    $('#about-us-close-button').click(function(){
-        about_button.click();
-    });
+    Array.prototype.max = function(){ return Math.max.apply(null, this); }
 
-
-
+    var maxh = 0;
     $('.about-us-inner-button').click(function(){
-        var target = $(this).parent().find('.inner-text-box');
-        target.slideToggle();
+	var target = $(this).parent().find('.inner-text-box');
+	$('.inner-text-box').each(function(){ if ($(this).height() > maxh) maxh = $(this).height(); });
+
+	if (!target.is(":visible"))
+	{
+	    i = target.position().top;
+	    setTimeout('timedScroll()', 100);
+	    if ($('.inner-text-box:visible').length == 0)
+	    {
+		about_height += maxh;
+	    }
+	}
+	target.slideToggle(function()
+	{
+	    if ($('.inner-text-box:visible').length == 0)
+	    {
+		about_height -= maxh;
+		about.animate({ height: about_height });
+	    }
+	});
     });
 
 });
