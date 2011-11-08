@@ -475,7 +475,7 @@ $(function()
 /* Bottom Toggles */
 $(function()
 {
-
+/*
     about_button = $('#about_us_button');
     contact_button = $('#contact_us_button');
     bot = $('#bot-container');
@@ -534,7 +534,7 @@ $(function()
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
         }
     });
-
+*/
 
     $('#contact-us-close-button').click(function(){
         contact_button.click();

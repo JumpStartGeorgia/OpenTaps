@@ -57,15 +57,8 @@
 	    	<?php $rgba = 1 - ($index % 3) / 2.5; ?>
     		<div class='content_each_right' style='border-left: 7px solid rgba(12, 181, 245, <?php echo $rgba; ?>)'>
     		    <div style='padding: 4px; padding-top: 15px; font-size: 10px; text-align: center;'>
-    		    	<img src='<?php echo href() . $images[$news['category']] ?>' height='36px' />
-    		    	<br />
-    		    	<?php 
-    		    		if( LANG == 'en' ):
-    		    			echo call_user_func(config('getDate'),'en',$news['published_at']); 
-    		    		else:
-    		    			echo call_user_func(config('getDate'),'ka',$news['published_at']);
-    		    		endif;
-    		    	?>    		    		
+    		    	<img src="<?php echo href() . $images[$news['category']] ?>" height='36px' /> <br />
+    		    	<?php echo dateformat($news['published_at']); ?>
     		    </div>
     		</div>
     	    </div>

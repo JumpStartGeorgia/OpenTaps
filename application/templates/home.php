@@ -23,7 +23,7 @@
     {
         $image = $news_all[2]['image'];
         $third_src = substr($image, 0, 7);
-        $third_src = ($third_src == "http://" OR $thirdsrc == "https:/") ? $image : href() . $image;
+        $third_src = ($third_src == "http://" OR $third_src == "https:/") ? $image : href() . $image;
     }
     ?>
 
@@ -70,7 +70,7 @@
             <?php endfor; ?>
 
         </div>
-        <?php if (isset($news_all[2]) AND $news_all[5]): ?>
+        <?php if (isset($news_all[2]) AND !empty($news_all[2]['image'])): ?>
             <div id="news_middle_content">
                 <?php if ($count > 2): ?>
                     <div id="left_image_box">
@@ -80,7 +80,7 @@
                 <div id="right_titles_box">
                     <?php
                     for ($index = 2; $index < 6; $index++):
-                        if (!isset($news_all[$index]) OR empty($news_all[$index]))
+                        if (!isset($news_all[$index]) OR empty($news_all[$index]) OR empty($news_all[$index]['image']))
                         {
                             break;
                         }

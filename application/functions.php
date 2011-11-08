@@ -1759,6 +1759,27 @@ function dateDiff($start, $end)
     $diff = $end_ts - $start_ts;
     return round($diff / 86400);
 }
+function dateformat($date)
+{
+    $date = is_numeric($date) ? $date : strtotime($date);
+    $c = LANG == 'ka';
+    $months = array(
+	'january' => ($c ? 'იანვარი' : 'January'),
+	'february' => ($c ? 'თებერვალი' : 'February'),
+	'march' => ($c ? 'მარტი' : 'March'),
+	'april' => ($c ? 'აპრილი' : 'April'),
+	'may' => ($c ? 'მაისი' : 'May'),
+	'june' => ($c ? 'ივნისი' : 'June'),
+	'july' => ($c ? 'ივლისი' : 'July'),
+	'august' => ($c ? 'აგვისტო' : 'August'),
+	'september' => ($c ? 'სექტემბერი' : 'September'),
+	'october' => ($c ? 'ოქტომბერი' : 'October'),
+	'november' => ($c ? 'ნოემბერი' : 'November'),
+	'december' => ($c ? 'დეკემბერი' : 'December'),
+    );
+
+    return strtr(strtolower(date('F d, Y', $date)), $months);
+}
 
 function change_language($lang)
 {

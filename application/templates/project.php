@@ -1,20 +1,3 @@
-<?php
-	$c = LANG == 'ka';
-	$months = array(
-		'january' => ($c ? 'იანვარი' : 'January'),
-		'february' => ($c ? 'თებერვალი' : 'February'),
-		'march' => ($c ? 'მარტი' : 'March'),
-		'april' => ($c ? 'აპრილი' : 'April'),
-		'may' => ($c ? 'მაისი' : 'May'),
-		'june' => ($c ? 'ივნისი' : 'June'),
-		'july' => ($c ? 'ივლისი' : 'July'),
-		'august' => ($c ? 'აგვისტო' : 'August'),
-		'september' => ($c ? 'სექტემბერი' : 'September'),
-		'october' => ($c ? 'ოქტომბერი' : 'October'),
-		'november' => ($c ? 'ნოემბერი' : 'November'),
-		'december' => ($c ? 'დეკემბერი' : 'December'),
-	);
-?>
 <script type="text/javascript">
     /*var region_map_boundsLeft = 4550479.3343998,
         region_map_boundsRight = 4722921.2701802,
@@ -61,14 +44,12 @@
                     		echo implode(' ', $ben_people);
                     	?>
 							<br />
-                    <?php
-                    foreach ($budgets as $budget):
+                <?php foreach ($budgets as $budget):
                         echo l('budget') . ' ' . $budget['name'] . ' - ' . number_format($budget['budget']) . ' ' .
                         strtoupper($budget['currency']) . '<br />';
-                    endforeach;
-                    ?>
-		<?php echo l('beginning') . ' ' . strtr(strtolower(date('F d, Y', strtotime($project['start_at']))), $months) ?>: <br />
-		<?php echo l('ends') . ' ' . strtr(strtolower(date('F d, Y', strtotime($project['end_at']))), $months) ?>: <br />
+                      endforeach; ?>
+		<?php echo l('beginning') . ' ' . dateformat($project['start_at']) ?>: <br />
+		<?php echo l('ends') . ' ' . dateformat($project['end_at']) ?>: <br />
 		<?php echo l('type') . ':' . $project['type']; ?>
                 </div>
             </div>
