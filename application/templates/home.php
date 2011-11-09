@@ -1,6 +1,7 @@
 <?php
     $csv_uniq = 'chartcsv' . uniqid();
     $_SESSION[$csv_uniq] = $home_chart_data;
+    $_SESSION[$csv_uniq . '_first_row'] = array('Organization Name', 'Budget');
 ?>
 <script type="text/javascript">
     var home_page = true,

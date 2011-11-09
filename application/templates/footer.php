@@ -31,7 +31,7 @@
             <span id="contact-us-close-button">×</span>
             <div class='about-us-title' style='display: inline-block'>CONTACT US</div>
         </div>
-        <iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="318" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        <!--<iframe src="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="318" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
         <div id='contact-us-form-container' class='group'>
             <div id='contact-us-circle'>
                 <div style='margin-top: 40px'>CONTACT US</div>

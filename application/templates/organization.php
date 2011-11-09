@@ -84,9 +84,10 @@
 
         </div>
 
-        <div id='project_description' style="margin-top:75px;">
+        <div id='project_description' style="margin-top: 40px;">
+	    <p class='desc'><?php echo $organization['name'] ?></p>
             <?php if (!empty($organization['description'])): ?>
-		<p class='desc'><?php echo strtoupper(l('org_desc')) ?></p>
+		<p class='desc' style='font-size: 17px; font-weight: normal; margin-top: 5px;'><?php echo strtoupper(l('org_desc')) ?></p>
 		<div class="withmargin" style="margin-bottom: 15px; padding-bottom: 0px;"><?php echo $organization['description']; ?></div>
 	    <?php endif; ?>
 
@@ -109,7 +110,7 @@
                             continue; ?>
                         <a href="<?php echo href('projects', TRUE) /* filter link here */ ?>">
                             <img src="<?php echo href('images') . str_replace(' ', '-', strtolower(trim($type))) ?>.png" />
-                            <?php echo $type . " (" . $count[$type] . ")" ?>
+                            <?php echo l('pt_' . strtolower($type)) . " (" . $count[$type] . ")" ?>
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -120,6 +121,7 @@
 		<?php if (!empty($chart_data['organization_projects']['data'])):
 			$csv_uniq = 'chartcsv' . uniqid();
 			$_SESSION[$csv_uniq] = $chart_data['organization_projects']['data'];
+			$_SESSION[$csv_uniq . '_first_row'] = array('Project Name', 'Budget');
 		?>
 		<script type="text/javascript">
 			var org_page = true,
@@ -136,6 +138,7 @@
 		<?php if (!empty($chart_data['organizations_budgets']['data'])):
 			$csv_uniq = 'chartcsv' . uniqid();
 			$_SESSION[$csv_uniq] = $chart_data['organizations_budgets']['data'];
+			$_SESSION[$csv_uniq . '_first_row'] = array('Organization Name', 'Budget');
 		?>
 		<script type="text/javascript">
 			var org_page = true,

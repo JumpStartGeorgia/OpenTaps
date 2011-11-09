@@ -1,16 +1,11 @@
 <?php
 
 ################################################################ projects view
-Slim::get('/projects/', function()
+Slim::get('/projects/(filter/:filter/)', function($filter = FALSE)
 {
 	$posp = config('projects_on_single_page');
-
-	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "'";
-	$query = db()->prepare($query);
-	$query->execute(array());
-	$total = $query->fetch(PDO::FETCH_ASSOC);
-	$total = $total['total'];
-	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+	$filter = ($filter AND strlen($filter) > 1) ? ucwords(htmlspecialchars(str_replace('%20', ' ', $filter))) : FALSE;
+	$total_pages = projects_total_pages($filter);
 
 	$query = "SELECT DISTINCT tags.id,
 			  tags.name,
@@ -25,12 +20,13 @@ Slim::get('/projects/', function()
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	Storage::instance()->content = template('projects', array(
-		'projects' => read_projects_one_page(0, $posp, 'region', 'ASC'),
+		'projects' => read_projects_one_page(0, $posp, 'region', 'ASC', $filter),
     		'current_page' => 1,
     		'total_pages' => $total_pages,
     		'this_order' => 'region',
     		'tags' => $tags,
     		'direction' => 'asc',
+    		'filter' => $filter,
     		'types' => config('project_types')
 	));
 });
@@ -59,7 +55,7 @@ Slim::get('/project/:unique/', function($unique)
 		SELECT pb.*, o.name FROM project_budgets AS pb INNER JOIN organizations AS o ON o.`unique` = pb.organization_unique WHERE project_unique = :unique AND o.lang = '" . LANG . "' ORDER BY id;",
 		array(':unique' => $unique)
 	);
-///print_r(get_project_chart_data($unique));die;
+
     	Storage::instance()->content = template('project', array(
     		'project' => read_projects($unique),
     		'organizations' => get_project_organizations($unique),
@@ -72,18 +68,13 @@ Slim::get('/project/:unique/', function($unique)
     	));
 });
 
-Slim::get('/projects/page/:page/', function($page)
+Slim::get('/projects/page/:page/(filter/:filter/)', function($page, $filter = FALSE)
 {
 	($page > 0) OR die('invalid page');
 	$posp = config('projects_on_single_page');
-
-	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "'";
-	$query = db()->prepare($query);
-	$query->execute(array());
-	$total = $query->fetch(PDO::FETCH_ASSOC);
-	$total = $total['total'];
-	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
-	($page > $total_pages) AND die('invalid page');
+	$filter = ($filter AND strlen($filter) > 1) ? ucwords(htmlspecialchars(str_replace('%20', ' ', $filter))) : FALSE;
+	$total_pages = projects_total_pages($filter);
+	($page > $total_pages) AND $page = $total_pages;
 
 	$query = "SELECT DISTINCT tags.id,
 			  tags.name,
@@ -98,30 +89,26 @@ Slim::get('/projects/page/:page/', function($page)
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	Storage::instance()->content = template('projects', array(
-		'projects' => read_projects_one_page(($posp * $page - $posp), $posp, 'region', 'ASC'),
+		'projects' => read_projects_one_page(($posp * $page - $posp), $posp, 'region', 'ASC', $filter),
     		'current_page' => $page,
     		'total_pages' => $total_pages,
     		'this_order' => 'region',
     		'tags' => $tags,
     		'direction' => 'asc',
+    		'filter' => $filter,
     		'types' => config('project_types')
 	));
 });
 
-Slim::get('/projects/order/:order-:direction/', function($order, $direction)
+Slim::get('/projects/order/:order-:direction/(filter/:filter/)', function($order, $direction, $filter = FALSE)
 {
 	list($order) = explode("_", strtolower(htmlspecialchars(stripslashes($order))));
 	in_array($order, array('region', 'district', 'years', 'categories', 'a-z')) OR die('invalid project ordering');
 	in_array(strtolower($direction), array('asc', 'desc')) OR $direction = 'asc';
+	$filter = ($filter AND strlen($filter) > 1) ? ucwords(htmlspecialchars(str_replace('%20', ' ', $filter))) : FALSE;
+	$total_pages = projects_total_pages($filter);
 
 	$posp = config('projects_on_single_page');
-
-	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "';";
-	$query = db()->prepare($query);
-	$query->execute();
-	$total = $query->fetch(PDO::FETCH_ASSOC);
-	$total = $total['total'];
-	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
 
 	$query = "SELECT DISTINCT tags.id,tags.name,
 			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
@@ -135,32 +122,28 @@ Slim::get('/projects/order/:order-:direction/', function($order, $direction)
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	Storage::instance()->content = template('projects', array(
-		'projects' => read_projects_one_page(0, $posp, $order, $direction),
+		'projects' => read_projects_one_page(0, $posp, $order, $direction, $filter),
     		'current_page' => 1,
     		'total_pages' => $total_pages,
     		'this_order' => $order,
     		'tags' => $tags,
     		'direction' => $direction,
+    		'filter' => $filter,
     		'types' => config('project_types')
 	));
 });
 
-Slim::get('/projects/order/:order-:direction/:page/', function($order, $direction, $page)
+Slim::get('/projects/order/:order-:direction/page/:page/(filter/:filter/)', function($order, $direction, $page, $filter = FALSE)
 {
 	list($order) = explode("_", strtolower(htmlspecialchars(stripslashes($order))));
 	($page > 0) OR die('invalid page');
 	in_array($order, array('region', 'district', 'years', 'categories', 'a-z')) OR die('invalid project ordering');
 	in_array(strtolower($direction), array('asc', 'desc')) OR $direction = 'asc';
+	$filter = ($filter AND strlen($filter) > 1) ? ucwords(htmlspecialchars(str_replace('%20', ' ', $filter))) : FALSE;
+	$total_pages = projects_total_pages($filter);
+	($page > $total_pages) AND $page = $total_pages;
 
 	$posp = config('projects_on_single_page');
-
-	$query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "';";
-	$query = db()->prepare($query);
-	$query->execute();
-	$total = $query->fetch(PDO::FETCH_ASSOC);
-	$total = $total['total'];
-	$total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
-	($page > $total_pages) AND die('invalid page');
 
 	$query = "SELECT DISTINCT tags.id,tags.name,
 			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
@@ -174,12 +157,13 @@ Slim::get('/projects/order/:order-:direction/:page/', function($order, $directio
 	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
 
 	Storage::instance()->content = template('projects', array(
-	    	'projects' => read_projects_one_page(($posp * $page - $posp), $posp, $order, $direction),
+	    	'projects' => read_projects_one_page(($posp * $page - $posp), $posp, $order, $direction, $filter),
     		'current_page' => $page,
     		'total_pages' => $total_pages,
     		'this_order' => $order,
     		'tags' => $tags,
     		'direction' => $direction,
+    		'filter' => $filter,
     		'types' => config('project_types')
 	));
 });
@@ -244,6 +228,8 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 	    case 'csv':
 
 		$data = json_decode($_SESSION[$uniqid], TRUE);
+		$first_row = $_SESSION[$uniqid . '_first_row'];
+		unset($_SESSION[$uniqid . '_first_row']);
         	$headers = array(
         		'Content-Type' => 'text/csv',
         		'Content-Disposition' => 'attachment; filename=' . $name
@@ -254,6 +240,7 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 		$fp = fopen(DIR . 'uploads/' . $name, 'w');
 		//chmod(DIR . 'uploads/' . $name, 777);
 
+		fputcsv($fp, $first_row);
 		foreach ($data as $fields)
 		    fputcsv($fp, $fields);
 

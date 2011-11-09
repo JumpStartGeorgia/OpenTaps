@@ -23,7 +23,8 @@
     	<div class='group' id='newstype_filter' style='width: 100%; border-bottom: 1px solid #eee;'>
     	    <div class='titletype_left' style='padding-left: 11px; font-size:9px;'>
 		    <a href='<?php echo href('news', TRUE, "news") ?>'
-    	    		class='choosedef<?php empty($this_type_original) AND print("_selected") ?>'>ALL
+    	    	       class='choosedef<?php empty($this_type_original) AND print("_selected") ?>'>
+    	    		<?php echo l('news_page_all'); ?>
 		    </a>
 	    <?php
 		$types = config("news_types");
@@ -31,7 +32,7 @@
 	    ?>
 		    <a href='<?php echo href('news/type/' . $type, TRUE, "news") ?>'
     	    		class='choosedef<?php ($type == $this_type_original) AND print("_selected") ?>'>
-			<?php echo strtoupper($type); ?>
+			<?php echo strtoupper(l('nt_' . $type)); ?>
 		    </a>
 	    <?php endforeach; ?>
     	    </div>
@@ -63,7 +64,7 @@
     		</div>
     	    </div>
     	<?php endforeach; ?>          
-            
+
     	</div>
 
 <?php if ($total_pages > 1): ?>

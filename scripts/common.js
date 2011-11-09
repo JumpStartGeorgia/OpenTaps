@@ -735,9 +735,9 @@ $(function()
 // Initialize Cufon
 if (typeof(Cufon) !== 'undefined')
 {
-    Cufon.replace('.menu-item > div');
-    Cufon.replace('.font');
-    Cufon.now();
+    Cufon.replace('.menu-item > div').now();
+    Cufon.replace('.font').now();
+//    Cufon.now();
 }
 
 // Container minimum height
@@ -793,4 +793,25 @@ $(function()
 
 });
 
+// Footer Map
+$(function()
+{
+	var footer_map = new OpenLayers.Map('contact-us', {
+		controls: [
+			new OpenLayers.Control.Navigation(),
+			new OpenLayers.Control.ArgParser(),
+			new OpenLayers.Control.Attribution()
+		]
+	}),
+	footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
+	    isBaseLayer: true
+	});
+	footer_map.addLayer(footer_map_layer);
+	footer_map.setCenter(
+		new OpenLayers
+		.LonLat(44.798735,41.697960)
+		.transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
+	, 15);
+
+});
 

@@ -78,6 +78,7 @@
 		<?php if (!empty($chart_data['organization_projects']['data'])):
 			$csv_uniq = 'chartcsv' . uniqid();
 			$_SESSION[$csv_uniq] = $chart_data['organization_projects']['data'];
+			$_SESSION[$csv_uniq . '_first_row'] = array('Project Name', 'Budget');
 		?>
                 <div>
 		    <script type="text/javascript">

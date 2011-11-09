@@ -9,7 +9,7 @@ var pie_chart_options = {
       credits: {
       	 enabled: false
       },
-      colors: [
+      /*colors: [
 	 '#0CB5F5',
 	 '#24BCF6',
 	 '#3CC3F7',
@@ -20,7 +20,7 @@ var pie_chart_options = {
 	 '#B6E8FC',
 	 '#CEF0FD',
 	 '#E6F7FE'
-      ],
+      ],*/
       title: {
          text: null,
          floating: true,
@@ -47,7 +47,8 @@ var pie_chart_options = {
       },
       legend: {
 	 floating: true,
-	 layout: "vertical"
+	 layout: "vertical",
+	 borderWidth: 0
       },
       series: [],
       exporting: {

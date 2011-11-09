@@ -969,7 +969,19 @@ function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FAL
     return $statement->fetchAll();
 }
 
-function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALSE)
+function projects_total_pages($filter = FALSE)
+{
+    $posp = config('projects_on_single_page');
+    $query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "' " . ($filter ? ' AND type = :type ' : NULL) . ";";
+    $query = db()->prepare($query);
+    $query->execute($filter ? array(':type' => $filter) : NULL);
+    $total = $query->fetch(PDO::FETCH_ASSOC);
+    $total = $total['total'];
+    $total == 0 and $total = 1;
+    $total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+    return $total_pages;
+}
+function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALSE, $type = FALSE)
 {
     if ($order)
     {
@@ -1000,11 +1012,11 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
 	LEFT JOIN regions AS r
 	    ON pl.region_unique = r.`unique` AND pl.lang = r.lang
-        WHERE p.lang = '" . LANG . "' AND hidden = 0
+        WHERE p.lang = '" . LANG . "' AND hidden = 0 " . ($type ? ' AND p.type = :type ' : NULL) . "
 	" . ($order ? " ORDER BY {$order} " : NULL ) . " LIMIT {$from}, {$limit};";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
-    $statement->execute();
+    $statement->execute($type ? array(':type' => $type) : NULL);
     return $statement->fetchAll();
 }
 
