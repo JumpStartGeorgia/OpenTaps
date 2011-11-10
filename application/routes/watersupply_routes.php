@@ -24,10 +24,10 @@ Slim::get('/water_supply/districts/:id', function($id)
 Slim::get('/water_supply/:unique/', function($unique)
       {
           $water_supply = fetch_db("SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;", array(':unique' => $unique));
-			
+
 			foreach( $water_supply as $ws ){
-				echo '<div style="width:100px;height:100px;border:1px solid #000;">' . print_r($ws) . '</div>';			
-			}
-			exit;
+				echo '<div class="clearfix boxshadow" style="background:#CCC;margin-top:0px;margin-left:0px;width:400px;height:100px;border:0px solid #000;"><div style="margin-left:10px;margin-top:10px;">' . $ws['text'] . '</div></div>';
+                }
+            exit;
      }
 );

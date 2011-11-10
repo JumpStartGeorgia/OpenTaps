@@ -41,6 +41,17 @@ html[xmlns] .clearfix {
     height: 1%;
 }
 
+.boxshadow {
+	/*		BORDER	RADIUS		*/
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/*		BOX SHADOW		*/
+	-moz-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+	-webkit-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+	box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+}
+
 /* General */
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
