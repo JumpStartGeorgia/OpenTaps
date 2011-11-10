@@ -124,9 +124,9 @@ Slim::post('/admin/organizations/update/:unique/', function($unique)
             empty($_POST['sidebar']) AND $_POST['sidebar'] = NULL;
             empty($_FILES['p_logo']) OR $_FILES['p_logo']['delete'] = (bool) (!empty($_POST['delete_logo']) AND $_POST['delete_logo'] == "yes");
 
+	    delete_page_data('organization', $unique, LANG);
             if (!empty($_POST['data_key']))
             {
-                delete_page_data('organization', $unique, LANG);
                 add_page_data('organization', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
             }
 

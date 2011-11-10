@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 ﻿<html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
-        <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
-        <link rel="icon" href="<?php echo URL ?>images/favicon.ico?<?php echo time() ?>">
-        <script type="text/javascript">
-            var baseurl = '<?php echo href() ?>',
-            lang = '<?php echo LANG ?>';
-        </script>
-        <?php if (LANG == 'ka'): ?><style type="text/css"> .menu ul li div { font-family: 'Babuka Mtavruli' } </style><?php endif; ?>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
+	<link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
+	<link rel="icon" href="<?php echo URL ?>images/favicon.ico?<?php echo time() ?>">
+	<!--<link rel="stylesheet" type="text/css" href="<?php echo URL ?>scripts/akzhan-jwysiwyg/help/lib/blueprint/screen.css" media="screen, projection" />-->
+	<link type="text/css" rel="stylesheet" href="<?php echo URL ?>scripts/akzhan-jwysiwyg/jquery.wysiwyg.css" />
+	<script type="text/javascript">
+	    var baseurl = '<?php echo href() ?>',
+	    lang = '<?php echo LANG ?>';
+	</script>
+	<?php if (LANG == 'ka'): ?><style type="text/css"> .menu ul li div { font-family: 'Babuka Mtavruli' } </style><?php endif; ?>
     </head>
     <body>
 
@@ -89,7 +91,14 @@
             $scripts[] = 'babuka_mtavruli.js';
         }
         $scripts[] = 'common.js';
-        userloggedin() AND $scripts[] = 'tinymce/tiny_mce.js';
+        //userloggedin() AND $scripts[] = 'tinymce/tiny_mce.js';
+        if (userloggedin())
+        {
+	    $scripts[] = 'akzhan-jwysiwyg/jquery.wysiwyg.js';
+	    $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.link.js';
+	    $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.table.js';
+	    $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.image.js';
+        }
         foreach ($scripts AS $script)
             echo '<script type="text/javascript" src="' . (substr($script, 0, 4) === 'http' ? $script : URL . 'scripts/' . $script) . '"></script>' . PHP_EOL;
         ?>

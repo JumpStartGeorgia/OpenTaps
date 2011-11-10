@@ -214,7 +214,6 @@ function check_sidebar(element)
 
 $(function()
 {
-
     $('.admin').hover(function(){
         $(this).children('div').slideToggle(100);
     });
@@ -268,12 +267,15 @@ $(function()
         "<br /><hr style='margin-left: -27px' />" +
         "</div>";
         container.append(html);
-        /*	enable chosenJS	*/
+        /*	enable chosenJS	
         $('select').addClass('chosen-select');
         $(".chosen-select").chosen();
-        /*	..		*/
-        wysiwyg();
-        container.find('.group:last-child').slideDown('normal');
+        /*	..
+$(function(){
+    $("textarea").htmlarea();
+});*/
+        wysiwyg_init();
+        container.find('.group:last-child').slideDown('slow');
         data_field_index ++;
     });
 
@@ -722,7 +724,11 @@ $(function()
 
 });
 
-// Initialize TinyMCE
+$(document).ready(function(){
+	wysiwyg_init();
+});
+
+/* Initialize TinyMCE
 function wysiwyg()
 {
     if (typeof(tinyMCE) === 'undefined')
@@ -747,8 +753,10 @@ function wysiwyg()
     };
 
     tinyMCE.init(options);
+
+
 }
-$(wysiwyg);
+$(wysiwyg);*/
 
 // Keyboard shortcut to admin panel
 $(function()

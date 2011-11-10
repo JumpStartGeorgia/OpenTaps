@@ -21,6 +21,23 @@ var pie_chart_options = {
 	 '#CEF0FD',
 	 '#E6F7FE'
       ],*/
+      colors: [
+	 '#774F38',
+	 '#E08E79',
+	 '#F1D4AF',
+	 '#ECE5CE',
+	 '#C5E0DC',
+	 '#D9CEB2',
+	 '#948C75',
+	 '#D5DED9',
+	 '#7A6A53',
+	 '#99B2B7',
+	 '#D3E2B6',
+	 '#C3DBB4',
+	 '#AACCB1',
+	 '#87BDB1',
+	 '#68B3AF'
+      ],
       title: {
          text: null,
          floating: true,
