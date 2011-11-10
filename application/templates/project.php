@@ -3,13 +3,13 @@
         region_map_boundsRight = 4722921.2701802,
         region_map_boundsTop = 5183901.869223,
         region_map_boundsBottom = 5034696.790037;*/
-    var region_map_zoom = false,
+    /*var region_map_zoom = false,
     region_make_def_markers = false,
     region_show_def_buttons = false,
     region_map_maxzoomout = 8,
     region_map_longitude = <?php echo isset($project) ? $project['longitude'] : 'false'; ?>,
     region_map_latitude = <?php echo isset($project) ? $project['latitude'] : 'false'; ?>,
-    region_marker_click = false;
+    region_marker_click = false;*/
 </script>
 
 <div id='project_content'>
@@ -179,3 +179,4 @@
     <input type="hidden" id="project_unique" value="<?php echo $project['unique']; ?>" />
 
 </div>
+
