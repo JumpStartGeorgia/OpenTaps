@@ -439,10 +439,9 @@ Slim::post('/admin/projects/:unique/update/', function($unique)
 
             if (userloggedin())
             {
-
+		delete_page_data('project', $unique, LANG);
                 if (!empty($_POST['data_key']))
                 {
-                    delete_page_data('project', $unique, LANG);
                     add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
                 }
 
