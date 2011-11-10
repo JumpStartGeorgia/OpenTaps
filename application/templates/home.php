@@ -1,7 +1,12 @@
+<?php
+    $csv_uniq = 'chartcsv' . uniqid();
+    $_SESSION[$csv_uniq] = $home_chart_data;
+    $_SESSION[$csv_uniq . '_first_row'] = array('Organization Name', 'Budget');
+?>
 <script type="text/javascript">
     var home_page = true,
     data = <?php echo $home_chart_data; ?>;
-    serialized_data = "<?php echo base64_encode(serialize(json_decode($home_chart_data))); ?>";
+    uniqid = "<?php echo $csv_uniq; ?>";
 </script>
 
 
@@ -19,11 +24,11 @@
     {
         $image = $news_all[2]['image'];
         $third_src = substr($image, 0, 7);
-        $third_src = ($third_src == "http://" OR $thirdsrc == "https:/") ? $image : href() . $image;
+        $third_src = ($third_src == "http://" OR $third_src == "https:/") ? $image : href() . $image;
     }
     ?>
 
-    <div class='news_body group'>
+    <div class="news_body group">
         <div style="width: 535px;" class="group">
 
             <?php
@@ -66,7 +71,7 @@
             <?php endfor; ?>
 
         </div>
-        <?php if (isset($news_all[2]) AND $news_all[5]): ?>
+        <?php if (isset($news_all[2]) AND !empty($news_all[2]['image'])): ?>
             <div id="news_middle_content">
                 <?php if ($count > 2): ?>
                     <div id="left_image_box">
@@ -76,7 +81,7 @@
                 <div id="right_titles_box">
                     <?php
                     for ($index = 2; $index < 6; $index++):
-                        if (!isset($news_all[$index]) OR empty($news_all[$index]))
+                        if (!isset($news_all[$index]) OR empty($news_all[$index]) OR empty($news_all[$index]['image']))
                         {
                             break;
                         }
@@ -112,11 +117,11 @@
         <?php echo l('home_page_bottom_text'); ?>
     </div>
     <div style="float: left; margin-left: 85px; font-size: 14px; font-weight: bold; color: #00AFF2;">
-        <a href="<?php echo href('water_supply', TRUE) ?>?lang=<?php echo LANG ?>"><img src="<?php echo href('images') . 'water-supply' . $filenameend ?>" style="margin-top: 9px;" /></a>
+        <a href="<?php echo href('water_supply', TRUE) ?>"><img src="<?php echo href('images') . 'water-supply' . $filenameend ?>" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER SUPPLY SCHEDULE</h4>
     </div>
     <div style="display: inline-block; margin-left: 56px; height: 57px; padding-left: 56px; font-size: 14px; font-weight: bold; color: #00AFF2; border-left: 1px dotted #a6a6a6;">
-        <a href="<?php echo href() ?>page/water-diseases/?lang=<?php echo LANG ?>"><img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" /></a>
+        <a href="<?php echo href('page/water-diseases', TRUE) ?>"><img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER AND DISEASES</h4>
     </div>
 </div>

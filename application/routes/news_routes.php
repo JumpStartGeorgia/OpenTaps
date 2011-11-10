@@ -165,15 +165,15 @@ Slim::get('/admin/news/', function()
 
 Slim::get('/admin/news/new/', function()
         {
-            if (!userloggedin())
+            if (userloggedin())
             {
-                Storage::instance()->content = template('login');
-                exit;
+		    Storage::instance()->content = template('admin/news/new', array(
+			'all_tags' => read_tags(),
+			'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
+		    ));
             }
-            Storage::instance()->content = template('admin/news/new', array(
-		'all_tags' => read_tags(),
-		'places' => fetch_db("SELECT * FROM places WHERE lang = '" . LANG . "'")
-            ));
+            else
+            	Storage::instance()->content = template('login');
         }
 );
 
@@ -213,13 +213,10 @@ Slim::get('/admin/news/:unique/', function($unique)
 Slim::get('/admin/news/:unique/delete/', function($unique)
         {
             if (userloggedin())
-                if (delete_news($unique))
-                    Slim::redirect(href('admin/news', TRUE));
-                else
-                    Storage::instance()->content = "
-		invalid data <br />
-		<a href=\"" . href("admin/news", TRUE) . "\">Back</a>
-	";
+            {
+                delete_news($unique);
+                Slim::redirect(href('admin/news', TRUE));
+            }
             else
                 Storage::instance()->content = template('login');
         }
@@ -296,7 +293,9 @@ Slim::post('/admin/news/:unique/update/', function($unique){
     {
 	delete_page_data('news', $unique, LANG);
 	if (!empty($_POST['data_key']))
+	{
 	    add_page_data('news', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
+	}
 	$filedata = array(
 	    "name" => $_FILES['n_file']['name'],
 	    "type" => $_FILES['n_file']['type'],

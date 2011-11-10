@@ -2,9 +2,10 @@
 
 <div id='project_content'>
 	<div class='group' style='float: left; width: 673px;'>
-		<div id="map" style="width:282px;border:1px dotted #a6a6a6;border-top:0;height:244px;float:left;"></div>
+		<div class="group">
+		    <img src="<?php echo href() . $image['value'] ?>" style="width: 282px; border: 1px dotted #a6a6a6; padding: 0px; border-top: 0; float: left;" />
 		
-		<div id='project_details' style="min-height: 93px;">
+		    <div id='project_details' style="min-height: 93px;">
 
 			<?php if (!empty($main_data)): ?>
 			<div id='project_budget'>
@@ -19,16 +20,22 @@
 
 			<?php foreach ($data as $index => $item): ?>
 
-					<div class='project_details_line' <?php $index == $num AND print 'style="border: 0;"'; ?>>
-						<div class='line_left'><?php echo $item['key']; ?> :</div>
-						<div><?php echo $item['value']; ?></div>
-					</div>
+				<div class='project_details_line' <?php $index == $num AND print 'style="border: 0;"'; ?>>
+					<div class='line_left'><?php echo $item['key']; ?> :</div>
+					<div><?php echo $item['value']; ?></div>
+				</div>
 
 			<?php endforeach; ?>
-			
-		</div>
+
+		    </div>
 
 		<?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/georgia_profile/', TRUE) . "'>Edit</a>"); ?>
+
+		</div>
+
+		<div style="margin: 25px 0px;">
+		    <?php empty($content['value']) OR print $content['value']; ?>
+		</div>
 
 	</div>
 </div>

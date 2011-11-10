@@ -31,7 +31,7 @@
             <span id="contact-us-close-button">×</span>
             <div class='about-us-title' style='display: inline-block'>CONTACT US</div>
         </div>
-        <iframe src ="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        <!--<iframe src="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="318" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
         <div id='contact-us-form-container' class='group'>
             <div id='contact-us-circle'>
                 <div style='margin-top: 40px'>CONTACT US</div>
@@ -68,7 +68,7 @@
             <span id="admin_button_logout" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>logout';">LOG OUT</span>&nbsp;&nbsp;|&nbsp;
             <span id="admin_button" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>admin';">ADMINISTRATION</span>&nbsp;&nbsp;|&nbsp;
         <?php endif; ?>
-        <span id="about_us_button"><?php echo strtoupper(l('about_us')) ?></span> &nbsp;&nbsp;|&nbsp;&nbsp;
+	<span id="about_us_button"><?php echo strtoupper(l('about_us')) ?></span> &nbsp;&nbsp;|&nbsp;&nbsp;
         <span id="contact_us_button"><?php echo strtoupper(l('contact_us')) ?><span style='cursor: pointer'></span><img width='10px' src='<?php echo href() ?>images/contact-line.gif' id='contact_us_toggle' /></span>
     </div>
 </div>

@@ -115,7 +115,7 @@ if (Slim::request()->isGet())
             'participation' => fetch_db("{$about_sql} '{$about_uniques['participation']}' {$lang_sql}", NULL, TRUE),
             'innovation' => fetch_db("{$about_sql} '{$about_uniques['innovation']}' {$lang_sql}", NULL, TRUE)
         ),
-        'slide_news' => fetch_db("SELECT * FROM news WHERE lang = '" . LANG . "' AND show_in_slider = 1 ORDER BY published_at DESC"),
+        'slide_news' => fetch_db("SELECT * FROM news WHERE lang = '" . LANG . "' AND show_in_slider = 1 ORDER BY published_at DESC LIMIT 0, 5"),
         'languages' => config('languages')
     ));
 }

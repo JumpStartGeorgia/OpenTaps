@@ -11,12 +11,12 @@ $(document).ready(function() {
 			data: data_1
 		}];
 
-		if (typeof(serialized_data_1) !== 'undefined')
+		if (typeof(uniqid_1) !== 'undefined')
 		{
 			menuitem3 = {
 				text: 'Download CSV document',
 				onclick: function() {
-					window.location.href = baseurl + 'export/csv/' + serialized_data_1 + '/chart/';
+					window.location.href = baseurl + 'export/csv/' + uniqid_1 + '/chart/';
 				}
 			};
 		}
@@ -26,10 +26,10 @@ $(document).ready(function() {
 		}
 
 		pie_chart_options.exporting.buttons.exportButton.menuItems = [
-		      {},
+		      { text: 'Download HTML document' },
 		      null,
 		      menuitem3,
-		      {}
+		      null
 		];
 
 		var project_chart_1 = new Highcharts.Chart(pie_chart_options);
@@ -44,12 +44,12 @@ $(document).ready(function() {
 			data: data_2
 		}];
 
-		if (typeof(serialized_data_2) !== 'undefined')
+		if (typeof(uniqid_2) !== 'undefined')
 		{
 			menuitem3 = {
 				text: 'Download CSV document',
 				onclick: function() {
-					window.location.href = baseurl + 'export/csv/' + serialized_data_2 + '/chart/';
+					window.location.href = baseurl + 'export/csv/' + uniqid_2 + '/chart/';
 				}
 			};
 		}
@@ -59,10 +59,10 @@ $(document).ready(function() {
 		}
 
 		pie_chart_options.exporting.buttons.exportButton.menuItems = [
-		      {},
+		      { text: 'Download HTML document' },
 		      null,
 		      menuitem3,
-		      {}
+		      null
 		];
 
 		var project_chart_2 = new Highcharts.Chart(pie_chart_options);

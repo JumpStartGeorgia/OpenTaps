@@ -6,6 +6,10 @@
 	   <?php endforeach; ?>
 	   </select><br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input type="checkbox" name="hidden" /> Hidden
+	    </label><br /><br />
+
 
   	    <label for='ntitle'>Title: </label>
   	    <br />
@@ -17,6 +21,32 @@
 		Show in top slider
   	    </label>
   	    <br /><br />
+
+  	    <div>
+		Published at<br />
+		<?php
+		list($y, $m, $d, $h, $min) = array(date("Y"), date("m"), date("d"), date("H"), date("i"));
+		$months = array(NULL, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+		?>
+		<input type="text" style="width: 20px;" value="<?php echo $d; ?>" name="published_at[day]" />&nbsp;-
+		<select class="chosen_deselector" name="published_at[month]">
+		<?php for ($i = 1; $i <= 12; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		    <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+		<?php endfor; ?>
+		</select>&nbsp;-
+		<input type="text" style="width: 35px;" value="<?php echo $y; ?>" name="published_at[year]" />&nbsp;&nbsp;&nbsp;&nbsp;
+		<select class="chosen_deselector" name="published_at[hour]">
+		<?php for ($i = 0; $i < 24; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		    <option <?php $i == $h and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $ii; ?></option>
+		<?php endfor; ?>
+		</select>&nbsp;:
+		<select class="chosen_deselector" name="published_at[minute]">
+		<?php for ($i = 0; $i < 60; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		    <option <?php $i == $min and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $ii; ?></option>
+		<?php endfor; ?>
+		</select>
+		<?php /*<input type="text" style="width: 23px;" value="<?php echo $min; ?>" name="published_at[minute]" onfocus="if (this.value == 'min') this.value = '';" onblur="if (this.value == '') this.value = 'min';" />*/ ?>
+	    </div><br />
 
   	    <label for='nfile'>Picture : </label>
   	    <br/>

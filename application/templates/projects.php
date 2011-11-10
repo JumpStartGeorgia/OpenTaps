@@ -2,6 +2,7 @@
 	$direction = strtoupper($direction);
 	$this_order = empty($this_order) ? NULL : $this_order;
 	$this_order_href = 'order/' . $this_order . '-' . $direction . '/';
+	$filterlink = $filter ? '/filter/' . $filter : NULL;
 ?>
 <a name="projects"></a>
 
@@ -11,12 +12,13 @@
     	    <div class='headers_left'><?php echo strtoupper(l('tags_projects')) ?></div>
     	    <div class='headers_right' style="padding-top: 5px; padding-right: 5px;">
     	        <?php echo l('projects_filter_by') ?>
-	        <?php $location = href('projects', TRUE, 'projects'); ?>
-		<select style="width: 170px;" onchange="window.location.href = '<?php echo $location; ?>';">
+<?php $location = URL . 'projects/order/' . $this_order . '-' . $direction . '/page/' . $current_page . '/'; ?>
+		<select style="width: 170px;" onchange="if (this.value == '') window.location.href = '<?php echo $location; ?>'; else window.location.href = '<?php echo $location; ?>filter/' + this.value + '/?lang=' + lang + '#projects';">
+		<option selected="selected" value=""><?php echo l('news_page_all') ?></option>
 <?php		foreach ($types AS $type)
 		{
-		    $value = strtolower(str_replace(" ", "_", $type));
-		    echo '<option value="' . $value . '">' . $type . '</option>';
+		    $value = strtolower(str_replace(" ", "%20", $type));
+		    echo '<option ' . ($filter == $type ? 'selected="selected"' : NULL) . ' value="' . $value . '">' . l('pt_' . strtolower($type)) . '</option>';
 		}
 ?>
 		</select>
@@ -30,9 +32,9 @@
 		$orders = array('region', 'district', 'years', 'categories', 'a-z');
 		foreach ($orders as $order):
 	    ?>
-		    <a href='<?php echo href('projects/order/' . $order . '-ASC', TRUE, "projects") ?>'
+		    <a<?php LANG == 'ka' and print ' style="font-size: 13px;"' ?> href="<?php echo href('projects/order/' . $order . '-ASC' . $filterlink, TRUE, 'projects') ?>"
     	    		class='choosedef<?php ($order == $this_order) AND print("_selected") ?>'>
-			<?php echo strtoupper($order); ?>
+			<?php echo strtoupper(l('project_order_' . $order)); ?>
 		    </a>
 	    <?php endforeach; ?>
     	    </div>
@@ -40,8 +42,8 @@
     	    <div class='titletype_center'></div>
 
     	    <div class='titletype_right'>
-		<a class="choosedef<?php ($direction == 'ASC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from first to last" href="<?php echo href('projects/order/' . $this_order . '-ASC', TRUE, 'projects'); ?>">▼</a>
-		<a class="choosedef<?php ($direction == 'DESC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from last to first" href="<?php echo href('projects/order/' . $this_order . '-DESC', TRUE, 'projects'); ?>">▲</a>
+		<a class="choosedef<?php ($direction == 'ASC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from first to last" href="<?php echo href('projects/order/' . $this_order . '-ASC' . $filterlink, TRUE, 'projects'); ?>">▼</a>
+		<a class="choosedef<?php ($direction == 'DESC') AND print('_selected') ?>" style="color: #0cb5f5;" title="from last to first" href="<?php echo href('projects/order/' . $this_order . '-DESC' . $filterlink, TRUE, 'projects'); ?>">▲</a>
     	    </div>
     	</div>
 
@@ -73,14 +75,14 @@
 <?php if ($total_pages > 1): ?>
     	<div id='pages'>
     	    <?php if ($current_page > 1):
-    	        $pagelink = empty($this_order) ? 'page/' . ($current_page - 1) : ($current_page - 1); ?>
-    	    	<a href="<?php echo href('projects/' . $this_order_href . $pagelink, TRUE) ?>" class='prevnext'><</a>
+    	        $pagelink = 'page/' . ($current_page - 1); ?>
+    	    	<a href="<?php echo href('projects/' . $this_order_href . $pagelink . $filterlink, TRUE) ?>" class='prevnext'><</a>
     	    <?php endif; ?>
     	    <?php
     	    for ($page = 1; $page <= $total_pages; $page ++):
-    	      $pagelink = empty($this_order) ? 'page/' . $page : $page;
+    	      $pagelink = 'page/' . $page;
     	      if ($page != $current_page): ?>
-    	    	<a href='<?php echo href("projects/" . $this_order_href . $pagelink, TRUE) ?>'>
+    	    	<a href='<?php echo href("projects/" . $this_order_href . $pagelink . $filterlink, TRUE) ?>'>
     	    		<?php echo $page; ($total_pages == $page) OR print(" |"); ?>
     	    	</a>
     	    <?php
@@ -89,8 +91,8 @@
     	      endif;
     	    endfor;
     	    if ($current_page < $total_pages):
-    	        $pagelink = empty($this_order) ? 'page/' . ($current_page + 1) : ($current_page + 1); ?>
-    	    	<a href='<?php echo href("projects/" . $this_order_href . $pagelink, TRUE) ?>' class='prevnext'>></a>
+    	        $pagelink = 'page/' . ($current_page + 1); ?>
+    	    	<a href="<?php echo href('projects/' . $this_order_href . $pagelink . $filterlink, TRUE) ?>" class='prevnext'>></a>
     	    <?php endif; ?>
     	</div>
 <?php endif; ?>
@@ -105,7 +107,11 @@
 
 	    <div class='right_box_content' id='right_box_tags'>
 		<?php
-			foreach($tags as $tag):
+			foreach($tags as $key => $tag):
+				if ($key == config('projects_in_sidebar'))
+                                {
+				    break;
+                                }
 				echo 
 					"<a href='" . href('tag/projects/' . $tag['name'], TRUE) . "'>" .
 						char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .

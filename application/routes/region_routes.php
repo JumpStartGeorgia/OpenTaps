@@ -108,7 +108,9 @@ Slim::post('/admin/regions/update/:unique/', function($unique){
     {
 	delete_page_data('region', $unique, LANG);
 	if (!empty($_POST['data_key']))
+	{
 	    add_page_data('region', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);
+	}
 	update_region(
 	    	$unique,
         	$_POST['p_name'],

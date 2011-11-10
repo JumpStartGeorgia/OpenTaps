@@ -17,7 +17,7 @@ map_options = {
     default_lat: 42.23665,
     default_lon: 43.59375,
     controls: [
-    new OpenLayers.Control.MousePosition(),
+    //new OpenLayers.Control.MousePosition(),
     new OpenLayers.Control.Navigation()
     ]
 },
@@ -65,19 +65,20 @@ function mapping()
         }
     });
 
-    /*
-    base = new OpenLayers.Layer.Google('Google Satellite', {
-        type: google.maps.MapTypeId.SATELLITE,
-        isBaseLayer: false,
-        opacity: 0
+
+    // Base layer for projection
+    /*base = new OpenLayers.Layer.OSM('Georgia', 'http://a.tile.mapspot.ge/ndi_en/${z}/${x}/${y}.png', {
+        isBaseLayer: true,
+        opacity: 1
     });
-    */
+    map.addLayer(base);*/
 
     // Load all external layers
-    preload_layers();
     load_all();
+    preload_layers();
 
     // Add markers overlay to a map
+    markers.setZIndex(999999);
     map.addLayer(markers);
 
     // Center and zoom map to the very heart of Georgia
@@ -98,11 +99,13 @@ function preload_layers()
             strokeWidth: 0.5,
             strokeColor: '#555555',
             label: '${name}',
-            fontColor: '#787878',
-            fontSize: '9px',
-            labelAlign: 'ct'
+            fontColor: '#333333',
+            fontSize: '10px',
+            labelAlign: 'ct',
+            labelYOffset: -3
         })
     });
+    layers.urban.setZIndex(150);
     layers.urban.setOpacity(0);
 
 
@@ -119,26 +122,41 @@ function preload_layers()
         })
     });
     layers.villages.setOpacity(0);
-    */
+     */
 }
 
 function load_all()
 {
 
     // Load and initialize vector overlays
+    load_bounds();
     load_regions();
-    //load_around();
-    //load_water();
+    load_around();
     load_protected_areas();
-    //load_roads();
     load_cities();
     load_urban();
-    load_villages();
-    //load_hydro();
+    //load_villages();
 
     // Add initialized vector overlay-layers to the map
     for (var idx in layers)
         map.addLayer(layers[idx]);
+
+    load_districts();
+
+}
+
+function load_bounds()
+{
+    if (def(layers.bounds))
+        return;
+    layers.bounds = new OpenLayers.Layer.GML('Bounds', 'mapping/bounds.geojson', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            fill: false,
+            strokeWidth: 1.5,
+            strokeColor: '#AAAAAA'
+        })
+    });
 }
 
 function load_regions()
@@ -149,9 +167,24 @@ function load_regions()
         format: OpenLayers.Format.GeoJSON,
         isBaseLayer: true,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#FFFFFF',
-            strokeWidth: 0.33,
-            strokeColor: '#B0B0B0'
+            fillColor: '#F4F3F0',
+            strokeWidth: .65,
+            strokeColor: '#BBBBBB'
+        })
+    });
+}
+
+function load_districts()
+{
+    if (def(layers.districts))
+        return;
+    layers.districts = new OpenLayers.Layer.GML('Districts', 'mapping/districts.geojson', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            fill: false,
+            strokeWidth: .33,
+            strokeColor: '#BBBBBB',
+            strokeDashstyle: 'dash'
         })
     });
 }
@@ -170,17 +203,6 @@ function load_around()
     });
 }
 
-function load_water()
-{
-    layers.water = new OpenLayers.Layer.GML('Water', 'map-data/water', {
-        format: OpenLayers.Format.GeoJSON,
-        styleMap: new OpenLayers.StyleMap({
-            fillColor: '#6CD1F8',
-            strokeWidth: 0
-        })
-    });
-}
-
 function load_cities()
 {
     if (def(layers.cities))
@@ -194,9 +216,10 @@ function load_cities()
             strokeWidth: 0.5,
             strokeColor: '#555555',
             label: '${name}',
-            fontColor: '#787878',
-            fontSize: '10px',
-            labelAlign: 'ct'
+            fontColor: '#666666',
+            fontSize: '11px',
+            labelAlign: 'ct',
+            labelYOffset: -3
         })
     });
 }
@@ -242,8 +265,9 @@ function load_hydro()
             strokeWidth: 0,
             label: '${NAME_ENG}',
             fontColor: '#AAAAAA',
-            fontSize: '9px',
-            labelAlign: 'ct'
+            fontSize: '10px',
+            labelAlign: 'ct',
+            labelYOffset: -2
         })
     });
 }
@@ -255,55 +279,69 @@ function load_protected_areas()
     layers.protected_areas = new OpenLayers.Layer.GML('Protected Areas', 'mapping/protected_areas.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#E0E4CC',
-            fillOpacity: 0.8,
+            //fillColor: '#E0E4CC',
+            fillColor: '#C9DFAF',
+            //fillOpacity: 0.8,
             strokeWidth: 0
         })
     });
 }
 
-function load_roads()
+function load_roads_main()
 {
-    if (def(layers.roads))
+    if (def(layers.roads_main))
         return;
-    layers.roads = new OpenLayers.Layer.GML('Roads', 'mapping/roads.geojson', {
+    layers.roads_main = new OpenLayers.Layer.GML('Main Roads', 'mapping/roads_main.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            strokeWidth: 1,
-            strokeColor: '#E8C98B'
+            strokeWidth: 1.5,
+            strokeColor: '#F1BC45'
+        })
+    });
+}
+
+function load_roads_secondary()
+{
+    if (def(layers.roads_secondary))
+        return;
+    layers.roads_secondary = new OpenLayers.Layer.GML('Main Secondary', 'mapping/roads_secondary.geojson', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            strokeWidth: .75,
+            strokeColor: '#F1BC45'
         })
     });
 }
 
 function load_water()
 {
+    if (def(layers.water))
+        return;
     layers.water = new OpenLayers.Layer.GML('Regions', 'mapping/water.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#73BDF8',
-            fillOpacity: 0.9,
-            strokeWidth: 0
+            fillColor: '#A5BFDD',
+            //fillOpacity: 0.9,
+            stroke: false
+        //strokeColor: '#73BDF8',
+        //strokeWidth: 0.5
         })
     });
 }
 
-//load_projects('sewage', 'completed');
 function load_projects(type, status)
 {
-    var url = 'map-data/projects/' + type;
-    //if (status)
-    url += '/' + status;
+    var url = 'map-data/projects/' + type + '/' + status;
     $.getJSON(url + '?lang=' + lang, function(result)
     {
         if ($.isEmptyObject(result))
             return;
-        status = status || 'completed';
+        //$('#control-projects').addClass('active');
+        $('#control-' + type).addClass('active');
+        $('#control-' + type + '-' + status).addClass('active');
         var coordinates,
         marker,
         pidx = 0;
-        for (var cidx in project_storage[type][status])
-            markers.removeMarker(project_storage[type][status][cidx]);
-        project_storage[type][status] = [];
         for (var idx in result)
         {
             for (pidx in result[idx].places)
@@ -311,31 +349,76 @@ function load_projects(type, status)
                 coordinates = new OpenLayers.LonLat(result[idx].places[pidx].latitude, result[idx].places[pidx].longitude);
                 marker = new OpenLayers.Marker(coordinates, icons[type][status].clone());
                 marker.setOpacity(0.95);
-                marker.events.register('mousedown', marker, (function(title, lonlat)
+                markers.addMarker(marker);
+                marker.events.register('mousedown', marker, (function(title, coordinates, status, id, lang)
                 {
                     return function()
                     {
-                        if (popup !== null)
-                            map.removePopup(popup);
-                        console.log(lonlat);
-                        popup = new OpenLayers.Popup('map-popup', lonlat, new OpenLayers.Size(128, 128), title, true);
-                        //popup.autoSize = true;
-                        map.addPopup(popup);
+                        show_project_tooltip(coordinates, '<a href="project/' + id + '/?lang=' + lang + '">' + title + '</a>', status);
                     }
-                })(result[idx].title, coordinates));
+                })(result[idx].title, coordinates, status, result[idx].id, lang));
                 project_storage[type][status].push(marker);
-                markers.addMarker(marker);
             }
             pidx = 0;
         }
+        $('img[id$="_innerImage"]').css('cursor', 'pointer').hover(function()
+        {
+            $(this).stop().animate({
+                opacity: .65
+            });
+        }, function()
+        {
+            $(this).stop().animate({
+                opacity: 1
+            });
+        });
     });
+}
+
+function unload_projects(type, status)
+{
+    //if (!$('#control-projects').parent().find('ul > li a.active').length)
+    //$('#control-projects').removeClass('active');
+    if (!$('#control-' + type).parent().find('ul li a.active').length)
+        $('#control-' + type).removeClass('active');
+    $('#control-' + type + '-' + status).removeClass('active');
+    for (var idx in project_storage[type][status])
+        markers.removeMarker(project_storage[type][status][idx]);
+    project_storage[type][status] = [];
+}
+
+function show_project_tooltip(lonlat, content, status)
+{
+    var offset = map.getPixelFromLonLat(lonlat),
+    tooltip = $('#tooltip')
+    .removeClass('completed')
+    .removeClass('current')
+    .removeClass('scheduled')
+    .addClass(status)
+    .mouseleave(function(event)
+    {
+        event.stopPropagation();
+        $(this).fadeOut();
+    })
+    .css({
+        left: parseInt(offset.x - 88),
+        top: parseInt(offset.y - 88)
+    });
+    //////////
+    return tooltip
+    .children('span')
+    .html(content)
+    .end()
+    .fadeIn();
 }
 
 //feature.geometry.getBounds().getCenterLonLat();
 
 function toggle_projects(type, status)
 {
-    return load_projects(type, status);
+    //console.log(project_storage);
+    //console.log(project_storage[type][status].length);
+    return project_storage[type][status].length ? unload_projects(type, status) : load_projects(type, status);
 }
 
 function toggle_layer(object)
@@ -351,22 +434,46 @@ function toggle_overlay(name)
     if (!name)
         return;
     if (def(layers[name]) && layers[name] != 'urban' && layers[name] != 'villages')
-        layers[name].setOpacity(layers[name].opacity == 0 ? 1 : 0);
+    {
+        if (layers[name].opacity == 0)
+        {
+            layers[name].setOpacity(1);
+            $('#overlay-' + name).addClass('active');
+        }
+        else
+        {
+            $('#overlay-' + name).removeClass('active');
+            layers[name].setOpacity(0);
+        }
+    }
     switch (name)
     {
         case 'hydro':
             load_hydro();
+            $('#overlay-hydro').toggleClass('active');
             map.addLayer(layers.hydro);
             break;
-        case 'roads':
-            load_roads();
-            map.addLayer(layers.roads);
+        case 'roads_main':
+            load_roads_main();
+            $('#overlay-roads').toggleClass('active');
+            map.addLayer(layers.roads_main);
             break;
+        case 'roads_secondary':
+            load_roads_secondary();
+            map.addLayer(layers.roads_secondary);
+            break;
+        case 'water':
+            load_water();
+            $('#overlay-water').toggleClass('active');
+            map.addLayer(layers.water);
+            break;
+    /*
         case 'urban':
             if (map.zoom == 0 || map.zoom == 1)
                 break;
             alert('Gotcha!')
             break;
+         */
     }
 }
 
@@ -390,6 +497,11 @@ function map_commons()
 
     mapping();
 
+    $('body').click(function()
+    {
+        $('#tooltip').fadeOut();
+    });
+
     var controls = $('#map-controls'),
     count = 3;
 
@@ -399,9 +511,10 @@ function map_commons()
         var sub = $(this).children('ul');
         if (!sub.length)
             return;
-        sub.toggle().end().find('li > a').click(function()
+        sub.toggle().end().find('a.sub').click(function()
         {
             var me = $(this).toggleClass('active');
+        /*
             par = parent().parent().parent().children('a');
             if (me.hasClass('active'))
             {
@@ -412,7 +525,7 @@ function map_commons()
                 --count;
             if (count < 1)
                 par.removeClass('active');
-
+         */
         });
     });
 

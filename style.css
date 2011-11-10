@@ -81,10 +81,10 @@ div.after_header { height: 7px; margin-top: 22px; background-image: url('@baseur
 div.menu ul { list-style-type: none; padding: 0; float: left }
 div.menu ul li { float: left; font-size: 0.85em }
 div.menu ul li a { display: block; height: 26px; padding: 10px 10px 0px 10px; text-decoration: none; color: #565656; font-size: 13px; font-family: Arial; outline: 0 }
-div.menu ul li a:hover, div.menu ul li:hover { background-color: #5FCCF3; outline: 0 }
+div.menu ul li a:hover, div.menu ul li:hover { color: #0cb5f5; outline: 0 }
 div.projects_organization, div.news, div.spacer { display: table-cell; vertical-align: middle; text-align: center; color: #fff; font-size: 1.0em; font-family: Arial }
 #override_border { width: 0px; height: 1px; position: absolute; top: 0; left: 0; background: #fff }
-.menu ul li a div { font-family: "Babuka Mtavruli", Arial; letter-spacing: 1px }
+.menu ul li a div { letter-spacing: 1px }
 
 /* Submenus */
 #submenu .submenu { display: none; width: 100%; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0 }
@@ -98,7 +98,7 @@ div.search input.search { border: 0px; height: 25px; width: 122px; color: grey }
 div.search input.submit { background-image: url('@baseurl/images/search.jpg'); cursor: hand; cursor: pointer; width: 16px; height: 16px; border: 0px }
 div.after_menu { border-bottom: 1px dotted @opentaps_default_bordercolor; width: 100%; float: left }
 
-#map { height: 360px; width: 100%; border: 1px dotted @opentaps_default_bordercolor }
+#map { height: 400px; width: 100%; border: 1px dotted @opentaps_default_bordercolor }
 #map:before, div.menu:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0 }
 
 div.projects_organization { width: 282px; float: left }
@@ -131,7 +131,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 #news_bottom_content a:hover { text-decoration: underline }
 #region_link, .region_link { text-decoration: none; color: @opentaps_default_color; cursor: pointer }
 #region_link:hover, .region_link:hover { text-decoration: underline }
-.content { width: 932px; min-height: 120px; margin-top: 0px; padding: 0 }
+#content { width: 932px; min-height: 120px; margin-top: 0px; padding: 0; font-size: 12px !important }
 
 /* Projects */
 #project_content { font-size: 12px; font-family: arial }
@@ -145,7 +145,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .line_left { width: 135px; padding-left: 16px }
 .data_block { width: 240px; min-height: 45px; border: 1px dotted @opentaps_default_bordercolor; margin-bottom: 10px; /*text-align: justify*/ }
 .data_block .key { background: @opentaps_default_color; color: rgba(255, 255, 255, 1); padding: 10px 0px 10px 17px; font-size: 13px; border-bottom: 1px dotted @opentaps_default_bordercolor }
-.data_block .value { padding: 10px 17px 10px 17px; word-wrap: break-word; font-size: 11px; }
+.data_block .value { padding: 10px 17px 10px 17px; text-align: justify; word-wrap: break-word; font-size: 11px; }
 .data_block .value a, #right_box_tags a { color: #565656; text-decoration: none }
 .data_block .value a:hover, #right_box_tags a:hover { text-decoration: underline }
 #charts { float: left; width: 673px }
@@ -199,10 +199,10 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 div.bottom { width: 932px; border-top: 2px solid #ccc; padding-top: 5px }
 div.bottom1, div.bottom2 { float: left; font-size: 0.7em; font-family: arial; color: grey }
 div.bottom1 { margin-left: 1px }
-#bot-container { position: relative; width: 932px; margin-top: 30px; height: 0px; z-index: 9999999 }
+#bot-container { position: relative; width: 932px; margin-top: 30px; z-index: 9999999 }
 #about_us_button, #contact_us_button { cursor: pointer }
-#about-us, #contact-us { background: #fff; display: none; position: absolute; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
-#contact-us { height: 338px }
+#about-us, #contact-us { background: #fff; display: none; position: relative; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
+#contact-us { height: 360px }
 #contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000 }
 #about-us { font-size: 12px; width: 930px; /*text-align: justify*/ }
 #about-us-main-title-container, .about-us-main-title-container { color: #fff; background: #0CB5F6; padding: 11px 16px 11px 16px; font-weight: bold }
@@ -238,13 +238,14 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 
 /* Mapping */
 #map { background: #DBE6EC }
-#map-overlay { cursor: pointer; position: absolute; top: 0; left: 0; z-index: 99999; height: 362px; line-height: 362px; width: 100.3%; /*background-color: #0CB5F6;*/ background-color: #FFF; color: #777; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
+#map-overlay { cursor: pointer; position: absolute; top: 0; left: 0; z-index: 100000; height: 401px; line-height: 362px; width: 100.3%; /*background-color: #0CB5F6;*/ background-color: #FFF; color: #777; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
 .map-button { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; text-decoration: none; display: block; font-size: 13px; letter-spacing: 1px; padding: 2px 7px 3px; color: #FFF; background: #0CB5F5; cursor: pointer }
 .map-button:hover { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; filter: alpha(opacity=75); -moz-opacity: 0.75; -khtml-opacity: 0.75; opacity: 0.75; }
 .map-button > img { vertical-align: middle; margin-right: 4px }
 #map-minus { margin-left: 10px !important }
 #map-plus { margin-left: 5px !important }
 #map-overlays { margin-right: 10px !important; float: right !important }
+#map-overlays > ul > li > a { cursor: pointer !important }
 #map-filter { margin-right: 10px !important; float: right !important }
 #map-controls { position: absolute; top: 10px; left: 0; z-index: 99999; margin: 0; padding: 0; width: 930px; list-style: none}
 #map-controls ul, #map-controls li { margin: 0; padding: 0; list-style: none }
@@ -252,9 +253,10 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 #map-controls > li > ul { display: none; position: absolute; right: 0; top: 21px }
 #map-controls > li > ul > li { position: relative; display: block; border-bottom: 1px dashed #CFCFCF }
 #map-controls > li > ul > li.first { border-top: 1px dashed #CFCFCF }
-#map-controls > li > ul a { display: block; white-space: nowrap; font-size: 12px; padding: 4px 12px 5px; background: #F5F5F5; text-decoration: none; color: #333 }
+#map-controls > li > ul a { letter-spacing: 1px; display: block; white-space: nowrap; font-size: 12px; padding: 4px 12px 5px; background: #F5F5F5; text-decoration: none; color: #333; cursor: default }
+#map-controls > li > ul a.sub { cursor: pointer }
 #map-controls > li > ul a:hover { color: #666 }
-#map-controls a.active { font-weight: bold !important }
+#map-controls a.active { font-weight: bold !important; letter-spacing: normal }
 #map-controls > li > ul a img { margin-right: 5px; vertical-align: middle }
 #map-controls > li > ul > li > ul { display: none; position: absolute; right: 144px; top: 0; border-right: 1px dashed #CFCFCF }
 #map-controls > li > ul > li > ul > li { border-bottom: 1px dashed #CFCFCF }
@@ -360,12 +362,31 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
     display: none;
 }
 
-#logo_img { display:block;margin:auto; }
 .next_text { font-size: 15px; text-align: justify; }
 .news_text img { float:left;padding:10px; }
 
+/*
+#map-popup { background: #00AEEF !important; -webkit-border-radius: 88px; -moz-border-radius: 88px; border-radius: 88px; color: #FFF; text-align: center; font-size: 12px }
+#map-popup.completed { background: #00AEEF !important }
+#map-popup.current { background: #FF4C4C !important }
+#map-popup.scheduled { background: #01C288 !important }
+#map-popup_contentDiv { padding: 25px }
+*/
 
-#map-popup { background: #00AFF2; -webkit-border-radius: 64px; -moz-border-radius: 64px; border-radius: 64px; background: #0CB5F5 !important; color: #FFF; text-align: center; font-size: 12px }
+#tooltip { position: absolute; width: 175px; height: 175px; -webkit-border-radius: 88px; -moz-border-radius: 88px; border-radius: 88px; color: #FFF; text-align: center; font-size: 12px; z-index: 99999 }
+#tooltip.completed { background: #00AEEF }
+#tooltip.current { background: #FF4C4C }
+#tooltip.scheduled { background: #01C288 }
+#tooltip a { color: #FFF }
+#tooltip a:hover { text-decoration: none }
+#tooltip span { display: block; padding: 30px }
 
+/*#map-popup { background: #00AEEF !important; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; color: #FFF; text-align: center; font-size: 12px }
+#map-popup a { color: #FFF }
+#map-popup a:hover { text-decoration: none }
+#map-popup_close { display: none !important }*/
+
+.wysiwyg { margin: 0 !important; width: 100% !important; display: block } 
+.wysiwyg iframe { height: 250px; display: block; width: 100% !important }
 
 <?php ob_end_flush(); ?>

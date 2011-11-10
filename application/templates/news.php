@@ -23,7 +23,8 @@
     	<div class='group' id='newstype_filter' style='width: 100%; border-bottom: 1px solid #eee;'>
     	    <div class='titletype_left' style='padding-left: 11px; font-size:9px;'>
 		    <a href='<?php echo href('news', TRUE, "news") ?>'
-    	    		class='choosedef<?php empty($this_type_original) AND print("_selected") ?>'>ALL
+    	    	       class='choosedef<?php empty($this_type_original) AND print("_selected") ?>'>
+    	    		<?php echo l('news_page_all'); ?>
 		    </a>
 	    <?php
 		$types = config("news_types");
@@ -31,7 +32,7 @@
 	    ?>
 		    <a href='<?php echo href('news/type/' . $type, TRUE, "news") ?>'
     	    		class='choosedef<?php ($type == $this_type_original) AND print("_selected") ?>'>
-			<?php echo strtoupper($type); ?>
+			<?php echo strtoupper(l('nt_' . $type)); ?>
 		    </a>
 	    <?php endforeach; ?>
     	    </div>
@@ -57,20 +58,13 @@
 	    	<?php $rgba = 1 - ($index % 3) / 2.5; ?>
     		<div class='content_each_right' style='border-left: 7px solid rgba(12, 181, 245, <?php echo $rgba; ?>)'>
     		    <div style='padding: 4px; padding-top: 15px; font-size: 10px; text-align: center;'>
-    		    	<img src='<?php echo href() . $images[$news['category']] ?>' height='36px' />
-    		    	<br />
-    		    	<?php 
-    		    		if( LANG == 'en' ):
-    		    			echo call_user_func(config('getDate'),'en',$news['published_at']); 
-    		    		else:
-    		    			echo call_user_func(config('getDate'),'ka',$news['published_at']);
-    		    		endif;
-    		    	?>    		    		
+    		    	<img src="<?php echo href() . $images[$news['category']] ?>" height='36px' /> <br />
+    		    	<?php echo dateformat($news['published_at']); ?>
     		    </div>
     		</div>
     	    </div>
     	<?php endforeach; ?>          
-            
+
     	</div>
 
 <?php if ($total_pages > 1): ?>
@@ -109,7 +103,11 @@
 
 	    <div class='right_box_content' id='right_box_tags'>
 		<?php
-			foreach($tags as $tag):
+			foreach($tags as $key => $tag):
+				if ($key == config('projects_in_sidebar'))
+                                {
+				    break;
+                                }
 				echo 
 					"<a href='".href('tag/news/' . $tag['name'], TRUE, 'tags')."'>" .
 						$tag['name'] . " (" . $tag['total_tags'] . ")".

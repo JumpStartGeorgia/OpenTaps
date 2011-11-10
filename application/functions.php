@@ -79,9 +79,7 @@ function generate_unique($table)
     $table = htmlspecialchars(str_replace(";", "", $table));
     $max = fetch_db('SELECT MAX(`unique`) AS u FROM `' . $table . '`;', NULL, TRUE);
     if (empty($max) OR empty($max['u']))
-    {
         return 1;
-    }
     return ($max['u'] + 1);
 }
 
@@ -167,14 +165,14 @@ function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $tex
     {
         $the_name = $name . (($adding_lang == $lang) ? NULL : " ({$lang})");
         $exec = $statement->execute(array(
-                    ':name' => $the_name,
-                    ':short_name' => empty($short_name) ? string_to_friendly_url($the_name) : $short_name,
-                    ':parent_unique' => $parent_unique,
-                    ':title' => $title,
-                    ':text' => $text,
-                    ':footer' => $footer,
-                    ':lang' => $lang,
-                    ':unique' => $unique
+            ':name' => $the_name,
+            ':short_name' => empty($short_name) ? string_to_friendly_url($the_name) : $short_name,
+            ':parent_unique' => $parent_unique,
+            ':title' => $title,
+            ':text' => $text,
+            ':footer' => $footer,
+            ':lang' => $lang,
+            ':unique' => $unique
                 ));
 
         $success = (bool) $exec;
@@ -192,14 +190,14 @@ function update_menu($unique, $name, $short_name, $parent_unique, $title, $text,
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $exec = $statement->execute(array(
-                ':unique' => $unique,
-                ':short_name' => empty($short_name) ? string_to_friendly_url($name) : $short_name,
-                ':name' => $name,
-                ':parent_unique' => $parent_unique,
-                ':title' => $title,
-                ':text' => $text,
-                ':hide' => $hide,
-                ':footer' => $footer
+        ':unique' => $unique,
+        ':short_name' => empty($short_name) ? string_to_friendly_url($name) : $short_name,
+        ':name' => $name,
+        ':parent_unique' => $parent_unique,
+        ':title' => $title,
+        ':text' => $text,
+        ':hide' => $hide,
+        ':footer' => $footer
             ));
 
     return ($exec) ? true : false;
@@ -264,19 +262,21 @@ function add_news($adding_lang, $title, $show_in_slider, $body, $filedata, $cate
         return $up;
 
     $unique = generate_unique("news");
+    $date = $_POST['published_at'];
 
-    $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`)
-	    VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique)";
+    $sql = "INSERT INTO  opentaps.`news` (title, show_in_slider, `body`, published_at, image, category, place_unique, lang, `unique`, hidden)
+	    VALUES(:title, :show_in_slider, :body, :published_at, :image, :category, :place, :lang, :unique, :hidden)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $data = array(
         ':show_in_slider' => $show_in_slider,
         ':body' => $body,
-        ':published_at' => date("Y-m-d H:i"),
+        ':published_at' => ($date['year'] . '-' . $date['month'] . '-' . ($date['day'] < 10 ? '0' . $date['day'] : $date['day']) . ' ' . $date['hour'] . ':' . $date['minute']), //date("Y-m-d H:i"),
         ':image' => $up,
         ':category' => $category,
         ':place' => $place,
-        ':unique' => $unique
+        ':unique' => $unique,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
 
     foreach (config('languages') as $lang)
@@ -305,34 +305,39 @@ function update_news($unique, $title, $show_in_slider, $body, $filedata, $catego
     if (strlen($title) < 1 OR !is_numeric($unique))
         return "title is empty or invalid id";
 
+    $date = $_POST['published_at'];
     $up = image_upload($filedata);
     if (substr($up, 0, 8) != "uploads/" && $up != "")   //return if any errors
         return $up;
     elseif ($up == "")
     {
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, show_in_slider = :show_in_slider, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, published_at = :published_at, hidden = :hidden, show_in_slider = :show_in_slider, `body` = :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "';";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
             ':body' => $body,
+            ':published_at' => ($date['year'] . '-' . $date['month'] . '-' . ($date['day'] < 10 ? '0' . $date['day'] : $date['day']) . ' ' . $date['hour'] . ':' . $date['minute']),
             ':show_in_slider' => $show_in_slider,
             ':category' => $category,
-            ':place' => $place
+            ':place' => $place,
+            ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
         );
     }
     else
     {
         delete_image($unique);
-        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, show_in_slider = :show_in_slider, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
+        $sql = "UPDATE  `opentaps`.`news` SET  `title` =  :title, published_at = :published_at, hidden = :hidden, show_in_slider = :show_in_slider, `image` =  :image, `body` =  :body, category = :category, place_unique = :place WHERE  `news`.`unique` = :unique AND news.lang = '" . LANG . "' LIMIT 1;
         	UPDATE  `opentaps`.`news` SET  `image` =  :image WHERE  `news`.`unique` = :unique;";
         $data = array(
             ':unique' => $unique,
             ':title' => $title,
             ':body' => $body,
+            ':published_at' => ($date['year'] . '-' . $date['month'] . '-' . ($date['day'] < 10 ? '0' . $date['day'] : $date['day']) . ' ' . $date['hour'] . ':' . $date['minute']),
             ':image' => $up,
             ':show_in_slider' => $show_in_slider,
             ':category' => $category,
-            ':place' => $place
+            ':place' => $place,
+            ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
         );
     }
 
@@ -378,7 +383,7 @@ function image_upload($filedata, $path = "uploads/")
                 $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 3149)
         {
             $path = "uploads/";
-            $name = mt_rand(0, 1000) . $filedata['name'];
+            $name = substr(sha1(uniqid() . time() . mt_rand(0, 1000)), 0, 15) . substr($filedata['name'], -20);
             if (file_exists($path . $name))
                 $name = mt_rand(0, 99999) . $name;
             $upload = move_uploaded_file($filedata["tmp_name"], $path . $name);
@@ -510,9 +515,9 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     foreach ($tag_uniques AS $tag_unique)
     {
         $exec = $statement->execute(array(
-                    ':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
-                    ':f_unique' => $f_unique,
-                    ':tag_unique' => $tag_unique
+            ':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
+            ':f_unique' => $f_unique,
+            ':tag_unique' => $tag_unique
                 ));
         $check AND $check = (bool) $exec;
     }
@@ -535,9 +540,9 @@ function add_tag($adding_lang, $name, $redirect = TRUE)
     foreach (config('languages') as $lang)
     {
         $exec = $statement->execute(array(
-                    ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
-                    ':lang' => $lang,
-                    ':unique' => $unique
+            ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
+            ':lang' => $lang,
+            ':unique' => $unique
                 ));
         $success = (bool) $exec;
     }
@@ -561,8 +566,8 @@ function update_tag($unique, $name)
     $statement->closeCursor();
 
     $exec = $statement->execute(array(
-                ':unique' => $unique,
-                ':name' => $name
+        ':unique' => $unique,
+        ':name' => $name
             ));
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags", TRUE) . "' />";
@@ -764,7 +769,7 @@ function add_region($adding_lang, $name, $region_info, $region_projects_info, $c
         ':region_projects' => $region_projects_info,
         ':city' => $city,
         ':cities' => $cities,
-		  ':towns' => $towns,        
+        ':towns' => $towns,
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,
@@ -842,8 +847,8 @@ function update_region($unique, $name, $region_info, $region_projects_info, $cit
         ':region_info' => $region_info,
         ':region_projects' => $region_projects_info,
         ':city' => $city,
-	':cities' => $cities,
-	':towns' => $towns,
+        ':cities' => $cities,
+        ':towns' => $towns,
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,
@@ -962,7 +967,20 @@ function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FAL
     return $statement->fetchAll();
 }
 
-function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALSE)
+function projects_total_pages($filter = FALSE)
+{
+    $posp = config('projects_on_single_page');
+    $query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "' " . ($filter ? ' AND type = :type ' : NULL) . ";";
+    $query = db()->prepare($query);
+    $query->execute($filter ? array(':type' => $filter) : NULL);
+    $total = $query->fetch(PDO::FETCH_ASSOC);
+    $total = $total['total'];
+    $total == 0 and $total = 1;
+    $total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+    return $total_pages;
+}
+
+function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALSE, $type = FALSE)
 {
     if ($order)
     {
@@ -993,17 +1011,19 @@ function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALS
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
 	LEFT JOIN regions AS r
 	    ON pl.region_unique = r.`unique` AND pl.lang = r.lang
-        WHERE p.lang = '" . LANG . "' AND hidden = 0
+        WHERE p.lang = '" . LANG . "' AND hidden = 0 " . ($type ? ' AND p.type = :type ' : NULL) . "
 	" . ($order ? " ORDER BY {$order} " : NULL ) . " LIMIT {$from}, {$limit};";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
-    $statement->execute();
+    $statement->execute($type ? array(':type' => $type) : NULL);
     return $statement->fetchAll();
 }
 
 function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_uniques, $type, $project_key = NULL, $project_sort = NULL, $project_value = NULL, $sidebar = NULL)
 {
     $unique = generate_unique("projects");
+    $startdate = $_POST['p_start_at'];
+    $enddate = $_POST['p_end_at'];
     $sql = "
     	INSERT INTO `opentaps`.`projects`(
     		`title`,
@@ -1018,7 +1038,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		`type`,
 	        `place_unique`,
 	        `lang`,
-	        `unique`
+	        `unique`,
+	        `hidden`
     	)
     	VALUES(
     		:title,
@@ -1031,9 +1052,10 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		:end_at,
     		"/* :info, */ . "
     		:type,
-	      :place_unique,
-	      :lang,
-	      :unique
+		:place_unique,
+		:lang,
+		:unique,
+		:hidden
     	);
     ";
     $statement = db()->prepare($sql);
@@ -1045,12 +1067,13 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
         ':city' => $city,
         ':grantee' => $grantee,
         ':sector' => $sector,
-        ':start_at' => $start_at,
-        ':end_at' => $end_at,
+        ':start_at' => ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day'])),
+        ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
         //':info' => $info,
         ':type' => $type,
         ':place_unique' => serialize($place_unique),
-        ':unique' => $unique
+        ':unique' => $unique,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
 
 
@@ -1092,10 +1115,10 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
                     $query = db()->prepare($sql);
                     $query->closeCursor();
                     $query = $query->execute(array(
-                                ':project_unique' => $unique,
-                                ':organization_unique' => $organization[$idx],
-                                ':currency' => $currency[$idx],
-                                ':budget' => $budget
+                        ':project_unique' => $unique,
+                        ':organization_unique' => $organization[$idx],
+                        ':currency' => $currency[$idx],
+                        ':budget' => $budget
                             ));
                 }
             }
@@ -1108,6 +1131,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
 function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
 {
     $back = "<br /><a href=\"" . href("admin/projects/" . $unique, TRUE) . "\">Back</a>";
+    $startdate = $_POST['p_start_at'];
+    $enddate = $_POST['p_end_at'];
 
     if (strlen($title) == 0)
     {
@@ -1128,7 +1153,8 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     		end_at = :end_at,
     		info = :info,
     		type = :type,
-		place_unique = :place_unique
+		place_unique = :place_unique,
+		hidden = :hidden
     	WHERE
     		`projects`.`unique` = :unique
     	AND
@@ -1157,11 +1183,12 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
         ':city' => $city,
         ':grantee' => $grantee,
         ':sector' => $sector,
-        ':start_at' => $start_at,
-        ':end_at' => $end_at,
+        ':start_at' => ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day'])),
+        ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
         ':info' => $info,
         ':type' => $type,
-        ':place_unique' => serialize($place_unique)
+        ':place_unique' => serialize($place_unique),
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
     $exec = $statement->execute($data);
 
@@ -1199,10 +1226,10 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
                 $query = db()->prepare($sql);
                 $query->closeCursor();
                 $query = $query->execute(array(
-                            ':project_unique' => $unique,
-                            ':organization_unique' => $organization[$idx],
-                            ':currency' => $currency[$idx],
-                            ':budget' => $budget
+                    ':project_unique' => $unique,
+                    ':organization_unique' => $organization[$idx],
+                    ':currency' => $currency[$idx],
+                    ':budget' => $budget
                         ));
             }
         }
@@ -1267,28 +1294,34 @@ function add_page_data($owner, $owner_unique, $key, $sort, $sidebar, $value, $ad
     $sql = "INSERT INTO `opentaps`.`pages_data` (`key`, `value`, `owner`, owner_unique, `sort`, `sidebar`, lang, `unique`)
 	    VALUES (:key, :value, :owner, :owner_unique, :sort, :sidebar, :lang, :unique);";
     $statement = db()->prepare($sql);
-    $statement->closeCursor();
 
-    for ($i = 0, $c = count($key); $i < $c; $i++)
+    for ($idx = 0, $count = count($key); $idx < $count; $idx++)
     {
-        if (!empty($key[$i]) AND !empty($value[$i]))
-        {
-            $unique = generate_unique("pages_data");
-            //foreach ($languages as $lang)
-            //{
-            $data = array(
-                ':owner' => $owner,
-                ':owner_unique' => $owner_unique,
-                ':key' => $key[$i], // . ((LANG == $lang) ? NULL : " ({$lang})"),
-                ':value' => $value[$i],
-                ':sort' => $sort[$i],
-                ':sidebar' => ((!empty($sidebar[$i]) AND $sidebar[$i] == "checked") ? 1 : 0),
-                ':lang' => $adding_lang,
-                ':unique' => $unique
-            );
-            $statement->execute($data);
-            //}
-        }
+        if (empty($key[$idx]) OR empty($value[$idx]))
+            continue;
+        $statement->closeCursor();
+        $unique = generate_unique('pages_data');
+        //foreach ($languages as $lang)
+        //{
+        $data = array(
+            ':owner' => $owner,
+            ':owner_unique' => $owner_unique,
+            ':key' => $key[$idx], // . ((LANG == $lang) ? NULL : " ({$lang})"),
+            ':value' => $value[$idx],
+            ':sort' => $sort[$idx],
+            ':sidebar' => ((!empty($sidebar[$idx]) AND $sidebar[$idx] == "checked") ? 1 : 0),
+            ':lang' => $adding_lang,
+            ':unique' => $unique
+        );
+        /*
+          array_walk($data, function(&$value)
+          {
+          $value = "'{$value}'";
+          });
+          exit(strtr($sql, $data));
+         */
+        $statement->execute($data);
+        //}
     }
 }
 
@@ -1329,10 +1362,11 @@ function char_limit($string, $limit = 30)
 
 function json_replace_unicode($string)
 {
-    $cyrillic =  explode(' ', "\u10e6 \u10ef \u10e3 \u10d9 \u10d4 \u10dc \u10d2 \u10e8 \u10ec \u10d6 \u10ee \u10ea \u10e4 \u10eb \u10d5 \u10d7 \u10d0 \u10de \u10e0 \u10dd \u10da \u10d3 \u10df \u10ed \u10e9 \u10e7 \u10e1 \u10db \u10d8 \u10e2 \u10e5 \u10d1 \u10f0");
+    $cyrillic = explode(' ', "\u10e6 \u10ef \u10e3 \u10d9 \u10d4 \u10dc \u10d2 \u10e8 \u10ec \u10d6 \u10ee \u10ea \u10e4 \u10eb \u10d5 \u10d7 \u10d0 \u10de \u10e0 \u10dd \u10da \u10d3 \u10df \u10ed \u10e9 \u10e7 \u10e1 \u10db \u10d8 \u10e2 \u10e5 \u10d1 \u10f0");
     $georgian = explode(' ', "ღ ჯ უ კ ე ნ გ შ წ ზ ხ ც ფ ძ ვ თ ა პ რ ო ლ დ ჟ ჭ ჩ ყ ს მ ი ტ ქ ბ ჰ");
     return str_replace($cyrillic, $georgian, $string);
 }
+
 function convert_to_chart_array($data, $nameindex, $budgetindex)
 {
     $newdata = array();
@@ -1349,11 +1383,11 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
         }
     }
     return json_replace_unicode(json_encode($newdata));
+    //return json_encode($newdata);
 }
 
 function home_chart_data()
 {
-    Storage::instance()->show_organization_chart = TRUE;
     $sql = "SELECT
     		o.name,
     		(SELECT SUM(budget)
@@ -1455,10 +1489,11 @@ function count_organization_project_types($unique)
         ));
         $total = $statement->fetch(PDO::FETCH_ASSOC);
         $count[$type] = $total['num'];
-        ($count[$type] > 0) AND $total_types_count ++;
+        ($count[$type] > 0) AND $total_types_count++;
     }
     return ($total_types_count > 0) ? $count : FALSE;
 }
+
 function count_region_project_types($unique)
 {
     $total_types_count = 0;
@@ -1466,7 +1501,7 @@ function count_region_project_types($unique)
     {
         $total = fetch_db("SELECT COUNT(p.id) AS num FROM projects AS p INNER JOIN places AS pl ON pl.`unique` = p.place_unique AND pl.lang = p.lang WHERE pl.`region_unique` = :unique AND p.type = :type AND p.lang = '" . LANG . "';", array(':unique' => $unique, ':type' => $type), TRUE);
         $count[$type] = $total['num'];
-        ($count[$type] > 0) AND $total_types_count ++;
+        ($count[$type] > 0) AND $total_types_count++;
     }
     return ($total_types_count > 0) ? $count : FALSE;
 }
@@ -1493,7 +1528,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
     $sql = "
 	INSERT INTO organizations
 	(
-	    name,
+	    #name,
 	    type,
 	    description,
 	    district,
@@ -1503,11 +1538,12 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
 	    projects_info,
 	    logo,
 	    lang,
-	    `unique`
+	    `unique`,
+	    hidden
 	)
 	VALUES
 	(
-	    :name,
+	    #:name,
 	    :type,
 	    :description,
 	    :district,
@@ -1517,7 +1553,8 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
 	    :projects_info,
 	    :logo,
 	    :lang,
-	    :unique
+	    :unique,
+	    :hidden
 	);
     ";
     $data = array(
@@ -1529,8 +1566,18 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
         ':grante' => $grante,
         ':sector' => $sector,
         ':logo' => $up,
-        ':unique' => $unique
+        ':unique' => $unique,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
     );
+
+    /*
+      array_walk($data, function(&$value)
+      {
+      $value = "'{$value}'";
+      });
+      exit(strtr($sql, $data));
+     */
+
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
@@ -1555,7 +1602,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
     }
 }
 
-function edit_organization($unique, $name, $type, $info, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
+function edit_organization($unique, $name, $type, $description, $projects_info, $city_town, $district, $grante, $sector, $filedata, $tag_uniques, $tag_names)
 {
     $org = get_organization($unique);
     in_array($type, array('donor', 'organization')) OR $type = "organization";
@@ -1578,24 +1625,25 @@ function edit_organization($unique, $name, $type, $info, $projects_info, $city_t
 
     //$unique = get_unique("organizations", $id);
 
-    $sql = "UPDATE organizations SET name=:name,type=:type,description=:info,district=:district,city_town=:city_town,
-		grante=:grante,sector=:sector,projects_info=:projects_info
-		WHERE `unique`=:unique AND lang = '" . LANG . "' LIMIT 1;
-	    UPDATE organizations SET logo = :logo WHERE `unique`=:unique;
+    $sql = "UPDATE organizations SET name = :name, type = :type, description = :description, district = :district, city_town = :city_town,
+		grante = :grante, sector = :sector, projects_info = :projects_info, hidden = :hidden
+		WHERE `unique` = :unique AND lang = '" . LANG . "' LIMIT 1;
+	    UPDATE organizations SET logo = :logo WHERE `unique` = :unique;
 	    DELETE FROM tag_connector WHERE org_unique = :unique AND lang = '" . LANG . "';";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $statement->execute(array(
         ':name' => $name,
         ':type' => $type,
-        ':info' => $info,
+        ':description' => $description,
         ':district' => $district,
         ':city_town' => $city_town,
         ':grante' => $grante,
         ':sector' => $sector,
         ':projects_info' => $projects_info,
         ':unique' => $unique,
-        ':logo' => $up
+        ':logo' => $up,
+        ':hidden' => (isset($_POST['hidden']) ? 1 : 0)
     ));
 
     //$unique = get_unique("organizations", $id);
@@ -1664,179 +1712,59 @@ function get_organization_chart_data($unique)
         'data' => $data
     );
 
+
+    /* $sql = "
+      select
+      r.name,
+      (select sum(budget) from project_budgets as pb
+      where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
+      ) as budget
+      from regions as r
+      inner join places as pl on r.`unique` = pl.region_unique
+      inner join projects as p on p.place_unique = pl.`unique`
+      inner join project_organizations as po on po.project_unique = p.`unique`
+      where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
+      ";
+
+      $query = db()->prepare($sql);
+      $query->closeCursor();
+      $query->execute(array(':unique' => $unique));
+      $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
+
+      $results['organizations_budgets'] = array(
+      'description' => '',
+      'title' => '',
+      'data' => $data
+      ); */
+
     return $results;
 }
 
 function get_region_chart_data($unique)
 {
-    /* $result = array();
-      $v = array();
-      $names = array();
 
+    $results = array();
 
+    $sql = "select *, (select sum(pb.budget) as budget from projects as p inner join project_budgets as pb on pb.project_unique = p.`unique` inner join places as pl on pl.`unique` = p.place_unique where region_unique = :unique) from organizations as o ";
+    $sql = "
+	select distinct(o.`unique`), (select sum(budget) from project_budgets as pb where pb.currency = 'gel' and pb.project_unique = p.`unique` and pb.organization_unique = o.`unique`) as org_budget from organizations as o
+	inner join projects as p on p.lang = o.lang
+	inner join project_organizations as po on po.organization_unique = o.`unique` and po.project_unique = p.`unique`
+	inner join places as pl on pl.lang = p.lang and pl.`unique` = p.place_unique where pl.region_unique = :unique and p.lang = '" . LANG . "'
+    ";
 
-      /* =========================		PIE 1		============================= *//*
-      $sql = "
-      SELECT title,budget FROM projects
-      LEFT JOIN places ON projects.place_unique = places.`unique`
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      LIMIT 0,1
-      ;";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique));
+    $query = db()->prepare($sql);
+    $query->closeCursor();
+    $query->execute(array(':unique' => $unique));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
 
-      $results = $query->fetchAll(PDO::FETCH_ASSOC);
+    $results['organizations_budgets'] = array(
+        'description' => 'All organizations with their total budget.',
+        'title' => 'Organizations Budgets',
+        'data' => $data
+    );
 
-      $b = FALSE;
-      $v[1] = array();
-
-      foreach ($results as $r)
-      {
-      $i = $v[1][] = str_replace("$", "", str_replace(",", "", $r['budget']));
-      $b OR $b = ($i > 100);
-      $names[1][] = str_replace(" ", "+", $r['title']);
-      }
-
-      $real_values[1] = $v[1];
-
-      if ($b)
-      {
-      $max = max($v[1]);
-      $depth = 0;
-      while ($max > 100):
-      $max = $max / 100;
-      $depth++;
-      endwhile;
-      for ($i = 0, $n = count($v[1]); $i < $n; $i++)
-      for ($j = 0; $j < $depth; $j++)
-      $v[1][$i] = $v[1][$i] / 100;
-      }
-
-
-
-
-      /* =========================		COLUMN 1		============================= *//*
-
-      $sql = "SELECT start_at FROM projects LEFT JOIN places ON projects.place_unique = places.`unique`
-      AND projects.lang = places.lang
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      ORDER BY start_at LIMIT 0,1;";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique));
-      $first = $query->fetch(PDO::FETCH_ASSOC);
-      $first_year = substr($first['start_at'], 0, 4);
-
-      $sql = "SELECT end_at FROM projects LEFT JOIN places ON projects.place_unique = places.`unique` AND projects.lang = places.lang
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      ORDER BY end_at DESC LIMIT 0,1;";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique));
-      $last = $query->fetch(PDO::FETCH_ASSOC);
-      $last_year = substr($last['end_at'], 0, 4);
-
-      $budgets = array();
-      $names[2] = array();
-
-      $b = FALSE;
-
-      for ($i = $first_year; $i <= $last_year; $i++):
-      $names[2][] = $i;
-
-      $sql = "SELECT budget,end_at,start_at FROM projects LEFT JOIN places ON projects.place_unique = places.`unique`
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "' AND projects.lang = '" . LANG . "'
-      AND start_at <= :start";
-      $query = db()->prepare($sql);
-      $query->execute(array(':unique' => $unique, ':start' => $i . "-12-31"));
-      $fetch = $query->fetchAll(PDO::FETCH_ASSOC);
-      if (empty($fetch))
-      continue;
-
-      $budgets[$i] = 0;
-
-      foreach ($fetch as $project):
-      if (strtotime($project['end_at']) < strtotime($i . "-01-01"))
-      continue;
-      if (strtotime($project['start_at']) >= strtotime($i . "-01-01"))
-      $start = $project['start_at'];
-      else
-      $start = $i . "-01-01";
-      $end = (strtotime($project['end_at']) < strtotime($i . "-12-31")) ? $project['end_at'] : ($i . "-12-31");
-      $budgets[$i] += ( dateDiff($start, $end) + 1) / (dateDiff($project['start_at'], $project['end_at']) + 1)
-     * $project['budget'];
-      endforeach;
-
-      $b = ($budgets[$i] > 100);
-      endfor;
-
-      $real_values[2] = $v[2] = $budgets;
-
-      if ($b):
-      $max = max($v[2]);
-      $depth = 0;
-      while ($max > 100):
-      $max = $max / 100;
-      $depth++;
-      endwhile;
-      for ($i = $first_year; $i <= $last_year; $i++):
-      for ($j = 0; $j < $depth; $j++)
-      $v[2][$i] = $v[2][$i] / 90;
-      $v[2][$i] *= 20;
-      endfor;
-      endif;
-
-
-      /* =========================		PIE 2		============================= *//*
-      $query = "SELECT p.budget, p.title, o.name
-      FROM organizations AS o
-      INNER JOIN project_organizations AS po
-      ON po.organization_unique = o.`unique`
-      INNER JOIN projects AS p
-      ON p.`unique` = po.project_unique
-      LEFT JOIN places
-      ON p.place_unique = places.`unique` AND po.lang = places.lang AND p.lang = places.lang
-      WHERE places.region_unique = :unique AND places.lang = '" . LANG . "'
-      ORDER BY o.name
-      ";
-      $query = db()->prepare($query);
-      $query->execute(array(':unique' => $unique));
-      $results = $query->fetchAll(PDO::FETCH_ASSOC);
-
-      $names[3] = array();
-      $v[3] = array();
-      $grouped = array();
-      $b = FALSE;
-      foreach ($results as $result)
-      {
-      if (!isset($grouped[$result['name']]['budget']) OR empty($grouped[$result['name']]['budget']))
-      $grouped[$result['name']]['budget'] = $result['budget'];
-      else
-      $grouped[$result['name']]['budget'] += $result['budget'];
-      $b = ($grouped[$result['name']]['budget'] > 100);
-      //$grouped[$result['name']]['projects'][] = array('title' => $result['title'], 'budget' => $result['budget']);
-      in_array($result['name'], $names[3]) OR $names[3][] = $result['name'];
-      }
-
-      foreach ($grouped as $budget)
-      $v[3][] = $budget['budget'];
-
-      $real_values[3] = $v[3];
-
-      if ($b)
-      {
-      $max = max($v[3]);
-      $depth = 0;
-      while ($max > 100):
-      $max = $max / 100;
-      $depth++;
-      endwhile;
-      for ($i = 0, $n = count($v[3]); $i < $n; $i++)
-      for ($j = 0; $j < $depth; $j++)
-      $v[3][$i] = $v[3][$i] / 100;
-      }
-
-
-      return array($v, $names, $real_values); */
-    return array(NULL, NULL, NULL);
+    return $results;
 }
 
 function get_project_organizations($unique)
@@ -1858,6 +1786,28 @@ function dateDiff($start, $end)
     $end_ts = strtotime($end);
     $diff = $end_ts - $start_ts;
     return round($diff / 86400);
+}
+
+function dateformat($date)
+{
+    $date = is_numeric($date) ? $date : strtotime($date);
+    $c = LANG == 'ka';
+    $months = array(
+        'january' => ($c ? 'იანვარი' : 'January'),
+        'february' => ($c ? 'თებერვალი' : 'February'),
+        'march' => ($c ? 'მარტი' : 'March'),
+        'april' => ($c ? 'აპრილი' : 'April'),
+        'may' => ($c ? 'მაისი' : 'May'),
+        'june' => ($c ? 'ივნისი' : 'June'),
+        'july' => ($c ? 'ივლისი' : 'July'),
+        'august' => ($c ? 'აგვისტო' : 'August'),
+        'september' => ($c ? 'სექტემბერი' : 'September'),
+        'october' => ($c ? 'ოქტომბერი' : 'October'),
+        'november' => ($c ? 'ნოემბერი' : 'November'),
+        'december' => ($c ? 'დეკემბერი' : 'December'),
+    );
+
+    return strtr(strtolower(date('F d, Y', $date)), $months);
 }
 
 function change_language($lang)
@@ -1884,25 +1834,32 @@ function change_language($lang)
 
 /*  Admin Water Supply  */
 
-function get_supply($id)
+function get_supply($unique)
 {
-    $sql = "SELECT * FROM water_supply WHERE district_unique = :id LIMIT 1;";
+    $sql = "SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;";
     $stmt = db()->prepare($sql);
     $stmt->execute(array(
-        ':id' => $id
+        ':unique' => $unique
     ));
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return (empty($result)) ? array() : $result;
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function update_supply($text, $unique)
 {
-    $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique LIMIT 1;";
-    $stmt = db()->prepare($sql);
-    $stmt->execute(array(
-        ':text' => $text,
-        ':unique' => $unique
-    ));
+    $ws = get_supply($unique);
+    if (empty($ws))
+    {
+        fetch_db("INSERT INTO water_supply(text, lang, district_unique) VALUES(:text, '" . LANG . "', :wsunique)", array(':text' => $text, ':wsunique' => $unique));
+    }
+    else
+    {
+        $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;";
+        $stmt = db()->prepare($sql);
+        $stmt->execute(array(
+            ':text' => $text,
+            ':unique' => $unique
+        ));
+    }
 }
 
 function geo_utf8_to_latin($text)

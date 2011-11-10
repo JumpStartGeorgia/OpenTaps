@@ -45,6 +45,24 @@ Slim::post('/admin/places/create/',function()
 }
    );
 
+Slim::get('/admin/places/:unique/water_supply/', function($unique){
+            Storage::instance()->content = (userloggedin()) ? 
+                    template('admin/places/water_supply',array(
+                        'unique' => $unique,
+                        'water_supply' => get_supply($unique)
+                    ))
+                    : template('login');
+});
+
+Slim::post('/admin/places/:unique/water_supply/update/', function($unique){
+        if (userloggedin()){
+            update_supply($_POST['pl_water_supply'], $unique);
+            Slim::redirect(href('admin/places', TRUE));
+        }
+        else Storage::instance ()->content = template('login');
+});
+
+
 Slim::get('/admin/places/:unique/',function($unique)
           {
               if (userloggedin())

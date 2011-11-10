@@ -2,8 +2,9 @@
 
 <div id='tag_content'>
     <div id='left_list' style="width: 100%;">
+	<a name="tags"></a>
     	<div class='group headers'>
-    	    <div class='headers_left'><?php echo strtoupper(l('tags_tags')) ?></div>
+    	    <div class='headers_left'><?php echo strtoupper(l('tags_tags')) . ' &nbsp;-&nbsp; ' . $tag_name ?></div>
     	    <div class='headers_right'><!--SORT BY ▾--></div>
     	</div>
 
@@ -42,7 +43,6 @@
 		    break;
 	endswitch;
 ?>
-		<a name="tags"></a>
 
 	    	<div class='content_each_left' style='width: 800px; min-height: 52px; border-right: 7px solid <?php echo $color ?>'>
 	    	    <a href="<?php echo href($link_to_item . '/' . $result['unique'], TRUE) ?>" style="">
@@ -52,8 +52,8 @@
 		    	    <div class='content_each_body'>
 		    	    	<?php
 		    	    	    $body = (empty($result['body'])) ? $result['description'] : $result['body'];
-		    	    	    (strlen($body) > 200) AND $body = substr($body, 0, 200) . "...";
-		    	    	    echo $body;
+		    	    	    $body = char_limit(strip_tags($body), 200);
+		    	    	    echo htmlspecialchars($body);
 		    	    	?>
 		    	    </div>
 	    	    </a>

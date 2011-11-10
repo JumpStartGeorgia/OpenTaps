@@ -6,6 +6,11 @@
 	   <?php endforeach; ?>
 	   </select><br /><br />
 
+  	    <label style="cursor: pointer;">
+		<input type="checkbox" name="hidden" /> Hidden
+	    </label><br /><br />
+
+
 
   	    <label for='ptitle'>Title<span style="color: red">*</span>: </label>
   	    <br />
@@ -33,9 +38,6 @@
   	    <br /><br />
 
   	    Budgets:
-  	    <span style="font-size: 12px;">
-  	    	(if you select an organization twice or more, the first one will be inserted in database)
-  	    </span>
   	    <br />
   	    <div style="margin: 0px; width: 300px;" class="group" id="budget_fields_container">
 		<div class="budget-container group" id="budget_fields">
@@ -91,14 +93,27 @@
   	    <input name='p_sector' id='psector' type='text' />
   	    <br /><br />
 
-  	    <label for='pstart_at'>Start at: (yyyy-mm-dd) </label>
-  	    <br />
-  	    <input name='p_start_at' id='pstart_at' type='text' />
-  	    <br /><br />
+  	    <label>Start at:</label><br />
+	    <?php
+	    list($y, $m, $d) = array(date("Y"), date("m"), date("d"));
+	    $months = array(NULL, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+	    ?>
+	    <input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_start_at[day]" />&nbsp;-
+	    <select class="chosen_deselector" name="p_start_at[month]">
+	    <?php for ($i = 1; $i <= 12; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		<option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+	    <?php endfor; ?>
+	    </select>&nbsp;-
+	    <input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_start_at[year]" /><br /><br />
 
-  	    <label for='pend_at'>End at: (yyyy-mm-dd) </label>
-  	    <br />
-  	    <input name='p_end_at' id='pend_at' type='text' />
+  	    <label>End at:</label><br />
+	    <input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_end_at[day]" />&nbsp;-
+	    <select class="chosen_deselector" name="p_end_at[month]">
+	    <?php for ($i = 1; $i <= 12; $i ++): $ii = $i < 10 ? '0' . $i : $i; ?>
+		<option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+	    <?php endfor; ?>
+	    </select>&nbsp;-
+	    <input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_end_at[year]" />
   	    <br /><br /><br />
 
 
