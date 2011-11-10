@@ -3,28 +3,20 @@
 Slim::get('/water_supply/', function()
         {
             Storage::instance()->show_map = FALSE;
-            $regions = fetch_db("SELECT * FROM regions WHERE lang = '" . LANG . "'");
-            Storage::instance()->content = template('water_supply', array(
-                'regions' => $regions
-                    ));
+            $sql = "SELECT * FROM regions WHERE lang = '" . LANG . "';";
+            $regions = fetch_db($sql);
+            Storage::instance()->content = template('water_supply', array('regions' => $regions));
         }
 );
-
 
 Slim::get('/water_supply/:unique/', function($unique)
         {
             $sql = "SELECT * FROM water_supply WHERE district_unique = :unique AND lang = '" . LANG . "' LIMIT 1;";
-            $water_supply = fetch_db($sql, array(':unique' => $unique));
-            print_r($water_supply);
-            exit;
-            foreach ($water_supply AS $ws)
-            {
-                echo '<div style="border-radius: 5px; padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . $ws['text'] . '</div>';
-            }
-            exit;
+            $result = fetch_db($sql, array(':unique' => $unique));
+            empty($result) AND exit('');
+            exit('<div style="border-radius: 5px; padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . $result['text'] . '</div>');
         }
 );
-
 
 Slim::get('/water_supply/districts/:id', function($id)
         {
