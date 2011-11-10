@@ -4,7 +4,6 @@ var pie_chart_options = {
          plotBackgroundColor: null,
          plotBorderWidth: null,
          plotShadow: false,
-         marginBottom: 90
       },
       credits: {
       	 enabled: false
@@ -59,13 +58,14 @@ var pie_chart_options = {
             dataLabels: {
                enabled: false
             },
-            showInLegend: true
+            showInLegend: true,
+            center: ['50%', '120']
          }
       },
       legend: {
 	 floating: true,
 	 layout: "vertical",
-	 borderWidth: 0
+	 borderWidth: 0,
       },
       series: [],
       exporting: {
