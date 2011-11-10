@@ -47,7 +47,7 @@ foreach ($types AS $type):
                 <li><a id="overlay-hydro" href="javascript:toggle_overlay('hydro');"><img src="images/map/hydro.png" width="15" height="14" alt="" /><?php echo l('map_hydro') ?></a></li>
                 <li><a id="overlay-water" href="javascript:toggle_overlay('water');"><img src="images/map/waters.png" width="15" height="14" alt="" /><?php echo l('map_water') ?></a></li>
                 <li><a id="overlay-protected_areas" class="active" href="javascript:toggle_overlay('protected_areas');"><img src="images/map/protected_areas.png" width="15" height="14" alt="" /><?php echo l('map_protected_areas') ?></a></li>
-                <li><a id="overlay-roads" href="javascript:toggle_overlay('roads');"><img src="images/map/roads.png" width="15" height="14" alt="" /><?php echo l('map_roads') ?></a></li>
+                <li><a id="overlay-roads" href="javascript:toggle_overlay('roads_main');toggle_overlay('roads_secondary');"><img src="images/map/roads.png" width="15" height="14" alt="" /><?php echo l('map_roads') ?></a></li>
             </ul>
         </li>
 

@@ -74,8 +74,8 @@ function mapping()
     map.addLayer(base);*/
 
     // Load all external layers
-    preload_layers();
     load_all();
+    preload_layers();
 
     // Add markers overlay to a map
     markers.setZIndex(999999);
@@ -99,8 +99,8 @@ function preload_layers()
             strokeWidth: 0.5,
             strokeColor: '#555555',
             label: '${name}',
-            fontColor: '#666666',
-            fontSize: '9px',
+            fontColor: '#333333',
+            fontSize: '10px',
             labelAlign: 'ct',
             labelYOffset: -3
         })
@@ -122,15 +122,15 @@ function preload_layers()
         })
     });
     layers.villages.setOpacity(0);
-    */
+     */
 }
 
 function load_all()
 {
 
     // Load and initialize vector overlays
+    load_bounds();
     load_regions();
-    load_districts();
     load_around();
     load_protected_areas();
     load_cities();
@@ -140,6 +140,23 @@ function load_all()
     // Add initialized vector overlay-layers to the map
     for (var idx in layers)
         map.addLayer(layers[idx]);
+
+    load_districts();
+
+}
+
+function load_bounds()
+{
+    if (def(layers.bounds))
+        return;
+    layers.bounds = new OpenLayers.Layer.GML('Bounds', 'mapping/bounds.geojson', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            fill: false,
+            strokeWidth: 1.5,
+            strokeColor: '#AAAAAA'
+        })
+    });
 }
 
 function load_regions()
@@ -150,9 +167,9 @@ function load_regions()
         format: OpenLayers.Format.GeoJSON,
         isBaseLayer: true,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#F6F6F6',
-            strokeWidth: .5,
-            strokeColor: '#AAAAAA'
+            fillColor: '#F4F3F0',
+            strokeWidth: .65,
+            strokeColor: '#BBBBBB'
         })
     });
 }
@@ -164,8 +181,8 @@ function load_districts()
     layers.districts = new OpenLayers.Layer.GML('Districts', 'mapping/districts.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#F6F6F6',
-            strokeWidth: .2,
+            fill: false,
+            strokeWidth: .33,
             strokeColor: '#BBBBBB',
             strokeDashstyle: 'dash'
         })
@@ -200,7 +217,7 @@ function load_cities()
             strokeColor: '#555555',
             label: '${name}',
             fontColor: '#666666',
-            fontSize: '10px',
+            fontSize: '11px',
             labelAlign: 'ct',
             labelYOffset: -3
         })
@@ -248,8 +265,9 @@ function load_hydro()
             strokeWidth: 0,
             label: '${NAME_ENG}',
             fontColor: '#AAAAAA',
-            fontSize: '9px',
-            labelAlign: 'ct'
+            fontSize: '10px',
+            labelAlign: 'ct',
+            labelYOffset: -2
         })
     });
 }
@@ -262,22 +280,35 @@ function load_protected_areas()
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             //fillColor: '#E0E4CC',
-            fillColor: '#A7CC95',
-            fillOpacity: 0.8,
+            fillColor: '#C9DFAF',
+            //fillOpacity: 0.8,
             strokeWidth: 0
         })
     });
 }
 
-function load_roads()
+function load_roads_main()
 {
-    if (def(layers.roads))
+    if (def(layers.roads_main))
         return;
-    layers.roads = new OpenLayers.Layer.GML('Roads', 'mapping/roads.geojson', {
+    layers.roads_main = new OpenLayers.Layer.GML('Main Roads', 'mapping/roads_main.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            strokeWidth: 1,
-            strokeColor: '#E8C98B'
+            strokeWidth: 1.5,
+            strokeColor: '#F1BC45'
+        })
+    });
+}
+
+function load_roads_secondary()
+{
+    if (def(layers.roads_secondary))
+        return;
+    layers.roads_secondary = new OpenLayers.Layer.GML('Main Secondary', 'mapping/roads_secondary.geojson', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            strokeWidth: .75,
+            strokeColor: '#F1BC45'
         })
     });
 }
@@ -289,10 +320,11 @@ function load_water()
     layers.water = new OpenLayers.Layer.GML('Regions', 'mapping/water.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#73BDF8',
-            fillOpacity: 0.9,
-            strokeColor: '#73BDF8',
-            strokeWidth: 0.5
+            fillColor: '#A5BFDD',
+            //fillOpacity: 0.9,
+            stroke: false
+        //strokeColor: '#73BDF8',
+        //strokeWidth: 0.5
         })
     });
 }
@@ -384,8 +416,8 @@ function show_project_tooltip(lonlat, content, status)
 
 function toggle_projects(type, status)
 {
-    console.log(project_storage);
-    console.log(project_storage[type][status].length);
+    //console.log(project_storage);
+    //console.log(project_storage[type][status].length);
     return project_storage[type][status].length ? unload_projects(type, status) : load_projects(type, status);
 }
 
@@ -421,10 +453,14 @@ function toggle_overlay(name)
             $('#overlay-hydro').toggleClass('active');
             map.addLayer(layers.hydro);
             break;
-        case 'roads':
-            load_roads();
+        case 'roads_main':
+            load_roads_main();
             $('#overlay-roads').toggleClass('active');
-            map.addLayer(layers.roads);
+            map.addLayer(layers.roads_main);
+            break;
+        case 'roads_secondary':
+            load_roads_secondary();
+            map.addLayer(layers.roads_secondary);
             break;
         case 'water':
             load_water();
@@ -437,7 +473,7 @@ function toggle_overlay(name)
                 break;
             alert('Gotcha!')
             break;
-            */
+         */
     }
 }
 
@@ -489,7 +525,7 @@ function map_commons()
                 --count;
             if (count < 1)
                 par.removeClass('active');
-*/
+         */
         });
     });
 
