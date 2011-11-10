@@ -120,4 +120,8 @@ return array(
     'project_order_years' => 'Years',
     'project_order_categories' => 'Categories',
     'project_order_a-z' => 'A-Z',
+    'chart_org_projects' => 'Organization Projects',
+    'chart_org_budget' => 'Project Budgets',
+    'select_region' => 'Select a region',
+    'select_district' => 'Select a district',
 );

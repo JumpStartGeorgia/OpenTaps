@@ -478,7 +478,7 @@ var i = 0, t;
 function timedScroll()
 {
     if (i > document.body.clientHeight)
-	return;
+        return;
     window.scrollTo(0, i);
     i += 18;
     t = setTimeout('timedScroll()', 10);
@@ -498,63 +498,83 @@ $(function()
 
     about_button.click(function()
     {
-	if (about_is_visible)
-	{
-	    about.animate({ height: 0 }, function(){ about.hide(); });
-	    about_is_visible = false;
-	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
-	}
-	else
-	{
+        if (about_is_visible)
+        {
+            about.animate({
+                height: 0
+            }, function(){
+                about.hide();
+            });
+            about_is_visible = false;
+            $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
+        }
+        else
+        {
             if (contact_is_visible)
-	    {
-                contact.animate({ height: 0 }, function(){ contact.hide(); });
+            {
+                contact.animate({
+                    height: 0
+                }, function(){
+                    contact.hide();
+                });
                 contact_is_visible = false;
             }
-	    i = about.position().top;
-	    timedScroll();
-	    about.css('height', 0).show().animate({ height: about_height });
-	    about_is_visible = true;
-	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
-	}
+            i = about.position().top;
+            timedScroll();
+            about.css('height', 0).show().animate({
+                height: about_height
+            });
+            about_is_visible = true;
+            $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
+        }
 
-	$('body').bind('mousewheel', function()
-	{
-	    clearTimeout(t);
-	    $('body').unbind('mousewheel');
-	});
+        $('body').bind('mousewheel', function()
+        {
+            clearTimeout(t);
+            $('body').unbind('mousewheel');
+        });
     });
 
     contact_button.click(function()
     {
-	if (contact_is_visible)
-	{
-	    contact.animate({ height: 0 }, function(){ contact.hide(); });
-	    contact_is_visible = false;
-	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
-	}
-	else
-	{
+        if (contact_is_visible)
+        {
+            contact.animate({
+                height: 0
+            }, function(){
+                contact.hide();
+            });
+            contact_is_visible = false;
+            $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
+        }
+        else
+        {
             if (about_is_visible)
-	    {
-                about.animate({ height: 0 }, function(){ about.hide(); });
+            {
+                about.animate({
+                    height: 0
+                }, function(){
+                    about.hide();
+                });
                 about_is_visible = false;
             }
-	    i = contact.position().top;
-	    timedScroll();
-	    contact.css('height', 0).show().animate({ height: contact_height });
-	    contact_is_visible = true;
-	    $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
-	}
+            i = contact.position().top;
+            timedScroll();
+            contact.css('height', 0).show().animate({
+                height: contact_height
+            });
+            contact_is_visible = true;
+            $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
+        }
 
-	$('body').bind('mousewheel', function()
-	{
-	    clearTimeout(t);
-	    $('body').unbind('mousewheel');
-	});
+        $('body').bind('mousewheel', function()
+        {
+            clearTimeout(t);
+            $('body').unbind('mousewheel');
+        });
     });
 
-/*
+    /*
     bot = $('#bot-container');
 
     about_button.click(function(){
@@ -608,33 +628,43 @@ $(function()
         }
     });*/
 
-    $('#contact-us-close-button').click(function(){ contact_button.click(); });
-    $('#about-us-close-button').click(function(){ about_button.click(); });
+    $('#contact-us-close-button').click(function(){
+        contact_button.click();
+    });
+    $('#about-us-close-button').click(function(){
+        about_button.click();
+    });
 
-    Array.prototype.max = function(){ return Math.max.apply(null, this); }
+    Array.prototype.max = function(){
+        return Math.max.apply(null, this);
+    }
 
     var maxh = 0;
     $('.about-us-inner-button').click(function(){
-	var target = $(this).parent().find('.inner-text-box');
-	$('.inner-text-box').each(function(){ if ($(this).height() > maxh) maxh = $(this).height(); });
+        var target = $(this).parent().find('.inner-text-box');
+        $('.inner-text-box').each(function(){
+            if ($(this).height() > maxh) maxh = $(this).height();
+        });
 
-	if (!target.is(":visible"))
-	{
-	    i = target.position().top;
-	    setTimeout('timedScroll()', 100);
-	    if ($('.inner-text-box:visible').length == 0)
-	    {
-		about_height += maxh;
-	    }
-	}
-	target.slideToggle(function()
-	{
-	    if ($('.inner-text-box:visible').length == 0)
-	    {
-		about_height -= maxh;
-		about.animate({ height: about_height });
-	    }
-	});
+        if (!target.is(":visible"))
+        {
+            i = target.position().top;
+            setTimeout('timedScroll()', 100);
+            if ($('.inner-text-box:visible').length == 0)
+            {
+                about_height += maxh;
+            }
+        }
+        target.slideToggle(function()
+        {
+            if ($('.inner-text-box:visible').length == 0)
+            {
+                about_height -= maxh;
+                about.animate({
+                    height: about_height
+                });
+            }
+        });
     });
 
 });
@@ -761,34 +791,42 @@ $(function()
 
 });
 
-if( $('#logo_img').length ){
-    $('#logo_img').css('height',$('#project_details').css('height'));
-}
+if($('#logo_img').length)
+    $('#logo_img').css('height', $('#project_details').css('height'));
 
-// Watter supply request/response
+// Watter Supply Request/Response
 $(function()
 {
 
-    $('#ws_regions').change(function()
+    var regions = $('#ws_regions'),
+    districts = $('#ws_districts');
+
+    regions.change(function()
     {
-        $.getJSON(baseurl + 'water_supply/districts/' + $(this).val(), function(json)
+        var request_url = baseurl + 'water_supply/districts/' + $(this).val() + '?lang=' + lang;
+        $.getJSON(request_url, function(response)
         {
-            $('#ws_districts').html('');
-            $.each(json,function(){
-                $('#ws_districts').append('<option id="'+$(this).attr('id')+'">'+$(this).attr('name')+'</option>');
+            if ($.isEmptyObject(response))
+                return;
+            districts.html('<option></option>');
+            $.each(response, function()
+            {
+                var option = '<option id="' + $(this).attr('id') + '">' + $(this).attr('name') + '</option>';
+                districts.append(option);
             });
-            $('#ws_districts').trigger("liszt:updated");
+            districts.trigger('liszt:updated');
         });
     });
 
-    $('#ws_districts').change(function()
+    districts.change(function()
     {
-        $.get(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(data){
-	    /*console.log(json);*/
-            var cont = $('#cont');
-	    cont.html(data);
+        var request_url = baseurl + 'water_supply/' + $(this).children('option:selected').attr('id') + '?lang=' + lang;
+        $.get(request_url, function(response)
+        {
+            console.log(response);
+            response = response || '';
+            $('#cont').html(data);
         });
-	
     });
 
 });
@@ -796,22 +834,22 @@ $(function()
 // Footer Map
 $(function()
 {
-	var footer_map = new OpenLayers.Map('contact-us', {
-		controls: [
-			new OpenLayers.Control.Navigation(),
-			new OpenLayers.Control.ArgParser(),
-			new OpenLayers.Control.Attribution()
-		]
-	}),
-	footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
-	    isBaseLayer: true
-	});
-	footer_map.addLayer(footer_map_layer);
-	footer_map.setCenter(
-		new OpenLayers
-		.LonLat(44.798735,41.697960)
-		.transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
-	, 15);
+    var footer_map = new OpenLayers.Map('contact-us', {
+        controls: [
+        new OpenLayers.Control.Navigation(),
+        new OpenLayers.Control.ArgParser(),
+        new OpenLayers.Control.Attribution()
+        ]
+    }),
+    footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
+        isBaseLayer: true
+    });
+    footer_map.addLayer(footer_map_layer);
+    footer_map.setCenter(
+        new OpenLayers
+        .LonLat(44.798735,41.697960)
+        .transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
+        , 15);
 
 });
 
