@@ -383,17 +383,17 @@ $(function(){
 
     var disabling = false;
 
-    $('#map-overlay').css('opacity', 0.5).hover(function()
+    $('#map-overlay').css('opacity', .65).hover(function()
     {
         $(this).stop().animate({
-            opacity: 0.2
+            opacity: .35
         }, 'slow');
     }, function()
     {
         if (disabling)
             return false;
         $(this).stop().animate({
-            opacity: 0.5
+            opacity: .65
         }, 'slow');
     }).click(function()
     {

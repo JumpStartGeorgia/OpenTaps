@@ -9,6 +9,7 @@
             var baseurl = '<?php echo href() ?>',
             lang = '<?php echo LANG ?>';
         </script>
+        <?php if (LANG == 'ka'): ?><style type="text/css"> .menu ul li div { font-family: 'Babuka Mtavruli' } </style><?php endif; ?>
     </head>
     <body>
 
@@ -48,8 +49,7 @@
 
             <div class="after_menu"></div>
 
-            <?php if (Storage::instance()->show_map)
-                require_once 'map.php'; ?>
+            <?php Storage::instance()->show_map AND require_once 'map.php'; ?>
 
             <div id="content" class="group">
                 <?php echo Storage::instance()->content ?>
@@ -75,7 +75,7 @@
         isset(Storage::instance()->show_chart['home']) AND $scripts[] = 'charts/chart_home.js';
         isset(Storage::instance()->show_chart['organization']) AND $scripts[] = 'charts/chart_org.js';
         isset(Storage::instance()->show_chart['project']) AND $scripts[] = 'charts/chart_project.js';
-	$scripts[] = 'OpenLayers/OpenLayers.js';
+        $scripts[] = 'OpenLayers/OpenLayers.js';
         if (Storage::instance()->show_map)
         {
             //$scripts[] = 'http://maps.google.com/maps/api/js?v=3.5&amp;sensor=false';

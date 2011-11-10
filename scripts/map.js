@@ -78,6 +78,7 @@ function mapping()
     load_all();
 
     // Add markers overlay to a map
+    markers.setZIndex(999999);
     map.addLayer(markers);
 
     // Center and zoom map to the very heart of Georgia
@@ -98,11 +99,13 @@ function preload_layers()
             strokeWidth: 0.5,
             strokeColor: '#555555',
             label: '${name}',
-            fontColor: '#787878',
+            fontColor: '#666666',
             fontSize: '9px',
-            labelAlign: 'ct'
+            labelAlign: 'ct',
+            labelYOffset: -3
         })
     });
+    layers.urban.setZIndex(150);
     layers.urban.setOpacity(0);
 
 
@@ -127,6 +130,7 @@ function load_all()
 
     // Load and initialize vector overlays
     load_regions();
+    load_districts();
     load_around();
     load_protected_areas();
     load_cities();
@@ -146,9 +150,24 @@ function load_regions()
         format: OpenLayers.Format.GeoJSON,
         isBaseLayer: true,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#FFFFFF',
-            strokeWidth: 0.33,
-            strokeColor: '#B0B0B0'
+            fillColor: '#F6F6F6',
+            strokeWidth: .5,
+            strokeColor: '#AAAAAA'
+        })
+    });
+}
+
+function load_districts()
+{
+    if (def(layers.districts))
+        return;
+    layers.districts = new OpenLayers.Layer.GML('Districts', 'mapping/districts.geojson', {
+        format: OpenLayers.Format.GeoJSON,
+        styleMap: new OpenLayers.StyleMap({
+            fillColor: '#F6F6F6',
+            strokeWidth: .2,
+            strokeColor: '#BBBBBB',
+            strokeDashstyle: 'dash'
         })
     });
 }
@@ -180,9 +199,10 @@ function load_cities()
             strokeWidth: 0.5,
             strokeColor: '#555555',
             label: '${name}',
-            fontColor: '#787878',
+            fontColor: '#666666',
             fontSize: '10px',
-            labelAlign: 'ct'
+            labelAlign: 'ct',
+            labelYOffset: -3
         })
     });
 }
@@ -241,7 +261,8 @@ function load_protected_areas()
     layers.protected_areas = new OpenLayers.Layer.GML('Protected Areas', 'mapping/protected_areas.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            fillColor: '#E0E4CC',
+            //fillColor: '#E0E4CC',
+            fillColor: '#A7CC95',
             fillOpacity: 0.8,
             strokeWidth: 0
         })

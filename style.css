@@ -73,7 +73,7 @@ div.menu ul li a { display: block; height: 26px; padding: 10px 10px 0px 10px; te
 div.menu ul li a:hover, div.menu ul li:hover { color: #0cb5f5; outline: 0 }
 div.projects_organization, div.news, div.spacer { display: table-cell; vertical-align: middle; text-align: center; color: #fff; font-size: 1.0em; font-family: Arial }
 #override_border { width: 0px; height: 1px; position: absolute; top: 0; left: 0; background: #fff }
-.menu ul li a div { font-family: "Babuka Mtavruli", Arial; letter-spacing: 1px }
+.menu ul li a div { letter-spacing: 1px }
 
 /* Submenus */
 #submenu .submenu { display: none; width: 100%; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0 }
@@ -87,7 +87,7 @@ div.search input.search { border: 0px; height: 25px; width: 122px; color: grey }
 div.search input.submit { background-image: url('@baseurl/images/search.jpg'); cursor: hand; cursor: pointer; width: 16px; height: 16px; border: 0px }
 div.after_menu { border-bottom: 1px dotted @opentaps_default_bordercolor; width: 100%; float: left }
 
-#map { height: 360px; width: 100%; border: 1px dotted @opentaps_default_bordercolor }
+#map { height: 400px; width: 100%; border: 1px dotted @opentaps_default_bordercolor }
 #map:before, div.menu:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0 }
 
 div.projects_organization { width: 282px; float: left }
@@ -120,7 +120,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 #news_bottom_content a:hover { text-decoration: underline }
 #region_link, .region_link { text-decoration: none; color: @opentaps_default_color; cursor: pointer }
 #region_link:hover, .region_link:hover { text-decoration: underline }
-#content { width: 932px; min-height: 120px; margin-top: 0px; padding: 0 }
+#content { width: 932px; min-height: 120px; margin-top: 0px; padding: 0; font-size: 12px !important }
 
 /* Projects */
 #project_content { font-size: 12px; font-family: arial }
@@ -227,7 +227,7 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 
 /* Mapping */
 #map { background: #DBE6EC }
-#map-overlay { cursor: pointer; position: absolute; top: 0; left: 0; z-index: 100000; height: 362px; line-height: 362px; width: 100.3%; /*background-color: #0CB5F6;*/ background-color: #FFF; color: #777; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
+#map-overlay { cursor: pointer; position: absolute; top: 0; left: 0; z-index: 100000; height: 401px; line-height: 362px; width: 100.3%; /*background-color: #0CB5F6;*/ background-color: #FFF; color: #777; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }
 .map-button { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; text-decoration: none; display: block; font-size: 13px; letter-spacing: 1px; padding: 2px 7px 3px; color: #FFF; background: #0CB5F5; cursor: pointer }
 .map-button:hover { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)"; filter: alpha(opacity=75); -moz-opacity: 0.75; -khtml-opacity: 0.75; opacity: 0.75; }
 .map-button > img { vertical-align: middle; margin-right: 4px }
