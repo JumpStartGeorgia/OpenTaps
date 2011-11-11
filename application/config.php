@@ -63,6 +63,6 @@ return array(
 		else
 			return str_replace(array_keys($the_months), $the_months, date('F d, Y',strtotime($timestring)));
     },*/
-    'projects_in_sidebar' => 3
+    'projects_in_sidebar' => 10
 
 );
