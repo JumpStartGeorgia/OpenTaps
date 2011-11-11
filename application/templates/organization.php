@@ -183,10 +183,8 @@
                             <?php
                             foreach ($projects AS $key => $project):
                                 if ($key == config('projects_in_sidebar'))
-                                {
                                     break;
-                                }
-                                $ptype = str_replace(" ", "-", strtolower(trim($project['type'])));
+                                $ptype = str_replace(' ', '-', strtolower(trim($project['type'])));
                                 ?>
                                 <a class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
                                     <img src="<?php echo href('images') . $ptype ?>.png" />

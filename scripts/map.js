@@ -5,15 +5,12 @@
  */
 
 // Define globals and configurations
-var loaded = false,
-map,
-base,
+var map,
 map_options = {
     bounds_left: 39.83642,
     bounds_top: 43.73079,
     bounds_right: 46.80175,
     bounds_bottom: 40.97322,
-    //zoom: 7,
     default_lat: 42.23665,
     default_lon: 43.59375,
     controls: [
@@ -30,8 +27,7 @@ layers = new Object(),
     project_types = ['sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
     project_statuses = ['completed', 'current', 'scheduled'],
     project_status_index = 0,
-    project_storage = new Object(),
-    popup = null;
+    project_storage = new Object();
 
 // Generate icons
 for (icon_index in project_types)
@@ -42,7 +38,6 @@ for (icon_index in project_types)
     {
         icons[project_types[icon_index]][project_statuses[project_status_index]] = new OpenLayers.Icon('images/map/projects/' + project_types[icon_index] + '_' + project_statuses[project_status_index] + '.png', icon_size, icon_offset);
         project_storage[project_types[icon_index]][project_statuses[project_status_index]] = [];
-    //project_storage[project_types[icon_index]][project_statuses[project_status_index]] = new Object();
     }
     project_status_index = 0;
 }
@@ -65,21 +60,13 @@ function mapping()
         }
     });
 
-
-    // Base layer for projection
-    /*base = new OpenLayers.Layer.OSM('Georgia', 'http://a.tile.mapspot.ge/ndi_en/${z}/${x}/${y}.png', {
-        isBaseLayer: true,
-        opacity: 1
-    });
-    map.addLayer(base);*/
-
     // Load all external layers
     load_all();
     preload_layers();
 
-    // Add markers overlay to a map
-    markers.setZIndex(999999);
+    // Add markers layer as a very top overlay
     map.addLayer(markers);
+    markers.setZIndex(999999);
 
     // Center and zoom map to the very heart of Georgia
     map.setCenter(new OpenLayers.LonLat(map_options.default_lon, map_options.default_lat));
@@ -132,7 +119,6 @@ function load_all()
     // Load and initialize vector overlays
     load_bounds();
     load_regions();
-    load_around();
     load_protected_areas();
     load_cities();
     load_urban();
@@ -190,20 +176,6 @@ function load_districts()
     });
 }
 
-function load_around()
-{
-    if (def(layers.around))
-        return;
-    layers.around = new OpenLayers.Layer.GML('Around Georgia', 'mapping/around.geojson', {
-        format: OpenLayers.Format.GeoJSON,
-        styleMap: new OpenLayers.StyleMap({
-            fillColor: '#999999',
-            strokeWidth: 0.33,
-            strokeColor: '#B0B0B0'
-        })
-    });
-}
-
 function load_cities()
 {
     if (def(layers.cities))
@@ -239,6 +211,7 @@ function load_urban()
     layers.urban.setOpacity(1);
 }
 
+/*
 function load_villages()
 {
     var is_loaded = (def(layers.villages) && layers.villages.opacity == 1);
@@ -252,6 +225,7 @@ function load_villages()
         return;
     layers.villages.setOpacity(1);
 }
+*/
 
 function load_hydro()
 {
@@ -280,9 +254,7 @@ function load_protected_areas()
     layers.protected_areas = new OpenLayers.Layer.GML('Protected Areas', 'mapping/protected_areas.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            //fillColor: '#E0E4CC',
-            fillColor: '#C9DFAF',
-            //fillOpacity: 0.8,
+            fillColor: '#C9DFAF', // #E0E4CC
             strokeWidth: 0
         })
     });
@@ -318,26 +290,23 @@ function load_water()
 {
     if (def(layers.water))
         return;
-    layers.water = new OpenLayers.Layer.GML('Regions', 'mapping/water.geojson', {
+    layers.water = new OpenLayers.Layer.GML('Water', 'mapping/water.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fillColor: '#A5BFDD',
-            //fillOpacity: 0.9,
-            stroke: false
-        //strokeColor: '#73BDF8',
-        //strokeWidth: 0.5
+            strokeColor: '#A5BFDD',
+            strokeWidth: 1
         })
     });
 }
 
 function load_projects(type, status)
 {
-    var url = 'map-data/projects/' + type + '/' + status;
-    $.getJSON(url + '?lang=' + lang, function(result)
+    var request_url = 'map-data/projects/' + type + '/' + status + '?lang=' + lang;
+    $.getJSON(request_url, function(result)
     {
         if ($.isEmptyObject(result))
             return;
-        //$('#control-projects').addClass('active');
         $('#control-' + type).addClass('active');
         $('#control-' + type + '-' + status).addClass('active');
         var coordinates,
@@ -413,12 +382,8 @@ function show_project_tooltip(lonlat, content, status)
     .fadeIn();
 }
 
-//feature.geometry.getBounds().getCenterLonLat();
-
 function toggle_projects(type, status)
 {
-    //console.log(project_storage);
-    //console.log(project_storage[type][status].length);
     return project_storage[type][status].length ? unload_projects(type, status) : load_projects(type, status);
 }
 
@@ -434,7 +399,8 @@ function toggle_overlay(name)
 {
     if (!name)
         return;
-    if (def(layers[name]) && layers[name] != 'urban' && layers[name] != 'villages')
+    //if (def(layers[name]) && layers[name] != 'urban' && layers[name] != 'villages')
+    if (def(layers[name]) && layers[name] != 'urban')
     {
         if (layers[name].opacity == 0)
         {
@@ -456,11 +422,12 @@ function toggle_overlay(name)
             break;
         case 'roads_main':
             load_roads_main();
-            $('#overlay-roads').toggleClass('active');
+            $('#overlay-roads-main').toggleClass('active');
             map.addLayer(layers.roads_main);
             break;
         case 'roads_secondary':
             load_roads_secondary();
+            $('#overlay-roads-secondary').toggleClass('active');
             map.addLayer(layers.roads_secondary);
             break;
         case 'water':
@@ -472,7 +439,7 @@ function toggle_overlay(name)
         case 'urban':
             if (map.zoom == 0 || map.zoom == 1)
                 break;
-            alert('Gotcha!')
+            console.log('Gotcha!');
             break;
          */
     }
@@ -503,8 +470,7 @@ function map_commons()
         $('#tooltip').fadeOut();
     });
 
-    var controls = $('#map-controls'),
-    count = 3;
+    var controls = $('#map-controls')
 
     // Overlays menu
     controls.children('li').hover(function()
@@ -514,19 +480,7 @@ function map_commons()
             return;
         sub.toggle().end().find('a.sub').click(function()
         {
-            var me = $(this).toggleClass('active');
-        /*
-            par = parent().parent().parent().children('a');
-            if (me.hasClass('active'))
-            {
-                ++count;
-                par.addClass('active');
-            }
-            else
-                --count;
-            if (count < 1)
-                par.removeClass('active');
-         */
+            $(this).toggleClass('active');
         });
     });
 

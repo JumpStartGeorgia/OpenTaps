@@ -4,7 +4,6 @@ var pie_chart_options = {
          plotBackgroundColor: null,
          plotBorderWidth: null,
          plotShadow: false,
-         marginBottom: 90
       },
       credits: {
       	 enabled: false
@@ -23,20 +22,20 @@ var pie_chart_options = {
       ],*/
       colors: [
 	 '#774F38',
-	 '#E08E79',
+	 '#957055',
+	 '#B49173',
+	 '#D2B291',
 	 '#F1D4AF',
-	 '#ECE5CE',
+	 '#DBDAC5',
 	 '#C5E0DC',
-	 '#D9CEB2',
-	 '#948C75',
-	 '#D5DED9',
+	 '#BBD1CA',
+	 '#B2C2B9',
+	 '#9FA597',
+	 '#8C8775',
 	 '#7A6A53',
-	 '#99B2B7',
-	 '#D3E2B6',
-	 '#C3DBB4',
-	 '#AACCB1',
-	 '#87BDB1',
-	 '#68B3AF'
+	 '#978B79',
+	 '#C2BCB3',
+	 '#EEEEEE'
       ],
       title: {
          text: null,
@@ -59,13 +58,14 @@ var pie_chart_options = {
             dataLabels: {
                enabled: false
             },
-            showInLegend: true
+            showInLegend: true,
+            center: ['50%', '120']
          }
       },
       legend: {
 	 floating: true,
 	 layout: "vertical",
-	 borderWidth: 0
+	 borderWidth: 0,
       },
       series: [],
       exporting: {

@@ -15,7 +15,9 @@
 
     <div class='news group'><?php echo strtoupper(l('news')) ?></div>
 
-    <div class="group" style="float: left; border: 1px dotted #a6a6a6; border-top: none;"><div id="home-chart-container"></div></div>
+    <div class="group" style="float: left; border: 1px dotted #a6a6a6; border-top: none; height: auto;">
+	<div id="home-chart-container" style=" height: auto;"></div>
+    </div>
 
     <?php
     $news_all = fetch_db("SELECT * FROM news WHERE lang = '" . LANG . "' AND image != '' ORDER BY published_at DESC LIMIT 0,6");
