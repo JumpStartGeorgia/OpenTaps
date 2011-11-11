@@ -1376,12 +1376,13 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
     }
     foreach ($data as $d)
     {
-        if (!empty($d[$budgetindex]))
-        {
-            $d[$nameindex] = char_limit($d[$nameindex], 30);
-            $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
-        }
+	if (!empty($d[$budgetindex]))
+	{
+	    $d[$nameindex] = char_limit($d[$nameindex], 30);
+	    $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
+	}
     }
+    //for ($i = 1; $i < 35; $i ++){ $newdata[] = array('test', $i * 250000000); }
     return json_replace_unicode(json_encode($newdata));
     //return json_encode($newdata);
 }
@@ -1395,7 +1396,8 @@ function home_chart_data()
     		 WHERE o.`unique` = pb.organization_unique AND currency = 'gel'
     		) AS total_budget
     	    FROM organizations AS o
-    	    WHERE o.lang = '" . LANG . "';";
+    	    WHERE o.lang = '" . LANG . "'
+    	    ORDER BY total_budget;";
 
     return convert_to_chart_array(fetch_db($sql), 'name', 'total_budget');
 }
