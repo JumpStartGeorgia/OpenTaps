@@ -853,12 +853,15 @@ $(function()
 
     districts.change(function()
     {
-        var request_url = baseurl + 'water_supply/' + $(this).children('option:selected').attr('id') + '?lang=' + lang;
-        $.get(request_url, function(response)
+
+	
+        $.get(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(json)
         {
-            console.log(response);
-            response = response || '';
-            $('#cont').html(data);
+	
+		
+         $("#project_content div:gt(11)").remove();
+		$("#project_content").append(json);
+		
         });
     });
 

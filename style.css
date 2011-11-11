@@ -41,7 +41,19 @@ html[xmlns] .clearfix {
     height: 1%;
 }
 
+.boxshadow {
+	/*		BORDER	RADIUS		*/
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/*		BOX SHADOW		*/
+	-moz-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+	-webkit-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+	box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+}
+
 /* General */
+img { border:0px; }
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
 * html .group { zoom: 1 } /* IE6 */
@@ -80,7 +92,7 @@ div.projects_organization, div.news, div.spacer { display: table-cell; vertical-
 #submenu .submenu table { width: 100% }
 #submenu .submenu td { vertical-align: middle; width: 149px; float: left; margin-left: 17px; margin-right: 17px; font-size: 11px; font-family: arial; border-bottom: 1px dotted @opentaps_default_bordercolor }
 #submenu .submenu td a { display: block; color: #7c7c7c; padding: 3px; padding-bottom: 5px; text-decoration: none }
-#submenu .submenu td a:hover { background-color: rgba(95,204,243,.2); border-color: rgba(0,0,0,.1) }
+#submenu .submenu td a:hover { color:#0cb5f5;/*background-color: rgba(95,204,243,.2);*/ border-color: rgba(0,0,0,.1) }
 
 div.search { float: right; border-left: 1px solid grey; margin-top: 5px; padding-left: 2px }
 div.search input.search { border: 0px; height: 25px; width: 122px; color: grey }
@@ -115,9 +127,10 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .right_title_one a:hover { color: #000 }
 .right_title_one a span { margin-right: 9px; font-size: 12px }
 .right_title_one a { padding: 9px 0px 14px 16px; color: #858585; text-decoration: none; display: block }
-#news_bottom_content { font-size: 12px; margin: 8px 2px 0px 0px; float: right }
-#news_bottom_content a { color: #858585; text-decoration: none }
-#news_bottom_content a:hover { text-decoration: underline }
+#news_bottom_content { font-size: 12px; margin: 8px 2px 0px 0px; float: right;width:90px }
+#news_bottom_content a { color: #858585; text-decoration: none; }
+#news_bottom_content a:hover { color:#0cb5f5; }
+#news_bottom_content p { width:4px;font-size:8px;padding-top:5px }
 #region_link, .region_link { text-decoration: none; color: @opentaps_default_color; cursor: pointer }
 #region_link:hover, .region_link:hover { text-decoration: underline }
 #content { width: 932px; min-height: 120px; margin-top: 0px; padding: 0; font-size: 12px !important }
