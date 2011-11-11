@@ -886,6 +886,58 @@ $(function()
         .LonLat(44.798735,41.697960)
         .transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
         , 15);
+        
+        
 
 });
+
+/* Project Data	*/
+
+var projectGroup = $('#group').children('div');
+projectGroup = projectGroup.slice(0,projectGroup.length-1);
+
+$.fn.projectInfoActive = function ()
+{	
+
+	$.each(projectGroup,function (ind,val)
+		{
+			if( !$(val).data('active') )
+				$(val).css('color','#A4A4A4');
+			else $(val).css('color','#565656');
+		}
+	);
+		
+};
+
+$.each(projectGroup,function (ind,val)
+	{
+		if ( ind == 0 )	$(val).data('active',true);
+		else $(val).data('active',false);
+		$(val).click(function ()
+			{
+					
+				
+				$.each(projectGroup,function (ind,val)
+					{
+						$(val).data('active',false);
+					}
+				);	
+				
+				if ( $(this).data('active') )
+					$(this).data('active',false);	
+				else $(this).data('active',true);				
+								
+				$().projectInfoActive();
+			}	
+		);
+	}
+);
+
+$().projectInfoActive();
+
+
+
+
+
+
 
