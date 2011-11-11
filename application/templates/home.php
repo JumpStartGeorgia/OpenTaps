@@ -104,7 +104,7 @@
         <?php endif; ?>
 
         <div id="news_bottom_content">
-            <a href="<?php echo href("news", TRUE); ?>">▸ <?php echo l('all_news') ?></a>
+            <a href="<?php echo href("news", TRUE); ?>"><p class="clearfix">▸</p> <?php echo l('all_news') ?></a>
         </div>
     </div>
 </div>

@@ -89,8 +89,9 @@ function mapping()
 
 function preload_layers()
 {
+
     // Urban
-    layers.urban = new OpenLayers.Layer.GML('Urban', 'map-data/settlements/urban?lang=' + lang, {
+    layers.urban = new OpenLayers.Layer.GML('Urban', baseurl + 'map-data/settlements/urban?lang=' + lang, {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             pointRadius: 2,
