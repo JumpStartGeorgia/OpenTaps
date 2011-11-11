@@ -667,6 +667,7 @@ $(function()
                 });
             }
         });
+        about.height(about_height + 25);
     });
 
 });
@@ -857,8 +858,8 @@ $(function()
 	
         $.get(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(json)
         {
-	
-		
+
+
          $("#project_content div:gt(11)").remove();
 		$("#project_content").append(json);
 		

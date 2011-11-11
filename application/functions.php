@@ -1382,7 +1382,7 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
 	    $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
 	}
     }
-    //for ($i = 1; $i < 35; $i ++){ $newdata[] = array('test', $i * 250000000); }
+    //for ($i = 1; $i < 25; $i ++){ $newdata[] = array('test', $i * 250000000); }
     return json_replace_unicode(json_encode($newdata));
     //return json_encode($newdata);
 }
