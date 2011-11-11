@@ -44,11 +44,11 @@ foreach ($types AS $type):
             <a class="map-button"><img src="images/map/layer.png" width="13" height="11" alt="" /><?php echo l('map_overlays') ?></a>
             <ul>
                 <li class="first"><a id="overlay-cities" class="active" href="javascript:toggle_overlay('cities');toggle_overlay('urban');toggle_overlay('villages');"><img src="images/map/city.png" width="15" height="14" alt="" /><?php echo l('map_settlements') ?></a></li>
-                <li><a id="overlay-hydro" href="javascript:toggle_overlay('hydro');"><img src="images/map/hydro.png" width="15" height="14" alt="" /><?php echo l('map_hydro') ?></a></li>
                 <li><a id="overlay-water" href="javascript:toggle_overlay('water');"><img src="images/map/waters.png" width="15" height="14" alt="" /><?php echo l('map_water') ?></a></li>
                 <li><a id="overlay-protected_areas" class="active" href="javascript:toggle_overlay('protected_areas');"><img src="images/map/protected_areas.png" width="15" height="14" alt="" /><?php echo l('map_protected_areas') ?></a></li>
                 <li><a id="overlay-roads-main" href="javascript:toggle_overlay('roads_main');"><img src="images/map/roads.png" width="15" height="14" alt="" /><?php echo l('map_roads_main') ?></a></li>
                 <li><a id="overlay-roads-secondary" href="javascript:toggle_overlay('roads_secondary');"><img src="images/map/roads.png" width="15" height="14" alt="" /><?php echo l('map_roads_secondary') ?></a></li>
+                <li><a id="overlay-hydro" href="javascript:toggle_overlay('hydro');"><img src="images/map/hydro.png" width="15" height="14" alt="" /><?php echo l('map_hydro') ?></a></li>
             </ul>
         </li>
 

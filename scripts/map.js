@@ -301,8 +301,8 @@ function load_water()
 
 function load_projects(type, status)
 {
-    var url = 'map-data/projects/' + type + '/' + status;
-    $.getJSON(url + '?lang=' + lang, function(result)
+    var request_url = 'map-data/projects/' + type + '/' + status + '?lang=' + lang;
+    $.getJSON(request_url, function(result)
     {
         if ($.isEmptyObject(result))
             return;
