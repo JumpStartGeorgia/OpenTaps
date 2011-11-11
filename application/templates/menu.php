@@ -6,7 +6,7 @@ $span = ' <span style="font-size: 10px; float: left; margin-left: 2px; margin-to
 <li class="dropdownmenu" id="projects_dropdown"><a class="menu-item" href="javascript:;"><div style="float: left"><?php echo LANG == 'ka' ? geo_utf8_to_latin(l('tags_projects')) : strtoupper(strtolower(l('tags_projects'))) ?></div><?php echo $span ?></a></li>
 <li class="dropdownmenu" id="organizations_dropdown"><a class="menu-item" href="javascript:;"><div style="float: left"><?php echo LANG == 'ka' ? geo_utf8_to_latin(l('organizations')) : strtoupper(strtolower(l('organizations'))) ?></div><?php echo $span ?></a></li>
 <li><a class="menu-item" href="<?php echo href('news', TRUE) ?>"><div style="float: left"><?php echo LANG == 'ka' ? geo_utf8_to_latin(l('news')) : strtoupper(strtolower(l('news'))) ?></div></a></li>
-<li><a class="menu-item" href="<?php echo href('georgia_profile', TRUE) ?>"><div style="float: left"><?php echo LANG == 'ka' ? geo_utf8_to_latin(l('admin_georgia_profile')) : strtoupper(strtolower(l('admin_georgia_profile'))) ?></div></a></li>
+<!--<li><a class="menu-item" href="<?php echo href('georgia_profile', TRUE) ?>"><div style="float: left"><?php echo LANG == 'ka' ? geo_utf8_to_latin(l('admin_georgia_profile')) : strtoupper(strtolower(l('admin_georgia_profile'))) ?></div></a></li>-->
 <?php
 foreach (Storage::instance()->menu AS $menu):
     $has = has_submenu($menu['unique']);

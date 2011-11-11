@@ -80,6 +80,8 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
                 else
                 {
                     $place_ids = unserialize($item['place_unique']);
+                    if (empty($place_ids))
+                        continue;
                     $place_ids = implode(', ', $place_ids);
                 }
                 $places_sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = '" . LANG . "';";
