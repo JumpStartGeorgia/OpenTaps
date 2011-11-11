@@ -94,6 +94,8 @@ return array(
     'map_water' => 'მდინარეები &amp; ტბები',
     'map_protected_areas' => 'დაცული ტერიტორიები',
     'map_roads' => 'მთავარი გზები',
+    'map_roads_main' => 'მთავარი გზები',
+    'map_roads_secondary' => 'მეორადი გზები',
     'map_type_completed' => 'დასრულებული',
     'map_type_current' => 'მიმდინარე',
     'map_type_scheduled' => 'დაგეგმილი',

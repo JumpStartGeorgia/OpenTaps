@@ -92,6 +92,8 @@ return array(
     'map_water' => 'Rivers &amp; Lakes',
     'map_protected_areas' => 'Protected Areas',
     'map_roads' => 'Main Roads',
+    'map_roads_main' => 'Main Roads',
+    'map_roads_secondary' => 'Secondary Roads',
     'map_type_completed' => 'Completed',
     'map_type_current' => 'Current',
     'map_type_scheduled' => 'Scheduled',

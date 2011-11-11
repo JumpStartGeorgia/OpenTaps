@@ -17,21 +17,21 @@ map_options = {
     default_lat: 42.23665,
     default_lon: 43.59375,
     controls: [
-    //new OpenLayers.Control.MousePosition(),
-    new OpenLayers.Control.Navigation()
+        //new OpenLayers.Control.MousePosition(),
+        new OpenLayers.Control.Navigation()
     ]
 },
 markers = new OpenLayers.Layer.Markers('Markers')
 layers = new Object(),
-    icon_size = new OpenLayers.Size(27, 27),
-    icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h),
-    icons = new Object(),
-    icon_index = 0,
-    project_types = ['sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
-    project_statuses = ['completed', 'current', 'scheduled'],
-    project_status_index = 0,
-    project_storage = new Object(),
-    popup = null;
+icon_size = new OpenLayers.Size(27, 27),
+icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h),
+icons = new Object(),
+icon_index = 0,
+project_types = ['sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
+project_statuses = ['completed', 'current', 'scheduled'],
+project_status_index = 0,
+project_storage = new Object(),
+popup = null;
 
 // Generate icons
 for (icon_index in project_types)
@@ -42,7 +42,7 @@ for (icon_index in project_types)
     {
         icons[project_types[icon_index]][project_statuses[project_status_index]] = new OpenLayers.Icon('images/map/projects/' + project_types[icon_index] + '_' + project_statuses[project_status_index] + '.png', icon_size, icon_offset);
         project_storage[project_types[icon_index]][project_statuses[project_status_index]] = [];
-    //project_storage[project_types[icon_index]][project_statuses[project_status_index]] = new Object();
+        //project_storage[project_types[icon_index]][project_statuses[project_status_index]] = new Object();
     }
     project_status_index = 0;
 }
@@ -109,8 +109,8 @@ function preload_layers()
     layers.urban.setOpacity(0);
 
 
-// Villages
-/*
+    // Villages
+    /*
     layers.villages = new OpenLayers.Layer.GML('Villages', 'map-data/settlements/village?lang=' + lang, {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
@@ -131,7 +131,6 @@ function load_all()
     // Load and initialize vector overlays
     load_bounds();
     load_regions();
-    load_around();
     load_protected_areas();
     load_cities();
     load_urban();
@@ -317,14 +316,12 @@ function load_water()
 {
     if (def(layers.water))
         return;
-    layers.water = new OpenLayers.Layer.GML('Regions', 'mapping/water.geojson', {
+    layers.water = new OpenLayers.Layer.GML('Water', 'mapping/water.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fillColor: '#A5BFDD',
-            //fillOpacity: 0.9,
-            stroke: false
-        //strokeColor: '#73BDF8',
-        //strokeWidth: 0.5
+            strokeColor: '#A5BFDD',
+            strokeWidth: 1
         })
     });
 }
@@ -455,11 +452,12 @@ function toggle_overlay(name)
             break;
         case 'roads_main':
             load_roads_main();
-            $('#overlay-roads').toggleClass('active');
+            $('#overlay-roads-main').toggleClass('active');
             map.addLayer(layers.roads_main);
             break;
         case 'roads_secondary':
             load_roads_secondary();
+            $('#overlay-roads-secondary').toggleClass('active');
             map.addLayer(layers.roads_secondary);
             break;
         case 'water':
@@ -467,53 +465,53 @@ function toggle_overlay(name)
             $('#overlay-water').toggleClass('active');
             map.addLayer(layers.water);
             break;
-    /*
+        /*
         case 'urban':
             if (map.zoom == 0 || map.zoom == 1)
                 break;
-            alert('Gotcha!')
+            console.log('Gotcha!');
             break;
          */
-    }
+}
 }
 
 function on_zoom()
 {
-    load_all();
+load_all();
 }
 
 function zoom_in()
 {
-    return map.zoomIn();
+return map.zoomIn();
 }
 
 function zoom_out()
 {
-    return map.zoomOut();
+return map.zoomOut();
 }
 
 function map_commons()
 {
 
-    mapping();
+mapping();
 
-    $('body').click(function()
+$('body').click(function()
+{
+    $('#tooltip').fadeOut();
+});
+
+var controls = $('#map-controls'),
+count = 3;
+
+// Overlays menu
+controls.children('li').hover(function()
+{
+    var sub = $(this).children('ul');
+    if (!sub.length)
+        return;
+    sub.toggle().end().find('a.sub').click(function()
     {
-        $('#tooltip').fadeOut();
-    });
-
-    var controls = $('#map-controls'),
-    count = 3;
-
-    // Overlays menu
-    controls.children('li').hover(function()
-    {
-        var sub = $(this).children('ul');
-        if (!sub.length)
-            return;
-        sub.toggle().end().find('a.sub').click(function()
-        {
-            var me = $(this).toggleClass('active');
+        var me = $(this).toggleClass('active');
         /*
             par = parent().parent().parent().children('a');
             if (me.hasClass('active'))
@@ -526,17 +524,17 @@ function map_commons()
             if (count < 1)
                 par.removeClass('active');
          */
-        });
     });
+});
 
-    // Projects menu
-    controls.find('li > ul > li').hover(function()
-    {
-        var sub = $(this).children('ul');
-        if (!sub.length)
-            return;
-        sub.css('right', $(this).parent().width()).toggle();
-    });
+// Projects menu
+controls.find('li > ul > li').hover(function()
+{
+    var sub = $(this).children('ul');
+    if (!sub.length)
+        return;
+    sub.css('right', $(this).parent().width()).toggle();
+});
 
 }
 
