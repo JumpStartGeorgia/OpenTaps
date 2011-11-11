@@ -54,6 +54,7 @@ html[xmlns] .clearfix {
 
 /* General */
 img { border:0px; }
+a { text-decoration:none;color:#0cb5f5; } 
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
 * html .group { zoom: 1 } /* IE6 */
@@ -241,7 +242,7 @@ div.filtersItemInactive { float: right; position: absolute; left: 850px; top: 15
 div.setsItemInactive { background-repeat: no-repeat; width: 25px; height: 20px; background: url("@baseurl/images/sets.jpg"); opacity: .8; margin-top: -20px; margin-left: 875px; cursor: pointer }
 div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/images/tags.jpg"); opacity: .8; margin-top: -20px; margin-left: 905px; cursor: pointer }
 .page-container { padding: 1em; width: 550px; margin-left: 0px; float: left }
-.page-container a { text-decoration:none;color:#0cb5f5 }
+
 /*#map-overlay { position: absolute; top: 0; left: 0; z-index: 9999; height: 362px; line-height: 362px; width: 100.3%; background-color: #0CB5F6; color: #FFF; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }*/
 /*.highcharts-container svg > text { display: none !important }*/
 
