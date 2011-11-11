@@ -151,17 +151,19 @@
                 <div class='key'><?php echo strtoupper(l('tag_cloud')) ?></div>
                 <div class='value group' style="line-height: 25px;">
                     <?php
-                    foreach ($tags as $key => $tag):
-                        if ($key == config('projects_in_sidebar'))
+                    foreach (array_values($tags) as $key => $tag):
+                        /*if ($key == config('projects_in_sidebar'))
                         {
                             break;
-                        }
+                        }*/
+                        $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
                         echo
-                        "<a href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
+                        "<a class='organization_project_link' " . $hidden . " href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
                         char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
-                        "</a><br />"
+                        "</a>"
                         ;
                     endforeach;
+                    if ($hidden): ?><a style="margin: 0; padding: 0; line-height: 10px; border: 0" class="show_hidden_list_items organization_project_link">▾</a><?php endif;
                     ?>
                 </div>
             </div>

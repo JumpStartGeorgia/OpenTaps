@@ -725,7 +725,10 @@ $(function()
 });
 
 $(document).ready(function(){
+    if (typeof wysiwyg_init != 'undefined')
+    {
 	wysiwyg_init();
+    }
 });
 
 /* Initialize TinyMCE
@@ -801,6 +804,28 @@ $(function()
 
 if($('#logo_img').length)
     $('#logo_img').css('height', $('#project_details').css('height'));
+
+
+$(function()
+{
+    $('.show_hidden_list_items').click(function(){
+	var t = $(this);
+	if (t.html() == '▾')
+	{
+	    t.parent().find(':hidden').attr('hidden', 1).slideDown(100);
+	    t.html('▴');
+	}
+	else
+	{
+	    t.parent().find('[hidden]').slideUp(100);
+	    t.html('▾');
+	} 
+    });
+
+});
+
+
+
 
 // Watter Supply Request/Response
 $(function()

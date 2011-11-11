@@ -1,4 +1,6 @@
-
+<?php
+	$projects = array_values($projects);
+?>
 <div id='project_content'>
     <div style='float: left; width: 673px;'>
         <div class='group'>
@@ -182,15 +184,17 @@
                         <div class='value' style='padding: 0px;'>
                             <?php
                             foreach ($projects AS $key => $project):
-                                if ($key == config('projects_in_sidebar'))
-                                    break;
+                                /*if ($key == config('projects_in_sidebar'))
+                                    break;*/
+                                $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
                                 $ptype = str_replace(' ', '-', strtolower(trim($project['type'])));
                                 ?>
-                                <a class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
+                                <a <?php echo $hidden; ?> class="organization_project_link" href="<?php echo href('project/' . $project['unique'], TRUE) ?>">
                                     <img src="<?php echo href('images') . $ptype ?>.png" />
                                     <?php echo char_limit($project['title'], 28); ?>
                                 </a>
                             <?php endforeach; ?>
+                            <?php if ($hidden): ?><a class="show_hidden_list_items organization_project_link">▾</a><?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -203,17 +207,19 @@
                         <div class='value' style='padding: 0px;'>
                             <?php
                             foreach ($donors AS $key => $donor):
-                                if ($key == config('projects_in_sidebar'))
+                                /*if ($key >= config('projects_in_sidebar'))
                                 {
                                     break;
-                                }
+                                }*/
+                                $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
                                 $ptype = str_replace(" ", "-", strtolower(trim($donor['type'])));
                                 ?>
-                                <a class="organization_project_link" href="<?php echo href('project/' . $donor['unique'], TRUE) ?>">
+                                <a <?php echo $hidden; ?> class="organization_project_link" href="<?php echo href('project/' . $donor['unique'], TRUE) ?>">
                                     <img src="<?php echo href('images') . $ptype ?>.png" />
                                     <?php echo char_limit($donor['title'], 28) ?>
                                 </a>
                             <?php endforeach; ?>
+                            <?php if ($hidden): ?><a class="show_hidden_list_items organization_project_link">▾</a><?php endif; ?>
                         </div>
                     </div>
                 <?php endif; ?>
