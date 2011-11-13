@@ -103,12 +103,10 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
 Slim::get('/map-data/region-projects', 'check_access', function()
         {
             $sql = "
-                SELECT `unique` AS id, title, place_unique
-                FROM projects
+                SELECT `unique`, name
+                FROM regions
                 WHERE lang = '" . LANG . "'
-                AND place_unique != 'a:0:{}'
             ;";
-
             $result = db()->query($sql, PDO::FETCH_ASSOC);
 
             if (empty($result))
@@ -116,41 +114,36 @@ Slim::get('/map-data/region-projects', 'check_access', function()
 
             $json = array();
 
-            foreach ($result AS $item):
-                if (empty($item['place_unique']) OR is_numeric($item['place_unique']))
-                    $places = array($item['place_unique']);
-                else
-                {
-                    $places = unserialize($item['place_unique']);
-                    if (empty($places))
-                        continue;
-                }
-                $place_ids = implode(', ', $places);
-                $places_sql = "
-                    SELECT p.name, p.latitude, p.longitude, p.region_unique
-                    FROM places AS p
-                    WHERE p.`unique` IN ($place_ids)
-                    AND p.lang = '" . LANG . "'
+            foreach ($result AS $region)
+            {
+                /*
+                  $sql = "
+                  SELECT COUNT(places.id) AS number
+                  FROM places, projects, project_places
+                  WHERE project_places.place_id = places.`unique`
+                  AND project_places.project_id = projects.`unique`
+                  AND places.region_unique = {$region['unique']}
+                  AND places.lang = '" . LANG . "'
+                  AND projects.lang = '" . LANG . "'
+                  ;";
+                 */
+                $sql = "
+                    SELECT COUNT(pl.id) AS number
+                    FROM places AS pl
+                    INNER JOIN project_places AS pp ON pp.place_id = pl.`unique`
+                    INNER JOIN projects AS pr ON pr.`unique` = pp.project_id
+                    WHERE pl.region_unique = {$region['unique']}
+                    AND pl.lang = '" . LANG . "'
+                    AND pr.lang = pl.lang
                 ;";
-                $project_places = db()->query($places_sql, PDO::FETCH_ASSOC)->fetchAll();
-                if (empty($project_places))
-                    continue;
-                foreach ($project_places AS $place)
-                {
-                    $region_sql = "
-                        SELECT name#, longitude, latitude
-                        FROM regions
-                        WHERE `unique` = {$place['region_unique']}
-                        AND lang = '" . LANG . "'
-                        LIMIT 1
-                    ;";
-                    $region = db()->query($region_sql, PDO::FETCH_ASSOC)->fetch();
-                    if (empty($region))
-                        continue;
-                    $region['places'][] = $place;
-                    $json[] = $region;
-                }
-            endforeach;
+                $count = db()->query($sql, PDO::FETCH_ASSOC)->fetch();
+                if (empty($count) OR empty($count['number']))
+                    $count['number'] = 0;
+                unset($region['unique']);
+                $region['places'] = $count['number'];
+                $json[] = $region;
+            }
+
             exit(json_encode($json));
         }
 );
