@@ -136,7 +136,7 @@ function load_bounds()
 {
     if (def(layers.bounds))
         return;
-    layers.bounds = new OpenLayers.Layer.GML('Bounds', 'mapping/bounds.geojson', {
+    layers.bounds = new OpenLayers.Layer.GML('Bounds', baseurl + 'mapping/bounds.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fill: false,
@@ -150,7 +150,7 @@ function load_regions()
 {
     if (def(layers.regions))
         return;
-    layers.regions = new OpenLayers.Layer.GML('Regions', 'mapping/regions.geojson', {
+    layers.regions = new OpenLayers.Layer.GML('Regions', baseurl + 'mapping/regions.geojson', {
         format: OpenLayers.Format.GeoJSON,
         isBaseLayer: true,
         styleMap: new OpenLayers.StyleMap({
@@ -165,7 +165,7 @@ function load_districts()
 {
     if (def(layers.districts))
         return;
-    layers.districts = new OpenLayers.Layer.GML('Districts', 'mapping/districts.geojson', {
+    layers.districts = new OpenLayers.Layer.GML('Districts', baseurl + 'mapping/districts.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fill: false,
@@ -180,7 +180,7 @@ function load_cities()
 {
     if (def(layers.cities))
         return;
-    layers.cities = new OpenLayers.Layer.GML('Cities', 'map-data/settlements/city?lang=' + lang, {
+    layers.cities = new OpenLayers.Layer.GML('Cities', baseurl + 'map-data/settlements/city?lang=' + lang, {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             pointRadius: 3,
@@ -231,7 +231,7 @@ function load_hydro()
 {
     if (def(layers.hydro))
         return;
-    layers.hydro = new OpenLayers.Layer.GML('Hydro', 'mapping/hydro.geojson', {
+    layers.hydro = new OpenLayers.Layer.GML('Hydro', baseurl + 'mapping/hydro.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             pointRadius: 4,
@@ -251,7 +251,7 @@ function load_protected_areas()
 {
     if (def(layers.protected_areas))
         return;
-    layers.protected_areas = new OpenLayers.Layer.GML('Protected Areas', 'mapping/protected_areas.geojson', {
+    layers.protected_areas = new OpenLayers.Layer.GML('Protected Areas', baseurl + 'mapping/protected_areas.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fillColor: '#C9DFAF', // #E0E4CC
@@ -264,7 +264,7 @@ function load_roads_main()
 {
     if (def(layers.roads_main))
         return;
-    layers.roads_main = new OpenLayers.Layer.GML('Main Roads', 'mapping/roads_main.geojson', {
+    layers.roads_main = new OpenLayers.Layer.GML('Main Roads', baseurl + 'mapping/roads_main.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             strokeWidth: 1.5,
@@ -277,7 +277,7 @@ function load_roads_secondary()
 {
     if (def(layers.roads_secondary))
         return;
-    layers.roads_secondary = new OpenLayers.Layer.GML('Main Secondary', 'mapping/roads_secondary.geojson', {
+    layers.roads_secondary = new OpenLayers.Layer.GML('Main Secondary', baseurl + 'mapping/roads_secondary.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             strokeWidth: .75,
@@ -290,7 +290,7 @@ function load_water()
 {
     if (def(layers.water))
         return;
-    layers.water = new OpenLayers.Layer.GML('Water', 'mapping/water.geojson', {
+    layers.water = new OpenLayers.Layer.GML('Water', baseurl + 'mapping/water.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
             fillColor: '#A5BFDD',
@@ -347,8 +347,6 @@ function load_projects(type, status)
 
 function unload_projects(type, status)
 {
-    //if (!$('#control-projects').parent().find('ul > li a.active').length)
-    //$('#control-projects').removeClass('active');
     if (!$('#control-' + type).parent().find('ul li a.active').length)
         $('#control-' + type).removeClass('active');
     $('#control-' + type + '-' + status).removeClass('active');
