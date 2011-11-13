@@ -103,7 +103,7 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
 Slim::get('/map-data/region-projects', 'check_access', function()
         {
             $sql = "
-                SELECT `unique`, name
+                SELECT `unique`, name, longitude, latitude
                 FROM regions
                 WHERE lang = '" . LANG . "'
             ;";
