@@ -1,6 +1,6 @@
 /**
- * Mapping script for project OpenTaps.
- * Used plain JavaScript, jQuery, OpenLayers and geo-data by JumpStart Georgia in GeoJSON format.
+ * Mapping script for OpenTaps project.
+ * Used plain JavaScript, jQuery, OpenLayers and geo-data by JumpStart Georgia in GeoJSON vectors format.
  * Otar Chekurishvili - otar@chekurishvili.com
  */
 
@@ -11,12 +11,13 @@ map_options = {
     bounds_top: 43.73079,
     bounds_right: 46.80175,
     bounds_bottom: 40.97322,
-    default_lat: 42.23665,
     default_lon: 43.59375,
+    default_lat: 42.23665,
     controls: [
     //new OpenLayers.Control.MousePosition(),
     new OpenLayers.Control.Navigation()
-    ]
+    ],
+    scales: [2500000, 1500000, 500000, 250000, 100000, 35000]
 },
 markers = new OpenLayers.Layer.Markers('Markers')
 layers = new Object(),
@@ -24,8 +25,8 @@ layers = new Object(),
     icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h),
     icons = new Object(),
     icon_index = 0,
-    project_types = ['sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
-    project_statuses = ['completed', 'current', 'scheduled'],
+    project_types = ['all', 'sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
+    project_statuses = ['all', 'completed', 'current', 'scheduled'],
     project_status_index = 0,
     project_storage = new Object();
 
@@ -49,7 +50,7 @@ function mapping()
     // Mr. Map!
     map = new OpenLayers.Map('map', {
         controls: map_options.controls,
-        scales: [2500000, 1500000, 500000, 250000, 100000, 35000],
+        scales: map_options.scales,
         restrictedExtent: new OpenLayers.Bounds(map_options.bounds_left, map_options.bounds_bottom, map_options.bounds_right, map_options.bounds_top),
         eventListeners: {
             /*'click': function(event){
@@ -300,25 +301,52 @@ function load_water()
     });
 }
 
+var places = new Object();
+
 function unload_all_projects()
 {
-    
+    if (!places.length)
+        return;
+    var parts;
+    for (var index in places)
+    {
+        parts = places[index].split('|');
+        if (!parts)
+            return;
+        unload_projects(parts[0], parts[1]);
+    }
 }
 
 function load_region_projects()
 {
-    
+    var request_url = baseurl + 'map-data/region-projects?lang=' + lang;
+    $.getJSON(request_url, function(result)
+    {
+        if ($.isEmptyObject(result))
+            return;
+        var project,
+        coordinates,
+        marker;
+        for (var index in result)
+        {
+            if (!def(result[index]))
+                continue;
+            project = result[index];
+            if (!def(project.places) || project.places == 0)
+                continue;
+            coordinates = new OpenLayers.LonLat(project.longitude, project.latitude);
+            marker = new OpenLayers.Marker(coordinates, icons['all']['all'].clone());
+            marker.setOpacity(0.95);
+            markers.addMarker(marker);
+            $('img[id$="_innerImage"]').
+            last().
+            parent().
+            append('<div onclick="alert();" style="position: relative; width: 27px; height: 27px; left: 0; top: -31px; cursor: pointer"><div style="cursor: pointer; position: absolute; left: 9px; top: 5px; font-weight: bold; color: #FFF; font-size: 15px">' + parseInt(project.places) + '</div></div>');
+        }
+    });
+//$('img[id$="_innerImage"]').attr('onclick', 'alert("dasdas");');
 }
 
-function load_projects(type, status)
-{
-    if (map.zoom < 3)
-        do_stuff();
-    else
-        dp_stuff();
-}
-
-/*
 function load_projects(type, status)
 {
     var request_url = 'map-data/projects/' + type + '/' + status + '?lang=' + lang;
@@ -363,7 +391,6 @@ function load_projects(type, status)
         });
     });
 }
-*/
 
 function unload_projects(type, status)
 {
@@ -402,7 +429,41 @@ function show_project_tooltip(lonlat, content, status)
 
 function toggle_projects(type, status)
 {
-    return project_storage[type][status].length ? unload_projects(type, status) : load_projects(type, status);
+    var key = type + '|' + status,
+    exists = def(places[key]),
+    mode = 'regions';
+    if (map.zoom > 2)
+        mode = 'detailed';
+    console.log(key);
+    console.log(exists);
+    console.log(mode);
+    if (project_storage[type][status].length && exists)
+    {
+        if (mode == 'regions')
+        {
+            unload_all_projects();
+        }
+        else
+        {
+            if (exists)
+                delete places[key];
+            unload_projects(type, status)
+        }
+    }
+    else
+    {
+        if (mode == 'regions')
+        {
+            console.log('Haaaa');
+            load_region_projects();
+        }
+        else
+        {
+            if (exists)
+                places[key] = true;
+            load_projects(type, status)
+        }
+    }
 }
 
 function toggle_layer(object)
