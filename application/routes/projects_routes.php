@@ -34,7 +34,7 @@ Slim::get('/projects/(filter/:filter/)', function($filter = FALSE)
 Slim::get('/project/:unique/', function($unique)
         {
             Storage::instance()->show_project_map = TRUE;
-            Storage::instance()->show_chart = array('project' => TRUE);            	
+            Storage::instance()->show_chart = array('project' => TRUE);
             $query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
@@ -316,9 +316,11 @@ Slim::get('/admin/projects/new/', function()
                         'regions' => $regions,
                         'project_types' => config('project_types'),
                         'places' => fetch_db($sql_places),
-                        'currency_list' => $currency_list
+                        'currency_list' => $currency_list,
+                        'project_places' => ''
                     )) : template('login');
         });
+
 
 Slim::get('/admin/projects/:unique/', function($unique)
         {
@@ -379,6 +381,7 @@ Slim::get('/admin/projects/:unique/', function($unique)
                     'this_orgs' => $this_orgs,
                     'organizations' => $orgs,
                     'regions' => $regions,
+                    'project_places' => get_project_place_ids($unique),
                     'places' => $places,
                     'project_types' => config('project_types'),
                     'data' => read_page_data('project', $unique),
@@ -438,7 +441,7 @@ Slim::post('/admin/projects/:unique/update/', function($unique)
 
             if (userloggedin())
             {
-		delete_page_data('project', $unique, LANG);
+                delete_page_data('project', $unique, LANG);
                 if (!empty($_POST['data_key']))
                 {
                     add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);

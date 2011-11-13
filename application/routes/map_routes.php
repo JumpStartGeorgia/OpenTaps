@@ -100,6 +100,61 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
         }
 );
 
+Slim::get('/map-data/region-projects', 'check_access', function()
+        {
+            $sql = "
+                SELECT `unique` AS id, title, place_unique
+                FROM projects
+                WHERE lang = '" . LANG . "'
+                AND place_unique != 'a:0:{}'
+            ;";
+
+            $result = db()->query($sql, PDO::FETCH_ASSOC);
+
+            if (empty($result))
+                exit(json_encode(array()));
+
+            $json = array();
+
+            foreach ($result AS $item):
+                if (empty($item['place_unique']) OR is_numeric($item['place_unique']))
+                    $places = array($item['place_unique']);
+                else
+                {
+                    $places = unserialize($item['place_unique']);
+                    if (empty($places))
+                        continue;
+                }
+                $place_ids = implode(', ', $places);
+                $places_sql = "
+                    SELECT p.name, p.latitude, p.longitude, p.region_unique
+                    FROM places AS p
+                    WHERE p.`unique` IN ($place_ids)
+                    AND p.lang = '" . LANG . "'
+                ;";
+                $project_places = db()->query($places_sql, PDO::FETCH_ASSOC)->fetchAll();
+                if (empty($project_places))
+                    continue;
+                foreach ($project_places AS $place)
+                {
+                    $region_sql = "
+                        SELECT name#, longitude, latitude
+                        FROM regions
+                        WHERE `unique` = {$place['region_unique']}
+                        AND lang = '" . LANG . "'
+                        LIMIT 1
+                    ;";
+                    $region = db()->query($region_sql, PDO::FETCH_ASSOC)->fetch();
+                    if (empty($region))
+                        continue;
+                    $region['places'][] = $place;
+                    $json[] = $region;
+                }
+            endforeach;
+            exit(json_encode($json));
+        }
+);
+
 /*
   Slim::get('/map-data/borders', 'check_access', function()
   {

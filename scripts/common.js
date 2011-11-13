@@ -267,7 +267,7 @@ $(function()
         "<br /><hr style='margin-left: -27px' />" +
         "</div>";
         container.append(html);
-        /*	enable chosenJS	
+        /*	enable chosenJS
         $('select').addClass('chosen-select');
         $(".chosen-select").chosen();
         /*	..
@@ -728,7 +728,7 @@ $(function()
 $(document).ready(function(){
     if (typeof wysiwyg_init != 'undefined')
     {
-	wysiwyg_init();
+        wysiwyg_init();
     }
 });
 
@@ -810,17 +810,17 @@ if($('#logo_img').length)
 $(function()
 {
     $('.show_hidden_list_items').click(function(){
-	var t = $(this);
-	if (t.html() == '▾')
-	{
-	    t.parent().find(':hidden').attr('hidden', 1).slideDown(100);
-	    t.html('▴');
-	}
-	else
-	{
-	    t.parent().find('[hidden]').slideUp(100);
-	    t.html('▾');
-	} 
+        var t = $(this);
+        if (t.html() == '▾')
+        {
+            t.parent().find(':hidden').attr('hidden', 1).slideDown(100);
+            t.html('▴');
+        }
+        else
+        {
+            t.parent().find('[hidden]').slideUp(100);
+            t.html('▾');
+        }
     });
 
 });
@@ -855,14 +855,14 @@ $(function()
     districts.change(function()
     {
 
-	
+
         $.get(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(json)
         {
 
 
-         $("#project_content div:gt(11)").remove();
-		$("#project_content").append(json);
-		
+            $("#project_content div:gt(11)").remove();
+            $("#project_content").append(json);
+
         });
     });
 
@@ -887,8 +887,8 @@ $(function()
         .LonLat(44.798735,41.697960)
         .transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
         , 15);
-        
-        
+
+
 
 });
 
@@ -898,40 +898,40 @@ var projectGroup = $('#group').children('div');
 projectGroup = projectGroup.slice(0,projectGroup.length-1);
 
 $.fn.projectInfoActive = function ()
-{	
+{
 
-	$.each(projectGroup,function (ind,val)
-		{
-			if( !$(val).data('active') )
-				$(val).css('color','#A4A4A4');
-			else $(val).css('color','#565656');
-		}
-	);
-		
+    $.each(projectGroup,function (ind,val)
+    {
+        if( !$(val).data('active') )
+            $(val).css('color','#A4A4A4');
+        else $(val).css('color','#565656');
+    }
+    );
+
 };
 
 $.each(projectGroup,function (ind,val)
-	{
-		if ( ind == 0 )	$(val).data('active',true);
-		else $(val).data('active',false);
-		$(val).click(function ()
-			{
-					
-				
-				$.each(projectGroup,function (ind,val)
-					{
-						$(val).data('active',false);
-					}
-				);	
-				
-				if ( $(this).data('active') )
-					$(this).data('active',false);	
-				else $(this).data('active',true);				
-								
-				$().projectInfoActive();
-			}	
-		);
-	}
+{
+    if ( ind == 0 )	$(val).data('active',true);
+    else $(val).data('active',false);
+    $(val).click(function ()
+    {
+
+
+        $.each(projectGroup,function (ind,val)
+        {
+            $(val).data('active',false);
+        }
+        );
+
+        if ( $(this).data('active') )
+            $(this).data('active',false);
+        else $(this).data('active',true);
+
+        $().projectInfoActive();
+    }
+    );
+}
 );
 
 $().projectInfoActive();

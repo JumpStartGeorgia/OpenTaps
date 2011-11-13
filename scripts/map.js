@@ -300,6 +300,25 @@ function load_water()
     });
 }
 
+function unload_all_projects()
+{
+    
+}
+
+function load_region_projects()
+{
+    
+}
+
+function load_projects(type, status)
+{
+    if (map.zoom < 3)
+        do_stuff();
+    else
+        dp_stuff();
+}
+
+/*
 function load_projects(type, status)
 {
     var request_url = 'map-data/projects/' + type + '/' + status + '?lang=' + lang;
@@ -344,6 +363,7 @@ function load_projects(type, status)
         });
     });
 }
+*/
 
 function unload_projects(type, status)
 {
