@@ -227,7 +227,6 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 
                     $data = json_decode($_SESSION[$uniqid], TRUE);
                     $first_row = $_SESSION[$uniqid . '_first_row'];
-                    unset($_SESSION[$uniqid . '_first_row']);
                     $headers = array(
                         'Content-Type' => 'text/csv; charset=utf-8',
                         'Content-Disposition' => 'attachment; filename=' . $name
@@ -241,6 +240,10 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     fputcsv($fp, $first_row);
                     foreach ($data as $fields)
                     {
+                    	foreach ($fields as &$value)
+			    //$value = iconv('', , $value);
+			    $value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
+			    $value = iconv("Windows-1252", "UTF-8", $value);
                         fputcsv($fp, $fields);
                     }
 
