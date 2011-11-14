@@ -401,6 +401,7 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .wysiwyg { margin: 0 !important; width: 100% !important; display: block } 
 .wysiwyg iframe { height: 250px; display: block; width: 100% !important }
 
-
+.region-marker-container .region-marker-wrapper { position: relative; width: 27px; height: 27px; left: 0; top: -31px; cursor: pointer }
+.region-marker-container .region-marker-wrapper .region-marker-item { cursor: pointer; position: absolute; left: 9px; top: 5px; font-weight: bold; color: #FFF; font-size: 15px }
 
 <?php ob_end_flush(); ?>

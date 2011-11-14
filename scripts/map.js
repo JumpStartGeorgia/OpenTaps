@@ -1,8 +1,21 @@
 /**
  * Mapping script for OpenTaps project.
- * Used plain JavaScript, jQuery, OpenLayers and geo-data by JumpStart Georgia in GeoJSON vectors format.
+ * Used plain JavaScript, jQuery, OpenLayers and geo-data by JumpStart Georgia in GeoJSON format.
  * Otar Chekurishvili - otar@chekurishvili.com
  */
+
+// jQuery RegEx selector plugin
+jQuery.expr[':'].regex = function(elem, index, match)
+{
+    var match_params = match[3].split(','),
+    valid_labels = /^(data|css):/,
+    attr = {
+        method: match_params[0].match(valid_labels) ? match_params[0].split(':')[0] : 'attr',
+        property: match_params.shift().replace(valid_labels,'')
+    },
+    regex = new RegExp(match_params.join('').replace(/^\s+|\s+$/g,''), 'ig');
+    return regex.test(jQuery(elem)[attr.method](attr.property));
+}
 
 // Define globals and configurations
 var map,
@@ -310,6 +323,7 @@ function unload_region_projects()
 {
     if (!new_project_storage.length)
         return;
+    $('a[id^="control-"]').removeClass('active');
     for (var index in new_project_storage)
         markers.removeMarker(new_project_storage[index]);
     new_project_storage[index] = [];
@@ -321,11 +335,13 @@ function load_region_projects(type, status)
     //var request_url = baseurl + 'map-data/region-projects?lang=' + lang;
     $.getJSON(request_url, function(result)
     {
-        if ($.isEmptyObject(result))
+        if ($.isEmptyObject(result) || !result.length)
             return;
         var project,
         coordinates,
         marker;
+        $('#control-' + type).addClass('active');
+        $('#control-' + type + '-' + status).addClass('active');
         for (var index in result)
         {
             if (!def(result[index]))
@@ -345,7 +361,18 @@ function load_region_projects(type, status)
             last().
             parent().
             addClass('region-marker-container').
-            append('<div style="position: relative; width: 27px; height: 27px; left: 0; top: -31px; cursor: pointer"><div style="cursor: pointer; position: absolute; left: 9px; top: 5px; font-weight: bold; color: #FFF; font-size: 15px">' + parseInt(project.places) + '</div></div>')
+            append('<div class="region-marker-wrapper"><div class="region-marker-item">' + parseInt(project.places) + '</div></div>')
+            .hover(function()
+            {
+                $(this).stop().animate({
+                    opacity: .65
+                });
+            }, function()
+            {
+                $(this).stop().animate({
+                    opacity: 1
+                });
+            })
             .click((function(coordinates)
             {
                 return function()
@@ -363,6 +390,7 @@ function load_region_projects(type, status)
 
 function region_marker_action(coordinates)
 {
+    unload_region_projects();
     map.zoomTo(2);
     map.setCenter(coordinates);
 }
@@ -498,7 +526,7 @@ function reload_all_projects(mode)
         status = parts[1];
         if (mode == 'regions')
         {
-            unload_region_projects(type, status);
+            unload_region_projects();
             load_region_projects(type, status);
         }
         else
