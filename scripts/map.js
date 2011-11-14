@@ -25,24 +25,29 @@ layers = new Object(),
     icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h),
     icons = new Object(),
     icon_index = 0,
-    project_types = ['all', 'sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
-    project_statuses = ['all', 'completed', 'current', 'scheduled'],
+    project_types = ['sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
+    project_statuses = ['completed', 'current', 'scheduled'],
     project_status_index = 0,
-    project_storage = new Object();
+    project_storage = new Object(),
+    new_project_storage = [],
+    places = new Object();
 
 // Generate icons
 for (icon_index in project_types)
 {
     icons[project_types[icon_index]] = new Object();
     project_storage[project_types[icon_index]] = new Object();
+    places[project_types[icon_index]] = new Object();
     for (project_status_index in project_statuses)
     {
         icons[project_types[icon_index]][project_statuses[project_status_index]] = new OpenLayers.Icon('images/map/projects/' + project_types[icon_index] + '_' + project_statuses[project_status_index] + '.png', icon_size, icon_offset);
         project_storage[project_types[icon_index]][project_statuses[project_status_index]] = [];
+        places[project_types[icon_index]][project_statuses[project_status_index]] = false;
     }
     project_status_index = 0;
 }
-icon_index = 0;
+icon_index = 0,
+    all_icon = new OpenLayers.Icon('images/map/projects/all_all.png', icon_size, icon_offset);
 
 function mapping()
 {
@@ -226,7 +231,7 @@ function load_villages()
         return;
     layers.villages.setOpacity(1);
 }
-*/
+ */
 
 function load_hydro()
 {
@@ -301,25 +306,19 @@ function load_water()
     });
 }
 
-var places = new Object();
-
-function unload_all_projects()
+function unload_region_projects()
 {
-    if (!places.length)
+    if (!new_project_storage.length)
         return;
-    var parts;
-    for (var index in places)
-    {
-        parts = places[index].split('|');
-        if (!parts)
-            return;
-        unload_projects(parts[0], parts[1]);
-    }
+    for (var index in new_project_storage)
+        markers.removeMarker(new_project_storage[index]);
+    new_project_storage[index] = [];
 }
 
-function load_region_projects()
+function load_region_projects(type, status)
 {
-    var request_url = baseurl + 'map-data/region-projects?lang=' + lang;
+    var request_url = baseurl + 'map-data/region-projects/' + type + '/' + status + '?lang=' + lang;
+    //var request_url = baseurl + 'map-data/region-projects?lang=' + lang;
     $.getJSON(request_url, function(result)
     {
         if ($.isEmptyObject(result))
@@ -331,20 +330,41 @@ function load_region_projects()
         {
             if (!def(result[index]))
                 continue;
+
             project = result[index];
+
             if (!def(project.places) || project.places == 0)
                 continue;
+
             coordinates = new OpenLayers.LonLat(project.longitude, project.latitude);
-            marker = new OpenLayers.Marker(coordinates, icons['all']['all'].clone());
+            marker = new OpenLayers.Marker(coordinates, all_icon.clone());
             marker.setOpacity(0.95);
             markers.addMarker(marker);
+
             $('img[id$="_innerImage"]').
             last().
             parent().
-            append('<div onclick="alert();" style="position: relative; width: 27px; height: 27px; left: 0; top: -31px; cursor: pointer"><div style="cursor: pointer; position: absolute; left: 9px; top: 5px; font-weight: bold; color: #FFF; font-size: 15px">' + parseInt(project.places) + '</div></div>');
+            addClass('region-marker-container').
+            append('<div style="position: relative; width: 27px; height: 27px; left: 0; top: -31px; cursor: pointer"><div style="cursor: pointer; position: absolute; left: 9px; top: 5px; font-weight: bold; color: #FFF; font-size: 15px">' + parseInt(project.places) + '</div></div>')
+            .click((function(coordinates)
+            {
+                return function()
+                {
+                    region_marker_action(coordinates);
+                }
+            })(coordinates));
+
+            new_project_storage.push(marker);
+
         }
     });
 //$('img[id$="_innerImage"]').attr('onclick', 'alert("dasdas");');
+}
+
+function region_marker_action(coordinates)
+{
+    map.zoomTo(2);
+    map.setCenter(coordinates);
 }
 
 function load_projects(type, status)
@@ -397,8 +417,8 @@ function unload_projects(type, status)
     if (!$('#control-' + type).parent().find('ul li a.active').length)
         $('#control-' + type).removeClass('active');
     $('#control-' + type + '-' + status).removeClass('active');
-    for (var idx in project_storage[type][status])
-        markers.removeMarker(project_storage[type][status][idx]);
+    for (var index in project_storage[type][status])
+        markers.removeMarker(project_storage[type][status][index]);
     project_storage[type][status] = [];
 }
 
@@ -429,39 +449,62 @@ function show_project_tooltip(lonlat, content, status)
 
 function toggle_projects(type, status)
 {
-    var key = type + '|' + status,
-    exists = def(places[key]),
-    mode = 'regions';
+    var mode = 'regions';
     if (map.zoom > 2)
         mode = 'detailed';
-    console.log(key);
-    console.log(exists);
-    console.log(mode);
-    if (project_storage[type][status].length && exists)
-    {
-        if (mode == 'regions')
-        {
-            unload_all_projects();
-        }
-        else
-        {
-            if (exists)
-                delete places[key];
-            unload_projects(type, status)
-        }
-    }
+
+    //console.log(places);
+
+    if (places[type][status] == true)
+        places[type][status] = false;
     else
+        places[type][status] = true;
+
+    // Reload projects depending on a zoom state/mode
+    reload_all_projects(mode);
+}
+
+function project_variations()
+{
+    var result = [],
+    status_index = 0;
+    for (var type_index in project_types)
     {
+        if ($.inArray(project_types[type_index], project_types) < 0)
+            continue;
+        for (status_index in project_statuses)
+        {
+            if ($.inArray(project_statuses[status_index], project_statuses) < 0)
+                continue;
+            if (places[project_types[type_index]][project_statuses[status_index]] === false)
+                continue;
+            result.push(project_types[type_index] + '|' + project_statuses[status_index]);
+        }
+        status_index = 0;
+    }
+    return result;
+}
+
+function reload_all_projects(mode)
+{
+    var variations = project_variations(),
+    type,
+    status,
+    parts;
+    for (var index in variations)
+    {
+        parts = variations[index].split('|');
+        type = parts[0];
+        status = parts[1];
         if (mode == 'regions')
         {
-            console.log('Haaaa');
-            load_region_projects();
+            unload_region_projects(type, status);
+            load_region_projects(type, status);
         }
         else
         {
-            if (exists)
-                places[key] = true;
-            load_projects(type, status)
+            unload_projects(type, status);
+            load_projects(type, status);
         }
     }
 }

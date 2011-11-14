@@ -401,4 +401,6 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .wysiwyg { margin: 0 !important; width: 100% !important; display: block } 
 .wysiwyg iframe { height: 250px; display: block; width: 100% !important }
 
+
+
 <?php ob_end_flush(); ?>
