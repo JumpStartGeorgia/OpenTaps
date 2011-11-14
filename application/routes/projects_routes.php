@@ -229,7 +229,7 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     $first_row = $_SESSION[$uniqid . '_first_row'];
                     unset($_SESSION[$uniqid . '_first_row']);
                     $headers = array(
-                        'Content-Type' => 'text/csv',
+                        'Content-Type' => 'text/csv; charset=utf-8',
                         'Content-Disposition' => 'attachment; filename=' . $name
                     );
                     foreach ($headers AS $key => $value)
@@ -240,7 +240,9 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 
                     fputcsv($fp, $first_row);
                     foreach ($data as $fields)
+                    {
                         fputcsv($fp, $fields);
+                    }
 
                     fclose($fp);
 
@@ -250,10 +252,10 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 
                     file_exists(DIR . 'uploads/' . $name) AND unlink(DIR . 'uploads/' . $name);
 
-                    /* ## UNSET SESSIONS STORED FOR CHART EXPORTING ## */
+                    /* ## UNSET SESSIONS STORED FOR CHART EXPORTING ##
                     foreach ($_SESSION AS $key => $value)
                         if (substr($key, 0, 8) == 'chartcsv')
-                            unset($_SESSION[$key]);
+                            unset($_SESSION[$key]);*/
 
                     break;
             }
