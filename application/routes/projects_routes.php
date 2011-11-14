@@ -310,15 +310,18 @@ Slim::get('/admin/projects/new/', function()
     	</script>
     ';
 
-            Storage::instance()->content = userloggedin() ? template('admin/projects/new', array(
+            Storage::instance()->content = userloggedin()
+		? template('admin/projects/new', array(
                         'all_tags' => read_tags(),
                         'organizations' => $orgs,
                         'regions' => $regions,
                         'project_types' => config('project_types'),
                         'places' => fetch_db($sql_places),
                         'currency_list' => $currency_list,
-                        'project_places' => ''
-                    )) : template('login');
+                        'project_places' => '',
+                        'districts' => fetch_db("SELECT `unique`, name FROM districts_new WHERE lang = '" . LANG . "';")
+		    ))
+		: template('login');
         });
 
 
@@ -375,19 +378,20 @@ Slim::get('/admin/projects/:unique/', function($unique)
                 $budgets = fetch_db("SELECT * FROM project_budgets WHERE project_unique = :unique ORDER BY id;", array(':unique' => $unique));
                 Storage::instance()->content = template('admin/projects/edit', array
                     (
-                    'project' => read_projects($unique),
-                    'all_tags' => read_tags(),
-                    'this_tags' => read_tag_connector('proj', $unique),
-                    'this_orgs' => $this_orgs,
-                    'organizations' => $orgs,
-                    'regions' => $regions,
-                    'project_places' => get_project_place_ids($unique),
-                    'places' => $places,
-                    'project_types' => config('project_types'),
-                    'data' => read_page_data('project', $unique),
-                    'budgets' => $budgets,
-                    'currency_list' => $currency_list
-                        ));
+			'project' => read_projects($unique),
+			'all_tags' => read_tags(),
+			'this_tags' => read_tag_connector('proj', $unique),
+			'this_orgs' => $this_orgs,
+			'organizations' => $orgs,
+			'regions' => $regions,
+			'project_places' => get_project_place_ids($unique),
+			'places' => $places,
+			'project_types' => config('project_types'),
+			'data' => read_page_data('project', $unique),
+			'budgets' => $budgets,
+			'currency_list' => $currency_list,
+			'districts' => fetch_db("SELECT `unique`, name FROM districts_new WHERE lang = '" . LANG . "';")
+                    ));
             }
             else
                 Storage::instance()->content = template('login');
