@@ -107,6 +107,28 @@ $action = href('admin/projects/' . $project['unique'] . '/update', TRUE);
     </select>
     <br /><br />
 
+    <label>
+      Region<br />
+      <select name="region_unique">
+	<?php foreach ($regions as $region): ?>
+	    <option <?php $region['unique'] == $project['region_unique'] and print $s; ?> value="<?php echo $region['unique']; ?>">
+		<?php echo $region['name']; ?>
+	    </option>
+	<?php endforeach; ?>
+      </select>
+    </label><br /><br />
+
+    <label>
+      District<br />
+      <select name="district_unique">
+	<?php foreach ($districts as $district): ?>
+	    <option <?php $district['unique'] == $project['district_unique'] and print $s; ?> value="<?php echo $district['unique']; ?>">
+		<?php echo $district['name']; ?>
+	    </option>
+	<?php endforeach; ?>
+      </select>
+    </label><br /><br />
+
     <label for='pcity'>City: </label>
     <br />
     <input name='p_city' id='pcity' type='text' value="<?php echo $project['city'] ?>" />

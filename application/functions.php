@@ -950,8 +950,8 @@ function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FAL
             p.*,
             pl.longitude,
             pl.latitude,
-            r.name AS region_name,
-            r.`unique` AS region_unique
+            r.name AS region_name
+            "./*r.`unique` AS region_unique*/"
         FROM projects AS p
         LEFT JOIN places AS pl
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
@@ -1044,7 +1044,9 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		`type`,
 	        `lang`,
 	        `unique`,
-	        `hidden`
+	        `hidden`,
+	        `region_unique`,
+	        `district_unique`
     	)
     	VALUES(
     		:title,
@@ -1059,7 +1061,9 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		:type,
 		:lang,
 		:unique,
-		:hidden
+		:hidden,
+		:region_unique,
+		:district_unique
     	);
     ";
     $statement = db()->prepare($sql);
@@ -1078,6 +1082,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
         //':place_unique' => serialize($place_unique),
         ':unique' => $unique,
         ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
+        ':region_unique' => $_POST['region_unique'],
+        ':district_unique' => $_POST['district_unique']
     );
 
     foreach (config('languages') as $lang)
@@ -1175,7 +1181,9 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     		end_at = :end_at,
     		info = :info,
     		type = :type,
-		hidden = :hidden
+		hidden = :hidden,
+		region_unique = :region_unique,
+		district_unique = :district_unique
     	WHERE
     		`projects`.`unique` = :unique
     	AND
@@ -1211,6 +1219,8 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
         ':type' => $type,
         //':place_unique' => serialize($place_unique),
         ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
+        ':region_unique' => $_POST['region_unique'],
+        ':district_unique' => $_POST['district_unique']
     );
     $exec = $statement->execute($data);
 
