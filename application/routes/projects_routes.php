@@ -228,11 +228,15 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     $data = json_decode($_SESSION[$uniqid], TRUE);
                     $first_row = $_SESSION[$uniqid . '_first_row'];
                     $headers = array(
-                        'Content-Type' => 'text/html; charset=utf-8',
+                        'Content-Type' => 'text/csv; charset=utf-8',
                         'Content-Disposition' => 'attachment; filename=' . $name
                     );
-                    foreach ($headers AS $key => $value)
-                        header("{$key}: {$value}");
+		    header("Content-Type: application/vnd.ms-excel");
+		    header("Expires: 0");
+		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		    header("content-disposition: attachment;filename=" . $name);
+                    //foreach ($headers AS $key => $value)
+                    //    header("{$key}: {$value}");
 
                     $fp = fopen(DIR . 'uploads/' . $name, 'w');
                     //chmod(DIR . 'uploads/' . $name, 777);
