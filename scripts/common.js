@@ -830,12 +830,12 @@ $(function()
         var t = $(this);
         if (t.html() == '▾')
         {
-            t.parent().find(':hidden').attr('hidden', 1).slideDown(100);
+            t.parent().find(':hidden').attr('hidden', 1).slideDown(400);
             t.html('▴');
         }
         else
         {
-            t.parent().find('[hidden]').slideUp(100);
+            t.parent().find('[hidden]').slideUp(300);
             t.html('▾');
         }
     });
