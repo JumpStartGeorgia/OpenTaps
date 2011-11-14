@@ -100,6 +100,69 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
         }
 );
 
+Slim::get('/map-data/merged-projects/:type(/:status)', 'check_map_data_access', function($type, $status = 'all')
+        {
+            $type = ucwords(str_replace('_', ' ', trim(strtolower($type))));
+
+            $status_sql = NULL;
+            switch ($status)
+            {
+                case 'completed':
+                    $status_sql = "AND DATE(end_at) < CURDATE()";
+                    break;
+                case 'current':
+                    $status_sql = "AND CURDATE() BETWEEN DATE(start_at) AND DATE(end_at)";
+                    break;
+                case 'scheduled':
+                    $status_sql = "AND DATE(start_at) > CURDATE()";
+                    break;
+            }
+
+            $sql = "
+                SELECT `unique` AS id, title, place_unique
+                FROM projects
+                WHERE type = '{$type}'
+                {$status_sql}
+                AND lang = '" . LANG . "'
+            ;";
+
+            $result = db()->query($sql, PDO::FETCH_ASSOC);
+
+            if (empty($result))
+                exit(json_encode(array()));
+
+            $json = array();
+
+            foreach ($result AS $item)
+            {
+                /*
+                  //$place_ids = $item['place_unique'];
+                  if (empty($item['place_unique']) OR is_numeric($item['place_unique']))
+                  $place_ids = $item['place_unique'];
+                  else
+                  {
+                  $place_ids = unserialize($item['place_unique']);
+                  if (empty($place_ids))
+                  continue;
+                  $place_ids = implode(', ', $place_ids);
+                  }
+                  $places_sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = '" . LANG . "';";
+                  $places = db()->query($places_sql, PDO::FETCH_ASSOC)->fetchAll();
+                  if (empty($places))
+                  continue;
+                  //empty($places) AND $places = array();
+                  $json[] = array(
+                  'id' => $item['id'],
+                  'title' => $item['title'],
+                  'places' => $places
+                  );
+                 */
+            }
+
+            exit(json_encode($json));
+        }
+);
+
 Slim::get('/map-data/region-projects(/:type(/:status))', 'check_access', function($type = NULL, $status = NULl)
         {
 
@@ -156,13 +219,17 @@ Slim::get('/map-data/region-projects(/:type(/:status))', 'check_access', functio
                     {$type_sql}
                     {$status_sql}
                 ;";
+
                 $count = db()->query($sql, PDO::FETCH_ASSOC)->fetch();
+
                 if (empty($count) OR empty($count['number']))
                     continue; //$count['number'] = 0;
+
                 unset($region['unique']);
                 $region['type'] = empty($type_item) ? FALSE : strtolower(str_replace('', '_', $count['type']));
                 $region['status'] = empty($status_item) ? FALSE : $status_item;
                 $region['places'] = $count['number'];
+
                 $json[] = $region;
             }
 

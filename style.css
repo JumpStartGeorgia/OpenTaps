@@ -53,7 +53,7 @@ html[xmlns] .clearfix {
 }
 
 /* General */
-img { border:0px; }
+a img, img { border: 0 }
 a { text-decoration:none;color:#0cb5f5; } 
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
