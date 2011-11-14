@@ -231,12 +231,8 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                         'Content-Type' => 'text/csv; charset=utf-8',
                         'Content-Disposition' => 'attachment; filename=' . $name
                     );
-		    header("Content-Type: application/vnd.ms-excel");
-		    header("Expires: 0");
-		    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-		    header("content-disposition: attachment;filename=" . $name);
-                    //foreach ($headers AS $key => $value)
-                    //    header("{$key}: {$value}");
+                    foreach ($headers AS $key => $value)
+                        header("{$key}: {$value}");
 
                     $fp = fopen(DIR . 'uploads/' . $name, 'w');
                     //chmod(DIR . 'uploads/' . $name, 777);
@@ -244,6 +240,10 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     fputcsv($fp, $first_row);
                     foreach ($data as $fields)
                     {
+                    	foreach ($fields as &$value)
+			    //$value = iconv('', , $value);
+			    $value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
+			    $value = iconv("Windows-1252", "UTF-8", $value);
                         fputcsv($fp, $fields);
                     }
 
