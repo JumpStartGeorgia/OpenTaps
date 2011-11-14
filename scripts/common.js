@@ -958,6 +958,7 @@ $.each(projectGroup,function (ind,val)
 			else $(this).data('active',true);
 	
     	    $().projectInfoActive();
+    	    $(this).css('color','#565656');
     	}
     );
 }
