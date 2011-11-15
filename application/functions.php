@@ -1760,29 +1760,29 @@ function get_organization_chart_data($unique)
     );
 
 
-    /* $sql = "
-      select
-      r.name,
-      (select sum(budget) from project_budgets as pb
-      where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
-      ) as budget
-      from regions as r
-      inner join places as pl on r.`unique` = pl.region_unique
-      inner join projects as p on p.place_unique = pl.`unique`
-      inner join project_organizations as po on po.project_unique = p.`unique`
-      where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
-      ";
+    /*$sql = "
+	select
+	r.name,
+	(select sum(budget) from project_budgets as pb
+	where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
+	) as budget
+	from regions as r
+	inner join places as pl on r.`unique` = pl.region_unique
+	inner join projects as p on p.place_unique = pl.`unique`
+	inner join project_organizations as po on po.project_unique = p.`unique`
+	where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
+    ";
 
-      $query = db()->prepare($sql);
-      $query->closeCursor();
-      $query->execute(array(':unique' => $unique));
-      $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');
+    $query = db()->prepare($sql);
+    $query->closeCursor();
+    $query->execute(array(':unique' => $unique));
+    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');*/
 
-      $results['organizations_budgets'] = array(
-      'description' => '',
-      'title' => '',
-      'data' => $data
-      ); */
+    $results['budgets_by_year'] = array(
+	'description' => '',
+	'title' => '',
+	'data' => json_encode(array(100,200,300,2100,500,3200))
+    );
 
     return $results;
 }
