@@ -135,11 +135,11 @@
         <?php $i = 0;
         foreach ($side_data as $d): $i++; ?>
 
-            <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
-                <div class='key'>
+            <div class="data_block group" <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
+                <div class="key">
                     <?php echo strtoupper($d['key']); ?>
                 </div>
-                <div class='value group'>
+                <div class="value group">
                     <?php echo $d['value']; ?>
                 </div>
             </div>
@@ -163,13 +163,6 @@
         <?php endif; ?>
 
     </div><!--DATA END-->
-
-
-    <?php /*
-      <div id='charts'>
-
-      </div>
-     */ ?>
 
     <input type="hidden" id="project_unique" value="<?php echo $project['unique']; ?>" />
 

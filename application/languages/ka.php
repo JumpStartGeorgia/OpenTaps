@@ -42,7 +42,7 @@ return array(
     'tags_projects' => 'პროექტები',
     'tags_organizations' => 'ორგანიზაციები',
     'tags_news' => 'სიახლეები',
-    'ws_hiy' => 'თქვენ რამდენად გაინტერესებთ',
+    'ws_hiy' => 'აირჩიეთ ადგილი',
     'ends' => 'დასასრული',
     'organizations' => 'ორგანიზაციები',
     'ws_region' => 'რეგიონი',
