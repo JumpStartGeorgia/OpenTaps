@@ -37,7 +37,7 @@ layers = new Object(),
     icon_size = new OpenLayers.Size(27, 27),
     icon_offset = new OpenLayers.Pixel(-(icon_size.w/2), -icon_size.h),
     icons = new Object(),
-    icon_index = 0,
+    index = 0,
     project_types = ['sewage', 'water_supply', 'water_pollution', 'irrigation', 'water_quality', 'water_accidents'],
     project_statuses = ['completed', 'current', 'scheduled'],
     project_status_index = 0,
@@ -46,21 +46,22 @@ layers = new Object(),
     places = new Object();
 
 // Generate icons
-for (icon_index in project_types)
+for (index in project_types)
 {
-    icons[project_types[icon_index]] = new Object();
-    project_storage[project_types[icon_index]] = new Object();
-    places[project_types[icon_index]] = new Object();
+    icons[project_types[index]] = new Object();
+    project_storage[project_types[index]] = new Object();
+    places[project_types[index]] = new Object();
     for (project_status_index in project_statuses)
     {
-        icons[project_types[icon_index]][project_statuses[project_status_index]] = new OpenLayers.Icon('images/map/projects/' + project_types[icon_index] + '_' + project_statuses[project_status_index] + '.png', icon_size, icon_offset);
-        project_storage[project_types[icon_index]][project_statuses[project_status_index]] = [];
-        places[project_types[icon_index]][project_statuses[project_status_index]] = false;
+        icons[project_types[index]][project_statuses[project_status_index]] = new OpenLayers.Icon('images/map/projects/' + project_types[index] + '_' + project_statuses[project_status_index] + '.png', icon_size, icon_offset);
+        project_storage[project_types[index]][project_statuses[project_status_index]] = [];
+        places[project_types[index]][project_statuses[project_status_index]] = false;
     }
     project_status_index = 0;
 }
-icon_index = 0,
-    all_icon = new OpenLayers.Icon('images/map/projects/all_all.png', icon_size, icon_offset);
+index = 0,
+    all_icon = new OpenLayers.Icon('images/map/projects/all_all.png', icon_size, icon_offset),
+    coordinate_hash_storage = new Object();
 
 function mapping()
 {
@@ -141,6 +142,8 @@ function load_all()
     load_protected_areas();
     load_cities();
     load_urban();
+    load_water()
+    load_roads_main();
     //load_villages();
 
     // Add initialized vector overlay-layers to the map
@@ -324,14 +327,15 @@ function unload_region_projects()
     if (!new_project_storage.length)
         return;
     $('a[id^="control-"]').removeClass('active');
-    for (var index in new_project_storage)
+    for (var index = 0; index < new_project_storage.length; index++)
         markers.removeMarker(new_project_storage[index]);
-    new_project_storage[index] = [];
+    new_project_storage = [];
+    coordinate_hash_storage = new Object();
 }
 
 function load_region_projects(type, status)
 {
-    var request_url = baseurl + 'map-data/region-projects/' + type + '/' + status + '?lang=' + lang;
+    var request_url = baseurl + 'map-data/cluster-region-projects/' + type + '/' + status + '?lang=' + lang;
     //var request_url = baseurl + 'map-data/region-projects?lang=' + lang;
     $.getJSON(request_url, function(result)
     {
@@ -393,22 +397,73 @@ function region_marker_action(coordinates)
     unload_region_projects();
     map.zoomTo(2);
     map.setCenter(coordinates);
+    reload_all_projects();
 }
 
+/*
 function load_projects(type, status)
 {
-    var request_url = 'map-data/projects/' + type + '/' + status + '?lang=' + lang;
+    var radius = parseInt((map_options.scales.length - map.zoom) * 10),
+    request_url = baseurl + 'map-data/cluster-projects/' + type + '/' + status + '/' + radius + '?lang=' + lang;
     $.getJSON(request_url, function(result)
     {
-        if ($.isEmptyObject(result))
+        if ($.isEmptyObject(result) || !result.length)
             return;
         $('#control-' + type).addClass('active');
         $('#control-' + type + '-' + status).addClass('active');
-        var coordinates,
+        var place,
+        coordinates,
+        outdex,
         marker,
-        pidx = 0;
-        for (var idx in result)
+        element,
+        minimarker
+        minimarkers = [],
+        minimarkers_element,
+        proj;
+        for (var index = 0, length = result.length; index < length; index++)
         {
+            place = result[index];
+            if (place.projects.length > 1)
+            {
+                coordinates = new OpenLayers.LonLat(place.projects[0].latitude, place.projects[0].longitude);
+                marker = new OpenLayers.Marker(coordinates, all_icon.clone());
+                marker.setOpacity(0.95);
+                markers.addMarker(marker);
+                element = $('img[id$="_innerImage"]').
+                last().
+                parent().
+                addClass('region-marker-container').
+                append('<div class="region-marker-wrapper"><div class="region-marker-item">' + parseInt(place.projects.length) + '</div><div id="minimarkers" style="display: none"></div></div>');
+                for (outdex = 0; outdex < place.projects.length; outdex++)
+                {
+                    proj = place.projects[outdex];
+                    minimarker = '<img id="minimarker-' + outdex + '" src="images/map/projects/' + type + '_' + status + '.png" />';
+                    $('#minimarker-' + outdex).hover(function()
+                    {
+                        console.log(proj);
+                    });
+                    minimarkers.push(minimarker);
+                }
+                outdex = 0;
+                minimarkers_element = $('#minimarkers').append(minimarkers.implode(''));
+                element.hover(function()
+                {
+                    $(this).hide();
+                    minimarkers_element.show();
+                }, function()
+                {
+                    minimarkers_element.hide();
+                    $(this).show();
+                });
+            }
+            else
+            {
+                (function(type, status, longitude, latitude, title, id)
+                {
+                    add_project_marker(type, status, longitude, latitude, title, id);
+                })(type, status, place.latitude, place.longitude, place.projects[0].title, place.projects[0].id);
+            }
+        //comment start
             for (pidx in result[idx].places)
             {
                 coordinates = new OpenLayers.LonLat(result[idx].places[pidx].latitude, result[idx].places[pidx].longitude);
@@ -425,6 +480,113 @@ function load_projects(type, status)
                 project_storage[type][status].push(marker);
             }
             pidx = 0;
+             //comment end
+        }
+        $('img[id$="_innerImage"]').css('cursor', 'pointer').hover(function()
+        {
+            $(this).stop().animate({
+                opacity: .65
+            });
+        }, function()
+        {
+            $(this).stop().animate({
+                opacity: 1
+            });
+        });
+    });
+}
+*/
+
+function add_project_marker(type, status, longitude, latitude, title, id)
+{
+    var coordinates = new OpenLayers.LonLat(longitude, latitude),
+    marker = new OpenLayers.Marker(coordinates, icons[type][status].clone());
+    console.log(marker);
+    marker.setOpacity(0.95);
+    markers.addMarker(marker);
+    marker.events.register('mousedown', marker, (function()
+    {
+        show_project_tooltip(coordinates, '<a href="project/' + id + '/?lang=' + lang + '">' + title + '</a>', status);
+    }));
+    project_storage[type][status].push(marker);
+}
+
+function calculate_cluster_distance()
+{
+    var meters = 1; // 100 meters
+    switch (map.zoom)
+    {
+        case 0:
+            meters = 10;
+            break;
+        case 1:
+            meters = 8;
+            break;
+        case 2:
+            meters = 5;
+            break;
+        case 3:
+            meters = 3;
+            break;
+        case 4:
+            meters = 2;
+            break;
+        case 5:
+            meters = 1.6;
+            break;
+    }
+    return (map_options.scales.length - map.zoom) * meters;
+}
+
+function load_projects(type, status)
+{
+    var request_url = baseurl + 'map-data/projects/' + type + '/' + status + '?lang=' + lang;
+    $.getJSON(request_url, function(result)
+    {
+        if ($.isEmptyObject(result) || !result.length)
+            return;
+        $('#control-' + type).addClass('active');
+        $('#control-' + type + '-' + status).addClass('active');
+        var coordinates,
+        marker,
+        place,
+        coordinate_hash,
+        actual_latitude,
+        actual_longitude,
+        adjusted_latitude,
+        adjusted_longitude,
+        distance = calculate_cluster_distance();
+        for (var index = 0, length = result.length; index < length; index++)
+        {
+            place = result[index];
+
+            actual_latitude = adjusted_latitude = place.longitude;
+            actual_longitude = adjusted_longitude = place.latitude;
+            coordinate_hash = actual_latitude + actual_longitude;
+            while (coordinate_hash_storage[coordinate_hash] != null)
+            {
+                adjusted_latitude = parseFloat(actual_latitude) + (Math.random() - distance) / 750;
+                adjusted_longitude = parseFloat(actual_longitude) + (Math.random() - distance) / 750;
+                coordinate_hash = String(adjusted_latitude) + String(adjusted_longitude);
+            }
+            coordinate_hash_storage[coordinate_hash] = true;
+            //coordinates = new OpenLayers.LonLat(result[idx].places[pidx].latitude, result[idx].places[pidx].longitude);
+
+            coordinates = new OpenLayers.LonLat(adjusted_latitude, adjusted_longitude);
+
+            marker = new OpenLayers.Marker(coordinates, icons[type][status].clone());
+            //marker.setOpacity(0.95);
+            markers.addMarker(marker);
+            marker.events.register('mousedown', marker, (function(title, coordinates, status, id, lang)
+            {
+                return function()
+                {
+                    show_project_tooltip(coordinates, '<a href="project/' + id + '/?lang=' + lang + '">' + title + '</a>', status);
+                }
+            })(place.title, coordinates, status, place.id, lang));
+
+            project_storage[type][status].push(marker);
+
         }
         $('img[id$="_innerImage"]').css('cursor', 'pointer').hover(function()
         {
@@ -440,12 +602,17 @@ function load_projects(type, status)
     });
 }
 
+function unload_all_projects()
+{
+    var variations = project_variations();
+}
+
 function unload_projects(type, status)
 {
     if (!$('#control-' + type).parent().find('ul li a.active').length)
         $('#control-' + type).removeClass('active');
     $('#control-' + type + '-' + status).removeClass('active');
-    for (var index in project_storage[type][status])
+    for (var index = 0; index < project_storage[type][status].length; index++)
         markers.removeMarker(project_storage[type][status][index]);
     project_storage[type][status] = [];
 }
@@ -475,35 +642,29 @@ function show_project_tooltip(lonlat, content, status)
     .fadeIn();
 }
 
+function zoom_mode()
+{
+    return map.zoom > 1 ? 'detailed' : 'regions';
+}
+
 function toggle_projects(type, status)
 {
-    var mode = 'regions';
-    if (map.zoom > 2)
-        mode = 'detailed';
-
-    //console.log(places);
-
     if (places[type][status] == true)
         places[type][status] = false;
     else
         places[type][status] = true;
 
-    // Reload projects depending on a zoom state/mode
-    reload_all_projects(mode);
+    reload_all_projects();
 }
 
 function project_variations()
 {
     var result = [],
     status_index = 0;
-    for (var type_index in project_types)
+    for (var type_index = 0; type_index < project_types.length; type_index++)
     {
-        if ($.inArray(project_types[type_index], project_types) < 0)
-            continue;
-        for (status_index in project_statuses)
+        for (status_index = 0; status_index < project_statuses.length; status_index++)
         {
-            if ($.inArray(project_statuses[status_index], project_statuses) < 0)
-                continue;
             if (places[project_types[type_index]][project_statuses[status_index]] === false)
                 continue;
             result.push(project_types[type_index] + '|' + project_statuses[status_index]);
@@ -513,27 +674,24 @@ function project_variations()
     return result;
 }
 
-function reload_all_projects(mode)
+function reload_all_projects()
 {
     var variations = project_variations(),
     type,
     status,
     parts;
-    for (var index in variations)
+    unload_region_projects();
+    coordinate_hash_storage = new Object();
+    for (var index = 0; index < variations.length; index++)
     {
         parts = variations[index].split('|');
         type = parts[0];
         status = parts[1];
-        if (mode == 'regions')
-        {
-            unload_region_projects();
+        unload_projects(type, status);
+        if (zoom_mode() == 'regions')
             load_region_projects(type, status);
-        }
         else
-        {
-            unload_projects(type, status);
             load_projects(type, status);
-        }
     }
 }
 
@@ -598,6 +756,7 @@ function toggle_overlay(name)
 function on_zoom()
 {
     load_all();
+    reload_all_projects();
 }
 
 function zoom_in()

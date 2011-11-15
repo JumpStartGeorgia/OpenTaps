@@ -47,60 +47,92 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
             switch ($status)
             {
                 case 'completed':
-                    $status_sql = "AND DATE(end_at) < CURDATE()";
+                    $status_sql = "AND DATE(pr.end_at) < CURDATE()";
                     break;
                 case 'current':
-                    $status_sql = "AND CURDATE() BETWEEN DATE(start_at) AND DATE(end_at)";
+                    $status_sql = "AND CURDATE() BETWEEN DATE(pr.start_at) AND DATE(pr.end_at)";
                     break;
                 case 'scheduled':
-                    $status_sql = "AND DATE(start_at) > CURDATE()";
+                    $status_sql = "AND DATE(pr.start_at) > CURDATE()";
                     break;
             }
 
             $sql = "
-                SELECT `unique` AS id, title, place_unique
-                FROM projects
-                WHERE type = '{$type}'
-                {$status_sql}
-                AND lang = '" . LANG . "'
+                SELECT
+                    pr.`unique` AS id,
+                    pr.title,
+                    pl.longitude,
+                    pl.latitude
+                FROM places AS pl
+                    INNER JOIN project_places AS pp
+                        ON pp.place_id = pl.`unique`
+                    INNER JOIN projects AS pr
+                        ON pp.project_id = pr.`unique`
+                WHERE pr.lang = '" . LANG . "'
+                    AND pr.lang = pl.lang
+                    AND pr.type = '{$type}'
+                    {$status_sql}
             ;";
 
-            $result = db()->query($sql, PDO::FETCH_ASSOC);
-
-            if (empty($result))
-                exit(json_encode(array()));
+            $places = db()->query($sql, PDO::FETCH_ASSOC);
 
             $json = array();
 
-            foreach ($result AS $item)
-            {
-                //$place_ids = $item['place_unique'];
-                if (empty($item['place_unique']) OR is_numeric($item['place_unique']))
-                    $place_ids = $item['place_unique'];
-                else
-                {
-                    $place_ids = unserialize($item['place_unique']);
-                    if (empty($place_ids))
-                        continue;
-                    $place_ids = implode(', ', $place_ids);
-                }
-                $places_sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = '" . LANG . "';";
-                $places = db()->query($places_sql, PDO::FETCH_ASSOC)->fetchAll();
-                if (empty($places))
-                    continue;
-                //empty($places) AND $places = array();
-                $json[] = array(
-                    'id' => $item['id'],
-                    'title' => $item['title'],
-                    'places' => $places
-                );
-            }
+            if (empty($places))
+                exit(json_encode($json));
+
+            /* foreach ($projects AS $project)
+              {
+              //$place_ids = $item['place_unique'];
+              if (empty($project['place_unique']) OR is_numeric($project['place_unique']))
+              $place_ids = $project['place_unique'];
+              else
+              {
+              $place_ids = unserialize($project['place_unique']);
+              if (empty($place_ids))
+              continue;
+              $place_ids = implode(', ', $place_ids);
+              }
+              $places_sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = '" . LANG . "';";
+              $places = db()->query($places_sql, PDO::FETCH_ASSOC)->fetchAll();
+              if (empty($places))
+              continue;
+
+              $json[] = array(
+              'id' => $project['id'],
+              'title' => $project['title'],
+              'places' => $places
+              );
+              } */
+
+            $json = $places->fetchAll();
 
             exit(json_encode($json));
         }
 );
 
-Slim::get('/map-data/merged-projects/:type(/:status)', 'check_map_data_access', function($type, $status = 'all')
+Slim::get('/map-data/project(/:unique)', 'check_map_data_access', function($unique = NULL)
+        {
+            $json = array();
+            if (empty($unique))
+                exit(json_encode($json));
+
+            $sql = "
+                    SELECT pr.*
+                    FROM places AS pl
+                    INNER JOIN project_places AS pp
+                    ON pp.place_id = pl.`unique`
+                    INNER JOIN projects AS pr
+                    ON pr.`unique` = pp.project_id
+                    WHERE pr.`unique` = {$unique}
+                    AND pl.lang = '" . LANG . "'
+                    AND pr.lang = pl.lang
+                    LIMIT 1
+            ;";
+        }
+);
+
+Slim::get('/map-data/cluster-projects/:type/:status(/:radius)', 'check_map_data_access', function($type, $status, $radius = 10)
         {
             $type = ucwords(str_replace('_', ' ', trim(strtolower($type))));
 
@@ -108,62 +140,56 @@ Slim::get('/map-data/merged-projects/:type(/:status)', 'check_map_data_access', 
             switch ($status)
             {
                 case 'completed':
-                    $status_sql = "AND DATE(end_at) < CURDATE()";
+                    $status_sql = "AND DATE(pr.end_at) < CURDATE()";
                     break;
                 case 'current':
-                    $status_sql = "AND CURDATE() BETWEEN DATE(start_at) AND DATE(end_at)";
+                    $status_sql = "AND CURDATE() BETWEEN DATE(pr.start_at) AND DATE(pr.end_at)";
                     break;
                 case 'scheduled':
-                    $status_sql = "AND DATE(start_at) > CURDATE()";
+                    $status_sql = "AND DATE(pr.start_at) > CURDATE()";
                     break;
             }
 
             $sql = "
-                SELECT `unique` AS id, title, place_unique
-                FROM projects
-                WHERE type = '{$type}'
-                {$status_sql}
-                AND lang = '" . LANG . "'
-            ;";
+                SELECT pl.*
+                FROM places AS pl
+                    INNER JOIN project_places AS pp ON pp.place_id = pl.`unique`
+                    INNER JOIN projects AS pr ON pp.project_id = pr.`unique`
+                WHERE pl.lang = '" . LANG . "'
+                    AND pr.lang = pl.lang
+                ;";
 
-            $result = db()->query($sql, PDO::FETCH_ASSOC);
-
-            if (empty($result))
-                exit(json_encode(array()));
+            $places = db()->query($sql, PDO::FETCH_ASSOC)->fetchAll();
 
             $json = array();
 
-            foreach ($result AS $item)
+            if (empty($places))
+                exit(json_encode($json));
+
+            foreach ($places AS $key => &$place)
             {
-                /*
-                  //$place_ids = $item['place_unique'];
-                  if (empty($item['place_unique']) OR is_numeric($item['place_unique']))
-                  $place_ids = $item['place_unique'];
-                  else
-                  {
-                  $place_ids = unserialize($item['place_unique']);
-                  if (empty($place_ids))
-                  continue;
-                  $place_ids = implode(', ', $place_ids);
-                  }
-                  $places_sql = "SELECT name, latitude, longitude FROM places WHERE `unique` IN ($place_ids) AND lang = '" . LANG . "';";
-                  $places = db()->query($places_sql, PDO::FETCH_ASSOC)->fetchAll();
-                  if (empty($places))
-                  continue;
-                  //empty($places) AND $places = array();
-                  $json[] = array(
-                  'id' => $item['id'],
-                  'title' => $item['title'],
-                  'places' => $places
-                  );
-                 */
+                $sql = "
+                    SELECT DISTINCT pr.`unique`, pr.*
+                    FROM projects AS pr
+                        INNER JOIN project_places AS pp ON pp.project_id = pr.`unique`
+                        INNER JOIN places AS pl ON pp.place_id = {$place['unique']}
+                    WHERE pr.lang = '" . LANG . "'
+                        AND pr.hidden = 0
+                        #AND pr.type = '{$type}'
+                        #{$status_sql}
+                ;";
+                $projects = db()->query($sql, PDO::FETCH_ASSOC)->fetchAll();
+                if (empty($projects))
+                    continue;
+                $place['projects'] = $projects;
+                $json[] = $place;
             }
 
             exit(json_encode($json));
         }
 );
 
-Slim::get('/map-data/region-projects(/:type(/:status))', 'check_access', function($type = NULL, $status = NULl)
+Slim::get('/map-data/cluster-region-projects(/:type(/:status))', 'check_map_data_access', function($type = NULL, $status = NULl)
         {
 
             $type_sql = NULL;
@@ -213,7 +239,8 @@ Slim::get('/map-data/region-projects(/:type(/:status))', 'check_access', functio
                             ON pp.place_id = pl.`unique`
                         INNER JOIN projects AS pr
                             ON pr.`unique` = pp.project_id
-                    WHERE pl.region_unique = {$region['unique']}
+                    #WHERE pl.region_unique = {$region['unique']}
+                    WHERE pr.region_unique = {$region['unique']}
                         AND pl.lang = '" . LANG . "'
                         AND pr.lang = pl.lang
                     {$type_sql}

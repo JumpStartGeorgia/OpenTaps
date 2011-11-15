@@ -222,24 +222,41 @@ $(function()
         var element = $(this),
         expandable = element.parent().find('.expandable');
         abbr = element.parent().find('abbr');
-
+		
+		
         $('.expandable:visible').parent().find('abbr').hide();
         $('.expandable:visible').slideUp().parent().find('span.racxa').html('►');
 
         if (expandable.is(':visible'))
         {
-            expandable.stop().slideUp('normal');
+        	
+            expandable.stop().slideUp('normal',function ()
+            	{
+         		    element.css('border-bottom','1px dotted #CCCCCC');
+		        	expandable.css('border-bottom','0px');
+            	}
+            );
             element.find('span.racxa').text('►');
             abbr.hide();
+
         }
         else
         {
+        	$.each(element.parent().parent().find('.expand_title'),function (ind,val)
+        		{
+        				$(val).css('border-bottom','1px dotted #CCCCCC');
+        		}
+        	);
+        	element.css('border-bottom','0px');
+        	expandable.css('border-bottom','1px dotted #CCCCCC');
             expandable.slideDown('normal');
             element.find('span.racxa').text('▼');
             abbr.show();
         }
 
     });
+    
+    $('.expand_title:first').css('border-bottom','0px').parent().find('.expandable:first').css('border-bottom','1px dotted #CCCCCC');
 
 
     var data_field_index = 0;
@@ -892,20 +909,30 @@ $(function()
 
 });
 
-/* Project Data	*/
+/* Project Data Animation	*/
 
-var projectGroup = $('#group').children('div');
-projectGroup = projectGroup.slice(0,projectGroup.length-1);
+var projectGroup = $('#group').find('.expand_title');
+projectGroup.hover(
+	function ()
+	{
+		$(this).css('color','#565656');	
+	},
+	function ()
+	{
+		if ( !$(this).data('active') )
+			$(this).css('color','#A6A6A6');
+	}
+);
 
 $.fn.projectInfoActive = function ()
 {
 
     $.each(projectGroup,function (ind,val)
-    {
-        if( !$(val).data('active') )
-            $(val).css('color','#A4A4A4');
-        else $(val).css('color','#565656');
-    }
+    	{
+	        if( !$(val).data('active') )
+    	        $(val).css('color','#A4A4A4');
+    	    else $(val).css('color','#565656');
+    	}
     );
 
 };
@@ -915,21 +942,24 @@ $.each(projectGroup,function (ind,val)
     if ( ind == 0 )	$(val).data('active',true);
     else $(val).data('active',false);
     $(val).click(function ()
-    {
+    	{
+			if ( $(this).data('active') )
+				$(this).data('is_active',true);
+			else $(this).data('is_active',false);
+				
+    	    $.each(projectGroup,function (ind,val)
+    		    {
+    		        $(val).data('active',false);
+    		    }
+    	    );
 
-
-        $.each(projectGroup,function (ind,val)
-        {
-            $(val).data('active',false);
-        }
-        );
-
-        if ( $(this).data('active') )
-            $(this).data('active',false);
-        else $(this).data('active',true);
-
-        $().projectInfoActive();
-    }
+			if ( $(this).data('is_active') )
+				$(this).data('active',false);
+			else $(this).data('active',true);
+	
+    	    $().projectInfoActive();
+    	    $(this).css('color','#565656');
+    	}
     );
 }
 );
