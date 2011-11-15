@@ -531,11 +531,13 @@ $(function()
         {
             if (contact_is_visible)
             {
+                
                 contact.animate({
-                    height: 0
-                }, function(){
-                    contact.hide();
-                });
+    		             	 height: 0
+		        }, function(){
+    		          contact.hide();
+ 		        });
+
                 contact_is_visible = false;
             }
             i = about.position().top;
@@ -554,15 +556,54 @@ $(function()
         });
     });
 
+	var showFooterMap = function ()
+	{
+		
+				var bot_container = $('#bot-container');
+				bot_container.find('#contact-us-map:first').remove();
+				bot_container.append('<div id="contact-us-map"></div>');
+
+			var footer_map = new OpenLayers.Map('contact-us-map', {
+				controls: [
+				new OpenLayers.Control.Navigation(),
+				new OpenLayers.Control.ArgParser(),
+				new OpenLayers.Control.Attribution()
+				]
+			}),
+			footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
+				isBaseLayer: true
+			}),
+			footer_map_marker_layer = new OpenLayers.Layer.Markers('Footer Marker');
+			footer_map.addLayers([footer_map_layer,footer_map_marker_layer]);
+
+			var coordinates = new OpenLayers.LonLat(44.798735, 41.697960),
+            marker = new OpenLayers.Marker(coordinates, all_icon.clone());
+			footer_map_marker_layer.addMarker(marker);
+			footer_map.setCenter(
+				coordinates.transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
+				, 10);	
+			footer_map.zoomTo(16);
+
+	};
     contact_button.click(function()
     {
         if (contact_is_visible)
         {
-            contact.animate({
-                height: 0
-            }, function(){
-                contact.hide();
-            });
+
+            $.each([contact,$('#contact-us-map')],function (ind,val)
+            	{
+            		$(val).animate({
+					    height: 0
+					}, function ()
+					{
+				        contact.hide();
+				        $('#contact-us-map').hide();
+				    });
+            	}
+            );        
+            
+          
+
             contact_is_visible = false;
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
         }
@@ -579,9 +620,14 @@ $(function()
             }
             i = contact.position().top;
             timedScroll();
+            showFooterMap();
             contact.css('height', 0).show().animate({
-                height: contact_height
-            });
+    	         height: contact_height
+	       	});
+            	
+            
+            $('#contact-us-form-container').css('z-index','7000');
+            
             contact_is_visible = true;
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
         }
@@ -882,30 +928,6 @@ $(function()
 
         });
     });
-
-});
-
-// Footer Map
-$(function()
-{
-    var footer_map = new OpenLayers.Map('contact-us', {
-        controls: [
-        new OpenLayers.Control.Navigation(),
-        new OpenLayers.Control.ArgParser(),
-        new OpenLayers.Control.Attribution()
-        ]
-    }),
-    footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
-        isBaseLayer: true
-    });
-    footer_map.addLayer(footer_map_layer);
-    footer_map.setCenter(
-        new OpenLayers
-        .LonLat(44.798735,41.697960)
-        .transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
-        , 15);
-
-
 
 });
 
