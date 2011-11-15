@@ -139,27 +139,22 @@
         <?php endforeach; ?>
 
         <?php if (!empty($tags)): ?>
-            <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
+            <div class="data_block group" style="border-bottom: 0px;">
                 <div class='key'><?php echo strtoupper(l('tag_cloud')) ?></div>
-                <div class='value group' style="line-height: 25px;">
+                <div class="value group" style="padding: 0px;">
                     <?php
                     foreach (array_values($tags) as $key => $tag):
-                        /* if ($key == config('projects_in_sidebar'))
-                          {
-                          break;
-                          } */
                         $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
-                        echo
-                        "<a class='organization_project_link' " . $hidden . " href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
-                        char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
-                        "</a>"
-                        ;
+                        ?>
+                        <a <?php echo $hidden; ?> class="organization_project_link" href="<?php echo href('tag/project/' . $tag['name'], TRUE) ?>">
+                        <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
+                        </a><?php
                     endforeach;
                     if ($hidden):
-                        ?><a style="margin: 0; padding: 0; line-height: 10px; border: 0" class="show_hidden_list_items organization_project_link">▾</a><?php endif; ?>
+                        ?><a class="show_hidden_list_items organization_project_link">▾</a><?php endif; ?>
                 </div>
             </div>
-        <?php endif; ?>
+<?php endif; ?>
 
     </div><!--DATA END-->
 
