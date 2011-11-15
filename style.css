@@ -282,7 +282,7 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 #map-controls > li > ul > li > ul > li.first { border-top: 1px dashed #CFCFCF }
 
 
-.highcharts-container svg > text { display: none !important }
+/*.highcharts-container svg > text { display: none !important }*/
 #showtables { /*width: 750px;*/ font-family: Arial }
 #showtables table { width: 100%; float: left }
 #showtables h3 { font-size: 14px; color: #565656; margin-top: .75em }

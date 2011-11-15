@@ -111,4 +111,16 @@ var pie_chart_options = {
 	  }
       }
 
-   };
+   },
+
+line_chart_options = {
+      chart: {},
+      credits: { enabled: false },
+      title: {},
+      subtitle: {},
+      xAxis: {},
+      yAxis: {},
+      tooltip: {},
+      legend: {},
+      series: []
+};

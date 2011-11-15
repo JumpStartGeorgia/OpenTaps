@@ -42,7 +42,7 @@ return array(
     'tags_projects' => 'PROJECTS',
     'tags_organizations' => 'ORGANIZATIONS',
     'tags_news' => 'news',
-    'ws_hiy' => 'How Interest You',
+    'ws_hiy' => 'Choose a place',
     'ws_region' => 'region',
     'ws_last_updated' => 'Last Updated',
     'ws_region_projects' => 'REGION PROJECTS',
