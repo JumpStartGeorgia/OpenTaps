@@ -389,8 +389,8 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 #tooltip.completed { background: #00AEEF }
 #tooltip.current { background: #FF4C4C }
 #tooltip.scheduled { background: #01C288 }
-#tooltip a { color: #FFF }
-#tooltip a:hover { text-decoration: none }
+#tooltip a { color: #FFF; text-decoration: none }
+#tooltip a:hover { text-decoration: underline }
 #tooltip span { display: block; padding: 30px }
 
 /*#map-popup { background: #00AEEF !important; -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; color: #FFF; text-align: center; font-size: 12px }
