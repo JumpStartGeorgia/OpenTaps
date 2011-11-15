@@ -222,19 +222,19 @@ $(function()
         var element = $(this),
         expandable = element.parent().find('.expandable');
         abbr = element.parent().find('abbr');
-		
-		
+
+
         $('.expandable:visible').parent().find('abbr').hide();
         $('.expandable:visible').slideUp().parent().find('span.racxa').html('►');
 
         if (expandable.is(':visible'))
         {
-        	
+
             expandable.stop().slideUp('normal',function ()
-            	{
-         		    element.css('border-bottom','1px dotted #CCCCCC');
-		        	expandable.css('border-bottom','0px');
-            	}
+            {
+                element.css('border-bottom','1px dotted #CCCCCC');
+                expandable.css('border-bottom','0px');
+            }
             );
             element.find('span.racxa').text('►');
             abbr.hide();
@@ -242,20 +242,20 @@ $(function()
         }
         else
         {
-        	$.each(element.parent().parent().find('.expand_title'),function (ind,val)
-        		{
-        				$(val).css('border-bottom','1px dotted #CCCCCC');
-        		}
-        	);
-        	element.css('border-bottom','0px');
-        	expandable.css('border-bottom','1px dotted #CCCCCC');
+            $.each(element.parent().parent().find('.expand_title'),function (ind,val)
+            {
+                $(val).css('border-bottom','1px dotted #CCCCCC');
+            }
+            );
+            element.css('border-bottom','0px');
+            expandable.css('border-bottom','1px dotted #CCCCCC');
             expandable.slideDown('normal');
             element.find('span.racxa').text('▼');
             abbr.show();
         }
 
     });
-    
+
     $('.expand_title:first').css('border-bottom','0px').parent().find('.expandable:first').css('border-bottom','1px dotted #CCCCCC');
 
 
@@ -410,7 +410,7 @@ $(function(){
     }, function()
     {
         if (disabling)
-            return false;
+            return;
         $(this).stop().animate({
             opacity: .65
         }, 'slow');
@@ -531,11 +531,13 @@ $(function()
         {
             if (contact_is_visible)
             {
+                
                 contact.animate({
-                    height: 0
-                }, function(){
-                    contact.hide();
-                });
+    		             	 height: 0
+		        }, function(){
+    		          contact.hide();
+ 		        });
+
                 contact_is_visible = false;
             }
             i = about.position().top;
@@ -554,15 +556,54 @@ $(function()
         });
     });
 
+	var showFooterMap = function ()
+	{
+		
+				var bot_container = $('#bot-container');
+				bot_container.find('#contact-us-map:first').remove();
+				bot_container.append('<div id="contact-us-map"></div>');
+
+			var footer_map = new OpenLayers.Map('contact-us-map', {
+				controls: [
+				new OpenLayers.Control.Navigation(),
+				new OpenLayers.Control.ArgParser(),
+				new OpenLayers.Control.Attribution()
+				]
+			}),
+			footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
+				isBaseLayer: true
+			}),
+			footer_map_marker_layer = new OpenLayers.Layer.Markers('Footer Marker');
+			footer_map.addLayers([footer_map_layer,footer_map_marker_layer]);
+
+			var coordinates = new OpenLayers.LonLat(44.798735, 41.697960),
+            marker = new OpenLayers.Marker(coordinates, all_icon.clone());
+			footer_map_marker_layer.addMarker(marker);
+			footer_map.setCenter(
+				coordinates.transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
+				, 10);	
+			footer_map.zoomTo(16);
+
+	};
     contact_button.click(function()
     {
         if (contact_is_visible)
         {
-            contact.animate({
-                height: 0
-            }, function(){
-                contact.hide();
-            });
+
+            $.each([contact,$('#contact-us-map')],function (ind,val)
+            	{
+            		$(val).animate({
+					    height: 0
+					}, function ()
+					{
+				        contact.hide();
+				        $('#contact-us-map').hide();
+				    });
+            	}
+            );        
+            
+          
+
             contact_is_visible = false;
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
         }
@@ -579,9 +620,14 @@ $(function()
             }
             i = contact.position().top;
             timedScroll();
+            showFooterMap();
             contact.css('height', 0).show().animate({
-                height: contact_height
-            });
+    	         height: contact_height
+	       	});
+            	
+            
+            $('#contact-us-form-container').css('z-index','7000');
+            
             contact_is_visible = true;
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
         }
@@ -885,54 +931,30 @@ $(function()
 
 });
 
-// Footer Map
-$(function()
-{
-    var footer_map = new OpenLayers.Map('contact-us', {
-        controls: [
-        new OpenLayers.Control.Navigation(),
-        new OpenLayers.Control.ArgParser(),
-        new OpenLayers.Control.Attribution()
-        ]
-    }),
-    footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
-        isBaseLayer: true
-    });
-    footer_map.addLayer(footer_map_layer);
-    footer_map.setCenter(
-        new OpenLayers
-        .LonLat(44.798735,41.697960)
-        .transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
-        , 15);
-
-
-
-});
-
 /* Project Data Animation	*/
 
 var projectGroup = $('#group').find('.expand_title');
 projectGroup.hover(
-	function ()
-	{
-		$(this).css('color','#565656');	
-	},
-	function ()
-	{
-		if ( !$(this).data('active') )
-			$(this).css('color','#A6A6A6');
-	}
-);
+    function ()
+    {
+        $(this).css('color','#565656');
+    },
+    function ()
+    {
+        if ( !$(this).data('active') )
+            $(this).css('color','#A6A6A6');
+    }
+    );
 
 $.fn.projectInfoActive = function ()
 {
 
     $.each(projectGroup,function (ind,val)
-    	{
-	        if( !$(val).data('active') )
-    	        $(val).css('color','#A4A4A4');
-    	    else $(val).css('color','#565656');
-    	}
+    {
+        if( !$(val).data('active') )
+            $(val).css('color','#A4A4A4');
+        else $(val).css('color','#565656');
+    }
     );
 
 };
@@ -942,24 +964,24 @@ $.each(projectGroup,function (ind,val)
     if ( ind == 0 )	$(val).data('active',true);
     else $(val).data('active',false);
     $(val).click(function ()
-    	{
-			if ( $(this).data('active') )
-				$(this).data('is_active',true);
-			else $(this).data('is_active',false);
-				
-    	    $.each(projectGroup,function (ind,val)
-    		    {
-    		        $(val).data('active',false);
-    		    }
-    	    );
+    {
+        if ( $(this).data('active') )
+            $(this).data('is_active',true);
+        else $(this).data('is_active',false);
 
-			if ( $(this).data('is_active') )
-				$(this).data('active',false);
-			else $(this).data('active',true);
-	
-    	    $().projectInfoActive();
-    	    $(this).css('color','#565656');
-    	}
+        $.each(projectGroup,function (ind,val)
+        {
+            $(val).data('active',false);
+        }
+        );
+
+        if ( $(this).data('is_active') )
+            $(this).data('active',false);
+        else $(this).data('active',true);
+
+        $().projectInfoActive();
+        $(this).css('color','#565656');
+    }
     );
 }
 );

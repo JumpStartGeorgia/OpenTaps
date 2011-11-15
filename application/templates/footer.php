@@ -44,14 +44,15 @@
                 <div style='color: #000; margin-top: 27px;'>We'd love to hear from you</div>
                 <div style='color: #000;'>Let's get started!</div>
             </div>
-            <div id='contact-us-form'>
+            <!--<div id='contact-us-form'>
                 <form action='' method=''>
                     <input type='text' name='' value='name:' class='contact-us-input' onfocus='contact_us_input_focus(this, "name:")' onblur='contact_us_input_blur(this, "name:")' />
                     <input type='text' name='' value='e-mail:*' class='contact-us-input' onfocus='contact_us_input_focus(this, "e-mail:*")' onblur='contact_us_input_blur(this, "e-mail:*")' />
                     <textarea id='contact-us-textarea' class='mceNoEditor' onfocus='contact_us_input_focus(this, "message:*")' onblur='contact_us_input_blur(this, "message:*")'>message:*</textarea>
                 </form>
-            </div>
+            </div>-->
         </div>
+        
     </div>
 </div>
 

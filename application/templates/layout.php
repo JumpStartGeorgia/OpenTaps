@@ -68,6 +68,7 @@
             'jquery.chosen.js',
             'jquery.slideQuery.js',
             'jquery.ui.effects.js',
+            'jquery.easing.js'
         );
         if (isset(Storage::instance()->show_chart))
         {
