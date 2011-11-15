@@ -1,24 +1,9 @@
-<script type="text/javascript">
-    /*var region_map_boundsLeft = 4550479.3343998,
-        region_map_boundsRight = 4722921.2701802,
-        region_map_boundsTop = 5183901.869223,
-        region_map_boundsBottom = 5034696.790037;*/
-    /*var region_map_zoom = false,
-    region_make_def_markers = false,
-    region_show_def_buttons = false,
-    region_map_maxzoomout = 8,
-    region_map_longitude = <?php echo isset($project) ? $project['longitude'] : 'false'; ?>,
-    region_map_latitude = <?php echo isset($project) ? $project['latitude'] : 'false'; ?>,
-    region_marker_click = false;*/
-</script>
-
 <div id='project_content'>
 
     <div style="float: left;">
         <div id="map" style="width: 638px; height: 160px; border-top: 0;"></div>
         <div style="background:url(<?php echo URL . 'images/bg.jpg' ?>) repeat; width: 610px; height: 31px; padding: 8px 15px;">
             <span style="font-size: 16px;"><?php echo $project['title'] ?></span>
-            <?php /* <span style="font-size: 10px; display: block; margin-top: 2px;"><?php echo $project['start_at'] ?></span> */ ?>
 
         </div>
         <?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/projects/' . $project['unique'], TRUE) . "'>Edit</a>"); ?>
@@ -29,10 +14,17 @@
                 </span>
                 <?php /* <abbr><?php $edit_permission AND print edit_button('basic_info'); ?></abbr> */ ?>
                 <div class="expandable" style="display: block;">
-                    <?php echo l('location_region') ?>:
-                    <a id="region_link" href="<?php echo href('region/' . $project['region_unique'], TRUE); ?>">
-                        <?php echo $project['region_name']; ?>
-                    </a><br />
+
+                    <?php
+                    $region_sql = "SELECT name FROM regions WHERE `unique` = {$project['region_unique']} AND lang = '" . LANG . "' LIMIT 1;";
+                    $region = db()->query($region_sql, PDO::FETCH_ASSOC)->fetch();
+                    if (!empty($region)):
+                        ?>
+                        <b><?php echo l('location_region') ?></b>:
+                        <a id="region_link" href="<?php echo href('region/' . $project['region_unique'], TRUE); ?>"><?php echo $region['name'] ?></a>
+                        <br />
+                    <?php endif; ?>
+
                     <?php echo l('location_city_town') ?>: <?php echo $project['city']; ?><br />
                     <?php echo l('grantee') ?>: <?php echo $project['grantee']; ?><br />
                     <?php echo l('sector') ?>: <?php echo $project['sector']; ?><br />
@@ -152,10 +144,10 @@
                 <div class='value group' style="line-height: 25px;">
                     <?php
                     foreach (array_values($tags) as $key => $tag):
-                        /*if ($key == config('projects_in_sidebar'))
-                        {
-                            break;
-                        }*/
+                        /* if ($key == config('projects_in_sidebar'))
+                          {
+                          break;
+                          } */
                         $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
                         echo
                         "<a class='organization_project_link' " . $hidden . " href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
@@ -163,8 +155,8 @@
                         "</a>"
                         ;
                     endforeach;
-                    if ($hidden): ?><a style="margin: 0; padding: 0; line-height: 10px; border: 0" class="show_hidden_list_items organization_project_link">▾</a><?php endif;
-                    ?>
+                    if ($hidden):
+                        ?><a style="margin: 0; padding: 0; line-height: 10px; border: 0" class="show_hidden_list_items organization_project_link">▾</a><?php endif; ?>
                 </div>
             </div>
         <?php endif; ?>

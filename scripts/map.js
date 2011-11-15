@@ -326,12 +326,12 @@ function unload_region_projects()
     $('a[id^="control-"]').removeClass('active');
     for (var index in new_project_storage)
         markers.removeMarker(new_project_storage[index]);
-    new_project_storage[index] = [];
+    new_project_storage = [];
 }
 
 function load_region_projects(type, status)
 {
-    var request_url = baseurl + 'map-data/region-projects/' + type + '/' + status + '?lang=' + lang;
+    var request_url = baseurl + 'map-data/cluster-region-projects/' + type + '/' + status + '?lang=' + lang;
     //var request_url = baseurl + 'map-data/region-projects?lang=' + lang;
     $.getJSON(request_url, function(result)
     {
