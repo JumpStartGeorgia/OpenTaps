@@ -33,9 +33,8 @@ Slim::get('/projects/(filter/:filter/)', function($filter = FALSE)
 
 Slim::get('/project/:unique/', function($unique)
         {
-            Storage::instance()->show_map = FALSE;
+            Storage::instance()->show_project_map = TRUE;
             Storage::instance()->show_chart = array('project' => TRUE);
-
             $query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
@@ -228,9 +227,8 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 
                     $data = json_decode($_SESSION[$uniqid], TRUE);
                     $first_row = $_SESSION[$uniqid . '_first_row'];
-                    unset($_SESSION[$uniqid . '_first_row']);
                     $headers = array(
-                        'Content-Type' => 'text/csv',
+                        'Content-Type' => 'text/csv; charset=utf-8',
                         'Content-Disposition' => 'attachment; filename=' . $name
                     );
                     foreach ($headers AS $key => $value)
@@ -241,7 +239,13 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 
                     fputcsv($fp, $first_row);
                     foreach ($data as $fields)
+                    {
+                    	foreach ($fields as &$value)
+			    //$value = iconv('', , $value);
+			    $value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
+			    $value = iconv("Windows-1252", "UTF-8", $value);
                         fputcsv($fp, $fields);
+                    }
 
                     fclose($fp);
 
@@ -251,10 +255,10 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
 
                     file_exists(DIR . 'uploads/' . $name) AND unlink(DIR . 'uploads/' . $name);
 
-                    /* ## UNSET SESSIONS STORED FOR CHART EXPORTING ## */
+                    /* ## UNSET SESSIONS STORED FOR CHART EXPORTING ##
                     foreach ($_SESSION AS $key => $value)
                         if (substr($key, 0, 8) == 'chartcsv')
-                            unset($_SESSION[$key]);
+                            unset($_SESSION[$key]);*/
 
                     break;
             }
@@ -311,15 +315,20 @@ Slim::get('/admin/projects/new/', function()
     	</script>
     ';
 
-            Storage::instance()->content = userloggedin() ? template('admin/projects/new', array(
+            Storage::instance()->content = userloggedin()
+		? template('admin/projects/new', array(
                         'all_tags' => read_tags(),
                         'organizations' => $orgs,
                         'regions' => $regions,
                         'project_types' => config('project_types'),
                         'places' => fetch_db($sql_places),
-                        'currency_list' => $currency_list
-                    )) : template('login');
+                        'currency_list' => $currency_list,
+                        'project_places' => '',
+                        'districts' => fetch_db("SELECT `unique`, name FROM districts_new WHERE lang = '" . LANG . "';")
+		    ))
+		: template('login');
         });
+
 
 Slim::get('/admin/projects/:unique/', function($unique)
         {
@@ -374,18 +383,20 @@ Slim::get('/admin/projects/:unique/', function($unique)
                 $budgets = fetch_db("SELECT * FROM project_budgets WHERE project_unique = :unique ORDER BY id;", array(':unique' => $unique));
                 Storage::instance()->content = template('admin/projects/edit', array
                     (
-                    'project' => read_projects($unique),
-                    'all_tags' => read_tags(),
-                    'this_tags' => read_tag_connector('proj', $unique),
-                    'this_orgs' => $this_orgs,
-                    'organizations' => $orgs,
-                    'regions' => $regions,
-                    'places' => $places,
-                    'project_types' => config('project_types'),
-                    'data' => read_page_data('project', $unique),
-                    'budgets' => $budgets,
-                    'currency_list' => $currency_list
-                        ));
+			'project' => read_projects($unique),
+			'all_tags' => read_tags(),
+			'this_tags' => read_tag_connector('proj', $unique),
+			'this_orgs' => $this_orgs,
+			'organizations' => $orgs,
+			'regions' => $regions,
+			'project_places' => get_project_place_ids($unique),
+			'places' => $places,
+			'project_types' => config('project_types'),
+			'data' => read_page_data('project', $unique),
+			'budgets' => $budgets,
+			'currency_list' => $currency_list,
+			'districts' => fetch_db("SELECT `unique`, name FROM districts_new WHERE lang = '" . LANG . "';")
+                    ));
             }
             else
                 Storage::instance()->content = template('login');
@@ -439,7 +450,7 @@ Slim::post('/admin/projects/:unique/update/', function($unique)
 
             if (userloggedin())
             {
-		delete_page_data('project', $unique, LANG);
+                delete_page_data('project', $unique, LANG);
                 if (!empty($_POST['data_key']))
                 {
                     add_page_data('project', $unique, $_POST['data_key'], $_POST['data_sort'], $_POST['sidebar'], $_POST['data_value'], LANG);

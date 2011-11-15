@@ -222,24 +222,41 @@ $(function()
         var element = $(this),
         expandable = element.parent().find('.expandable');
         abbr = element.parent().find('abbr');
-
+		
+		
         $('.expandable:visible').parent().find('abbr').hide();
         $('.expandable:visible').slideUp().parent().find('span.racxa').html('►');
 
         if (expandable.is(':visible'))
         {
-            expandable.stop().slideUp('normal');
+        	
+            expandable.stop().slideUp('normal',function ()
+            	{
+         		    element.css('border-bottom','1px dotted #CCCCCC');
+		        	expandable.css('border-bottom','0px');
+            	}
+            );
             element.find('span.racxa').text('►');
             abbr.hide();
+
         }
         else
         {
+        	$.each(element.parent().parent().find('.expand_title'),function (ind,val)
+        		{
+        				$(val).css('border-bottom','1px dotted #CCCCCC');
+        		}
+        	);
+        	element.css('border-bottom','0px');
+        	expandable.css('border-bottom','1px dotted #CCCCCC');
             expandable.slideDown('normal');
             element.find('span.racxa').text('▼');
             abbr.show();
         }
 
     });
+    
+    $('.expand_title:first').css('border-bottom','0px').parent().find('.expandable:first').css('border-bottom','1px dotted #CCCCCC');
 
 
     var data_field_index = 0;
@@ -267,7 +284,7 @@ $(function()
         "<br /><hr style='margin-left: -27px' />" +
         "</div>";
         container.append(html);
-        /*	enable chosenJS	
+        /*	enable chosenJS
         $('select').addClass('chosen-select');
         $(".chosen-select").chosen();
         /*	..
@@ -667,6 +684,7 @@ $(function()
                 });
             }
         });
+        about.height(about_height + 25);
     });
 
 });
@@ -725,7 +743,10 @@ $(function()
 });
 
 $(document).ready(function(){
-	wysiwyg_init();
+    if (typeof wysiwyg_init != 'undefined')
+    {
+        wysiwyg_init();
+    }
 });
 
 /* Initialize TinyMCE
@@ -802,6 +823,28 @@ $(function()
 if($('#logo_img').length)
     $('#logo_img').css('height', $('#project_details').css('height'));
 
+
+$(function()
+{
+    $('.show_hidden_list_items').click(function(){
+        var t = $(this);
+        if (t.html() == '▾')
+        {
+            t.parent().find(':hidden').attr('hidden', 1).slideDown(400);
+            t.html('▴');
+        }
+        else
+        {
+            t.parent().find('[hidden]').slideUp(300);
+            t.html('▾');
+        }
+    });
+
+});
+
+
+
+
 // Watter Supply Request/Response
 $(function()
 {
@@ -828,12 +871,15 @@ $(function()
 
     districts.change(function()
     {
-        var request_url = baseurl + 'water_supply/' + $(this).children('option:selected').attr('id') + '?lang=' + lang;
-        $.get(request_url, function(response)
+
+
+        $.get(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(json)
         {
-            console.log(response);
-            response = response || '';
-            $('#cont').html(data);
+
+
+            $("#project_content div:gt(11)").remove();
+            $("#project_content").append(json);
+
         });
     });
 
@@ -859,5 +905,70 @@ $(function()
         .transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
         , 15);
 
+
+
 });
+
+/* Project Data Animation	*/
+
+var projectGroup = $('#group').find('.expand_title');
+projectGroup.hover(
+	function ()
+	{
+		$(this).css('color','#565656');	
+	},
+	function ()
+	{
+		if ( !$(this).data('active') )
+			$(this).css('color','#A6A6A6');
+	}
+);
+
+$.fn.projectInfoActive = function ()
+{
+
+    $.each(projectGroup,function (ind,val)
+    	{
+	        if( !$(val).data('active') )
+    	        $(val).css('color','#A4A4A4');
+    	    else $(val).css('color','#565656');
+    	}
+    );
+
+};
+
+$.each(projectGroup,function (ind,val)
+{
+    if ( ind == 0 )	$(val).data('active',true);
+    else $(val).data('active',false);
+    $(val).click(function ()
+    	{
+			if ( $(this).data('active') )
+				$(this).data('is_active',true);
+			else $(this).data('is_active',false);
+				
+    	    $.each(projectGroup,function (ind,val)
+    		    {
+    		        $(val).data('active',false);
+    		    }
+    	    );
+
+			if ( $(this).data('is_active') )
+				$(this).data('active',false);
+			else $(this).data('active',true);
+	
+    	    $().projectInfoActive();
+    	    $(this).css('color','#565656');
+    	}
+    );
+}
+);
+
+$().projectInfoActive();
+
+
+
+
+
+
 

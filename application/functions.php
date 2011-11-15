@@ -165,14 +165,14 @@ function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $tex
     {
         $the_name = $name . (($adding_lang == $lang) ? NULL : " ({$lang})");
         $exec = $statement->execute(array(
-            ':name' => $the_name,
-            ':short_name' => empty($short_name) ? string_to_friendly_url($the_name) : $short_name,
-            ':parent_unique' => $parent_unique,
-            ':title' => $title,
-            ':text' => $text,
-            ':footer' => $footer,
-            ':lang' => $lang,
-            ':unique' => $unique
+                    ':name' => $the_name,
+                    ':short_name' => empty($short_name) ? string_to_friendly_url($the_name) : $short_name,
+                    ':parent_unique' => $parent_unique,
+                    ':title' => $title,
+                    ':text' => $text,
+                    ':footer' => $footer,
+                    ':lang' => $lang,
+                    ':unique' => $unique
                 ));
 
         $success = (bool) $exec;
@@ -190,14 +190,14 @@ function update_menu($unique, $name, $short_name, $parent_unique, $title, $text,
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $exec = $statement->execute(array(
-        ':unique' => $unique,
-        ':short_name' => empty($short_name) ? string_to_friendly_url($name) : $short_name,
-        ':name' => $name,
-        ':parent_unique' => $parent_unique,
-        ':title' => $title,
-        ':text' => $text,
-        ':hide' => $hide,
-        ':footer' => $footer
+                ':unique' => $unique,
+                ':short_name' => empty($short_name) ? string_to_friendly_url($name) : $short_name,
+                ':name' => $name,
+                ':parent_unique' => $parent_unique,
+                ':title' => $title,
+                ':text' => $text,
+                ':hide' => $hide,
+                ':footer' => $footer
             ));
 
     return ($exec) ? true : false;
@@ -515,9 +515,9 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     foreach ($tag_uniques AS $tag_unique)
     {
         $exec = $statement->execute(array(
-            ':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
-            ':f_unique' => $f_unique,
-            ':tag_unique' => $tag_unique
+                    ':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
+                    ':f_unique' => $f_unique,
+                    ':tag_unique' => $tag_unique
                 ));
         $check AND $check = (bool) $exec;
     }
@@ -540,9 +540,9 @@ function add_tag($adding_lang, $name, $redirect = TRUE)
     foreach (config('languages') as $lang)
     {
         $exec = $statement->execute(array(
-            ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
-            ':lang' => $lang,
-            ':unique' => $unique
+                    ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
+                    ':lang' => $lang,
+                    ':unique' => $unique
                 ));
         $success = (bool) $exec;
     }
@@ -566,8 +566,8 @@ function update_tag($unique, $name)
     $statement->closeCursor();
 
     $exec = $statement->execute(array(
-        ':unique' => $unique,
-        ':name' => $name
+                ':unique' => $unique,
+                ':name' => $name
             ));
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags", TRUE) . "' />";
@@ -756,12 +756,12 @@ function delete_place($unique)
 
 /* =======================================================Admin Regions 	============================================================ */
 
-function add_region($adding_lang, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL)
+function add_region($adding_lang, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply, $data_key = NULL, $data_sort = NULL, $data_value = NULL, $sidebar = NULL, $longitude = NULL, $latitude = NULL)
 {
     $unique = generate_unique("regions");
 
-    $sql = "INSERT INTO regions(name,region_info,projects_info,city,cities,towns,population,square_meters,settlement,villages,districts,lang,`unique`)
-	    VALUES(:name,:region_info,:region_projects,:city,:cities,:towns,:population,:squares,:settlement,:villages,:districts, :lang, :unique)";
+    $sql = "INSERT INTO regions(name,region_info,projects_info,city,cities,towns,population,square_meters,settlement,villages,districts,lang,`unique`,longitude,latitude)
+	    VALUES(:name,:region_info,:region_projects,:city,:cities,:towns,:population,:squares,:settlement,:villages,:districts, :lang, :unique,:longitude,:latitude)";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $data = array(
@@ -775,7 +775,9 @@ function add_region($adding_lang, $name, $region_info, $region_projects_info, $c
         ':settlement' => $settlement,
         ':villages' => $villages,
         ':districts' => $districts,
-        ':unique' => $unique
+        ':unique' => $unique,
+        ':longitude' => $longitude,
+        ':latitude' => $latitude
     );
 
     foreach (config('languages') as $lang)
@@ -824,20 +826,22 @@ function get_region($unique)
     return $statement->fetch(PDO::FETCH_ASSOC);
 }
 
-function update_region($unique, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply)
+function update_region($unique, $name, $region_info, $region_projects_info, $city, $cities, $towns, $population, $squares, $settlement, $villages, $districts, $water_supply, $longitude = NULL, $latitude = NULL)
 {
+    //cities = :cities,
+    //towns = :towns,
     $sql = "UPDATE regions SET
 			name = :name,
 			region_info = :region_info,
 			projects_info = :region_projects,
 			city = :city,
-			cities = :cities,
-			towns = :towns,
 			population = :population,
 			square_meters = :squares,
 			settlement = :settlement,
 			villages = :villages,
-			districts = :districts
+			districts = :districts,
+                        longitude = :longitude,
+                        latitude = :latitude
 		WHERE `unique` = :unique AND lang = '" . LANG . "'";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
@@ -847,16 +851,18 @@ function update_region($unique, $name, $region_info, $region_projects_info, $cit
         ':region_info' => $region_info,
         ':region_projects' => $region_projects_info,
         ':city' => $city,
-        ':cities' => $cities,
-        ':towns' => $towns,
+        //':cities' => $cities,
+        //':towns' => $towns,
         ':population' => $population,
         ':squares' => $squares,
         ':settlement' => $settlement,
         ':villages' => $villages,
-        ':districts' => $districts
+        ':districts' => $districts,
+        ':longitude' => $longitude,
+        ':latitude' => $latitude
     ));
 
-    $sql = "UPDATE water_supply SET text = :text WHERE region_unique = :region_unique AND lang = '" . LANG . "' LIMIT 1;";
+    $sql = "UPDATE water_supply SET text = :text WHERE district_unique = :region_unique AND lang = '" . LANG . "' LIMIT 1;";
     $stmt = Storage::instance()->db->prepare($sql);
     $stmt->closeCursor();
     $stmt->execute(array(
@@ -944,8 +950,8 @@ function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FAL
             p.*,
             pl.longitude,
             pl.latitude,
-            r.name AS region_name,
-            r.`unique` AS region_unique
+            r.name AS region_name
+            "./*r.`unique` AS region_unique*/"
         FROM projects AS p
         LEFT JOIN places AS pl
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
@@ -1036,10 +1042,11 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		`end_at`,
     		"/* `info`, */ . "
     		`type`,
-	        `place_unique`,
 	        `lang`,
 	        `unique`,
-	        `hidden`
+	        `hidden`,
+	        `region_unique`,
+	        `district_unique`
     	)
     	VALUES(
     		:title,
@@ -1052,10 +1059,11 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     		:end_at,
     		"/* :info, */ . "
     		:type,
-		:place_unique,
 		:lang,
 		:unique,
-		:hidden
+		:hidden,
+		:region_unique,
+		:district_unique
     	);
     ";
     $statement = db()->prepare($sql);
@@ -1071,11 +1079,12 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
         ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
         //':info' => $info,
         ':type' => $type,
-        ':place_unique' => serialize($place_unique),
+        //':place_unique' => serialize($place_unique),
         ':unique' => $unique,
         ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
+        ':region_unique' => $_POST['region_unique'],
+        ':district_unique' => $_POST['district_unique']
     );
-
 
     foreach (config('languages') as $lang)
     {
@@ -1087,6 +1096,9 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
 
     if ($success)
     {
+
+        connect_project_places($unique, $place_unique);
+
         if (!empty($org_uniques))
             foreach ($org_uniques as $org_unique)
             {
@@ -1115,10 +1127,10 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
                     $query = db()->prepare($sql);
                     $query->closeCursor();
                     $query = $query->execute(array(
-                        ':project_unique' => $unique,
-                        ':organization_unique' => $organization[$idx],
-                        ':currency' => $currency[$idx],
-                        ':budget' => $budget
+                                ':project_unique' => $unique,
+                                ':organization_unique' => $organization[$idx],
+                                ':currency' => $currency[$idx],
+                                ':budget' => $budget
                             ));
                 }
             }
@@ -1126,6 +1138,22 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     }
 
     Slim::redirect(href("admin/projects", TRUE));
+}
+
+function connect_project_places($unique, $place_unique)
+{
+    if (!empty($place_unique))
+    {
+        $place_statement = db()->prepare("INSERT INTO project_places (project_id, place_id) VALUEs(:project_id, :place_id);");
+        $place_statement->closeCursor();
+        foreach ($place_unique AS $place_id)
+        {
+            $place_statement->execute(array(
+                ':project_id' => $unique,
+                ':place_id' => (int) $place_id
+            ));
+        }
+    }
 }
 
 function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $place_unique, $city, $grantee, $sector, $start_at, $end_at, $info, $tag_uniques, $tag_names, $org_ids, $type)
@@ -1153,8 +1181,9 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     		end_at = :end_at,
     		info = :info,
     		type = :type,
-		place_unique = :place_unique,
-		hidden = :hidden
+		hidden = :hidden,
+		region_unique = :region_unique,
+		district_unique = :district_unique
     	WHERE
     		`projects`.`unique` = :unique
     	AND
@@ -1171,6 +1200,7 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     		project_organizations
     	WHERE
     		project_unique = :unique;
+        DELETE FROM project_places WHERE project_id = :unique;
     ";
     $statement = db()->prepare($sql);
     $statement->closeCursor();
@@ -1187,11 +1217,14 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
         ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
         ':info' => $info,
         ':type' => $type,
-        ':place_unique' => serialize($place_unique),
+        //':place_unique' => serialize($place_unique),
         ':hidden' => (isset($_POST['hidden']) ? 1 : 0),
+        ':region_unique' => $_POST['region_unique'],
+        ':district_unique' => $_POST['district_unique']
     );
     $exec = $statement->execute($data);
 
+    connect_project_places($unique, $place_unique);
 
     if (!empty($org_ids))
     {
@@ -1226,16 +1259,28 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
                 $query = db()->prepare($sql);
                 $query->closeCursor();
                 $query = $query->execute(array(
-                    ':project_unique' => $unique,
-                    ':organization_unique' => $organization[$idx],
-                    ':currency' => $currency[$idx],
-                    ':budget' => $budget
+                            ':project_unique' => $unique,
+                            ':organization_unique' => $organization[$idx],
+                            ':currency' => $currency[$idx],
+                            ':budget' => $budget
                         ));
             }
         }
     }
 
     Slim::redirect(href("admin/projects", TRUE));
+}
+
+function get_project_place_ids($unique)
+{
+    $sql = "SELECT place_id FROM project_places WHERE project_id = {$unique};";
+    $result = db()->query($sql)->fetchAll();
+    if (empty($result))
+        return array();
+    $ids = array();
+    foreach ($result AS $item)
+        $ids[] = $item['place_id'];
+    return $ids;
 }
 
 function delete_project($unique)
@@ -1376,13 +1421,13 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
     }
     foreach ($data as $d)
     {
-	if (!empty($d[$budgetindex]))
-	{
-	    $d[$nameindex] = char_limit($d[$nameindex], 30);
-	    $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
-	}
+        if (!empty($d[$budgetindex]))
+        {
+            $d[$nameindex] = char_limit($d[$nameindex], 30);
+            $newdata[] = array($d[$nameindex], (integer) $d[$budgetindex]);
+        }
     }
-    //for ($i = 1; $i < 35; $i ++){ $newdata[] = array('test', $i * 250000000); }
+    //for ($i = 1; $i < 25; $i ++){ $newdata[] = array('test', $i * 250000000); }
     return json_replace_unicode(json_encode($newdata));
     //return json_encode($newdata);
 }

@@ -18,16 +18,4 @@ Slim::get('/water_supply/:unique/', function($unique)
         }
 );
 
-Slim::get('/water_supply/districts/:id', function($id)
-        {
-            $sql = "
-                SELECT `unique` AS id, name
-                FROM places
-                WHERE region_unique = :region_unique
-                AND lang = '" . LANG . "'
-            ;";
-            $districts = fetch_db($sql, array(':region_unique' => $id));
-            empty($districts) AND $districts = array();
-            exit(json_encode($districts));
-        }
-);
+

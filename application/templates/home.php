@@ -106,24 +106,24 @@
         <?php endif; ?>
 
         <div id="news_bottom_content">
-            <a href="<?php echo href("news", TRUE); ?>">▸ <?php echo l('all_news') ?></a>
+            <a href="<?php echo href("news", TRUE); ?>"><p class="clearfix">▸</p> <?php echo l('all_news') ?></a>
         </div>
     </div>
 </div>
 
 
-<?php $filenameend = (LANG == "ka") ? "-geo.png" : ".gif"; ?>
+<?php $fne = (LANG == 'ka') ? '-geo' : ''; $fne2 = $fne . ((LANG == 'en') ? '.gif' : '.png'); $fne .= '.png'; ?>
 
 <div style="margin-top: 27px; " class="group">
     <div style="float: left; width: 293px; text-align: justify; font-size: 11px; color: #808080">
         <?php echo l('home_page_bottom_text'); ?>
     </div>
     <div style="float: left; margin-left: 85px; font-size: 14px; font-weight: bold; color: #00AFF2;">
-        <a href="<?php echo href('water_supply', TRUE) ?>"><img src="<?php echo href('images') . 'water-supply' . $filenameend ?>" style="margin-top: 9px;" /></a>
+        <a href="<?php echo href('water_supply', TRUE) ?>"><img src="<?php echo href('images') . 'water-supply-24' . $fne ?>" onmouseover="this.src = '<?php echo href('images') . 'water-supply-24-hover' . $fne2 ?>';" onmouseout="this.src = '<?php echo href('images') . 'water-supply-24' . $fne ?>';" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER SUPPLY SCHEDULE</h4>
     </div>
     <div style="display: inline-block; margin-left: 56px; height: 57px; padding-left: 56px; font-size: 14px; font-weight: bold; color: #00AFF2; border-left: 1px dotted #a6a6a6;">
-        <a href="<?php echo href('page/water-diseases', TRUE) ?>"><img src="<?php echo href('images') . 'water-diseases' . $filenameend ?>" style="margin-top: 9px;" /></a>
+        <a href="<?php echo href('page/water-diseases', TRUE) ?>"><img src="<?php echo href('images') . 'water-diseases' . $fne ?>" onmouseover="this.src = '<?php echo href('images') . 'water-diseases-hover' . $fne2 ?>';" onmouseout="this.src = '<?php echo href('images') . 'water-diseases' . $fne ?>';" style="margin-top: 9px;" /></a>
         <h4 style="visibility: hidden;">WATER AND DISEASES</h4>
     </div>
 </div>

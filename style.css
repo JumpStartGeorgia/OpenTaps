@@ -41,7 +41,20 @@ html[xmlns] .clearfix {
     height: 1%;
 }
 
+.boxshadow {
+	/*		BORDER	RADIUS		*/
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	/*		BOX SHADOW		*/
+	-moz-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+	-webkit-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+	box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+}
+
 /* General */
+a img, img { border: 0 }
+a { text-decoration:none;color:#0cb5f5; } 
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
 * html .group { zoom: 1 } /* IE6 */
@@ -73,14 +86,14 @@ div.menu ul li a { display: block; height: 26px; padding: 10px 10px 0px 10px; te
 div.menu ul li a:hover, div.menu ul li:hover { color: #0cb5f5; outline: 0 }
 div.projects_organization, div.news, div.spacer { display: table-cell; vertical-align: middle; text-align: center; color: #fff; font-size: 1.0em; font-family: Arial }
 #override_border { width: 0px; height: 1px; position: absolute; top: 0; left: 0; background: #fff }
-.menu ul li a div { letter-spacing: 1px }
+.menu ul li a div { font-size:13px;letter-spacing: 0px }
 
 /* Submenus */
 #submenu .submenu { display: none; width: 100%; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0 }
 #submenu .submenu table { width: 100% }
 #submenu .submenu td { vertical-align: middle; width: 149px; float: left; margin-left: 17px; margin-right: 17px; font-size: 11px; font-family: arial; border-bottom: 1px dotted @opentaps_default_bordercolor }
 #submenu .submenu td a { display: block; color: #7c7c7c; padding: 3px; padding-bottom: 5px; text-decoration: none }
-#submenu .submenu td a:hover { background-color: rgba(95,204,243,.2); border-color: rgba(0,0,0,.1) }
+#submenu .submenu td a:hover { color:#0cb5f5;/*background-color: rgba(95,204,243,.2);*/ border-color: rgba(0,0,0,.1) }
 
 div.search { float: right; border-left: 1px solid grey; margin-top: 5px; padding-left: 2px }
 div.search input.search { border: 0px; height: 25px; width: 122px; color: grey }
@@ -115,9 +128,10 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .right_title_one a:hover { color: #000 }
 .right_title_one a span { margin-right: 9px; font-size: 12px }
 .right_title_one a { padding: 9px 0px 14px 16px; color: #858585; text-decoration: none; display: block }
-#news_bottom_content { font-size: 12px; margin: 8px 2px 0px 0px; float: right }
-#news_bottom_content a { color: #858585; text-decoration: none }
-#news_bottom_content a:hover { text-decoration: underline }
+#news_bottom_content { font-size: 12px; margin: 8px 2px 0px 0px; float: right;width:90px }
+#news_bottom_content a { color: #858585; text-decoration: none; }
+#news_bottom_content a:hover { color:#0cb5f5; }
+#news_bottom_content p { width:4px;font-size:8px;padding-top:5px }
 #region_link, .region_link { text-decoration: none; color: @opentaps_default_color; cursor: pointer }
 #region_link:hover, .region_link:hover { text-decoration: underline }
 #content { width: 932px; min-height: 120px; margin-top: 0px; padding: 0; font-size: 12px !important }
@@ -145,8 +159,16 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .export a { color: grey; text-decoration: none }
 .export a:hover { color: black; text-decoration: underline }
 .expand_title { width: 625px; display: block; font-weight: bold; font-size: 14px; padding: 10px 0px 10px 15px; border-bottom: 1px dotted @opentaps_default_bordercolor; cursor: pointer }
+.racxa { font-size:7px; }
 .expandable { padding-left: 28px; display: none; margin-top: 4px }
+.expandable p { padding-bottom:10px; }
 .budget-container { -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; border: 1px solid rgba(0,0,0,.2); padding: 8px; margin-bottom: 8px }
+
+
+.show_hidden_list_items{  display: block; background: #F0F0F0; padding: 0px; font-size: 9px; height: 11px; cursor: pointer; text-align: center; text-decoration: none !important; }
+.show_hidden_list_items:hover{ color: #383838 !important; }
+.show_hidden_list_items:active{ background: #E0E0E0 !important; }
+
 
 /* Tags */
 #tag_content { font-family: arial }
@@ -222,6 +244,7 @@ div.filtersItemInactive { float: right; position: absolute; left: 850px; top: 15
 div.setsItemInactive { background-repeat: no-repeat; width: 25px; height: 20px; background: url("@baseurl/images/sets.jpg"); opacity: .8; margin-top: -20px; margin-left: 875px; cursor: pointer }
 div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/images/tags.jpg"); opacity: .8; margin-top: -20px; margin-left: 905px; cursor: pointer }
 .page-container { padding: 1em; width: 550px; margin-left: 0px; float: left }
+
 /*#map-overlay { position: absolute; top: 0; left: 0; z-index: 9999; height: 362px; line-height: 362px; width: 100.3%; background-color: #0CB5F6; color: #FFF; text-transform: uppercase; text-align: center; font-weight: bold; font-size: 200% }*/
 /*.highcharts-container svg > text { display: none !important }*/
 
@@ -377,5 +400,8 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 
 .wysiwyg { margin: 0 !important; width: 100% !important; display: block } 
 .wysiwyg iframe { height: 250px; display: block; width: 100% !important }
+
+.region-marker-container .region-marker-wrapper { position: relative; width: 27px; height: 27px; left: 0; top: -31px; cursor: pointer }
+.region-marker-container .region-marker-wrapper .region-marker-item { cursor: pointer; position: absolute; left: 9px; top: 5px; font-weight: bold; color: #FFF; font-size: 15px }
 
 <?php ob_end_flush(); ?>
