@@ -532,11 +532,15 @@ $(function()
             if (contact_is_visible)
             {
                 
-                contact.animate({
+                $.each([contact,$('#contact-us-map')],function (ind,val)
+                	{
+                		$(val).animate({
     		             	 height: 0
-		        }, function(){
-    		          contact.hide();
- 		        });
+						}, function(){
+						      contact.hide();
+		 		        });
+                	}
+                );                 		        
 
                 contact_is_visible = false;
             }
@@ -597,7 +601,7 @@ $(function()
 					}, function ()
 					{
 				        contact.hide();
-				        $('#contact-us-map').hide();
+				        $('#contact-us-map').hide().remove();
 				    });
             	}
             );        
@@ -623,6 +627,9 @@ $(function()
             showFooterMap();
             contact.css('height', 0).show().animate({
     	         height: contact_height
+	       	});
+	       	$('#contact-us-map').css('height', 0).show().animate({
+	       		height: '320px'
 	       	});
             	
             
