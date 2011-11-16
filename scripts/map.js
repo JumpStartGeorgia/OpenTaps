@@ -4,10 +4,9 @@
  * Otar Chekurishvili - otar@chekurishvili.com
  */
 
-// jQuery RegEx selector plugin
-
 // Define globals and configurations
-var map,
+var map_loaded = false,
+map,
 map_options = {
     bounds_left: 39.83642,
     bounds_top: 43.73079,
@@ -50,6 +49,25 @@ $.each(project_types, function(type_index)
     });
 });
 
+// Generate general icons
+var general_icons = new Object(),
+general_icon_properties = [{
+    "type": "small",
+    "size": 22
+}, {
+    "type": "medium",
+    "size": 40
+}, {
+    "type": "large",
+    "size": 53
+}];
+$.each(general_icon_properties, function(index, icon)
+{
+    var size = new OpenLayers.Size(icon.size, icon.size),
+    offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+    general_icons[icon.type] = new OpenLayers.Icon('images/map/projects/general_' + icon.type + '.png', size, offset);
+});
+
 function mapping()
 {
 
@@ -66,6 +84,13 @@ function mapping()
     // Load all external layers
     load_all();
     preload_layers();
+
+    // Map loading...
+    if (!map_loaded)
+    {
+        $('#map-overlay > span').toggle();
+        map_loaded = true;
+    }
 
     // Add markers layer as a very top overlay
     map.addLayer(markers);
@@ -280,8 +305,6 @@ function load_water()
 
 function unload_region_projects()
 {
-    //if (!region_projects_storage.length)
-    //return;
     $('a[id^="control-"]').removeClass('active');
     $.each(region_projects_storage, function(key, value)
     {
@@ -310,34 +333,20 @@ function load_region_projects(type, status)
             if (!project.places.length)
                 return true;
 
+            var count = parseInt(project.places),
+            size = 'small';
+
+            if (size > 3)
+                size = 'medium';
+            else if (size > 8)
+                size = 'large';
+
             var coordinates = new OpenLayers.LonLat(project.longitude, project.latitude),
-            marker = new OpenLayers.Marker(coordinates, all_icon.clone());
-            marker.setOpacity(0.95);
+            marker = new OpenLayers.Marker(coordinates, general_icons[size].clone());
             markers.addMarker(marker);
 
-            $('img[id$="_innerImage"]').
-            last().
-            parent().
-            addClass('region-marker-container').
-            append('<div class="region-marker-wrapper"><div class="region-marker-item">' + parseInt(project.places) + '</div></div>')
-            .hover(function()
-            {
-                $(this).stop().animate({
-                    opacity: .65
-                });
-            }, function()
-            {
-                $(this).stop().animate({
-                    opacity: 1
-                });
-            })
-            .click((function(coordinates)
-            {
-                return function()
-                {
-                    region_marker_action(coordinates);
-                }
-            })(coordinates));
+            $('#' + marker.icon.imageDiv.id).
+            append('<div class="region-marker-wrapper ' + size + '">' + count + '</div>');
 
             region_projects_storage.push(marker);
 
@@ -345,13 +354,16 @@ function load_region_projects(type, status)
     });
 }
 
+/*
 function region_marker_action(coordinates)
 {
     unload_region_projects();
     map.zoomTo(2);
     map.setCenter(coordinates);
-    reload_all_projects();
+    markers.loaded = false;
+    markers.setVisibility(true);
 }
+*/
 
 function add_project_marker(type, status, longitude, latitude, title, id)
 {
@@ -398,6 +410,8 @@ function load_projects(type, status)
 {
     var request_url = baseurl + 'map-data/projects/' + type + '/' + status + '?lang=' + lang,
     distance = calculate_cluster_distance();
+
+    console.log(request_url);
 
     $.getJSON(request_url, function(result)
     {
@@ -604,6 +618,8 @@ function on_zoom()
 {
     load_all();
     reload_all_projects();
+    markers.loaded = false;
+    markers.setVisibility(true);
 }
 
 function zoom_in()

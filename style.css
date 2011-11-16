@@ -42,14 +42,14 @@ html[xmlns] .clearfix {
 }
 
 .boxshadow {
-	/*		BORDER	RADIUS		*/
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	/*		BOX SHADOW		*/
-	-moz-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
-	-webkit-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
-	box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+    /*		BORDER	RADIUS		*/
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    /*		BOX SHADOW		*/
+    -moz-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+    -webkit-box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
+    box-shadow: 3px 3px 1px rgba(50, 50, 50, 0.75);
 }
 
 /* General */
@@ -214,13 +214,13 @@ div.bottom1 { margin-left: 1px }
 #about_us_button, #contact_us_button { cursor: pointer }
 #about-us, #contact-us { background: #fff; display: none; position: relative; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
 #contact-us { height:360px;position:absolute;width:100%; 
-	-moz-user-select:none;
-	-webkit-user-select:none;
-	user-select:none;
-	
+              -moz-user-select:none;
+              -webkit-user-select:none;
+              user-select:none;
+
 }
 #contact-us-map { height:320px;-moz-user-select:none;-webkit-user-select:none;
-user-select:none; }
+                  user-select:none; }
 #contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000 }
 #about-us { font-size: 12px; width: 930px; /*text-align: justify*/ }
 #about-us-main-title-container, .about-us-main-title-container { color: #fff; background: #0CB5F6; padding: 11px 16px 11px 16px; font-weight: bold }
@@ -408,7 +408,11 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .wysiwyg { margin: 0 !important; width: 100% !important; display: block } 
 .wysiwyg iframe { height: 250px; display: block; width: 100% !important }
 
-.region-marker-container .region-marker-wrapper { position: relative; width: 27px; height: 27px; left: 0; top: -31px; cursor: pointer }
-.region-marker-container .region-marker-wrapper .region-marker-item { cursor: pointer; position: absolute; left: 9px; top: 5px; font-weight: bold; color: #FFF; font-size: 15px }
+.region-marker-wrapper { position: absolute; left: 0; top: 0; color: #FFF; text-align: center }
+.region-marker-wrapper.small { width: 22px; height: 22px; line-height: 22px; font-size: 12px }
+.region-marker-wrapper.medium { width: 40px; height: 40px; line-height: 40px; font-size: 14px }
+.region-marker-wrapper.large { width: 53px; height: 53px; line-height: 53px; font-size: 18px }
+
+/*.region-marker-container .region-marker-wrapper .region-marker-item { position: absolute; left: 0; top: 0; font-weight: bold; color: #FFF; font-size: 15px; text-align:  }*/
 
 <?php ob_end_flush(); ?>
