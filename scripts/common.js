@@ -521,7 +521,7 @@ $(function()
         {
             about.animate({
                 height: 0
-            }, function(){
+            },function(){
                 about.hide();
             });
             about_is_visible = false;
@@ -727,7 +727,7 @@ $(function()
                 about_height += maxh;
             }
         }
-        target.slideToggle(function()
+        target.slideToggle('slow', 'easeInOutBack',function()
         {
             if ($('.inner-text-box:visible').length == 0)
             {

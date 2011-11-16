@@ -8,9 +8,10 @@
 (function() {
   
   var ua   = navigator.userAgent.toLowerCase(),
-      msie = ua.indexOf('msie 6') > -1;
+      msie6 = ua.indexOf('msie 6') > -1;
+      msie7 = ua.indexOf('msie 7') > -1;
   
-  if (msie) {
+  if ( msie6 || msie7 ) {
   
     var getDocumentHeight = function() {
       var scrollHeight = Math.max(
