@@ -581,16 +581,20 @@ $(function()
 			footer_map.addLayers([footer_map_layer,footer_map_marker_layer]);
 
 			var coordinates = new OpenLayers.LonLat(44.798735, 41.697960),
-            marker = new OpenLayers.Marker(coordinates, all_icon.clone());
+
+            marker = new OpenLayers.Marker(coordinates, mapping.icons['general']['small'].clone());
+
 			footer_map_marker_layer.addMarker(marker);
 			footer_map.setCenter(
 				coordinates.transform(new OpenLayers.Projection('EPSG:4326'), footer_map.getProjectionObject())
 				, 10);	
 			footer_map.zoomTo(16);
 
+
 	};
     contact_button.click(function()
     {
+
         if (contact_is_visible)
         {
 
@@ -613,6 +617,7 @@ $(function()
         }
         else
         {
+
             if (about_is_visible)
             {
                 about.animate({
@@ -629,8 +634,9 @@ $(function()
     	         height: contact_height
 	       	});
 	       	$('#contact-us-map').css('height', 0).show().animate({
-	       		height: '320px'
+	       		height: 320
 	       	});
+	       	
             	
             
             $('#contact-us-form-container').css('z-index','7000');
