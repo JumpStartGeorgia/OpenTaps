@@ -69,16 +69,10 @@ $(document).ready(function()
                 var org_chart_2 = new Highcharts.Chart(pie_chart_options);
             }
 
-            if (typeof(data_3) !== 'undefined')
+            if (typeof(data_3) !== 'undefined' || 1 == 1)
             {
                 line_chart_options.chart.renderTo = 'org-chart-container-3';
-                line_chart_options.series = [{
-                    data: data_3,
-                    name: 'Budget'
-                }];
-                line_chart_options.xAxis = {
-		    categories: ['1', '2', '3', '4', '5']
-		};/*
+                /*
                 if (typeof(uniqid_3) !== 'undefined')
                 {
                     menuitem3 = {
