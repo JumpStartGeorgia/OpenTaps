@@ -336,9 +336,9 @@ function load_region_projects(type, status)
             var count = parseInt(project.places),
             size = 'small';
 
-            if (size > 3)
+            if (count > 3)
                 size = 'medium';
-            else if (size > 8)
+            else if (count > 8)
                 size = 'large';
 
             var coordinates = new OpenLayers.LonLat(project.longitude, project.latitude),
