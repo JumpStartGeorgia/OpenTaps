@@ -336,10 +336,10 @@ function load_region_projects(type, status)
             var count = parseInt(project.places),
             size = 'small';
 
-            if (count > 3)
-                size = 'medium';
-            else if (count > 8)
+            if (count > 8)
                 size = 'large';
+            else if (count > 3)
+                size = 'medium';
 
             var coordinates = new OpenLayers.LonLat(project.longitude, project.latitude),
             marker = new OpenLayers.Marker(coordinates, general_icons[size].clone());
