@@ -85,6 +85,7 @@ return array(
     'region_cities' => 'Region Cities',
     'region_towns' => 'Region Towns',
     'ws_district' => 'district',
+    'map_loading' => 'Loading a map...',
     'map_overlays' => 'Overlays',
     'map_projects' => 'Projects',
     'map_settlements' => 'Settlements',

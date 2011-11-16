@@ -87,6 +87,7 @@ return array(
     'region_cities' => 'რეგიონის ქალაქები',
     'region_towns' => 'რეგიონის ქალაქები',
     'ws_district' => 'რაიონი',
+    'map_loading' => 'რუკა იტვირთება...',
     'map_overlays' => 'ფენები',
     'map_projects' => 'პროექტები',
     'map_settlements' => 'დასახლებები',

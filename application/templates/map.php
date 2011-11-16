@@ -2,7 +2,10 @@
 
     <div id="map"></div>
 
-    <div id="map-overlay"><?php echo strtoupper(l('map_active')) ?></div>
+    <div id="map-overlay">
+        <span><?php echo strtoupper(l('map_loading')) ?></span>
+        <span style="display: none"><?php echo strtoupper(l('map_active')) ?></span>
+    </div>
 
     <div id="tooltip"><span></span></div>
 
