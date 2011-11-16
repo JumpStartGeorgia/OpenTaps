@@ -580,7 +580,7 @@ $(function()
 			footer_map_marker_layer = new OpenLayers.Layer.Markers('Footer Marker');
 			footer_map.addLayers([footer_map_layer,footer_map_marker_layer]);
 
-			var coordinates = new OpenLayers.LonLat(44.798735, 41.697960),
+			var coordinates = new OpenLayers.LonLat(44.79672380736, 41.697742559308),
 
             marker = new OpenLayers.Marker(coordinates, mapping.icons['general']['large'].clone());
 
