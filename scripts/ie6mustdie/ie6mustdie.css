@@ -31,7 +31,7 @@ html[xmlns] .clearfix {
 #ie6mustdie * {
   padding: 0;
   margin: 0;
-  z-index:8000;
+  z-index:9999999;
 }
 #ie6mustdie .ie6mustdie-ie8 {
 	display:block;
