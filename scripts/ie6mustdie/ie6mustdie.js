@@ -7,12 +7,21 @@
  
 (function() {
   
-  var ua   = navigator.userAgent.toLowerCase(),
-      msie6 = ua.indexOf('msie 6') > -1;
-      msie7 = ua.indexOf('msie 7') > -1;
-      msie8 = ua.indexOf('msie 8') > -1;
+  var getInternetExplorerVersion = function ()
+	 {
+		  var rv = -1;
+		  if (navigator.appName == 'Microsoft Internet Explorer')
+		  {
+			var ua = navigator.userAgent;
+			var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+			  rv = parseFloat( RegExp.$1 );
+		  }
+		  return rv;
+	 };
+  var ieVersion = getInternetExplorerVersion();   
   
-  if ( msie6 || msie7 || msie8 ) {
+  if ( ieVersion >= 6.0 && ieVersion < 9.0 ) {
   
     var getDocumentHeight = function() {
       var scrollHeight = Math.max(
@@ -64,7 +73,7 @@
     script = scripts = null;
     
     var content = [];
-	if ( msie6 || msie7 )
+	if ( ieVersion == 6.0 && ieVersion == 7.0 )
 	{
 		content.push('<div class="ie6mustdie-overlay"></div>');
 		content.push('<div class="ie6mustdie-dialog">');
@@ -94,9 +103,9 @@
 		content.push('<a href="http://code.ge/ie6mdownload.php?browser=ie8">Explorer 8</a>');
 		content.push('</li></ul></div></div></div>');
 	}
-	else if ( msie8 )
+	else if ( ieVersion == 8.0 )
 	{
-		var __  = functin (text)
+		var __  = function (text)
 		{
 			content.push(text);
 		};
@@ -108,7 +117,7 @@
 		__('სხვა თანამედროვე ბრაუზერი!');
 		__('</div>');
 		__('</div>');
-				
+		
 	}
 	
     var div = document.createElement('div');
@@ -118,7 +127,6 @@
     div.innerHTML = content.join('');
     div = null;
     
-    
     window.setTimeout(function() {
       var div = document.getElementById('ie6mustdie');
       div.style.height = getDocumentHeight() + 'px';
@@ -126,11 +134,11 @@
       div.style.display = 'block';
     }, 100);
     
-    if ( msie8 ){
-    	var iemustdie = document.getElementById('ie6must');		
-		iemustdie.addEventListener('click',function()
+    if ( ieVersion == 8.0 )
+    {
+		document.getElementById('ie6mustdie').addEventListener('click',function ()
 			{
-				this.parent.removeChild(this);						
+				this.parentNode.removeChild(this);	
 			}
 		);
     }
