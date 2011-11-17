@@ -34,8 +34,12 @@
 
             <div id='project_details' style="min-height: 15px; border-bottom: 0px;">
                 <div id='project_budget'>
+                  <?php if (!empty($organization_budget) AND $organization_budget != 0): ?>
                     <p><?php echo l('overall_project_budget') ?></p>
                     <p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
+                  <?php else: ?>
+		    <p style='font-size:27px;color:#FFF;'><?php echo l('budget_empty_text') ?></p>
+                  <?php endif; ?>
                 </div>
                 <?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
                     <div class="project_details_line clearfix" style="width:100%;">

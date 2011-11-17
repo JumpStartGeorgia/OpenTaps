@@ -127,4 +127,5 @@ return array(
     'chart_org_budget' => 'Project Budgets',
     'select_region' => 'Select a region',
     'select_district' => 'Select a district',
+    'budget_empty_text' => 'budget is empty',
 );

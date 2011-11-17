@@ -130,5 +130,6 @@ return array(
     'chart_org_budget' => 'პროექტების ბიუჯეტი',
     'select_region' => 'შეარჩიეთ რეგიონი',
     'select_district' => 'შეარჩიეთ რაიონი',
+    'budget_empty_text' => 'ბიუჯეტი ცარიელია',
 );
 
