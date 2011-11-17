@@ -33,7 +33,7 @@ html[xmlns] .clearfix {
   margin: 0;
   z-index:9999999;
 }
-#ie6mustdie .ie6mustdie-ie8 {
+.ie6mustdie-ie8 {
 	display:block;
 	margin:auto;
 	margin-top:100px;
