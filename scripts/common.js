@@ -519,9 +519,7 @@ $(function()
     {
         if (about_is_visible)
         {
-            about.animate({
-                height: 0
-            },function(){
+            about.animate({ height: 0 }, function(){
                 about.hide();
             });
             about_is_visible = false;
@@ -592,6 +590,7 @@ $(function()
 
 
 	};
+
     contact_button.click(function()
     {
 
@@ -600,17 +599,12 @@ $(function()
 
             $.each([contact,$('#contact-us-map')],function (ind,val)
             	{
-            		$(val).animate({
-					    height: 0
-					}, function ()
-					{
+            		$(val).animate({ height: 0 }, function (){
 				        contact.hide();
 				        $('#contact-us-map').hide().remove();
 				    });
             	}
             );        
-            
-          
 
             contact_is_visible = false;
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line.gif');
@@ -620,9 +614,7 @@ $(function()
 
             if (about_is_visible)
             {
-                about.animate({
-                    height: 0
-                }, function(){
+                about.animate({ height: 0 }, function(){
                     about.hide();
                 });
                 about_is_visible = false;

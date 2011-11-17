@@ -2,12 +2,11 @@
 
     <div style="float: left;">
         <div id="map" style="width: 638px; height: 160px; border-top: 0;"></div>
-        <div style="background:url(<?php echo URL . 'images/bg.jpg' ?>) repeat; width: 610px; height: 31px; padding: 8px 15px;">
+        <?php /* <div style="background:url(<?php echo URL . 'images/bg.jpg' ?>) repeat; width: 610px; height: 31px; padding: 8px 15px;">
             <span style="font-size: 16px;"><?php echo $project['title'] ?></span>
-
         </div>
-        <?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/projects/' . $project['unique'], TRUE) . "'>Edit</a>"); ?>
-        <div class="group" id="group" style="width: 640px; padding: 8px 0px; margin-top: 30px; line-height: 18px;">
+        <?php */ userloggedin() AND print("<a class='region_link' style='float: right; display: block; margin-right: 5px;' href='" . href('admin/projects/' . $project['unique'], TRUE) . "'>Edit</a>"); ?>
+        <div class="group" id="group" style="width: 640px; padding: 8px 0px; margin-top: 5px; line-height: 18px;">
             <div>
                 <span class="expand_title">
                     <span class="racxa">▼</span> <?php echo l('project_name') ?>: <?php echo $project['title'] ?>
@@ -18,33 +17,107 @@
                     <?php
                     $region_sql = "SELECT name FROM regions WHERE `unique` = {$project['region_unique']} AND lang = '" . LANG . "' LIMIT 1;";
                     $region = db()->query($region_sql, PDO::FETCH_ASSOC)->fetch();
-                    if (!empty($region)):
-                        ?>
-                        <b><?php echo l('location_region') ?></b>:
-                        <a id="region_link" href="<?php echo href('region/' . $project['region_unique'], TRUE); ?>"><?php echo $region['name'] ?></a>
-                        <br />
+                    if (!empty($region)): ?>
+			<div class="project_details_line clearfix" style="width: 100%;">
+			    <div class='line_left'>
+				<?php echo l('location_region') ?> :
+			    </div>
+			    <div class="wordwrap">
+				<a id="region_link" href="<?php echo href('region/' . $project['region_unique'], TRUE); ?>"><?php echo $region['name'] ?></a>
+			    </div>
+			</div>
                     <?php endif; ?>
 
-                    <?php echo l('location_city_town') ?>: <?php echo $project['city']; ?><br />
-                    <?php echo l('grantee') ?>: <?php echo $project['grantee']; ?><br />
-                    <?php echo l('sector') ?>: <?php echo $project['sector']; ?><br />
-                    <?php echo l('beneficiary_people') ?>: <?php
-                    $ben_people = explode(' ', $project['beneficiary_people']);
-                    if (isset($ben_people[1])):
-                        $ben_people[0] = empty($ben_people[0]) ? 'N/A' : number_format($ben_people[0]);
-                    endif;
-                    echo implode(' ', $ben_people);
-                    ?>
-                    <br />
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('location_city_town') ?> :
+                        </div>
+                        <div class="wordwrap">
+                            <?php echo $project['city']; ?>
+                        </div>
+                    </div>
+
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('grantee') ?> :
+                        </div>
+                        <div class="wordwrap">
+                            <?php echo $project['grantee']; ?>
+                        </div>
+                    </div>
+
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('sector') ?> :
+                        </div>
+                        <div class="wordwrap">
+                            <?php echo $project['sector']; ?>
+                        </div>
+                    </div>
+
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('beneficiary_people') ?> :
+                        </div>
+                        <div class="wordwrap">
+			<?php
+			    $ben_people = explode(' ', $project['beneficiary_people']);
+			    if (isset($ben_people[1]))
+			    {
+				$ben_people[0] = empty($ben_people[0]) ? 'N/A' : number_format($ben_people[0]);
+			    }
+                            echo implode(' ', $ben_people);
+                        ?>
+                        </div>
+                    </div>
+
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('sector') ?> :
+                        </div>
+                        <div class="wordwrap">
+                            <?php echo $project['sector']; ?>
+                        </div>
+                    </div>
+
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('beginning') ?> :
+                        </div>
+                        <div class="wordwrap">
+                            <?php echo $project['start_at']; ?>
+                        </div>
+                    </div>
+
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('ends') ?> :
+                        </div>
+                        <div class="wordwrap">
+                            <?php echo $project['end_at']; ?>
+                        </div>
+                    </div>
+
+                    <div class="project_details_line clearfix" style="width: 100%;">
+                        <div class='line_left'>
+                            <?php echo l('type') ?> :
+                        </div>
+                        <div class="wordwrap">
+                            <?php echo $project['type']; ?>
+                        </div>
+                    </div>
+
                     <?php
-                    foreach ($budgets as $budget):
-                        echo l('budget') . ' ' . $budget['name'] . ' - ' . number_format($budget['budget']) . ' ' .
-                        strtoupper($budget['currency']) . '<br />';
-                    endforeach;
-                    ?>
-                    <?php echo l('beginning') . ' ' . dateformat($project['start_at']) ?>: <br />
-                    <?php echo l('ends') . ' ' . dateformat($project['end_at']) ?>: <br />
-                    <?php echo l('type') . ':' . $project['type']; ?>
+                    foreach ($budgets as $budget): ?>
+			<div class="project_details_line clearfix" style="width: 100%;">
+			    <div class='line_left'>
+				<?php echo l('budget') . ' ' . $budget['name'] ?> :
+			    </div>
+			    <div class="wordwrap">
+				<?php echo number_format($budget['budget']) . ' ' . strtoupper($budget['currency']); ?>
+			    </div>
+			</div>
+                    <?php endforeach; ?>
                 </div>
             </div>
 

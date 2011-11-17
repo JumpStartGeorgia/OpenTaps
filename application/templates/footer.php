@@ -60,7 +60,7 @@
     <div class='bottom1'>
 	&copy; <?php echo date('Y') > 2011 ? '2011-' . date('Y') : 2011 ?> OPEN TAPS. &nbsp;
 	<?php echo l('copyright_jumpstart', array(
-		    ':link' => '<a href="http://www.jumpstart.ge/" title="JumpStart Georgia" style="text-decoration: underline">',
+		    ':link' => '<a target = "_blank" href="http://www.jumpstart.ge/" title="JumpStart Georgia" style="text-decoration: underline">',
 		    ':endlink' => '</a>'
 		)) ?>
     </div>
