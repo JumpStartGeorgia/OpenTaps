@@ -108,13 +108,10 @@ html[xmlns] .clearfix {
   background-position: -8px -4px;
 }
 
-.ie6mustdie-ie8 {
-	text-align:center;
-	font-weight:bold;
-}
-
 .ie6mustdie-ie8 p {
 	position:absolute;
 	top:100px;
+	left:50%;
+	font-weight:bold;
 }
 
