@@ -19,6 +19,7 @@ html[xmlns] .clearfix {
 /** End Clearfix */
 #ie6mustdie {
   display: none;
+  z-index:8000;
 }
 #ie6mustdie,
 #ie6mustdie div.ie6mustdie-overlay {
