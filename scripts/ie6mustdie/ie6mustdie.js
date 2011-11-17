@@ -110,7 +110,7 @@
 			content.push(text);
 		};
 		__('<div class="ie6mustdie-overlay"></div>');
-		__('<div class="ie6mustdie-dialog">');
+		__('<div class="ie6mustdie-dialog ie6mustdie-ie8">');
 		__('ძვირფასო მომხმარებელო თქვენი ბრაუზერი არ <br/>');
 		__('აკმაყოფილებს იმ მოთხოვნებს რაც საჭიროა ამ საიტის <br/>');
 		__('სანახავად გთხოვთ მოახდინოთ მისი განახლება ან გამოიყენო<br/>');
