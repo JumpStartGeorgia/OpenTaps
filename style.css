@@ -110,7 +110,7 @@ div.projects_organization { width: 282px; float: left }
 #organization_project_types img { display: block; width: 23px }
 
 div.news { width: 573px; margin: 0; float: right }
-div.news, div.projects_organization { padding: 6px 0px 6px 13px; font-weight: bold; text-align: left; background: @opentaps_default_color }
+div.news, div.projects_organization { padding: 11px 0px 11px 13px; font-weight: bold; text-align: left; background: @opentaps_default_color }
 a.organization_project_link { display: block; border-bottom: 1px dotted #a6a6a6; padding: 3px 17px 3px 8px }
 a.organization_project_link img { vertical-align: middle; margin-right: 3px; margin-bottom: 3px; width: 23px }
 #home-chart-container { padding: 0; float: left; margin: 0; width: 293px; height: 321px }
@@ -213,7 +213,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 div.bottom { width: 932px; border-top: 2px solid #ccc; padding-top: 5px }
 div.bottom1, div.bottom2 { float: left; font-size: 0.7em; font-family: arial; color: grey }
 div.bottom1 { margin-left: 1px }
-#bot-container { position: relative; width: 932px; margin-top: 30px; z-index: 9999999 }
+#bot-container { position: relative; width: 932px; margin-top: 0px; z-index: 9999999 }
 #about_us_button, #contact_us_button { cursor: pointer }
 #about-us, #contact-us { background: #fff; display: none; position: relative; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
 #contact-us { height:360px;position:absolute;width:100%; 

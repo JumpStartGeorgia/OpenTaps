@@ -114,7 +114,7 @@
 
 <?php $fne = (LANG == 'ka') ? '-geo' : ''; $fne2 = $fne . ((LANG == 'en') ? '.gif' : '.png'); $fne .= '.png'; ?>
 
-<div style="margin-top: 27px; " class="group">
+<div style="margin-top: 12px; " class="group">
     <div style="float: left; width: 293px; text-align: justify; font-size: 11px; color: #808080">
         <?php echo l('home_page_bottom_text'); ?>
     </div>
