@@ -122,5 +122,8 @@ line_chart_options = {
       yAxis: {},
       tooltip: {},
       legend: {},
-      series: []
+      series: [
+      	{ name: 'va', data: [0,1.05,2.831,1.3,1] }
+      ],
+      plotOptions: { line: {visible: true, zIndex: 9999999}, series: {visible: true} }
 };

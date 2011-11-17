@@ -152,13 +152,13 @@
                             <p class='desc'><?php echo l('chart_org_budget') ?></p>
                             <div id="org-chart-container-2" style="padding: 0; margin: 0 auto; width: 335px;"></div>
                         </div>
-                    <?php endif;
+                    <?php endif; 
 
-                    if (!empty($chart_data['budgets_by_year']['data'])):
+                   /* if (!empty($chart_data['budgets_by_year']['data'])):
                         $csv_uniq = 'chartcsv' . uniqid();
                         $_SESSION[$csv_uniq] = $chart_data['budgets_by_year']['data'];
                         $_SESSION[$csv_uniq . '_first_row'] = array('Project Name', 'Budget');
-                        ?>
+                        */ ?>
                         <script type="text/javascript">
                             var org_page = true,
                             data_3 = <?php echo $chart_data['budgets_by_year']['data'] ?>,
@@ -168,7 +168,7 @@
                             <p class="desc">Budgets By Year<?php //echo l('chart_org_projects') ?></p>
                             <div id="org-chart-container-3" style="padding: 0; margin: 0 auto; width: 100%;"></div>
                         </div>
-                    <?php endif; ?>
+                    <?php //endif; ?>
                 </div>
             <?php endif; ?>
 

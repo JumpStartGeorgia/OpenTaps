@@ -40,6 +40,7 @@ $this_type = empty($this_type) ? NULL : 'type/' . $this_type . '/';
 
             <?php foreach ($news_all as $index => $news): ?>
                 <div class='content_each group <?php echo ($index % 2 == 1) ? 'with_bg' : NULL ?>'>
+                  <a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
                     <div class='content_each_left'>
                         <div class='content_each_title'><?php echo $news['title'] ?></div>
                         <div class='content_each_body'>
@@ -53,6 +54,7 @@ $this_type = empty($this_type) ? NULL : 'type/' . $this_type . '/';
                             <?php echo dateformat($news['published_at']); ?>
                         </div>
                     </div>
+                  </a>  
                 </div>
             <?php endforeach; ?>
 
