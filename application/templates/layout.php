@@ -3,6 +3,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php empty(Storage::instance()->title) OR print Storage::instance()->title . ' - ' ?>OpenTaps</title>
+        <!--[if IE 8]>
+        	<script type="text/javascript" src="<?php echo URL ?>scripts/ie8mustdie.js"></script>
+        <![endif]-->
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>style.css" media="all" />
         <link rel="icon" href="<?php echo URL ?>images/favicon.ico?<?php echo time() ?>">
         <!--<link rel="stylesheet" type="text/css" href="<?php echo URL ?>scripts/akzhan-jwysiwyg/help/lib/blueprint/screen.css" media="screen, projection" />-->

@@ -31,6 +31,7 @@ html[xmlns] .clearfix {
 #ie6mustdie * {
   padding: 0;
   margin: 0;
+  z-index:9999999;
 }
 #ie6mustdie a:link,
 #ie6mustdie a:visited {
@@ -106,3 +107,11 @@ html[xmlns] .clearfix {
 #ie6mustdie div.ie6mustdie-browsers li div.ie {
   background-position: -8px -4px;
 }
+
+.ie6mustdie-ie8 {
+	display:block;
+	margin:auto;
+	margin-top:100px;
+	font-weight:bold;
+}
+
