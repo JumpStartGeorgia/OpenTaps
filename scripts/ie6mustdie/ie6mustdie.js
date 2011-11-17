@@ -73,7 +73,7 @@
     script = scripts = null;
     
     var content = [];
-	if ( ieVersion == 6.0 && ieVersion == 7.0 )
+	if ( ieVersion == 6.0 || ieVersion == 7.0 )
 	{
 		content.push('<div class="ie6mustdie-overlay"></div>');
 		content.push('<div class="ie6mustdie-dialog">');
