@@ -1575,7 +1575,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
     $sql = "
 	INSERT INTO organizations
 	(
-	    #name,
+	    name,
 	    type,
 	    description,
 	    district,
@@ -1590,7 +1590,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
 	)
 	VALUES
 	(
-	    #:name,
+	    :name,
 	    :type,
 	    :description,
 	    :district,
@@ -1605,6 +1605,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
 	);
     ";
     $data = array(
+	':name' => $name,
         ':type' => $type,
         ':description' => $description,
         ':projects_info' => $projects_info,

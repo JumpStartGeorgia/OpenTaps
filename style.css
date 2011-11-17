@@ -160,8 +160,11 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .export a:hover { color: black; text-decoration: underline }
 .expand_title { width: 625px; display: block; font-weight: bold; font-size: 14px; padding: 10px 0px 10px 15px; border-bottom: 1px dotted @opentaps_default_bordercolor; cursor: pointer }
 .racxa { font-size:7px; }
-.expandable { padding-left: 28px; display: none; margin-top: 4px }
-.expandable p { padding-bottom:10px; }
+.expandable { padding-left: 28px; display: none; margin-top: 4px; padding-bottom: 11px; }
+.expandable p {  }
+.expandable .line_left { width: 275px; }
+.expandable .project_details_line { min-height: 0px; border-color: #e0e0e0; padding: 0px 0px 4px 0px !important; }
+.expandable .project_details_line:last-child { border: none; }
 .budget-container { -webkit-border-radius: 8px; -moz-border-radius: 8px; border-radius: 8px; border: 1px solid rgba(0,0,0,.2); padding: 8px; margin-bottom: 8px }
 
 

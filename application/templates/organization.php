@@ -15,8 +15,8 @@
                 list($maxwidth, $maxheight) = array(262, 174);
                 $k = ($height > $maxheight OR $width > $maxwidth) ? max(($width / $maxwidth), ($height / $maxheight)) : 1;
                 $dimensions = 'width: ' . ($width / $k) . 'px; height: ' . ($height / $k) . 'px;';
-                ?><div style="width: 262px; float: left; margin: 0px 10px; text-align: center;">
-                    <img style="<?php echo $dimensions; ?>" src="<?php echo $logo; ?>" />
+                ?><div style="width: 262px; float: left; padding: 0px 10px; text-align: center; border: 1px dotted #a6a6a6; border-top: 0px;">
+                    <img style="vertical-align:middle;padding: 0px; margin: 0px;<?php echo $dimensions; ?>" src="<?php echo $logo; ?>" />
                 </div><?php
         }
         else
@@ -38,7 +38,7 @@
                     <p style='font-size:27px;color:#FFF;'><?php echo $organization_budget ?></p>
                 </div>
                 <?php if (!empty($organization['district']) AND strlen($organization['district']) > 0): ?>
-                    <div class='project_details_line clearfix' style="width:100%;">
+                    <div class="project_details_line clearfix" style="width:100%;">
                         <div class='line_left'>
                             <?php echo l('region_district') ?> :
                         </div>
@@ -49,7 +49,7 @@
                 <?php endif; ?>
                 <?php if (!empty($organization['city_town']) AND strlen($organization['city_town']) > 0): ?>
                     <br />
-                    <div class='project_details_line clearfix'>
+                    <div class="project_details_line clearfix">
                         <div class='line_left' >
                             <?php echo l('org_city') ?> :
                         </div>
