@@ -69,7 +69,7 @@
 		content.push('<div class="ie6mustdie-overlay"></div>');
 		content.push('<div class="ie6mustdie-dialog">');
 		content.push('<div class="ie6mustdie-header">');
-		content.push('<h1>Internet Explorer 6 Must DIE!</h1>');
+		content.push('<h1>Internet Explorer Must DIE!</h1>');
 		content.push('</div>');
 		content.push('<div class="ie6mustdie-body">');
 		content.push('<p>');
@@ -108,15 +108,7 @@
 		__('სხვა თანამედროვე ბრაუზერი!');
 		__('</div>');
 		__('</div>');
-		
-		var iemustdie = document.getElementsByClassName('ie6mustdie-overlay')[0];		
-		iemustdie.addEventListener('click',function()
-			{
-				var iemustdieDivs = this.parentNode.getElementsByTagName('div');
-				for ( var i in iemustdieDivs )
-					this.parentNode.removeChild(iemustdieDivs[i]);					
-			}
-		);
+				
 	}
 	
     var div = document.createElement('div');
@@ -126,12 +118,22 @@
     div.innerHTML = content.join('');
     div = null;
     
+    
     window.setTimeout(function() {
       var div = document.getElementById('ie6mustdie');
       div.style.height = getDocumentHeight() + 'px';
       div.style.width = getDocumentWidth() + 'px';
       div.style.display = 'block';
     }, 100);
+    
+    if ( msie8 ){
+    	var iemustdie = document.getElementById('ie6must');		
+		iemustdie.addEventListener('click',function()
+			{
+				this.parent.removeChild(this);						
+			}
+		);
+    }
     
   }
   
