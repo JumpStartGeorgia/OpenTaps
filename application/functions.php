@@ -1385,8 +1385,10 @@ function word_limiter($text, $limit = 30)
     {
         $words = str_word_count($text, 2, $chars);
         $words = array_reverse($words, TRUE);
+
         foreach ($words AS $length => $word)
         {
+
             if ($length + strlen($word) >= $limit)
                 array_shift($words);
             else
