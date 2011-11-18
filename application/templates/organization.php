@@ -134,7 +134,7 @@
                             data_1 = <?php echo $chart_data['organization_projects']['data'] ?>,
                             uniqid_1 = "<?php echo $csv_uniq; ?>";
                         </script>
-                        <div class="withmargin" style="width: 336px; text-align: center; display: inline-block; float: left; border-right: 1px dotted #a6a6a6;">
+                        <div class="withmargin" style="width: 336px; text-align: center; float: left; border-right: 1px dotted #a6a6a6;">
                             <p class='desc'><?php echo l('chart_org_projects') ?></p>
                             <div id="org-chart-container-1" style="padding: 0; margin: 0 auto; width: 335px;"></div>
                         </div>
@@ -152,8 +152,8 @@
                             data_2 = <?php echo $chart_data['organizations_budgets']['data'] ?>,
                             uniqid_2 = "<?php echo $csv_uniq; ?>";
                         </script>
-                        <div class="withmargin" style="width: 335px; text-align: center; display: inline-block;">
-                            <p class='desc'><?php echo l('chart_org_budget') ?></p>
+                        <div class="withmargin group" style="float: left; width: 334px; margin-left: 1px; text-align: center; display: block;">
+                            <p class="desc"><?php echo l('chart_org_budget') ?></p>
                             <div id="org-chart-container-2" style="padding: 0; margin: 0 auto; width: 335px;"></div>
                         </div>
                     <?php endif; 
@@ -167,7 +167,7 @@
                             var org_page = true,
                             data_3 = <?php echo $chart_data['budgets_by_year']['data'] ?>,
                             uniqid_3 = "<?php echo $csv_uniq; ?>";
-                        </script>
+                        </script><div id="breaker" class="group" style="clear:both; display: block; height: 0px; width: 100%;"></div>
                         <div class="withmargin" style="width: 100%; text-align: center; display: block;">
                             <p class="desc">Budgets By Year<?php //echo l('chart_org_projects') ?></p>
                             <div id="org-chart-container-3" style="padding: 0; margin: 0 auto; width: 100%;"></div>
