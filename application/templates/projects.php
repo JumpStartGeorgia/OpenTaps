@@ -64,8 +64,8 @@
     		    	<a id="region_link" href="<?php echo href('region/' . $project['region_unique'], TRUE); ?>">
     		    		<?php echo $project['region_name'] ?>
     		    	</a><br />
-    		    	<?php echo $project['type'] ?><br />
-    		    	<?php $start_at = substr($project['start_at'], 0, 10); __( !strtotime($start_at) ? l('no_time') : $start_at )  ?>
+    		    	<?php echo l('pt_' . strtolower($project['type'])) ?><br />
+    		    	<?php $start_at = substr($project['start_at'], 0, 10); __( !strtotime($start_at) ? '<span style="font-size: 7px;">' . l('no_time') . '</span>' : $start_at )  ?>
     		    </div>
     		</div>
     	    </div>

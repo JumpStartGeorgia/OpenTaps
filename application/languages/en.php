@@ -112,7 +112,7 @@ return array(
     'nt_video' => 'video',
     'nt_document' => 'document',
     'nt_chart' => 'chart',
-    'pt_Sewage' => 'Sewage',
+    'pt_sewage' => 'Sewage',
     'pt_water supply' => 'Water Supply',
     'pt_water pollution' => 'Water Pollution',
     'pt_irrigation' => 'Irrigation',
