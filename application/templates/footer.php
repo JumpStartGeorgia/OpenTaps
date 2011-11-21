@@ -2,25 +2,25 @@
     <div id="about-us" class="group">
         <div id='about-us-main-title-container'>
             <span id="about-us-close-button">×</span>
-            <div id='about-us-main-title'>ABOUT</div>
+            <div id='about-us-main-title'><?php __(strtoupper(l('about_us'))) ?></div>
         </div>
         <div style='padding: 30px 22px 40px 16px;'>
             <div><?php echo $about_us['main']['text']; ?></div>
             <div class="about-us-inner-box" style="margin-left: 0px;">
                 <div class="about-us-main-title-container about-us-inner-button">
-                    <div class='about-us-title'>OPEN INFORMATION</div>
+                    <div class='about-us-title'><?php __(strtoupper(l('about_us_open_information'))) ?></div>
                 </div>
                 <div class="inner-text-box"><?php echo $about_us['open_information']['text']; ?></div>
             </div>
             <div class="about-us-inner-box">
                 <div class="about-us-main-title-container about-us-inner-button">
-                    <div class='about-us-title'>PARTICIPATION</div>
+                    <div class='about-us-title'><?php __(strtoupper(l('about_us_participation'))) ?></div>
                 </div>
                 <div class="inner-text-box"><?php echo $about_us['participation']['text']; ?></div>
             </div>
             <div class="about-us-inner-box">
                 <div class="about-us-main-title-container about-us-inner-button">
-                    <div class='about-us-title'>INNOVATION</div>
+                    <div class='about-us-title'><?php __(strtoupper(l('about_us_innovation'))) ?></div>
                 </div>
                 <div class="inner-text-box"><?php echo $about_us['innovation']['text']; ?></div>
             </div>
@@ -34,13 +34,13 @@
         <!--<iframe src="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="318" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
         <div id='contact-us-form-container' class='group'>
             <div id='contact-us-circle'>
-                <div style='margin-top: 40px'><?php echo strtoupper(l('contact_us_inner_contact')) ?></div>
-                <div style='margin-top: 7px'><?php echo l('contact_us_address') ?></div>
+                <div style='margin-top: 40px'><?php __(strtoupper(l('contact_us_inner_contact'))) ?></div>
+                <div style='margin-top: 7px'><?php __(l('contact_us_address')) ?></div>
                 <div style='margin-top: 7px'>
-                    <span style=''><?php echo l('contact_us_mail') ?>:</span>
+                    <span style=''><?php __(l('contact_us_mail')) ?>:</span>
                     <a href="mailto:info@opentaps.ge"><span style='color: #000'>info@opentaps.ge</span></a>
                 </div>
-                <div style='margin-top: 7px;'><?php echo l('contact_us_tel') ?>: +995 32 214 29 26</div>
+                <div style='margin-top: 7px;'><?php __(l('contact_us_tel')) ?>: +995 32 214 29 26</div>
                 <div style='color: #000; margin-top: 27px;'><?php __(l('contact_us_text')) ?></div>
             </div>
             <!--<div id='contact-us-form'>

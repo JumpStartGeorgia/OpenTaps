@@ -134,5 +134,9 @@ return array(
     'contact_us_address' => 'Address: 5 Shevchenko Str.,<br /> Suite 2, Tbilisi, Georgia',
     'contact_us_mail' => 'Mail',
     'contact_us_tel' => 'Tel',
-    'contact_us_text' => 'We\'d love to hear from you'
+    'contact_us_text' => 'We\'d love to hear from you',
+    'abaout_us' => 'about us',
+    'about_us_open_information' => 'open information',
+    'about_us_participation' => 'participation',
+    'about_us_innovation' => 'inovation'
 );

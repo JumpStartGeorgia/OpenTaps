@@ -1967,7 +1967,7 @@ function string_to_friendly_url($title, $separator = '-')
 }
 
 
-function browserIncompatible()
+function browserIncompatible ()
 {
 
 	$incbrowserIEText = array();		
@@ -1983,7 +1983,7 @@ function browserIncompatible()
 }
 
 
-function __($text)
+function __ ($text)
 {
 	echo $text;
 }
