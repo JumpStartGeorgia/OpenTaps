@@ -35,7 +35,8 @@ Slim::get('/project/:unique/', function($unique)
         {
             Storage::instance()->show_project_map = TRUE;
             Storage::instance()->show_chart = array('project' => TRUE);
-            $query = "SELECT tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
+            $query = "
+            	  SELECT DISTINCT(tags.id), tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
