@@ -3,6 +3,7 @@
 	$this_order = empty($this_order) ? NULL : $this_order;
 	$this_order_href = 'order/' . $this_order . '-' . $direction . '/';
 	$filterlink = $filter ? '/filter/' . $filter : NULL;
+	
 ?>
 <a name="projects"></a>
 

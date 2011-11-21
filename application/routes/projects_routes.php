@@ -28,7 +28,7 @@ Slim::get('/projects/(filter/:filter/)', function($filter = FALSE)
                 'direction' => 'asc',
                 'filter' => $filter,
                 'types' => config('project_types')
-                    ));
+             ));
         });
 
 Slim::get('/project/:unique/', function($unique)
