@@ -138,5 +138,6 @@ return array(
     'abaout_us' => 'about us',
     'about_us_open_information' => 'open information',
     'about_us_participation' => 'participation',
-    'about_us_innovation' => 'inovation'
+    'about_us_innovation' => 'inovation',
+    'no_time' => 'No Time'
 );

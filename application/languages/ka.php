@@ -141,6 +141,7 @@ return array(
     'abaout_us' => 'ჩვენს შესახებ',    
     'about_us_open_information' => 'ღია ინფორმაცია',
     'about_us_participation' => 'მონაწილეობის მიგება',
-    'about_us_innovation' => 'ინოვაცია'      
+    'about_us_innovation' => 'ინოვაცია',
+    'no_time' => 'დრო არ არის'          
 );
 

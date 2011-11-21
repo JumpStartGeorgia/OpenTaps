@@ -1,6 +1,10 @@
 <div class="page-container">
 	<font style="font-size: 12px;">
-	    <?php echo l('news_date') . ':' . dateformat($news[0]['published_at']); ?>
+	    <?php 
+	    	$date = dateformat($news[0]['published_at']);
+	    	$date = !strtotime($news[0]['published_at']) ? l('no_time') : $date;
+		     __( l('news_date') . ': ' . $date ); 	    
+	    ?>
 	<font><br />
     <h1 style="font-size: 18px;">
         <?php echo $news[0]['title'] ?>

@@ -64,7 +64,7 @@
     		    		<?php echo $project['region_name'] ?>
     		    	</a><br />
     		    	<?php echo $project['type'] ?><br />
-    		    	<?php echo substr($project['start_at'], 0, 10) ?>
+    		    	<?php $start_at = substr($project['start_at'], 0, 10); __( !strtotime($start_at) ? l('no_time') : $start_at )  ?>
     		    </div>
     		</div>
     	    </div>
