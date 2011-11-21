@@ -129,5 +129,10 @@ return array(
     'select_district' => 'Select a district',
     'budget_empty_text' => 'budget is empty',
     'incbrowser_ie67_text' => '<p>For better performance of this website it is recommended to use other browsers or update yours to the latest version.</p>',
-    'incbrowser_iemore7_text' => '<p>For better performance of this website it is recommended to use other browsers or update yours to the latest version.</p>'
+    'incbrowser_iemore7_text' => '<p>For better performance of this website it is recommended to use other browsers or update yours to the latest version.</p>',
+    'contact_us_inner_contact' => 'contact us',
+    'contact_us_address' => 'Address: 5 Shevchenko Str.,<br /> Suite 2, Tbilisi, Georgia',
+    'contact_us_mail' => 'Mail',
+    'contact_us_tel' => 'Tel',
+    'contact_us_text' => 'We\'d love to hear from you'
 );

@@ -1983,3 +1983,8 @@ function browserIncompatible()
 }
 
 
+function __($text)
+{
+	echo $text;
+}
+

@@ -29,20 +29,19 @@
     <div id="contact-us" class="group">
         <div class="about-us-main-title-container" style="border: 0px; position: relative;">
             <span id="contact-us-close-button">×</span>
-            <div class='about-us-title' style='display: inline-block'>CONTACT US</div>
+            <div class='about-us-title' style='display: inline-block'><?php echo strtoupper(l('contact_us')) ?></div>
         </div>
         <!--<iframe src="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="318" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
         <div id='contact-us-form-container' class='group'>
             <div id='contact-us-circle'>
-                <div style='margin-top: 40px'>CONTACT US</div>
-                <div style='margin-top: 7px'>Address: 5 Shevchenko Str.,<br /> Suite 2, Tbilisi, Georgia</div>
+                <div style='margin-top: 40px'><?php echo strtoupper(l('contact_us_inner_contact')) ?></div>
+                <div style='margin-top: 7px'><?php echo l('contact_us_address') ?></div>
                 <div style='margin-top: 7px'>
-                    <span style=''>Mail: </span>
-                    <span style='color: #000'>info@opentaps.ge</span>
+                    <span style=''><?php echo l('contact_us_mail') ?>:</span>
+                    <a href="mailto:info@opentaps.ge"><span style='color: #000'>info@opentaps.ge</span></a>
                 </div>
-                <div style='margin-top: 7px;'>Tel: +995 32 214 29 26</div>
-                <div style='color: #000; margin-top: 27px;'>We'd love to hear from you</div>
-                <div style='color: #000;'>Let's get started!</div>
+                <div style='margin-top: 7px;'><?php echo l('contact_us_tel') ?>: +995 32 214 29 26</div>
+                <div style='color: #000; margin-top: 27px;'><?php __(l('contact_us_text')) ?></div>
             </div>
             <!--<div id='contact-us-form'>
                 <form action='' method=''>
