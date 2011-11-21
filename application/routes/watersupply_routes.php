@@ -46,7 +46,7 @@ Slim::get('/water_supply/', function()
 
 Slim::get('/water_supply/district/:unique/', function($unique)
         {
-            $districts = fetch_db("select `unique`, name, id from districts where `region_unique` = :unique AND lang = '" . LANG . "';", array(':unique' => $unique));
+            $districts = fetch_db("select `unique`, name, id from districts_new where `region_unique` = :unique AND lang = '" . LANG . "';", array(':unique' => $unique));
             die(empty($districts) ? json_encode('empty') : json_encode($districts));
         }
 );
