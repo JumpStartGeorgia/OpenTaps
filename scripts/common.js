@@ -579,7 +579,7 @@ $(function()
 			footer_map.addLayers([footer_map_layer,footer_map_marker_layer]);
 
 			var coordinates = new OpenLayers.LonLat(44.79672380736, 41.697742559308),
-			size = new OpenLayers.Size(20, 20),offset = new OpenLayers.Pixel(-(size.w/2), -size.h),
+			size = new OpenLayers.Size(24, 20),offset = new OpenLayers.Pixel(-(size.w/2), -size.h),
             marker = new OpenLayers.Marker(coordinates, new OpenLayers.Icon(baseurl + 'images/map/projects/star.png',size, offset));
 
 			footer_map_marker_layer.addMarker(marker);
