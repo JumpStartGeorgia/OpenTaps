@@ -38,8 +38,7 @@
                     <?php foreach ($slide_news as $news): ?>
                         <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
                                 <p><?php echo $news['title']; ?></p>
-                                <?php echo word_limiter(strip_tags($news['body']), 320); /* ?>
-                                  <div class="slider_date"><?php echo $news['published_at']; ?></div> */ ?>
+                                <?php echo char_limit(strip_tags($news['body'], 320),130) ?>
                             </a></div>
                     <?php endforeach; ?>
                 </div>
@@ -102,6 +101,14 @@
             $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.table.js';
             $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.image.js';
         }
+        
+        ?>
+        	<script type="text/javascript">
+				<?php 			
+						browserIncompatible();
+				?>
+        	</script>
+        <?php
         foreach ($scripts AS $script)
             echo '<script type="text/javascript" src="' . (substr($script, 0, 4) === 'http' ? $script : URL . 'scripts/' . $script) . '"></script>' . PHP_EOL;
         ?>

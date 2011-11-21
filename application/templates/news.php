@@ -51,7 +51,11 @@ $this_type = empty($this_type) ? NULL : 'type/' . $this_type . '/';
                     <div class='content_each_right' style='border-left: 7px solid rgba(12, 181, 245, <?php echo $rgba; ?>)'>
                         <div style='padding: 4px; padding-top: 15px; font-size: 10px; text-align: center;'>
                             <img src="<?php echo href() . $images[$news['category']] ?>" height='36px' /> <br />
-                            <?php echo dateformat($news['published_at']); ?>
+                            <?php                          
+                            	 $date = dateformat($news['published_at']);
+						    	$date = !strtotime($news['published_at']) ? l('no_time') : $date;
+		     					__( $date ); 	                                                          	 
+                            ?>
                         </div>
                     </div>
                   </a>  

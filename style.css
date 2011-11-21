@@ -299,8 +299,10 @@ div.titlepanel div.tleft { float: left }
 div.titlepanel div.tcenter { float: left; text-align: center; width: 70% }
 div.panel a { color: green; text-decoration: none; margin-left: 11px }
 div.panel a:hover { color: black }
-div.record { width: 99%; height: 17px; padding: 5px; border-bottom: 1px solid grey; background-color: #5FCCF3; font-size: 14px; font-family: Arial }
-div.record:hover { background-color: white; color: black }
+div.record { width: 99%; height: 17px; padding: 5px; border-bottom: 1px solid grey; background-color: #5FCCF3; font-size: 14px; font-family: Arial;cursor:pointer }
+div.record-hidden { background:#728FCE; }
+div.record-noregion { background:#98AFC7; }
+div.record:hover { background-color: #FFFFFF; color: black }
 div.rleft, div.rleftsub { float: left }
 div.rright { float: right }
 div.rcenter { float: left; width: 71%; text-align: center }

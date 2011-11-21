@@ -1,11 +1,17 @@
 <div class="page-container">
 	<font style="font-size: 12px;">
-	    <?php echo l('news_date') . ':' . dateformat($news[0]['published_at']); ?>
+	    <?php 
+	    	$date = dateformat($news[0]['published_at']);
+	    	$date = !strtotime($news[0]['published_at']) ? l('no_time') : $date;
+	    ?>
 	<font><br />
     <h1 style="font-size: 18px;">
         <?php echo $news[0]['title'] ?>
         <?php userloggedin() AND print("<a class='region_link' style='float: right; display: block; font-size: 12px;' href='" . href('admin/news/' . $news[0]['unique'], TRUE) . "'>Edit</a>"); ?>
     </h1>
+    <p style="padding-top:10px;">
+        <?php __( l('news_date') . ':  <strong>' . $date . '</strong>' ); ?>
+    </p>
     <br />
     <span class="news_text"><?php echo $news[0]['body']; ?></span>
 

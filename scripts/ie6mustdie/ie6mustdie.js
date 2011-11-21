@@ -77,18 +77,11 @@
 	{
 		content.push('<div class="ie6mustdie-overlay"></div>');
 		content.push('<div class="ie6mustdie-dialog">');
-		content.push('<div class="ie6mustdie-header">');
+		/*content.push('<div class="ie6mustdie-header">');
 		content.push('<h1>Internet Explorer Must DIE!</h1>');
-		content.push('</div>');
+		content.push('</div>');*/
 		content.push('<div class="ie6mustdie-body">');
-		content.push('<p>');
-		content.push('ძვირფასო მომხმარებელო, თქვენ იყენებთ მსოფლიოში ყველაზე მოძველებულ ბრაუზერს მაშინ როდესაც არსებობს');
-		content.push(' რამდენიმე შესანიშნავი ალტერნატივა');
-		content.push('(<strong>მათ შორის თქვენი მიმდინარე ბრაუზერის მწარმოებლისგან</strong>). '); 
-		content.push('ამ საიტის სანახავად გირჩევთ გადმოწეროთ ქვემოთ მითითებულ ბრაუზერთაგან ერთერთი. '); 
-		content.push('გისურვებთ წარმატებულ მუშაობას!');
-		content.push('</p>');
-		content.push('<h2>გადმოწერეთ ერთერთი ბრაუზერი</h2>');
+		content = content.concat(theIncBrowserIE67Text);
 		content.push('<div class="ie6mustdie-browsers clearfix">');
 		content.push('<ul><li>');
 		content.push('<div class="safari"></div>');
@@ -111,12 +104,7 @@
 		};
 		__('<div class="ie6mustdie-overlay"></div>');
 		__('<div class="ie6mustdie-dialog ie6mustdie-ie8">');
-		__('<p>');
-		__('ძვირფასო მომხმარებელო თქვენი ბრაუზერი არ <br/>');
-		__('აკმაყოფილებს იმ მოთხოვნებს რაც საჭიროა ამ საიტის <br/>');
-		__('სანახავად გთხოვთ მოახდინოთ მისი განახლება ან გამოიყენო<br/>');
-		__('სხვა თანამედროვე ბრაუზერი!');
-		__('</p>');
+		content = content.concat(theIncBrowserIEMore7Text);
 		__('</div>');
 		__('</div>');
 		

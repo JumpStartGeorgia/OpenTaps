@@ -85,7 +85,7 @@
                             <?php echo l('beginning') ?> :
                         </div>
                         <div class="wordwrap">
-                            <?php echo $project['start_at']; ?>
+                            <?php $start_at = $project['start_at'];__( !strtotime($start_at) ? l('no_time') : $start_at) ?>
                         </div>
                     </div>
 
@@ -94,7 +94,7 @@
                             <?php echo l('ends') ?> :
                         </div>
                         <div class="wordwrap">
-                            <?php echo $project['end_at']; ?>
+                            <?php $end_at = $project['end_at'];__( !strtotime($start_at) ? l('no_time') : $end_at) ?>
                         </div>
                     </div>
 

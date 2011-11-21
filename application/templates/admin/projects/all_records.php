@@ -1,4 +1,5 @@
 <?
+
   echo "
   	<div class='panel'>
   		<div class='titlepanel'>
@@ -13,10 +14,18 @@
       $link_edit = href("admin/projects/". $project['unique'], TRUE);
       /*$link_add_data = href("admin/project-data/". $project['unique'] . "/new", TRUE);
       $link_edit_data = href("admin/project-data/". $project['unique'], TRUE);*/
-      $link_del = href("admin/projects/". $project['unique'] . '/delete', TRUE);
-      
+      $link_del = href("admin/projects/". $project['unique'] . '/delete', TRUE);                  	      	
+      	
+	  	$class = false;
+	  	if ( (bool)$project['hidden'] ) 
+	  		$class = 'record-hidden';
+		if ( $project['region_unique'] == 0 or empty($project['region_unique']) )
+			$class = 'record-noregion';
+
+		
+      	
       echo "
-		<div class='record'" . ((bool) $project['hidden'] ? ' style="background: #90DAF3"' : NULL) . ">
+		<div class='record " . ( $class ? $class : null ) . "'>
 		  <div class='rleft'> " . char_limit($project['title'], 60) . "</div>
 		  "/*<div class='rcenter' style='width:60%;'> " . word_limiter(strip_tags($project['description']), 50) . "</div>*/. "
 		  <div class='rright' style='width: auto'>

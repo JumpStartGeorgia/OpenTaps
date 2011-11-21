@@ -1385,8 +1385,10 @@ function word_limiter($text, $limit = 30)
     {
         $words = str_word_count($text, 2, $chars);
         $words = array_reverse($words, TRUE);
+
         foreach ($words AS $length => $word)
         {
+
             if ($length + strlen($word) >= $limit)
                 array_shift($words);
             else
@@ -1963,3 +1965,26 @@ function string_to_friendly_url($title, $separator = '-')
     $title = preg_replace('![' . preg_quote($separator) . '\s]+!u', $separator, $title);
     return trim($title, $separator);
 }
+
+
+function browserIncompatible ()
+{
+
+	$incbrowserIEText = array();		
+	$incbrowserIEText[] = 'var theIncBrowserIE67Text = [],theIncBrowserIEMore7Text = [];';
+	
+	foreach (explode(';',l('incbrowser_ie67_text')) as $inctext)
+		$incbrowserIEText[] = 'theIncBrowserIE67Text.push(\'' . $inctext . '\');';		
+	foreach (explode(';',l('incbrowser_iemore7_text')) as $inctext)
+		$incbrowserIEText[] = 'theIncBrowserIEMore7Text.push(\'' . $inctext . '\');';
+
+	echo implode('',$incbrowserIEText);
+
+}
+
+
+function __ ($text)
+{
+	echo $text;
+}
+
