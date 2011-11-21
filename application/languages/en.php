@@ -128,4 +128,6 @@ return array(
     'select_region' => 'Select a region',
     'select_district' => 'Select a district',
     'budget_empty_text' => 'budget is empty',
+    'incbrowser_ie67_text' => 'ika',
+    'incbrowser_iemore7_text' => 'irakili'
 );

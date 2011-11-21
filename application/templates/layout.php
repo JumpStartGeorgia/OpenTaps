@@ -101,6 +101,14 @@
             $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.table.js';
             $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.image.js';
         }
+        
+        ?>
+        	<script type="text/javascript">
+				<?php 			
+						browserIncompatible();
+				?>
+        	</script>
+        <?php
         foreach ($scripts AS $script)
             echo '<script type="text/javascript" src="' . (substr($script, 0, 4) === 'http' ? $script : URL . 'scripts/' . $script) . '"></script>' . PHP_EOL;
         ?>
