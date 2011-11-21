@@ -905,15 +905,16 @@ $(function()
 
     regions.change(function()
     {
-        var request_url = baseurl + 'water_supply/districts/' + $(this).val() + '?lang=' + lang;
+        var request_url = baseurl + 'water_supply/district/' + $(this).val() + '?lang=' + lang;
         $.getJSON(request_url, function(response)
         {
             if ($.isEmptyObject(response))
                 return;
             districts.html('<option></option>');
+
             $.each(response, function()
             {
-                var option = '<option id="' + $(this).attr('id') + '">' + $(this).attr('name') + '</option>';
+                var option = '<option unique="' + $(this).attr('unique') + '">' + $(this).attr('name') + '</option>';
                 districts.append(option);
             });
             districts.trigger('liszt:updated');
@@ -922,15 +923,10 @@ $(function()
 
     districts.change(function()
     {
-
-
-        $.get(baseurl + 'water_supply/' + $(this).children('option:selected').attr('id'), function(json)
+        $.get(baseurl + 'water_supply/supply/' + $(this).children('option:selected').attr('unique'), function(json)
         {
-
-
-            $("#project_content div:gt(11)").remove();
-            $("#project_content").append(json);
-
+        console.log(json);
+            $("#project_content").find('#cont').append(json);
         });
     });
 
