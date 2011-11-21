@@ -1978,8 +1978,6 @@ function browserIncompatible()
 	foreach (explode(';',l('incbrowser_iemore7_text')) as $inctext)
 		$incbrowserIEText[] = 'theIncBrowserIEMore7Text.push(\'' . $inctext . '\');';
 
-	$incbrowserIEText[] = 'console.log(theIncBrowserIE67Text);';
-	$incbrowserIEText[] = 'console.log(theIncBrowserIEMore7Text)';
 	echo implode('',$incbrowserIEText);
 
 }

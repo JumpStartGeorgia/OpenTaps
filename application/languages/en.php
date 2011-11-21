@@ -128,6 +128,6 @@ return array(
     'select_region' => 'Select a region',
     'select_district' => 'Select a district',
     'budget_empty_text' => 'budget is empty',
-    'incbrowser_ie67_text' => 'ika',
-    'incbrowser_iemore7_text' => 'irakili'
+    'incbrowser_ie67_text' => 'For better performance of this website it is recommended to use other browsers or update yours to the latest version.',
+    'incbrowser_iemore7_text' => 'For better performance of this website it is recommended to use other browsers or update yours to the latest version.'
 );
