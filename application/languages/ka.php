@@ -142,6 +142,6 @@ return array(
     'about_us_open_information' => 'ღია ინფორმაცია',
     'about_us_participation' => 'მონაწილეობის მიგება',
     'about_us_innovation' => 'ინოვაცია',
-    'no_time' => 'დრო არ არის'          
+    'no_time' => 'თარიღის გარეშე'          
 );
 
