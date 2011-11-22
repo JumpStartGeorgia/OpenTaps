@@ -219,7 +219,7 @@
                     foreach (array_values($tags) as $key => $tag):
                         $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
                         ?>
-                        <a <?php echo $hidden; ?> class="organization_project_link" href="<?php echo href('tag/project/' . $tag['name'], TRUE) ?>">
+                        <a <?php echo $hidden; ?> style="padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/project/' . $tag['name'], TRUE) ?>">
                         <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
                         </a><?php
                     endforeach;

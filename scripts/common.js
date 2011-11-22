@@ -698,11 +698,11 @@ $(function()
         }
     });*/
 
-    $('#contact-us-close-button').click(function(){
-        contact_button.click();
-    });
-    $('#about-us-close-button').click(function(){
+    $('#about-us-main-title-container').click(function(){
         about_button.click();
+    });
+    $('#contact-us-main-title-container').click(function(){
+        contact_button.click();
     });
 
     Array.prototype.max = function(){
