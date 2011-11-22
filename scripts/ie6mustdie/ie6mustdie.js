@@ -73,7 +73,7 @@
     script = scripts = null;
     
     var content = [];
-	if ( ieVersion == 6.0 || ieVersion == 7.0 )
+	if ( ieVersion >= 0.0 )
 	{
 		content.push('<div class="ie6mustdie-overlay"></div>');
 		content.push('<div class="ie6mustdie-dialog">');
@@ -81,7 +81,7 @@
 		content.push('<h1>Internet Explorer Must DIE!</h1>');
 		content.push('</div>');*/
 		content.push('<div class="ie6mustdie-body">');
-		content = content.concat(theIncBrowserIE67Text);
+		content = content.concat(theIncBrowserIEText);
 		content.push('<div class="ie6mustdie-browsers clearfix">');
 		content.push('<ul><li>');
 		content.push('<div class="safari"></div>');
@@ -95,19 +95,6 @@
 		content.push('</li><li><div class="ie"></div>');
 		content.push('<a href="http://code.ge/ie6mdownload.php?browser=ie8">Explorer 8</a>');
 		content.push('</li></ul></div></div></div>');
-	}
-	else if ( ieVersion == 8.0 )
-	{
-		var __  = function (text)
-		{
-			content.push(text);
-		};
-		__('<div class="ie6mustdie-overlay"></div>');
-		__('<div class="ie6mustdie-dialog ie6mustdie-ie8">');
-		content = content.concat(theIncBrowserIEMore7Text);
-		__('</div>');
-		__('</div>');
-		
 	}
 	
     var div = document.createElement('div');
@@ -124,11 +111,13 @@
       div.style.display = 'block';
     }, 100);
     
-    if ( ieVersion == 8.0 )
+    if ( ieVersion >= 8.0 )
     {
-		document.getElementById('ie6mustdie').addEventListener('click',function ()
+		document.getElementsByClassName('ie6mustdie-overlay')[0].addEventListener('click',function ()
 			{
-				this.parentNode.removeChild(this);	
+				var incIEDialog = document.getElementsByClassName('ie6mustdie-dialog')[0];
+					this.parentNode.removeChild(this);				
+					incIEDialog.parentNode.removeChild(incIEDialog);
 			}
 		);
     }

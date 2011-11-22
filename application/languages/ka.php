@@ -2,7 +2,7 @@
 
 return array(
     'news' => 'სიახლეები',
-    'home_page_bottom_text' => '(ქართულად) The OpenTaps project is made possible thanks to the generous support of information Program and the Think Tank Fund of Open Society Foundations and O\'Sullivan Foundation.',
+    'home_page_bottom_text' => 'პროექტი ხორციელდება ღია საზოგადოების ინსტიტუტის პროგრამის Think Tank Fund და ო\'სალივანის ფონდის ფინანსური მხარდაჭერით.',
     'no_logo' => 'ლოგოს გარეშე',
     'projects_org' => 'ორგანიზაციები',
     'map_active' => 'რუკის გასააქტიურებლად დააკლიკეთ',
@@ -131,8 +131,7 @@ return array(
     'select_region' => 'შეარჩიეთ რეგიონი',
     'select_district' => 'შეარჩიეთ რაიონი',
     'budget_empty_text' => 'ბიუჯეტი ცარიელია',
-    'incbrowser_ie67_text' => '<p>საიტის უკეთესი მუშაობისათვის გირჩევთ გამოიყენოთ სხვა ბრაუზერი ან გააკეთოთ თქვენი მიმდინარე ბრაუზერის განახლება.</p>',
-    'incbrowser_iemore7_text' => '<p>საიტის უკეთესი მუშაობისათვის გირჩევთ გამოიყენოთ სხვა ბრაუზერი ან გააკეთოთ თქვენი მიმდინარე ბრაუზერის განახლება.</p>',
+    'incbrowser_ie_text' => '<p>საიტის უკეთესი მუშაობისათვის რეკომენდირებულია, რომ განაახლოთ ბრაუზერი ან გამოიყენოთ სხვა ბრაუზერი.</p>',
     'contact_us_inner_contact' => 'დაგვიკავშირდით',
     'contact_us_address' => 'მისამართი: შევჩენკოს ქუჩა 5,<br /> ბინა 2, თბილისი, საქართველო',
     'contact_us_mail' => 'ელ-ფოსტა',

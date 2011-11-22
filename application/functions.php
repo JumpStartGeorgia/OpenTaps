@@ -1969,17 +1969,15 @@ function string_to_friendly_url($title, $separator = '-')
 
 function browserIncompatible ()
 {
-
+	$langs = array(		
+		require DIR . 'application/languages/en.php',
+		require DIR . 'application/languages/ka.php'
+	);
 	$incbrowserIEText = array();		
-	$incbrowserIEText[] = 'var theIncBrowserIE67Text = [],theIncBrowserIEMore7Text = [];';
-	
-	foreach (explode(';',l('incbrowser_ie67_text')) as $inctext)
-		$incbrowserIEText[] = 'theIncBrowserIE67Text.push(\'' . $inctext . '\');';		
-	foreach (explode(';',l('incbrowser_iemore7_text')) as $inctext)
-		$incbrowserIEText[] = 'theIncBrowserIEMore7Text.push(\'' . $inctext . '\');';
-
+	$incbrowserIEText[] = 'var theIncBrowserIEText = [];';			
+	foreach ( $langs as $lang )
+		$incbrowserIEText[] = 'theIncBrowserIEText.push(\'' . $lang['incbrowser_ie_text'] . '\');';					
 	echo implode('',$incbrowserIEText);
-
 }
 
 
