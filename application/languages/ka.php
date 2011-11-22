@@ -2,7 +2,7 @@
 
 return array(
     'news' => 'სიახლეები',
-    'home_page_bottom_text' => '(ქართულად) The OpenTaps project is made possible thanks to the generous support of information Program and the Think Tank Fund of Open Society Foundations and O\'Sullivan Foundation.',
+    'home_page_bottom_text' => 'პროექტი ხორციელდება ღია საზოგადოების ინსტიტუტის პროგრამის Think Tank Fund და ო\'სალივანის ფონდის ფინანსური მხარდაჭერით.',
     'no_logo' => 'ლოგოს გარეშე',
     'projects_org' => 'ორგანიზაციები',
     'map_active' => 'რუკის გასააქტიურებლად დააკლიკეთ',
