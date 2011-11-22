@@ -115,9 +115,9 @@
     {
 		document.getElementsByClassName('ie6mustdie-overlay')[0].addEventListener('click',function ()
 			{
-				var incIEDielog = document.getElementsByClassName('ie6mustdie-dialog')[0];
+				var incIEDialog = document.getElementsByClassName('ie6mustdie-dialog')[0];
 					this.parentNode.removeChild(this);				
-					incIEDielog.parentNode.removeChild(incIEDielog);
+					incIEDialog.parentNode.removeChild(incIEDialog);
 			}
 		);
     }

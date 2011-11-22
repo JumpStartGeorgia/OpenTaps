@@ -54,7 +54,7 @@ html[xmlns] .clearfix {
   left: 50%;
   margin: 0 0 0 -300px;
   position: absolute;
-  top: 20px;
+  top: 50%;
   width: 600px;
 }
 #ie6mustdie div.ie6mustdie-header {
