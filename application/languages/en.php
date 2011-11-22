@@ -23,6 +23,7 @@ return array(
     'region_settlement_type' => 'Settlement Type',
     'region-villages' => 'The Villages',
     'region_district' => 'District',
+    'region_districts' => 'Districts',
     'region_edit' => 'edit',
     'projects_info' => 'INFO ON PROJECTS',
     'region_projects' => 'PROJECTS IN THIS REGION',

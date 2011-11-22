@@ -92,7 +92,7 @@
 			<?php if (!empty($region['districts']) AND strlen($region['districts']) > 0): ?>
 			<div class='project_details_line'>
 				<div class='line_left'>
-					<?php echo l('district') ?> :
+					<?php echo l('region_districts') ?> :
 				</div>
 				<div>
 					<?php echo $region['districts']; ?>
