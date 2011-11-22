@@ -76,7 +76,7 @@ return array(
     'admin_list_projects' => 'პროექტების სია',
     'admin_organizations_management' => 'ორგანიზაციების მართვა',
     'admin_add_organization' => 'ორგანიზაციის დამატება',
-    'admin_list_organizations' => 'ორგანიოზაციების სია',
+    'admin_list_organizations' => 'ორგანიზაციების სია',
     'admin_regions_management' => 'რეგიონების მართვა',
     'admin_add_region' => 'რეგიონის დამატება',
     'admin_list_regions' => 'რეგიონების სია',
