@@ -19,7 +19,7 @@
                 $idx++;
 
                 endforeach;
-            echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . '><a href="' . href('projects') . '" style="font-weight: bold">' . l('all_projects') . '</a></td>';
+            echo '<td' . ($last_row ? ' style="border-bottom: 0 none"' : NULL) . '><a href="' . href('projects', TRUE) . '" style="font-weight: bold">' . l('all_projects') . '</a></td>';
             ?>
         </tr>
     </table>
