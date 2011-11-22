@@ -1,7 +1,7 @@
 <?php
 	$projects = array_values($projects);
 ?>
-<div id='project_content'>
+<div id='project_content' class="group" style="margin-bottom: 6px;">
     <div style='float: left; width: 673px;'>
         <div class='group'>
             <?php

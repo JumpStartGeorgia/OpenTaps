@@ -1,5 +1,5 @@
-<div id='project_content'>
-    <div style='float:left;width:673px;'>
+<div id='project_content' class="group" style="margin-bottom: 16px;">
+    <div style="float: left; width: 673px;">
 	<div class='group'>
 		<script type="text/javascript">
 			/*var region_map_boundsLeft = 4550479.3343998;

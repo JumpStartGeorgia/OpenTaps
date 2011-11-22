@@ -1,4 +1,4 @@
-<div id='project_content'>
+<div id='project_content' class="group">
 
     <div style="float: left;">
         <div id="map" style="width: 638px; height: 160px; border-top: 0;"></div>

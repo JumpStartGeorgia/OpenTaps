@@ -134,7 +134,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 #news_bottom_content p { width:4px;font-size:8px;padding-top:5px }
 #region_link, .region_link { text-decoration: none; color: @opentaps_default_color; cursor: pointer }
 #region_link:hover, .region_link:hover { text-decoration: underline }
-#content { width: 932px; min-height: 350px; margin-top: 0px; padding: 0; font-size: 12px !important }
+#content { width: 932px; min-height: 345px; margin-bottom: 5px; margin-top: 0px; padding: 0; font-size: 12px !important }
 
 /* Projects */
 #project_content { font-size: 12px; font-family: arial }
