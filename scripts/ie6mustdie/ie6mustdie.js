@@ -126,9 +126,10 @@
     
     if ( ieVersion == 8.0 )
     {
-		document.getElementById('ie6mustdie').addEventListener('click',function ()
+		document.getElementsByClassName('ie6mustdie-overlay')[0].addEventListener('click',function ()
 			{
-				this.parentNode.removeChild(this);	
+				this.parentNode.removeChild(this);
+				document.getElementsByClassName('ie6mustdie-dialog')[0].parentNode.removeChild(this);
 			}
 		);
     }
