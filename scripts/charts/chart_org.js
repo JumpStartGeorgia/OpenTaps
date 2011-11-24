@@ -102,10 +102,10 @@ $(document).ready(function()
     });
     
     
-    $(window).load(function()
+    /*$(window).load(function()
     {
         $('.highcharts-container svg').hide(0, function()
         {
             $(this).show(0);
         });
-    });
+    });*/

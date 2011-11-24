@@ -3,7 +3,7 @@
 Slim::get('/admin/districts/',function()
 	{
 		Storage::instance()->show_map = FALSE;
-		$districts = fetch_db("SELECT * FROM districts_new");
+		$districts = fetch_db("SELECT * FROM districts_new WHERE lang = '" . LANG . "'");
 		Storage::instance()->content = template('admin/districts/all_records',array(
 			'districts' => $districts		
 		));

@@ -901,13 +901,13 @@ $(function()
 {
 
     $('#supply_clear_button').click(function(){
-	    $('#cont').animate(
-	        { height: 0 },
-	        function(){
-		    $(this).children().remove();
-		    $(this).css({ height: 'auto' });
-		}
-	    );
+	$('#cont').animate(
+	    { height: 0 },
+	    function(){
+		$(this).children().remove();
+		$(this).css({ height: 'auto' });
+	    }
+	);
     });
 
     var regions = $('#ws_regions'),
