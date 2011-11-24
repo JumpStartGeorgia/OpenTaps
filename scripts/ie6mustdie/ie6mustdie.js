@@ -20,9 +20,8 @@
 		  return rv;
 	 };
   var ieVersion = getInternetExplorerVersion();   
-  
-  if ( ieVersion >= 6.0 && ieVersion < 9.0 ) {
-  
+  if ( ieVersion >= 0.0 )
+  {
     var getDocumentHeight = function() {
       var scrollHeight = Math.max(
         document.body.scrollHeight, 
@@ -73,13 +72,9 @@
     script = scripts = null;
     
     var content = [];
-	if ( ieVersion >= 0.0 )
-	{
+	
 		content.push('<div class="ie6mustdie-overlay"></div>');
 		content.push('<div class="ie6mustdie-dialog">');
-		/*content.push('<div class="ie6mustdie-header">');
-		content.push('<h1>Internet Explorer Must DIE!</h1>');
-		content.push('</div>');*/
 		content.push('<div class="ie6mustdie-body">');
 		content = content.concat(theIncBrowserIEText);
 		content.push('<div class="ie6mustdie-browsers clearfix">');
@@ -95,7 +90,7 @@
 		content.push('</li><li><div class="ie"></div>');
 		content.push('<a href="http://code.ge/ie6mdownload.php?browser=ie8">Explorer 8</a>');
 		content.push('</li></ul></div></div></div>');
-	}
+
 	
     var div = document.createElement('div');
     div.id = 'ie6mustdie';
@@ -122,6 +117,6 @@
 		);
     }
     
-  }
+  	}
   
 })();
