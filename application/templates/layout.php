@@ -65,8 +65,8 @@
 
         <?php
         $scripts = array(
-            'ie6mustdie/ie6mustdie.js',
             'jquery.js', //'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',
+            'ie6mustdie/ie6mustdie.js',
             'jquery.chosen.js',
             'jquery.slideQuery.js',
             'jquery.ui.effects.js',

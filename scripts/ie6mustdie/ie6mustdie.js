@@ -108,14 +108,17 @@
     
     if ( ieVersion >= 8.0 )
     {
-    	var overlayClick = function ()
-		{
-			alert('close evetn');
-				var incIEDialog = document.getElementsByClassName('ie6mustdie-dialog')[0];
-					this.parentNode.removeChild(this);				
-					incIEDialog.parentNode.removeChild(incIEDialog);
-		};
-		document.getElementsByClassName('ie6mustdie-overlay')[0].onclick(overlayClick);
+			$('.ie6mustdie-overlay:first').click(function ()
+				{
+					$.each([this,$('.ie6mustdie-dialog:first')],function ()
+						{
+							$(this).fadeOut(function(){
+								$(this).remove();
+							});
+						}
+					);
+				}
+			);
     }
     
   }
