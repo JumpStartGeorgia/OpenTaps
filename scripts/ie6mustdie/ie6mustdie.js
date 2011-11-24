@@ -108,13 +108,13 @@
     
     if ( ieVersion >= 8.0 )
     {
-		document.getElementsByClassName('ie6mustdie-overlay')[0].addEventListener('click',function ()
+    	var overlayClick = function ()
 			{
 				var incIEDialog = document.getElementsByClassName('ie6mustdie-dialog')[0];
 					this.parentNode.removeChild(this);				
 					incIEDialog.parentNode.removeChild(incIEDialog);
-			}
-		);
+			};
+		document.getElementsByClassName('ie6mustdie-overlay')[0].attachEvent('onclick',overlayClick);
     }
     
   	}
