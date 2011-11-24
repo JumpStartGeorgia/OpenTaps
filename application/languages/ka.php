@@ -142,6 +142,7 @@ return array(
     'about_us_open_information' => 'ღია ინფორმაცია',
     'about_us_participation' => 'მონაწილეობის მიღება',
     'about_us_innovation' => 'ინოვაცია',
-    'no_time' => 'თარიღის გარეშე'          
+    'no_time' => 'თარიღის გარეშე',
+    'no_data' => 'არ არის ინფორმაცია',       
 );
 

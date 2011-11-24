@@ -60,6 +60,7 @@ Slim::get('/water_supply/supply/:unique/', function($unique)
             {
 		$html .= '<div style="margin-bottom: 5px; border-radius: 5px; padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . $ws['text'] . '</div>';
             }
+            empty($result) and $html = '<div style="margin-bottom: 5px; border-radius: 5px; padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . l('no_data') . '</div>';
             exit($html);
         }
 );

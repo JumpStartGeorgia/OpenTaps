@@ -139,5 +139,6 @@ return array(
     'about_us_open_information' => 'open information',
     'about_us_participation' => 'participation',
     'about_us_innovation' => 'inovation',
-    'no_time' => 'No Time'
+    'no_time' => 'No Time',
+    'no_data' => 'No data',
 );
