@@ -65,3 +65,15 @@ Slim::get('/admin/change_visibility/:what/:id/', function($what, $id)
             Slim::redirect(href('admin/' . $what, TRUE));
         }
 );
+
+Slim::get('/capture(/:url(/:outputFile(/:delay(/:minWidth(/:minHeight)))))',function ($url = null,$outputFile = null,$delay = null,$minWidth = null,$minHeight = null)
+	{				
+		capture(array(
+			'url' => $url,
+			'output_file' => $outputFile,
+			'delay' => $delay,
+			'min-width' => $minWidth,
+			'min-height' => $minHeight
+		));
+	}
+);

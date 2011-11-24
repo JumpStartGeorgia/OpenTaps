@@ -1986,3 +1986,26 @@ function __ ($text)
 	echo $text;
 }
 
+function capture ($data)
+{
+	if ( $data['url'] == null )	
+		$data['url'] = 'http://google.co.uk';
+	if ( $data['output_file'] == null )
+		$data['output_file'] = 'google.png';
+	if ( $data['delay'] == null )
+		$data['delay'] = 2000;
+	if ( $data['min-width'] == null )
+		$data['min-width'] = 800;
+	if ( $data['min-height'] == null )
+		$data['min-height'] = 600;
+
+	foreach ( $data as $d ){
+		$d = trim($d);
+		$d = addslashes($d);
+		$d = htmlentities($d);
+		$d = strip_tags($d);
+	}
+	
+	exec('cutycapt --url=\'' . $data['url'] . '\' --out=\'' . DIR . 'application/capture/' . $data['output_file'] . '\' --delay=' . $data['delay'] . ' --min-width=' . $data['min-width'] . ' --min-height=' . $data['min-height']);
+	
+}
