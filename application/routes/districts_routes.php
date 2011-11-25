@@ -21,8 +21,9 @@ Slim::get('/admin/districts/:unique/water_supply/', function($id){
 });
 
 Slim::post('/admin/districts/:unique/water_supply/update/', function($id){
-        if (userloggedin()){
-            update_supply($_POST['pl_water_supply'],$id);
+        if (userloggedin())
+        {
+            update_supply($_POST['pl_water_supply'], $id);
             Slim::redirect(href('admin/districts', TRUE));
         }
         else Storage::instance ()->content = template('login');

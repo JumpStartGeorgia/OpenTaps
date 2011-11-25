@@ -1,4 +1,3 @@
- 
   	<div class='panel'>
   		<div class='titlepanel'>
   		    <div class='tleft'>Title</div>
@@ -15,7 +14,7 @@
 
 		<div class='record'>
 		  <div class='rleft'> <?php echo char_limit($district['name'], 60) ?></div>
-		  <div class='rright' style='width:133px'>
+		  <div class='rright' style=''>
 		  		<a href="<?php echo $link_supply ?>">Water Supply</a>
 		  </div>
 		</div>
@@ -26,4 +25,4 @@
 
 ?>
   
-  
+  </div>
