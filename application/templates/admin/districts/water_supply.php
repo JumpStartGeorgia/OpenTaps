@@ -1,11 +1,4 @@
-<?php
-    
-    
-?>
-
-
-    
-    <form action="<?php echo href('admin/districts/'.$unique.'/water_supply/update', TRUE) ?>" method="POST">
+    <form action="<?php echo href('admin/districts/' . $unique . '/water_supply/update', TRUE) ?>" method="POST">
         <textarea name="pl_water_supply">
             <?php echo $water_supply['text']; ?>
         </textarea><br />

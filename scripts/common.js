@@ -499,7 +499,7 @@ function timedScroll()
     if (i > document.body.clientHeight)
         return;
     window.scrollTo(0, i);
-    i += 18;
+    i += 22;
     t = setTimeout('timedScroll()', 10);
 }
 $(function()
@@ -543,12 +543,12 @@ $(function()
                 contact_is_visible = false;
             }
             i = about.position().top;
-            timedScroll();
             about.css('height', 0).show().animate({
                 height: about_height
             });
             about_is_visible = true;
             $('#contact_us_toggle').attr('src', baseurl + 'images/contact-line-amoshlili.gif');
+            timedScroll();
         }
 
         $('body').bind('mousewheel', function()
@@ -620,7 +620,6 @@ $(function()
                 about_is_visible = false;
             }
             i = contact.position().top;
-            timedScroll();
             showFooterMap();
             contact.css('height', 0).show().animate({
     	         height: contact_height
@@ -628,6 +627,7 @@ $(function()
 	       	$('#contact-us-map').css('height', 0).show().animate({
 	       		height: 320
 	       	});
+            timedScroll();
 	       	
             	
             
@@ -900,12 +900,22 @@ $(function()
 $(function()
 {
 
+    $('#supply_clear_button').click(function(){
+	$('#cont').animate(
+	    { height: 0 },
+	    function(){
+		$(this).children().remove();
+		$(this).css({ height: 'auto' });
+	    }
+	);
+    });
+
     var regions = $('#ws_regions'),
     districts = $('#ws_districts');
 
     regions.change(function()
     {
-        var request_url = baseurl + 'water_supply/district/' + $(this).val() + '?lang=' + lang;
+        var request_url = baseurl + 'water_supply/district/' + $(this).val() + '/?lang=' + lang;
         $.getJSON(request_url, function(response)
         {
             if ($.isEmptyObject(response))
@@ -923,10 +933,9 @@ $(function()
 
     districts.change(function()
     {
-        $.get(baseurl + 'water_supply/supply/' + $(this).children('option:selected').attr('unique'), function(json)
+        $.get(baseurl + 'water_supply/supply/' + $(this).children('option:selected').attr('unique') + '/?lang=' + lang, function(json)
         {
-        console.log(json);
-            $("#project_content").find('#cont').append(json);
+            $("#project_content").find('#cont').prepend(json);
         });
     });
 

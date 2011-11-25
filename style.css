@@ -136,6 +136,10 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 #region_link:hover, .region_link:hover { text-decoration: underline }
 #content { width: 932px; min-height: 345px; margin-bottom: 5px; margin-top: 0px; padding: 0; font-size: 12px !important }
 
+/* water supply */
+#supply_clear_button { -moz-box-shadow:inset 0 0 10px #ccc; -webkit-box-shadow:inset 0 0 10px #ccc; box-shadow:inset 0 0 1px #ccc; background: #F8F8F8; cursor: pointer; padding: 6px 11px 6px 11px; border: 1px solid #aaa; -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; }
+#supply_clear_button:active { -moz-box-shadow:inset 0 0 10px #aaa; -webkit-box-shadow:inset 0 0 10px #aaa; box-shadow:inset 0 0 1px #aaa; background: #f0f0f0; }
+
 /* Projects */
 #project_content { font-size: 12px; font-family: arial }
 #project_details { float: left; width: 386px; min-height: 244px; border-right: 1px dotted @opentaps_default_bordercolor; border-bottom: 1px dotted @opentaps_default_bordercolor }
