@@ -1999,13 +1999,55 @@ function capture ($data)
 	if ( $data['min-height'] == null )
 		$data['min-height'] = 600;
 
-	foreach ( $data as $d ){
+	foreach ( $data as $d )
+	{
 		$d = trim($d);
 		$d = addslashes($d);
 		$d = htmlentities($d);
 		$d = strip_tags($d);
 	}
-	
-	exec('cutycapt --url=\'' . $data['url'] . '\' --out=\'' . DIR . 'application/capture/' . $data['output_file'] . '\' --delay=' . $data['delay'] . ' --min-width=' . $data['min-width'] . ' --min-height=' . $data['min-height']);
+//		$output = `ls -la`; print_r(explode(PHP_EOL, $output)); exit($output);
+
+
+
+	/*$args = array(
+		0 => '--url=http://google.co.uk --out=' . DIR . '/application/capture/google3.png',
+        1 => array(),
+        2 => array()
+	);*/
+//	proc_open('cutycapt',$args,$pipes);exit;
+//passthru('cutycapt',$ret);exit($ret);
+	exit(exec(escapeshellcmd('cutycapt --url=http://google.co.uk --out=/var/www/opentaps/application/capture/google3.png')));
+	$output = `cutycapt --url=http://google.co.uk --out=/var/www/opentaps/application/capture/google3.png`; exit($output . 'asdfg');
+	$output = `whoami`; exit($output);
+	exec('cutycapt --url=\'' . $data['url'] . '\' --out=\'capture/' . $data['output_file'] . '\' --delay=' . $data['delay'] . ' --min-width=' . $data['min-width'] . ' --min-height=' . $data['min-height']);
 	
 }
+
+
+function projectData ($project,$opt)
+{
+	switch ( $opt ):
+		case 'unique':
+			$result = $project['unique'];
+		break;
+		case 'type':
+			$result = '\'' . $project['type'] . '\'';
+		break;
+		case 'status':
+			$startAt = strtotime($project['start_at']);		
+			$endAt = strtotime($project['end_at']);
+			$toDay = strtotime(date('Y-m-d'));	
+			if ( $endAt < $toDay or !$startAt or !$endAt )
+				$result = '\'completed\'';
+			else if ( $startAt > $toDay )
+				$result = '\'scheduled\'';
+			else 
+				$result= '\'current\'';	
+		break;
+	endswitch;	
+	echo($result);
+}
+
+
+
