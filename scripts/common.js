@@ -1010,18 +1010,15 @@ $(function ()
     distance = 2,
     current_coordinate_hashes = [];
 
-    $.getJSON(request_url, function(result)
+    $.getJSON(request_url, function(results)
     {
 
-		console.log(result);
-		console.log(Project);
-        if (!result)
-            return;
-            
-        var results = [];
-        results.push(result);        
+        if (!results)
+            return;                       
+        
         $.each(results, function(index, place)
         {
+        	
             var adjusted_latitude = place.longitude,
             adjusted_longitude = place.latitude,
             coordinate_hash = String(place.latitude) + String(place.longitude);
@@ -1032,11 +1029,10 @@ $(function ()
                 coordinate_hash = String(adjusted_latitude) + String(adjusted_longitude);
             }
             current_coordinate_hashes[coordinate_hash] = true;
-
+		
             var coordinates = new OpenLayers.LonLat(adjusted_latitude, adjusted_longitude),
             icon =  mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()].clone(),
             marker = new OpenLayers.Marker(coordinates,icon);
-            
             mapping.markers.addMarker(marker); 
 
         });
