@@ -63,9 +63,8 @@
 			<?php
 			    $ben_people = explode(' ', $project['beneficiary_people']);
 			    if (isset($ben_people[1]))
-			    {
-				$ben_people[0] = empty($ben_people[0]) ? 'N/A' : number_format($ben_people[0]);
-			    }
+					$ben_people[0] = empty($ben_people[0]) ? 'N/A' : number_format($ben_people[0]);
+
                             echo implode(' ', $ben_people);
                         ?>
                         </div>
@@ -94,7 +93,7 @@
                             <?php echo l('ends') ?> :
                         </div>
                         <div class="wordwrap">
-                            <?php $end_at = $project['end_at'];__( !strtotime($start_at) ? l('no_time') : $end_at) ?>
+                            <?php $end_at = $project['end_at'];__( !strtotime($start_at) ? l('no_time') : $end_at ) ?>
                         </div>
                     </div>
 
@@ -235,3 +234,11 @@
 
 </div>
 
+<script>
+	var showProjectMarkers = true,
+	Project = {
+		Unique: <?php projectData($project,'unique') ?>,
+		Type: <?php projectData($project,'type') ?>,
+		Status: <?php projectData($project,'status') ?>
+	};
+</script>
