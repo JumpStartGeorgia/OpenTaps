@@ -153,8 +153,7 @@ Slim::get('/map-data/project-coordinates/:unique', 'check_map_data_access', func
 			':lang' => LANG
 		));
 
-		$json = $stmt->fetch(PDO::FETCH_ASSOC);
-	
+		$json = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		exit(json_encode($json));
 	}
 );
