@@ -920,7 +920,8 @@ $(function()
         {
             if ($.isEmptyObject(response))
                 return;
-            districts.html('<option></option>');
+            var option = (lang == 'ka') ? 'აირჩიეთ' : 'Select an Option';
+            districts.html('<option disabled>' + option + '</option>');
 
             $.each(response, function()
             {

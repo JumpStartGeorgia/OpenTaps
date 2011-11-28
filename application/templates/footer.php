@@ -34,22 +34,23 @@
         <!--<iframe src="http://mapspot.ge/embed/embedmap.php?lt=41.697067732318&lg=44.790275215241&z=16&m=1&mlg=44.796767813687&mlt=41.697999849411" width="930" height="318" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>-->
         <div id='contact-us-form-container' class='group'>
             <div id='contact-us-circle'>
+		<?php $margin = (LANG == 'ka') ? 20 : 7; ?>
                 <div style='margin-top: 40px'><?php __(strtoupper(l('contact_us_inner_contact'))) ?></div>
-                <div style='margin-top: 7px'><?php __(l('contact_us_address')) ?></div>
-                <div style='margin-top: 7px'>
+                <div style='margin-top: <?php echo $margin ?>px'><?php __(l('contact_us_address')) ?></div>
+                <div style='margin-top: <?php echo $margin ?>px'>
                     <span style=''><?php __(l('contact_us_mail')) ?>:</span>
                     <a href="mailto:info@opentaps.ge"><span style='color: #000'>info@opentaps.ge</span></a>
                 </div>
-                <div style='margin-top: 7px;'><?php __(l('contact_us_tel')) ?>: +995 32 214 29 26</div>
-                <div style='color: #000; margin-top: 27px;'><?php __(l('contact_us_text')) ?></div>
+                <div style='margin-top: <?php echo $margin ?>px;'><?php __(l('contact_us_tel')) ?>: +995 32 214 29 26</div>
+                <?php if (LANG != 'ka'): ?><div style='color: #000; margin-top: 27px;'><?php __(l('contact_us_text')) ?></div><?php endif; ?>
             </div>
-            <!--<div id='contact-us-form'>
+            <?php /*<div id='contact-us-form'>
                 <form action='' method=''>
                     <input type='text' name='' value='name:' class='contact-us-input' onfocus='contact_us_input_focus(this, "name:")' onblur='contact_us_input_blur(this, "name:")' />
                     <input type='text' name='' value='e-mail:*' class='contact-us-input' onfocus='contact_us_input_focus(this, "e-mail:*")' onblur='contact_us_input_blur(this, "e-mail:*")' />
                     <textarea id='contact-us-textarea' class='mceNoEditor' onfocus='contact_us_input_focus(this, "message:*")' onblur='contact_us_input_blur(this, "message:*")'>message:*</textarea>
                 </form>
-            </div>-->
+            </div>*/ ?>
         </div>
         
     </div>

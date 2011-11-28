@@ -86,6 +86,7 @@ return array(
     'region_cities' => 'Region Cities',
     'region_towns' => 'Region Towns',
     'ws_district' => 'district',
+    'ws_clear' => 'Clear',
     'map_loading' => 'Loading a map...',
     'map_overlays' => 'Overlays',
     'map_projects' => 'Projects',
@@ -141,4 +142,5 @@ return array(
     'about_us_innovation' => 'inovation',
     'no_time' => 'No Time',
     'no_data' => 'No data',
+    'disabled_option' => 'Select an Option',
 );
