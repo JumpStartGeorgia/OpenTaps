@@ -69,7 +69,7 @@ $(document).ready(function()
                 var org_chart_2 = new Highcharts.Chart(pie_chart_options);
             }
 
-            if (typeof(data_3) !== 'undefined' || 1 == 1)
+            /*if (typeof(data_3) !== 'undefined' || 1 == 1)
             {
                 line_chart_options.chart.renderTo = 'org-chart-container-3';
                 /*
@@ -93,10 +93,10 @@ $(document).ready(function()
                 null,
                 menuitem3,
                 null
-                ];*/
+                ];
 
                 var org_chart_3 = new Highcharts.Chart(line_chart_options);
-            }
+            }*/
         }
 
     });

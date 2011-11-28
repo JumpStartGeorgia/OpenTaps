@@ -7,10 +7,10 @@ include_once('application/functions.php');
 function parse_damn_css($content)
 {
     $variables = array(
-    "@opentaps_default_color" => "#0cb5f5",
-    "@opentaps_default_rgba" => "12, 181, 245",
-    "@baseurl" => '.',
-    "@opentaps_default_bordercolor" => "#A6A6A6"
+	"@opentaps_default_color" => "#0cb5f5",
+	"@opentaps_default_rgba" => "12, 181, 245",
+	"@baseurl" => '.',
+	"@opentaps_default_bordercolor" => "#A6A6A6"
     );
     return strtr($content, $variables);
     //return str_replace(array_keys($variables), $variables, $content);
