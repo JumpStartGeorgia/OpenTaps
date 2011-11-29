@@ -46,7 +46,7 @@
 	    </div><br />
 
   	    Picture: <br />
-  	    <?php echo (empty($news[0]['image'])) ?  "No current picture <br/>" : "Current: <br /><image src='" . $news[0]['image'] . "' width='100' /><br />"; ?>
+  	    <?php echo (empty($news[0]['image'])) ?  "No current picture <br/>" : "Current: <br /><image src='" . href() . $news[0]['image'] . "' width='100' /><br />"; ?>
   	    <label for='nfile' onclick='document.getElementById("nfile").style.display = "block";' class='newpiclabel'>
   	        New picture
   	    </label>

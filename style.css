@@ -77,7 +77,7 @@ div.header_right { width: 563px; height: 74px; float: right; padding: 17px 31px 
 .slide_switcher_right { margin-right: 9px }
 .slide_switcher_left { margin-left: 9px }
 div.header_right p { font-size: 1.55em; font-family: Arial; margin-bottom: 6px }
-div.after_header { height: 7px; margin-top: 22px; background-image: url('@baseurl/images/bg_after_header.jpg') }
+div.after_header { height: 4px; margin-top: 22px; background-image: url('@baseurl/images/bg_after_header.jpg') }
 
 /* Menu */
 div.menu ul { list-style-type: none; padding: 0; float: left }
