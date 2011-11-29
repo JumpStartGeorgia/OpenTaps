@@ -2025,18 +2025,18 @@ function capture ($data)
 }
 
 
-function projectData ($project,$opt)
+function theData ($the,$opt)
 {
 	switch ( $opt ):
 		case 'unique':
-			$result = $project['unique'];
+			$result = $the['unique'];
 		break;
 		case 'type':
-			$result = '\'' . $project['type'] . '\'';
+			$result = '\'' . $the['type'] . '\'';
 		break;
 		case 'status':
-			$startAt = strtotime($project['start_at']);		
-			$endAt = strtotime($project['end_at']);
+			$startAt = strtotime($the['start_at']);		
+			$endAt = strtotime($the['end_at']);
 			$toDay = strtotime(date('Y-m-d'));	
 			if ( $endAt < $toDay or !$startAt or !$endAt )
 				$result = '\'completed\'';
@@ -2045,9 +2045,14 @@ function projectData ($project,$opt)
 			else 
 				$result= '\'current\'';	
 		break;
+		case 'longitude':
+			$result = $the['longitude'];
+		break;
+		case 'latitude':
+			$result = $the['latitude'];
+		break;
 	endswitch;	
 	echo($result);
 }
-
 
 

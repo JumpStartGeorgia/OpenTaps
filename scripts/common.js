@@ -1050,8 +1050,12 @@ $(function ()
 
 $(function ()
 	{
-		var request_url = baseurl + 'map-data/region-coordinates/' + region_unique + '?lang=' + lang;
-		getAndProcessCoordinates(request_url,mapping.icons.general.small);			
+		if ( window.Region != undefined )
+		{			
+			var request_url = baseurl + 'map-data/region-coordinates/' + Region.unique + '?lang=' + lang;
+			getAndProcessCoordinates(request_url,mapping.icons.general.small);
+		    mapping.map.setCenter(new OpenLayers.LonLat(Region.longitude, Region.latitude));
+		}
 	}
 );
 

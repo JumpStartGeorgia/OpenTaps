@@ -202,5 +202,9 @@
 </div>
 
 <script>
-	var region_unique = <?php __( $region['unique'] ) ?>;
+	var Region = {
+		unique: <?php theData($region,'unique') ?>,
+		longitude: <?php theData($region,'longitude') ?>,
+		latitude: <?php theData($region,'latitude') ?>
+	};	
 </script>

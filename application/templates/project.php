@@ -235,10 +235,9 @@
 </div>
 
 <script>
-	var showProjectMarkers = true,
-	Project = {
-		Unique: <?php projectData($project,'unique') ?>,
-		Type: <?php projectData($project,'type') ?>,
-		Status: <?php projectData($project,'status') ?>
+	var Project = {
+		Unique: <?php theData($project,'unique') ?>,
+		Type: <?php theData($project,'type') ?>,
+		Status: <?php theData($project,'status') ?>
 	};
 </script>
