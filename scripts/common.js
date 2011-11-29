@@ -999,48 +999,54 @@ $.each(projectGroup,function (ind,val)
 
 $().projectInfoActive();
 
+var getAndProcessCoordinates = function (request_url)
+	{
+		var project_unique = Project.Unique,
+			project_type = Project.Type,
+			project_status = Project.Status,
+			distance = 2,current_coordinate_hashes = [];
+		$.getJSON(request_url, function(results)
+		{
+
+		    if (!results)
+		        return;                       
+		    
+		    $.each(results, function(index, place)
+		    {
+		    	
+		        var adjusted_latitude = place.longitude,
+		        adjusted_longitude = place.latitude,
+		        coordinate_hash = String(place.latitude) + String(place.longitude);
+		        while (current_coordinate_hashes[coordinate_hash] != null)
+		        {
+		            adjusted_latitude = parseFloat(place.longitude) + (Math.random() - distance) / 750;
+		            adjusted_longitude = parseFloat(place.latitude) + (Math.random() - distance) / 750;
+		            coordinate_hash = String(adjusted_latitude) + String(adjusted_longitude);
+		        }
+		        current_coordinate_hashes[coordinate_hash] = true;
+		
+		        var coordinates = new OpenLayers.LonLat(adjusted_latitude, adjusted_longitude),
+		        icon =  mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()].clone(),
+		        marker = new OpenLayers.Marker(coordinates,icon);
+		        mapping.markers.addMarker(marker); 
+
+		    });
+
+		});
+
+	};
 
 $(function ()
 	{
+		var request_url = baseurl + 'map-data/project-coordinates/' + project_unique + '?lang=' + lang;    
+		getAndProcessCoordinates(request_url);
+		    
+	}
+);
 
-	var project_unique = Project.Unique,
-	project_type = Project.Type,
-	project_status = Project.Status;
-
-    var request_url = baseurl + 'map-data/project-coordinates/' + project_unique + '?lang=' + lang,
-    distance = 2,
-    current_coordinate_hashes = [];
-
-    $.getJSON(request_url, function(results)
-    {
-
-        if (!results)
-            return;                       
-        
-        $.each(results, function(index, place)
-        {
-        	
-            var adjusted_latitude = place.longitude,
-            adjusted_longitude = place.latitude,
-            coordinate_hash = String(place.latitude) + String(place.longitude);
-            while (current_coordinate_hashes[coordinate_hash] != null)
-            {
-                adjusted_latitude = parseFloat(place.longitude) + (Math.random() - distance) / 750;
-                adjusted_longitude = parseFloat(place.latitude) + (Math.random() - distance) / 750;
-                coordinate_hash = String(adjusted_latitude) + String(adjusted_longitude);
-            }
-            current_coordinate_hashes[coordinate_hash] = true;
-		
-            var coordinates = new OpenLayers.LonLat(adjusted_latitude, adjusted_longitude),
-            icon =  mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()].clone(),
-            marker = new OpenLayers.Marker(coordinates,icon);
-            mapping.markers.addMarker(marker); 
-
-        });
-
-    });
-
-
+$(function ()
+	{
+			
 	}
 );
 

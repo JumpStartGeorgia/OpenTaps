@@ -158,6 +158,22 @@ Slim::get('/map-data/project-coordinates/:unique', 'check_map_data_access', func
 	}
 );
 
+Slim::get('/map-data/region-coordinates/:unique','check_map_data_access', function ($unique)
+	{
+			$unique = db_escape_string($unique);
+			$json = array();
+			$sql = "
+				SELECT r.longitude,r.latitude FROM regions r WHERE unique=:unique LIMIT 1;
+			";
+			$stmt = db()->prepare($sql);
+			$stmt->execute(array(
+				':unique' => $unique
+			));
+			$json = $stmt->fetch(PDO::FETCH_ASSOC);
+			exit(json_encode($json));
+	}
+);
+
 Slim::get('/map-data/cluster-region-projects(/:type(/:status))', 'check_map_data_access', function($type = NULL, $status = NULl)
         {
             $type = db_escape_string($type);
