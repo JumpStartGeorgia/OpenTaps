@@ -110,7 +110,7 @@
                     foreach ($budgets as $budget): ?>
 			<div class="project_details_line clearfix" style="width: 100%;">
 			    <div class='line_left'>
-				<?php echo l('budget') . ' ' . $budget['name'] ?> :
+				<?php echo l('budget') . ' <a href="' . href('organization/' . $budget['organization_unique'], TRUE) . '" class="region_link">' . $budget['name'] ?></a> :
 			    </div>
 			    <div class="wordwrap">
 				<?php echo number_format($budget['budget']) . ' ' . strtoupper($budget['currency']); ?>
