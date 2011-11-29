@@ -999,12 +999,9 @@ $.each(projectGroup,function (ind,val)
 
 $().projectInfoActive();
 
-var getAndProcessCoordinates = function (request_url)
+var getAndProcessCoordinates = function (request_url,the_icon)
 	{
-		var project_unique = Project.Unique,
-			project_type = Project.Type,
-			project_status = Project.Status,
-			distance = 2,current_coordinate_hashes = [];
+		var distance = 2,current_coordinate_hashes = [];
 		$.getJSON(request_url, function(results)
 		{
 
@@ -1013,7 +1010,6 @@ var getAndProcessCoordinates = function (request_url)
 		    
 		    $.each(results, function(index, place)
 		    {
-		    	
 		        var adjusted_latitude = place.longitude,
 		        adjusted_longitude = place.latitude,
 		        coordinate_hash = String(place.latitude) + String(place.longitude);
@@ -1024,29 +1020,38 @@ var getAndProcessCoordinates = function (request_url)
 		            coordinate_hash = String(adjusted_latitude) + String(adjusted_longitude);
 		        }
 		        current_coordinate_hashes[coordinate_hash] = true;
-		
 		        var coordinates = new OpenLayers.LonLat(adjusted_latitude, adjusted_longitude),
-		        icon =  mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()].clone(),
+		        icon =  the_icon.clone(),
 		        marker = new OpenLayers.Marker(coordinates,icon);
 		        mapping.markers.addMarker(marker); 
-
 		    });
 
 		});
 
 	};
 
+
+
+
 $(function ()
 	{
-		var request_url = baseurl + 'map-data/project-coordinates/' + project_unique + '?lang=' + lang;    
-		getAndProcessCoordinates(request_url);
+		if ( window.Project != undefined )
+		{
+			var project_unique = Project.Unique,
+				project_type = Project.Type,
+				project_status = Project.Status,
+				request_url = baseurl + 'map-data/project-coordinates/' + project_unique + '?lang=' + lang;    
+			getAndProcessCoordinates(request_url,mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()]);
+		
+		}
 		    
 	}
 );
 
 $(function ()
 	{
-			
+		var request_url = baseurl + 'map-data/region-coordinates/' + region_unique + '?lang=' + lang;
+		getAndProcessCoordinates(request_url,mapping.icons.general.small);			
 	}
 );
 

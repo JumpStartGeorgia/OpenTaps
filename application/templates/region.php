@@ -200,3 +200,7 @@
 
 
 </div>
+
+<script>
+	var region_unique = <?php __( $region['unique'] ) ?>;
+</script>

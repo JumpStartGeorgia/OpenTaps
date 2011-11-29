@@ -163,13 +163,15 @@ Slim::get('/map-data/region-coordinates/:unique','check_map_data_access', functi
 			$unique = db_escape_string($unique);
 			$json = array();
 			$sql = "
-				SELECT r.longitude,r.latitude FROM regions r WHERE unique=:unique LIMIT 1;
-			";
+				SELECT r.longitude,r.latitude FROM regions r
+					 WHERE r.unique = :unique AND r.lang = :lang LIMIT 1
+			;";
 			$stmt = db()->prepare($sql);
 			$stmt->execute(array(
-				':unique' => $unique
+				':unique' => $unique,
+				':lang' => LANG
 			));
-			$json = $stmt->fetch(PDO::FETCH_ASSOC);
+			$json = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			exit(json_encode($json));
 	}
 );
