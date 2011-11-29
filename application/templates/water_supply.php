@@ -31,7 +31,7 @@
 
     </div>
 
-    <div style="float: right; width: 242px;" class="group">
+    <div style="float: right; width: 242px; display: none;" class="group" id="ws_project_list">
 	<div class='data_block group' style="border-bottom: 0px; border-top: 0px;">
 	    <div class='key'><?php echo strtoupper(l('ws_region_projects')) ?></div>
 	    <div class='value' style='padding: 0px;'>

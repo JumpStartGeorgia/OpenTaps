@@ -875,7 +875,7 @@ if($('#logo_img').length)
     $('#logo_img').css('height', $('#project_details').css('height'));
 
 
-$(function()
+var set_hidden_list_handlers = function()
 {
     $('.show_hidden_list_items').click(function(){
         var t = $(this);
@@ -890,9 +890,11 @@ $(function()
             t.html('▾');
         }
     });
-
+}
+$(function()
+{
+	set_hidden_list_handlers();
 });
-
 
 
 
@@ -911,7 +913,9 @@ $(function()
     });
 
     var regions = $('#ws_regions'),
-    districts = $('#ws_districts');
+    districts = $('#ws_districts'),
+    wsp_list_container = $('#ws_project_list'),
+    wsp_list = wsp_list_container.find('.value');
 
     regions.change(function()
     {
@@ -937,6 +941,20 @@ $(function()
         $.get(baseurl + 'water_supply/supply/' + $(this).children('option:selected').attr('unique') + '/?lang=' + lang, function(json)
         {
             $("#project_content").find('#cont').prepend(json);
+        });
+
+        $.get(baseurl + 'water_supply/projects/' + $(this).children('option:selected').attr('unique') + '/?lang=' + lang, function(result)
+        {
+            if (result != '' && typeof(result) !== 'undefined')
+            {
+		wsp_list.html(result);
+		wsp_list_container.slideDown();
+		set_hidden_list_handlers();
+            }
+            else
+            {
+		wsp_list_container.animate({ height: 0 }, function(){ $(this).hide().css('height', 'auto'); });
+            }
         });
     });
 

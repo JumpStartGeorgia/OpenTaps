@@ -64,3 +64,24 @@ Slim::get('/water_supply/supply/:unique/', function($unique)
             exit($html);
         }
 );
+
+Slim::get('/water_supply/projects/:district_unique/', function($district_unique)
+        {
+            $sql = "SELECT type, `unique`, title FROM `projects` WHERE district_unique = :uniq AND lang = '" . LANG . "';";
+            $result = fetch_db($sql, array(':uniq' => $district_unique));
+            $html = '';
+            foreach ($result as $key => $project)
+            {
+		$hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
+		$ptype = str_replace(' ', '-', strtolower(trim($project['type'])));
+		$html .= '
+			<a ' . $hidden . 'class="organization_project_link" href="' . href('project/' . $project['unique'], TRUE) . '">
+				<img src="' . href('images') . $ptype . '.png" />' . char_limit($project['title'], 28) . '
+			</a>
+		';
+            }
+            $html .= (empty($hidden) OR !$hidden) ? NULL : '<a class="show_hidden_list_items organization_project_link">▾</a>';
+            //empty($result) and $html = '<div style="margin-bottom: 5px; border-radius: 5px; padding: 11px; border: 1px solid rgba(0, 0, 0, .2);">' . l('no_data') . '</div>';
+            exit($html);
+        }
+);
