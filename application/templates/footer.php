@@ -67,7 +67,7 @@
         ?>
     </div>
     <div class="bottom2">
-        <span id="admin_button_logout" style="cursor: pointer"><a href="http://www.web2pdfconvert.com/convert">PDF</a></span>&nbsp;&nbsp;|&nbsp;
+        <span id="admin_button_logout" style="cursor: pointer"><a id="pdf-export" href="http://www.web2pdfconvert.com/convert"><?php echo l('pdf_export') ?></a></span>&nbsp;&nbsp;|&nbsp;
         <?php if (userloggedin()): ?>
             <span id="admin_button_logout" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>logout';">LOG OUT</span>&nbsp;&nbsp;|&nbsp;
             <span id="admin_button" style="cursor: pointer" onclick="window.location = '<?php echo href() ?>admin';">ADMINISTRATION</span>&nbsp;&nbsp;|&nbsp;
