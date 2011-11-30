@@ -1774,29 +1774,26 @@ function get_organization_chart_data($unique)
         'data' => $data
     );
 
-
-    /* $sql = "
-      select
-      r.name,
-      (select sum(budget) from project_budgets as pb
-      where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
-      ) as budget
-      from regions as r
-      inner join places as pl on r.`unique` = pl.region_unique
-      inner join projects as p on p.place_unique = pl.`unique`
-      inner join project_organizations as po on po.project_unique = p.`unique`
-      where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
+     $sql = "
+	select left(p.start_at, 4), " ./*left(p.title, 5),*/ "
+	(select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where pb.budget > 0 and left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "')
+	 as total_budget
+	from projects as p
+	where p.lang = '" . LANG . "' and (select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where pb.budget > 0 and left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "') > 0
+	group by left(start_at, 4)
+	order by start_at
       ";
 
-      $query = db()->prepare($sql);
-      $query->closeCursor();
-      $query->execute(array(':unique' => $unique));
-      $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget'); */
+    $query = db()->prepare($sql);
+    $query->closeCursor();
+    $query->execute(array(':unique' => $unique));
+    $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    array_walk($data, function(&$value){ is_array($value) and $value = array_values($value); empty($value[1]) or $value[1] = (int) $value[1]; });
 
     $results['budgets_by_year'] = array(
         'description' => '',
         'title' => '',
-        'data' => json_encode(array(100, 200, 300, 2100, 500, 3200))
+        'data' => empty($data) ? NULL : json_encode($data)
     );
 
     return $results;
