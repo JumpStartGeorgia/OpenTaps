@@ -1,5 +1,9 @@
 <?php
 $action = href('admin/projects/' . $project['unique'] . '/update', TRUE);
+$months = array(NULL, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+$c = 'checked="checked"';
+$dn = 'style="display: none;"';
+$db = 'style="display: block;"';
 ?>
 <form action="<? echo $action; ?>" method='post'>
     <label for='ptitle'>Title<span style="color: red">*</span>: </label>
@@ -8,7 +12,7 @@ $action = href('admin/projects/' . $project['unique'] . '/update', TRUE);
     <br /><br />
 
     <label style="cursor: pointer;">
-        <input type="checkbox" name="hidden" <?php $project['hidden'] == 1 and print 'checked="checked"' ?> /> Hidden
+        <input type="checkbox" name="hidden" <?php $project['hidden'] == 1 and print $c ?> /> Hidden
     </label><br /><br />
 
 
@@ -146,30 +150,44 @@ $action = href('admin/projects/' . $project['unique'] . '/update', TRUE);
 
     <label>Start at:</label><br />
     <?php
-    $date = $project['start_at'];
-    list($y, $m, $d) = array(substr($date, 0, 4), substr($date, 5, 2), substr($date, 8, 2));
-    $months = array(NULL, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    $date = (empty($project['start_at']) OR $project['start_at'] == NULL) ? FALSE : $project['start_at'];
+    list($y, $m, $d) = $date ? array(substr($date, 0, 4), substr($date, 5, 2), substr($date, 8, 2)) : array(date('Y'), date('m'), date('d'));
     ?>
-    <input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_start_at[day]" />&nbsp;-
-    <select class="chosen_deselector" name="p_start_at[month]">
-        <?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
-            <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
-        <?php endfor; ?>
-    </select>&nbsp;-
-    <input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_start_at[year]" /><br /><br />
+    <label class="p_overlay">
+	<div id="sae_overlay" <?php echo $date ? $db : $dn; ?>></div>
+	<input type="checkbox" <?php $date or print $c; ?> name="empty_start_at" value="1" onclick="$('#sa_overlay, #sae_overlay').toggle();" id="sae_cb" /> Empty
+    </label>
+    <div class="d_overlay group">
+	<div onclick="$('#sae_cb').click();" <?php $date and print $dn; ?> id="sa_overlay"></div>
+	<input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_start_at[day]" />&nbsp;-
+	<select class="chosen_deselector" name="p_start_at[month]">
+	<?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
+	    <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+	<?php endfor; ?>
+	</select>&nbsp;-
+	<input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_start_at[year]" />
+    </div>
+    <br /><br />
 
     <label>End at:</label><br />
     <?php
-    $date = $project['end_at'];
-    list($y, $m, $d) = array(substr($date, 0, 4), substr($date, 5, 2), substr($date, 8, 2));
+    $date = (empty($project['end_at']) OR $project['end_at'] == NULL) ? FALSE : $project['end_at'];
+    list($y, $m, $d) = $date ? array(substr($date, 0, 4), substr($date, 5, 2), substr($date, 8, 2)) : array(date('Y'), date('m'), date('d'));
     ?>
-    <input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_end_at[day]" />&nbsp;-
-    <select class="chosen_deselector" name="p_end_at[month]">
-        <?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
-            <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
-        <?php endfor; ?>
-    </select>&nbsp;-
-    <input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_end_at[year]" />
+    <label class="p_overlay">
+	<div id="eae_overlay" <?php echo $date ? $db : $dn; ?>></div>
+	<input type="checkbox" <?php $date or print $c; ?> name="empty_end_at" value="1" onclick="$('#ea_overlay, #eae_overlay').toggle();" id="eae_cb" /> Empty
+    </label>
+    <div class="d_overlay group">
+	<div onclick="$('#eae_cb').click();" <?php $date and print $dn; ?> id="ea_overlay"></div>
+	<input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_end_at[day]" />&nbsp;-
+	<select class="chosen_deselector" name="p_end_at[month]">
+	<?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
+	    <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+	<?php endfor; ?>
+	</select>&nbsp;-
+	<input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_end_at[year]" />
+    </div>
     <br /><br /><br />
 
     <label for='ptags'>Tags: (enter by hand or select tags below)</label>
@@ -227,7 +245,7 @@ $action = href('admin/projects/' . $project['unique'] . '/update', TRUE);
                 </label>
                 <input type='hidden' class="data_unique_container" name='sidebar[]' value='<?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print "checked"; ?>' />
                 <label style='margin-left: 25px; cursor: pointer;' onmouseup="check_sidebar($(this))">
-                    <input type='checkbox' <?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print 'checked="checked"'; ?> /> Sidebar
+                    <input type='checkbox' <?php (!empty($d['sidebar']) AND $d['sidebar'] == 1) AND print $c; ?> /> Sidebar
                 </label><br /><br />
                 <label style='cursor: pointer'>
           	    			Text: <br />
