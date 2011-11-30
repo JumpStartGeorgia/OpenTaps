@@ -478,7 +478,7 @@ $(function()
             tallest = current_height;
     });
     group.height(tallest);
-    */
+     */
 
     });
 

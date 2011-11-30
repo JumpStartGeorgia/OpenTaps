@@ -112,26 +112,41 @@
     <br /><br />
 
     <label>Start at:</label><br />
+    <label class="p_overlay">
+	<div id="sae_overlay"></div>
+	<input type="checkbox" checked="checked" name="empty_start_at" value="1" onclick="$('#sa_overlay, #sae_overlay').toggle();" id="sae_cb" /> Empty
+    </label>
     <?php
     list($y, $m, $d) = array(date("Y"), date("m"), date("d"));
     $months = array(NULL, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
     ?>
-    <input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_start_at[day]" />&nbsp;-
-    <select class="chosen_deselector" name="p_start_at[month]">
-        <?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
-            <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
-        <?php endfor; ?>
-    </select>&nbsp;-
-    <input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_start_at[year]" /><br /><br />
+    <div class="d_overlay group">
+	<div onclick="$('#sae_cb').click();" id="sa_overlay"></div>
+	<input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_start_at[day]" />&nbsp;-
+	<select class="chosen_deselector" name="p_start_at[month]">
+	<?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
+	    <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+	<?php endfor; ?>
+	</select>&nbsp;-
+	<input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_start_at[year]" />
+    </div>
+    <br /><br />
 
     <label>End at:</label><br />
-    <input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_end_at[day]" />&nbsp;-
-    <select class="chosen_deselector" name="p_end_at[month]">
-        <?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
-            <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
-        <?php endfor; ?>
-    </select>&nbsp;-
-    <input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_end_at[year]" />
+    <label class="p_overlay">
+	<div id="eae_overlay"></div>
+	<input type="checkbox" checked="checked" name="empty_end_at" value="1" onclick="$('#ea_overlay, #eae_overlay').toggle();" id="eae_cb" /> Empty
+    </label>
+    <div class="d_overlay group">
+	<div onclick="$('#eae_cb').click();" id="ea_overlay"></div>
+	<input type="text" style="width: 35px;" value="<?php echo $d; ?>" name="p_end_at[day]" />&nbsp;-
+	<select class="chosen_deselector" name="p_end_at[month]">
+	<?php for ($i = 1; $i <= 12; $i++): $ii = $i < 10 ? '0' . $i : $i; ?>
+	    <option <?php $i == $m and print 'selected="selected"' ?> value="<?php echo $ii; ?>"><?php echo $months[$i]; ?></option>
+	<?php endfor; ?>
+	</select>&nbsp;-
+	<input type="text" style="width: 45px;" value="<?php echo $y; ?>" name="p_end_at[year]" />
+    </div>
     <br /><br /><br />
 
 

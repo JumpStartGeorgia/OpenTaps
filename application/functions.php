@@ -1070,14 +1070,17 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
+    $start_at = isset($_POST['empty_start_at']) ? NULL : ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day']));
+    $end_at = isset($_POST['empty_end_at']) ? NULL : ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day']));
+
     $data = array(
         //':description' => $desc,
         ':beneficiary_people' => $beneficiary_people,
         ':city' => $city,
         ':grantee' => $grantee,
         ':sector' => $sector,
-        ':start_at' => ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day'])),
-        ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
+        ':start_at' => $start_at,
+        ':end_at' => $end_at,
         //':info' => $info,
         ':type' => $type,
         //':place_unique' => serialize($place_unique),
@@ -1211,6 +1214,9 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     $statement = db()->prepare($sql);
     $statement->closeCursor();
 
+    $start_at = isset($_POST['empty_start_at']) ? NULL : ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day']));
+    $end_at = isset($_POST['empty_end_at']) ? NULL : ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day']));
+
     $data = array(
         ':unique' => $unique,
         ':title' => $title,
@@ -1219,8 +1225,8 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
         ':city' => $city,
         ':grantee' => $grantee,
         ':sector' => $sector,
-        ':start_at' => ($startdate['year'] . '-' . $startdate['month'] . '-' . ($startdate['day'] < 10 ? '0' . $startdate['day'] : $startdate['day'])),
-        ':end_at' => ($enddate['year'] . '-' . $enddate['month'] . '-' . ($enddate['day'] < 10 ? '0' . $enddate['day'] : $enddate['day'])),
+        ':start_at' => $start_at,
+        ':end_at' => $end_at,
         ':info' => $info,
         ':type' => $type,
         //':place_unique' => serialize($place_unique),
@@ -2056,6 +2062,9 @@ function theData($the, $opt)
             $result = $the['latitude'];
             break;
     endswitch;
+    if ( is_string($result) ):
+    	$result = ucwords(str_replace(' ','_',trim(strtolower($result))));
+    endif;    
     echo($result);
 }
 
