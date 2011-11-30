@@ -206,5 +206,6 @@
 		unique: <?php theData($region,'unique') ?>,
 		longitude: <?php theData($region,'longitude') ?>,
 		latitude: <?php theData($region,'latitude') ?>
-	};	
+	}, mapMode = 'region';	
+	
 </script>

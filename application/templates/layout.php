@@ -51,7 +51,6 @@
             <div class="after_menu"></div>
 
             <?php Storage::instance()->show_map AND require_once 'map.php'; ?>
-
             <div id="content" class="group">
                 <?php echo Storage::instance()->content ?>
             </div>
