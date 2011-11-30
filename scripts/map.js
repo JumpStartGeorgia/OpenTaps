@@ -86,13 +86,33 @@ $.each(mapping.options.general_icons, function(index, item)
     mapping.icons['general'][item.type] = icon;
 });
 
+var scaleByMode = function ()
+	{
+		if ( typeof(mapMode) !== 'undefined' )
+		{
+			switch ( mapMode.toLowerCase() )
+			{
+				case 'project':
+					return true;
+				break;
+				case 'region':
+					return true;
+				break;
+				default:
+					return false;				
+			}
+			return true;
+		}else return false;			
+		
+	};
+
 function initialize_mapping()
 {
 
     // Mr. Map!
     mapping.map = new OpenLayers.Map('map', {
         controls: mapping.options.controls,
-        scales: mapping.options.scales,
+        scales: scaleByMode() ? mapping.options.scales.slice(0,3) : mapping.options.scales,
         restrictedExtent: new OpenLayers.Bounds(mapping.options.bounds_left, mapping.options.bounds_bottom, mapping.options.bounds_right, mapping.options.bounds_top),
         eventListeners: {
             'moveend': on_zoom

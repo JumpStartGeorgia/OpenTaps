@@ -127,3 +127,7 @@
         <h4 style="visibility: hidden;">WATER AND DISEASES</h4>
     </div>
 </div>
+
+<script>
+	var mapMode = 'home';
+</script>
