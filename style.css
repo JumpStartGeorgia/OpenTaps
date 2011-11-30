@@ -321,6 +321,14 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .admin_edit_button:hover { text-decoration: underline }
 #gp_add_data_field { color: #4CBEFF; cursor: pointer; font-size: 13px; display: block; margin: 17px 0px }
 
+/*projects admin*/
+#eae_overlay, #ea_overlay, #sa_overlay, #sae_overlay { background: rgba(255, 255, 255, .61); position: absolute; width: 100%; height: 100%; }
+#eae_overlay, #sae_overlay { display: none; }
+.p_overlay { cursor: pointer; display: inline-block; position: relative; }
+.d_overlay { position: relative; display: inline-block; }
+
+
+
 /* Chosen */
 .chosen-select { width: 355px }
 .chzn-container { font-size: 13px; position: relative; display: inline-block; zoom: 1; *display: inline }
