@@ -2056,6 +2056,9 @@ function theData($the, $opt)
             $result = $the['latitude'];
             break;
     endswitch;
+    if ( is_string($result) ):
+    	$result = ucwords(str_replace(' ','_',trim(strtolower($result))));
+    endif;    
     echo($result);
 }
 

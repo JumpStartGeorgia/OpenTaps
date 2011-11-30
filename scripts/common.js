@@ -1022,7 +1022,7 @@ var getAndProcessCoordinates = function (request_url,the_icon)
 		var distance = 2,current_coordinate_hashes = [];
 		$.getJSON(request_url, function(results)
 		{
-
+			
 		    if (!results)
 		        return;                       
 		    
@@ -1053,7 +1053,7 @@ var getAndProcessCoordinates = function (request_url,the_icon)
 
 $(function ()
 	{
-		if ( window.Project != undefined )
+		if ( typeof(Project) !== 'undefined' )
 		{
 			var project_unique = Project.Unique,
 				project_type = Project.Type,
@@ -1068,8 +1068,9 @@ $(function ()
 
 $(function ()
 	{
-		if ( window.Region != undefined )
-		{			
+		if ( typeof(Region) !== 'undefined' )
+		{		
+			alert('coordinates');	
 			var request_url = baseurl + 'map-data/region-coordinates/' + Region.unique + '?lang=' + lang;
 			getAndProcessCoordinates(request_url,mapping.icons.general.small);
 		    mapping.map.setCenter(new OpenLayers.LonLat(Region.longitude, Region.latitude));
