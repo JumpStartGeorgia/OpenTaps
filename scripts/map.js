@@ -112,7 +112,7 @@ function initialize_mapping()
     // Mr. Map!
     mapping.map = new OpenLayers.Map('map', {
         controls: mapping.options.controls,
-        scales: scaleByMode() ? mapping.options.scales.slice(0,3) : mapping.options.scales,
+        scales: scaleByMode() ? mapping.options.scales.slice(0,2) : mapping.options.scales,
         restrictedExtent: new OpenLayers.Bounds(mapping.options.bounds_left, mapping.options.bounds_bottom, mapping.options.bounds_right, mapping.options.bounds_top),
         eventListeners: {
             'moveend': on_zoom
