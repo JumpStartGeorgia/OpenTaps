@@ -239,5 +239,5 @@
 		Unique: <?php theData($project,'unique') ?>,
 		Type: <?php theData($project,'type') ?>,
 		Status: <?php theData($project,'status') ?>
-	};
+	}, mapMode = 'project';
 </script>
