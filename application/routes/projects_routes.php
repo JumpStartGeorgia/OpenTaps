@@ -242,9 +242,12 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     foreach ($data as $fields)
                     {
                         foreach ($fields as &$value)
+                            exit(mb_detect_encoding($value));
+                            $value = mb_convert_encoding($value, mb_detect_encoding($value), 'UTF-8');
+                        //$value = mb_convert_encoding($value, 'SJIS', 'UTF-8');
                         //$value = iconv('', , $value);
-                            $value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
-                        $value = iconv("Windows-1252", "UTF-8", $value);
+                        //$value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
+                        //$value = iconv("Windows-1252", "UTF-8", $value);
                         fputcsv($fp, $fields);
                     }
 
