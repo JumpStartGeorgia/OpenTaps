@@ -519,7 +519,7 @@ $(function()
     {
         if (about_is_visible)
         {
-            about.animate({ height: 0 }, function(){
+            about.animate({height: 0}, function(){
                 about.hide();
             });
             about_is_visible = false;
@@ -599,7 +599,7 @@ $(function()
 
             $.each([contact,$('#contact-us-map')],function (ind,val)
             	{
-            		$(val).animate({ height: 0 }, function (){
+            		$(val).animate({height: 0}, function (){
 				        contact.hide();
 				        $('#contact-us-map').hide().remove();
 				    });
@@ -614,7 +614,7 @@ $(function()
 
             if (about_is_visible)
             {
-                about.animate({ height: 0 }, function(){
+                about.animate({height: 0}, function(){
                     about.hide();
                 });
                 about_is_visible = false;
@@ -904,10 +904,10 @@ $(function()
 
     $('#supply_clear_button').click(function(){
 	$('#cont').animate(
-	    { height: 0 },
+	    {height: 0},
 	    function(){
 		$(this).children().remove();
-		$(this).css({ height: 'auto' });
+		$(this).css({height: 'auto'});
 	    }
 	);
     });
@@ -953,7 +953,7 @@ $(function()
             }
             else
             {
-		wsp_list_container.animate({ height: 0 }, function(){ $(this).hide().css('height', 'auto'); });
+		wsp_list_container.animate({height: 0}, function(){$(this).hide().css('height', 'auto');});
             }
         });
     });
@@ -1078,6 +1078,13 @@ $(function ()
 );
 
 
-
-
-
+// Expand accordions before exporting
+$(function()
+{
+    $('#pdf-export').click(function(event)
+    {
+        //event.preventDefault();
+        $('.expandable').show();
+        $('.organization_project_link').show();
+    });
+});

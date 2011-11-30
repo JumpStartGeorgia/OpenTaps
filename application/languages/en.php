@@ -143,4 +143,5 @@ return array(
     'no_time' => 'No Time',
     'no_data' => 'No data',
     'disabled_option' => 'Select an Option',
+    'pdf_export' => 'Save page as PDF'
 );

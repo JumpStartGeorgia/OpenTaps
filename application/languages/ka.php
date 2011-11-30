@@ -139,12 +139,13 @@ return array(
     'contact_us_mail' => 'ელ-ფოსტა',
     'contact_us_tel' => 'ტელ',
     'contact_us_text' => 'მოგვწერეთ',
-    'abaout_us' => 'ჩვენს შესახებ',    
+    'abaout_us' => 'ჩვენს შესახებ',
     'about_us_open_information' => 'ღია ინფორმაცია',
     'about_us_participation' => 'მონაწილეობის მიღება',
     'about_us_innovation' => 'ინოვაცია',
     'no_time' => 'თარიღის გარეშე',
     'no_data' => 'არ არის ინფორმაცია',
     'disabled_option' => 'აირჩიეთ',
+    'pdf_export' => 'გვერდის PDF-ში შენახვა'
 );
 
