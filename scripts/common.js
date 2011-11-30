@@ -1043,6 +1043,9 @@ var getAndProcessCoordinates = function (request_url,the_icon)
 		        marker = new OpenLayers.Marker(coordinates,icon);
 		        mapping.markers.addMarker(marker); 
 		    });
+		    
+		    var theLast = results[results.length-1];
+			mapping.map.setCenter(new OpenLayers.LonLat(theLast.longitude, theLast.latitude));
 
 		});
 
@@ -1051,7 +1054,7 @@ var getAndProcessCoordinates = function (request_url,the_icon)
 
 
 
-$(function ()
+$(window).load(function ()
 	{
 		if ( typeof(Project) !== 'undefined' )
 		{
@@ -1059,21 +1062,19 @@ $(function ()
 				project_type = Project.Type,
 				project_status = Project.Status,
 				request_url = baseurl + 'map-data/project-coordinates/' + project_unique + '?lang=' + lang;    
-			getAndProcessCoordinates(request_url,mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()]);
-		
+			getAndProcessCoordinates(request_url,mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()]);		
 		}
 		    
 	}
 );
 
-$(function ()
+$(window).load(function ()
 	{
 		if ( typeof(Region) !== 'undefined' )
 		{		
 			alert('coordinates');	
 			var request_url = baseurl + 'map-data/region-coordinates/' + Region.unique + '?lang=' + lang;
 			getAndProcessCoordinates(request_url,mapping.icons.general.small);
-		    mapping.map.setCenter(new OpenLayers.LonLat(Region.longitude, Region.latitude));
 		}
 	}
 );
