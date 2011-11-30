@@ -100,9 +100,7 @@
         }
         ?>
         <script type="text/javascript">
-<?php
-browserIncompatible();
-?>
+<?php browserIncompatible(); ?>
         </script>
         <?php
         foreach ($scripts AS $script)

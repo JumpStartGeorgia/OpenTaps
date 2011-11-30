@@ -82,7 +82,7 @@ div.after_header { height: 4px; margin-top: 22px; background-image: url('@baseur
 /* Menu */
 div.menu ul { list-style-type: none; padding: 0; float: left }
 div.menu ul li { float: left; font-size: 0.85em }
-div.menu ul li a { display: block; height: 26px; padding: 10px 10px 0px 10px; text-decoration: none; color: #565656; font-size: 13px; font-family: Arial; outline: 0 }
+div.menu ul li a { display: block; height: 26px; padding: 6px 10px 0px 10px; text-decoration: none; color: #565656; font-size: 13px; font-family: Arial; outline: 0 }
 div.menu ul li a:hover, div.menu ul li:hover { color: #0cb5f5; outline: 0 }
 div.projects_organization, div.news, div.spacer { display: table-cell; vertical-align: middle; text-align: center; color: #fff; font-size: 1.0em; font-family: Arial }
 #override_border { width: 0px; height: 1px; position: absolute; top: 0; left: 0; background: #fff }
@@ -123,7 +123,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .news_body #left_image_box { padding: 13px 16px 13px 15px; height: 128px; width: 128px; overflow: hidden; float: left }
 .news_body #left_image_box img { height: 128px; width: 128px }
 #right_titles_box { height: 152px; border-top: 1px solid transparent; border-bottom: 1px solid transparent; width: 375px; float: right }
-.right_title_one { background: #fff; border-right: 6px solid #0cb5f5; width: 369px; height: 36px; font-size: 10px }
+.right_title_one { background: #fff; border-right: 6px solid #0cb5f5; width: 369px; height: 36px; font-size: 11px }
 .right_title_one:hover { background: rgba(0,0,0,0); border-color: rgba(@opentaps_default_rgba, .7) }
 .right_title_one a:hover { color: #000 }
 .right_title_one a span { margin-right: 9px; font-size: 12px }
@@ -221,14 +221,8 @@ div.bottom1 { margin-left: 1px }
 #bot-container { position: relative; width: 932px; margin-top: 0px; z-index: 9999999 }
 #about_us_button, #contact_us_button { cursor: pointer }
 #about-us, #contact-us { background: #fff; display: none; position: relative; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
-#contact-us { height:360px;position:absolute;width:100%; 
-              -moz-user-select:none;
-              -webkit-user-select:none;
-              user-select:none;
-
-}
-#contact-us-map { height:320px;-moz-user-select:none;-webkit-user-select:none;
-                  user-select:none; }
+#contact-us { height: 360px; position: absolute; width: 100%; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
+#contact-us-map { height: 320px; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
 /*#contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000; background: #eee; position: absolute; top: 0; right: 0; 
 padding: 13px 13px 14px 13px; float: right; display: none; }*/
 #about-us { font-size: 12px; width: 930px; /*text-align: justify*/ }
