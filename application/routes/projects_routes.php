@@ -28,7 +28,7 @@ Slim::get('/projects/(filter/:filter/)', function($filter = FALSE)
                 'direction' => 'asc',
                 'filter' => $filter,
                 'types' => config('project_types')
-             ));
+                    ));
         });
 
 Slim::get('/project/:unique/', function($unique)
@@ -241,10 +241,10 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     fputcsv($fp, $first_row);
                     foreach ($data as $fields)
                     {
-                    	foreach ($fields as &$value)
-			    //$value = iconv('', , $value);
-			    $value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
-			    $value = iconv("Windows-1252", "UTF-8", $value);
+                        foreach ($fields as &$value)
+                        //$value = iconv('', , $value);
+                            $value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));
+                        $value = iconv("Windows-1252", "UTF-8", $value);
                         fputcsv($fp, $fields);
                     }
 
@@ -257,9 +257,9 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     file_exists(DIR . 'uploads/' . $name) AND unlink(DIR . 'uploads/' . $name);
 
                     /* ## UNSET SESSIONS STORED FOR CHART EXPORTING ##
-                    foreach ($_SESSION AS $key => $value)
-                        if (substr($key, 0, 8) == 'chartcsv')
-                            unset($_SESSION[$key]);*/
+                      foreach ($_SESSION AS $key => $value)
+                      if (substr($key, 0, 8) == 'chartcsv')
+                      unset($_SESSION[$key]); */
 
                     break;
             }
@@ -316,8 +316,7 @@ Slim::get('/admin/projects/new/', function()
     	</script>
     ';
 
-            Storage::instance()->content = userloggedin()
-		? template('admin/projects/new', array(
+            Storage::instance()->content = userloggedin() ? template('admin/projects/new', array(
                         'all_tags' => read_tags(),
                         'organizations' => $orgs,
                         'regions' => $regions,
@@ -326,8 +325,7 @@ Slim::get('/admin/projects/new/', function()
                         'currency_list' => $currency_list,
                         'project_places' => '',
                         'districts' => fetch_db("SELECT `unique`, name FROM districts_new WHERE lang = '" . LANG . "';")
-		    ))
-		: template('login');
+                    )) : template('login');
         });
 
 
@@ -384,20 +382,20 @@ Slim::get('/admin/projects/:unique/', function($unique)
                 $budgets = fetch_db("SELECT * FROM project_budgets WHERE project_unique = :unique ORDER BY id;", array(':unique' => $unique));
                 Storage::instance()->content = template('admin/projects/edit', array
                     (
-			'project' => read_projects($unique),
-			'all_tags' => read_tags(),
-			'this_tags' => read_tag_connector('proj', $unique),
-			'this_orgs' => $this_orgs,
-			'organizations' => $orgs,
-			'regions' => $regions,
-			'project_places' => get_project_place_ids($unique),
-			'places' => $places,
-			'project_types' => config('project_types'),
-			'data' => read_page_data('project', $unique),
-			'budgets' => $budgets,
-			'currency_list' => $currency_list,
-			'districts' => fetch_db("SELECT `unique`, name FROM districts_new WHERE lang = '" . LANG . "';")
-                    ));
+                    'project' => read_projects($unique),
+                    'all_tags' => read_tags(),
+                    'this_tags' => read_tag_connector('proj', $unique),
+                    'this_orgs' => $this_orgs,
+                    'organizations' => $orgs,
+                    'regions' => $regions,
+                    'project_places' => get_project_place_ids($unique),
+                    'places' => $places,
+                    'project_types' => config('project_types'),
+                    'data' => read_page_data('project', $unique),
+                    'budgets' => $budgets,
+                    'currency_list' => $currency_list,
+                    'districts' => fetch_db("SELECT `unique`, name FROM districts_new WHERE lang = '" . LANG . "';")
+                        ));
             }
             else
                 Storage::instance()->content = template('login');

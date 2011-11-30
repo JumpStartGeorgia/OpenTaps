@@ -165,14 +165,14 @@ function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $tex
     {
         $the_name = $name . (($adding_lang == $lang) ? NULL : " ({$lang})");
         $exec = $statement->execute(array(
-                    ':name' => $the_name,
-                    ':short_name' => empty($short_name) ? string_to_friendly_url($the_name) : $short_name,
-                    ':parent_unique' => $parent_unique,
-                    ':title' => $title,
-                    ':text' => $text,
-                    ':footer' => $footer,
-                    ':lang' => $lang,
-                    ':unique' => $unique
+            ':name' => $the_name,
+            ':short_name' => empty($short_name) ? string_to_friendly_url($the_name) : $short_name,
+            ':parent_unique' => $parent_unique,
+            ':title' => $title,
+            ':text' => $text,
+            ':footer' => $footer,
+            ':lang' => $lang,
+            ':unique' => $unique
                 ));
 
         $success = (bool) $exec;
@@ -190,14 +190,14 @@ function update_menu($unique, $name, $short_name, $parent_unique, $title, $text,
     $statement = db()->prepare($sql);
     $statement->closeCursor();
     $exec = $statement->execute(array(
-                ':unique' => $unique,
-                ':short_name' => empty($short_name) ? string_to_friendly_url($name) : $short_name,
-                ':name' => $name,
-                ':parent_unique' => $parent_unique,
-                ':title' => $title,
-                ':text' => $text,
-                ':hide' => $hide,
-                ':footer' => $footer
+        ':unique' => $unique,
+        ':short_name' => empty($short_name) ? string_to_friendly_url($name) : $short_name,
+        ':name' => $name,
+        ':parent_unique' => $parent_unique,
+        ':title' => $title,
+        ':text' => $text,
+        ':hide' => $hide,
+        ':footer' => $footer
             ));
 
     return ($exec) ? true : false;
@@ -515,9 +515,9 @@ function add_tag_connector($field, $f_unique, $tag_uniques, $tag_names = NULL)
     foreach ($tag_uniques AS $tag_unique)
     {
         $exec = $statement->execute(array(
-                    ':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
-                    ':f_unique' => $f_unique,
-                    ':tag_unique' => $tag_unique
+            ':lang' => (empty($_POST['record_language']) ? LANG : $_POST['record_language']),
+            ':f_unique' => $f_unique,
+            ':tag_unique' => $tag_unique
                 ));
         $check AND $check = (bool) $exec;
     }
@@ -540,9 +540,9 @@ function add_tag($adding_lang, $name, $redirect = TRUE)
     foreach (config('languages') as $lang)
     {
         $exec = $statement->execute(array(
-                    ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
-                    ':lang' => $lang,
-                    ':unique' => $unique
+            ':name' => $name . (($adding_lang == $lang) ? NULL : " ({$lang})"),
+            ':lang' => $lang,
+            ':unique' => $unique
                 ));
         $success = (bool) $exec;
     }
@@ -566,8 +566,8 @@ function update_tag($unique, $name)
     $statement->closeCursor();
 
     $exec = $statement->execute(array(
-                ':unique' => $unique,
-                ':name' => $name
+        ':unique' => $unique,
+        ':name' => $name
             ));
 
     $metarefresh = "<meta http-equiv='refresh' content='0; url=" . href("admin/tags", TRUE) . "' />";
@@ -951,7 +951,7 @@ function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FAL
             pl.longitude,
             pl.latitude,
             r.name AS region_name
-            "./*r.`unique` AS region_unique*/"
+            " . /* r.`unique` AS region_unique */"
         FROM projects AS p
         LEFT JOIN places AS pl
             ON p.place_unique = pl.`unique` AND p.lang = pl.lang
@@ -1048,7 +1048,8 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
 	        `region_unique`,
 	        `district_unique`
     	)
-    	VALUES(
+    	VALUES
+        (
     		:title,
     		"/* :description, */ . "
     		:beneficiary_people,
@@ -1114,7 +1115,12 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
             add_tag_connector('proj', $unique, $tag_uniques, $tag_names);
         }
 
-        empty($project_key) OR add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value, $adding_lang);
+        if (!empty($project_key))
+        {
+            foreach (config('languages') AS $data_lang)
+                add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value, $data_lang);
+            //add_page_data('project', $unique, $project_key, $project_sort, $sidebar, $project_value, $adding_lang);
+        }
         if (!empty($budgets))
         {
             list($budgets, $organization, $currency) = $budgets;
@@ -1127,10 +1133,10 @@ function add_project($adding_lang, $title, $desc, $budgets, $beneficiary_people,
                     $query = db()->prepare($sql);
                     $query->closeCursor();
                     $query = $query->execute(array(
-                                ':project_unique' => $unique,
-                                ':organization_unique' => $organization[$idx],
-                                ':currency' => $currency[$idx],
-                                ':budget' => $budget
+                        ':project_unique' => $unique,
+                        ':organization_unique' => $organization[$idx],
+                        ':currency' => $currency[$idx],
+                        ':budget' => $budget
                             ));
                 }
             }
@@ -1259,10 +1265,10 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
                 $query = db()->prepare($sql);
                 $query->closeCursor();
                 $query = $query->execute(array(
-                            ':project_unique' => $unique,
-                            ':organization_unique' => $organization[$idx],
-                            ':currency' => $currency[$idx],
-                            ':budget' => $budget
+                    ':project_unique' => $unique,
+                    ':organization_unique' => $organization[$idx],
+                    ':currency' => $currency[$idx],
+                    ':budget' => $budget
                         ));
             }
         }
@@ -1607,7 +1613,7 @@ function add_organization($adding_lang, $name, $type, $description, $projects_in
 	);
     ";
     $data = array(
-	':name' => $name,
+        ':name' => $name,
         ':type' => $type,
         ':description' => implode('<a target="_blank" href', explode('<a href', $description)),
         ':projects_info' => implode('<a target="_blank" href', explode('<a href', $projects_info)),
@@ -1763,28 +1769,28 @@ function get_organization_chart_data($unique)
     );
 
 
-    /*$sql = "
-	select
-	r.name,
-	(select sum(budget) from project_budgets as pb
-	where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
-	) as budget
-	from regions as r
-	inner join places as pl on r.`unique` = pl.region_unique
-	inner join projects as p on p.place_unique = pl.`unique`
-	inner join project_organizations as po on po.project_unique = p.`unique`
-	where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
-    ";
+    /* $sql = "
+      select
+      r.name,
+      (select sum(budget) from project_budgets as pb
+      where pb.organization_unique = po.`organization_unique` and pb.project_unique = p.`unique` and currency = 'gel'
+      ) as budget
+      from regions as r
+      inner join places as pl on r.`unique` = pl.region_unique
+      inner join projects as p on p.place_unique = pl.`unique`
+      inner join project_organizations as po on po.project_unique = p.`unique`
+      where po.organization_unique = :unique and p.lang = 'ka' and r.lang = 'ka' and pl.lang = 'ka'
+      ";
 
-    $query = db()->prepare($sql);
-    $query->closeCursor();
-    $query->execute(array(':unique' => $unique));
-    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget');*/
+      $query = db()->prepare($sql);
+      $query->closeCursor();
+      $query->execute(array(':unique' => $unique));
+      $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'name', 'budget'); */
 
     $results['budgets_by_year'] = array(
-	'description' => '',
-	'title' => '',
-	'data' => json_encode(array(100,200,300,2100,500,3200))
+        'description' => '',
+        'title' => '',
+        'data' => json_encode(array(100, 200, 300, 2100, 500, 3200))
     );
 
     return $results;
@@ -1966,93 +1972,90 @@ function string_to_friendly_url($title, $separator = '-')
     return trim($title, $separator);
 }
 
-
-function browserIncompatible ()
+function browserIncompatible()
 {
-	$langs = array(		
-		require DIR . 'application/languages/en.php',
-		require DIR . 'application/languages/ka.php'
-	);
-	$incbrowserIEText = array();		
-	$incbrowserIEText[] = 'var theIncBrowserIEText = [];';			
-	foreach ( $langs as $lang )
-		$incbrowserIEText[] = 'theIncBrowserIEText.push(\'' . $lang['incbrowser_ie_text'] . '\');';					
-	echo implode('',$incbrowserIEText);
+    $langs = array(
+        require DIR . 'application/languages/en.php',
+        require DIR . 'application/languages/ka.php'
+    );
+    $incbrowserIEText = array();
+    $incbrowserIEText[] = 'var theIncBrowserIEText = [];';
+    foreach ($langs as $lang)
+        $incbrowserIEText[] = 'theIncBrowserIEText.push(\'' . $lang['incbrowser_ie_text'] . '\');';
+    echo implode('', $incbrowserIEText);
 }
 
-
-function __ ($text)
+function __($text)
 {
-	echo $text;
+    echo $text;
 }
 
-function capture ($data)
+function capture($data)
 {
-	if ( $data['url'] == null )	
-		$data['url'] = 'http://google.co.uk';
-	if ( $data['output_file'] == null )
-		$data['output_file'] = 'google.png';
-	if ( $data['delay'] == null )
-		$data['delay'] = 2000;
-	if ( $data['min-width'] == null )
-		$data['min-width'] = 800;
-	if ( $data['min-height'] == null )
-		$data['min-height'] = 600;
+    if ($data['url'] == null)
+        $data['url'] = 'http://google.co.uk';
+    if ($data['output_file'] == null)
+        $data['output_file'] = 'google.png';
+    if ($data['delay'] == null)
+        $data['delay'] = 2000;
+    if ($data['min-width'] == null)
+        $data['min-width'] = 800;
+    if ($data['min-height'] == null)
+        $data['min-height'] = 600;
 
-	foreach ( $data as $d )
-	{
-		$d = trim($d);
-		$d = addslashes($d);
-		$d = htmlentities($d);
-		$d = strip_tags($d);
-	}
+    foreach ($data as $d)
+    {
+        $d = trim($d);
+        $d = addslashes($d);
+        $d = htmlentities($d);
+        $d = strip_tags($d);
+    }
 //		$output = `ls -la`; print_r(explode(PHP_EOL, $output)); exit($output);
 
 
 
-	/*$args = array(
-		0 => '--url=http://google.co.uk --out=' . DIR . '/application/capture/google3.png',
-        1 => array(),
-        2 => array()
-	);*/
+    /* $args = array(
+      0 => '--url=http://google.co.uk --out=' . DIR . '/application/capture/google3.png',
+      1 => array(),
+      2 => array()
+      ); */
 //	proc_open('cutycapt',$args,$pipes);exit;
 //passthru('cutycapt',$ret);exit($ret);
-	exit(exec(escapeshellcmd('cutycapt --url=http://google.co.uk --out=/var/www/opentaps/application/capture/google3.png')));
-	$output = `cutycapt --url=http://google.co.uk --out=/var/www/opentaps/application/capture/google3.png`; exit($output . 'asdfg');
-	$output = `whoami`; exit($output);
-	exec('cutycapt --url=\'' . $data['url'] . '\' --out=\'capture/' . $data['output_file'] . '\' --delay=' . $data['delay'] . ' --min-width=' . $data['min-width'] . ' --min-height=' . $data['min-height']);
-	
+    exit(exec(escapeshellcmd('cutycapt --url=http://google.co.uk --out=/var/www/opentaps/application/capture/google3.png')));
+    $output = `cutycapt --url=http://google.co.uk --out=/var/www/opentaps/application/capture/google3.png`;
+    exit($output . 'asdfg');
+    $output = `whoami`;
+    exit($output);
+    exec('cutycapt --url=\'' . $data['url'] . '\' --out=\'capture/' . $data['output_file'] . '\' --delay=' . $data['delay'] . ' --min-width=' . $data['min-width'] . ' --min-height=' . $data['min-height']);
 }
 
-
-function theData ($the,$opt)
+function theData($the, $opt)
 {
-	switch ( $opt ):
-		case 'unique':
-			$result = $the['unique'];
-		break;
-		case 'type':
-			$result = '\'' . $the['type'] . '\'';
-		break;
-		case 'status':
-			$startAt = strtotime($the['start_at']);		
-			$endAt = strtotime($the['end_at']);
-			$toDay = strtotime(date('Y-m-d'));	
-			if ( $endAt < $toDay or !$startAt or !$endAt )
-				$result = '\'completed\'';
-			else if ( $startAt > $toDay )
-				$result = '\'scheduled\'';
-			else 
-				$result= '\'current\'';	
-		break;
-		case 'longitude':
-			$result = $the['longitude'];
-		break;
-		case 'latitude':
-			$result = $the['latitude'];
-		break;
-	endswitch;	
-	echo($result);
+    switch ($opt):
+        case 'unique':
+            $result = $the['unique'];
+            break;
+        case 'type':
+            $result = '\'' . $the['type'] . '\'';
+            break;
+        case 'status':
+            $startAt = strtotime($the['start_at']);
+            $endAt = strtotime($the['end_at']);
+            $toDay = strtotime(date('Y-m-d'));
+            if ($endAt < $toDay or !$startAt or !$endAt)
+                $result = '\'completed\'';
+            else if ($startAt > $toDay)
+                $result = '\'scheduled\'';
+            else
+                $result = '\'current\'';
+            break;
+        case 'longitude':
+            $result = $the['longitude'];
+            break;
+        case 'latitude':
+            $result = $the['latitude'];
+            break;
+    endswitch;
+    echo($result);
 }
-
 
