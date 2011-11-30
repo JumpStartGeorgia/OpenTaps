@@ -9,7 +9,7 @@
         <link type="text/css" rel="stylesheet" href="<?php echo URL ?>scripts/akzhan-jwysiwyg/jquery.wysiwyg.css" />
         <script type="text/javascript">
             var baseurl = '<?php echo href() ?>',
-            lang = '<?php echo LANG ?>';            
+            lang = '<?php echo LANG ?>';
         </script>
         <?php if (LANG == 'ka'): ?><style type="text/css"> .menu ul li div { font-family: 'Babuka Mtavruli' } </style><?php endif; ?>
     </head>
@@ -35,7 +35,7 @@
                     <?php foreach ($slide_news as $news): ?>
                         <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
                                 <p><?php echo $news['title']; ?></p>
-                                <?php echo char_limit(strip_tags($news['body'], 320),130) ?>
+                                <?php echo char_limit(strip_tags($news['body'], 320), 130) ?>
                             </a></div>
                     <?php endforeach; ?>
                 </div>
@@ -81,8 +81,8 @@
         $scripts[] = 'OpenLayers/OpenLayers.js';
         //if (Storage::instance()->show_map OR isset(Storage::instance()->show_project_map))
         //{
-            //$scripts[] = 'http://maps.google.com/maps/api/js?v=3.5&amp;sensor=false';
-            $scripts[] = 'map.js';
+        //$scripts[] = 'http://maps.google.com/maps/api/js?v=3.5&amp;sensor=false';
+        $scripts[] = 'map.js';
         //}
         if (LANG == 'ka')
         {
@@ -98,13 +98,12 @@
             $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.table.js';
             $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.image.js';
         }
-        
         ?>
-        	<script type="text/javascript">
-				<?php 			
-						browserIncompatible();
-				?>
-        	</script>
+        <script type="text/javascript">
+<?php
+browserIncompatible();
+?>
+        </script>
         <?php
         foreach ($scripts AS $script)
             echo '<script type="text/javascript" src="' . (substr($script, 0, 4) === 'http' ? $script : URL . 'scripts/' . $script) . '"></script>' . PHP_EOL;
