@@ -128,6 +128,7 @@ return array(
     'project_order_categories' => 'კატეგორიები',
     'project_order_a-z' => 'ა-ჰ',
     'news_page_all' => 'ყველა',
+    'budgets_by_year' => 'ბიუჯეტი წლების მიხედვით',
     'chart_org_projects' => 'ორგანიზაციის პროექტები',
     'chart_org_budget' => 'პროექტების ბიუჯეტი',
     'select_region' => 'შეარჩიეთ რეგიონი',

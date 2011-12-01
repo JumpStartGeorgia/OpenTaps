@@ -136,44 +136,44 @@ Slim::get('/map-data/project(/:unique)', 'check_map_data_access', function($uniq
 );
 
 Slim::get('/map-data/project-coordinates/:unique', 'check_map_data_access', function ( $unique )
-	{
-		$unique = db_escape_string($unique);
-		$json = array();
-		$sql = "
-			SELECT pl.name,pl.longitude,pl.latitude FROM places pl 
-				INNER JOIN project_places prl 
-					ON pl.unique = prl.place_id 
+        {
+            $unique = db_escape_string($unique);
+            $json = array();
+            $sql = "
+			SELECT pl.name,pl.longitude,pl.latitude FROM places pl
+				INNER JOIN project_places prl
+					ON pl.unique = prl.place_id
 			WHERE prl.project_id = :project_unique
 				AND pl.lang = :lang
 		;";
-		
-		$stmt = db()->prepare($sql);
-		$stmt->execute(array(
-			':project_unique' => $unique,
-			':lang' => LANG
-		));
 
-		$json = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		exit(json_encode($json));
-	}
+            $stmt = db()->prepare($sql);
+            $stmt->execute(array(
+                ':project_unique' => $unique,
+                ':lang' => LANG
+            ));
+
+            $json = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            exit(json_encode($json));
+        }
 );
 
-Slim::get('/map-data/region-coordinates/:unique','check_map_data_access', function ($unique)
-	{
-			$unique = db_escape_string($unique);
-			$json = array();
-			$sql = "
+Slim::get('/map-data/region-coordinates/:unique', 'check_map_data_access', function ($unique)
+        {
+            $unique = db_escape_string($unique);
+            $json = array();
+            $sql = "
 				SELECT r.longitude,r.latitude FROM regions r
 					 WHERE r.unique = :unique AND r.lang = :lang LIMIT 1
 			;";
-			$stmt = db()->prepare($sql);
-			$stmt->execute(array(
-				':unique' => $unique,
-				':lang' => LANG
-			));
-			$json = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			exit(json_encode($json));
-	}
+            $stmt = db()->prepare($sql);
+            $stmt->execute(array(
+                ':unique' => $unique,
+                ':lang' => LANG
+            ));
+            $json = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            exit(json_encode($json));
+        }
 );
 
 Slim::get('/map-data/cluster-region-projects(/:type(/:status))', 'check_map_data_access', function($type = NULL, $status = NULl)

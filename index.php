@@ -36,7 +36,7 @@ Storage::instance()->config_env = require_once $env_config;
 define('URL', Storage::instance()->config_env['url']);
 
 Storage::instance()->config = require_once DIR . 'application/config.php';
-//require_once DIR . 'application/firephp/fb.php';
+require_once DIR . 'application/firephp/fb.php';
 
 require_once DIR . 'application/Slim/Slim.php';
 Slim::init();

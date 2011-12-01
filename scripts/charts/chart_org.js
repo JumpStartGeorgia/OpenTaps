@@ -109,3 +109,21 @@ $(document).ready(function()
             $(this).show(0);
         });
     });*/
+
+
+
+
+
+
+    //google chart api
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'year');
+	data.addColumn('number', 'budget');
+	for(i = 0; i < data_3.length; i ++){ data.addRow(data_3[i]); }
+
+        var chart = new google.visualization.LineChart(document.getElementById('org-chart-container-3'));
+        chart.draw(data, {legend: 'none', width: '100%', colors: ['#0CB5F6'], pointSize: 4});
+      }
