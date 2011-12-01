@@ -1788,7 +1788,14 @@ function get_organization_chart_data($unique)
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
     $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    array_walk($data, function(&$value){ is_array($value) and $value = array_values($value); empty($value[1]) or $value[1] = (int) $value[1]; });
+    array_walk(
+	$data,
+	function(&$value)
+	{
+	    is_array($value) and $value = array_values($value);
+	    empty($value[1]) or $value[1] = (int) $value[1];
+	}
+    );
 
     $results['budgets_by_year'] = array(
         'description' => '',

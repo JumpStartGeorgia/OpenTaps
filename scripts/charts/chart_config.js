@@ -1,9 +1,9 @@
 var pie_chart_options = {
       chart: {
-         renderTo: '',
-         plotBackgroundColor: null,
-         plotBorderWidth: null,
-         plotShadow: false,
+	 renderTo: '',
+	 plotBackgroundColor: null,
+	 plotBorderWidth: null,
+	 plotShadow: false,
       },
       credits: {
       	 enabled: false
@@ -38,27 +38,27 @@ var pie_chart_options = {
 	 '#EEEEEE'
       ],/*
       colors: [
-		'#555555',
-		'#5C5C5C',
-		'#646464',
-		'#6B6B6B',
-		'#737373',
-		'#7B7B7B',
-		'#828282',
-		'#8A8A8A',
-		'#929292',
-		'#999999',
-		'#A1A1A1',
-		'#A9A9A9',
-		'#B0B0B0',
-		'#B8B8B8',
-		'#C0C0C0',
-		'#C7C7C7',
-		'#CFCFCF',
-		'#D7D7D7',
-		'#DEDEDE',
-		'#E6E6E6',
-		'#EEEEEE'
+	'#555555',
+	'#5C5C5C',
+	'#646464',
+	'#6B6B6B',
+	'#737373',
+	'#7B7B7B',
+	'#828282',
+	'#8A8A8A',
+	'#929292',
+	'#999999',
+	'#A1A1A1',
+	'#A9A9A9',
+	'#B0B0B0',
+	'#B8B8B8',
+	'#C0C0C0',
+	'#C7C7C7',
+	'#CFCFCF',
+	'#D7D7D7',
+	'#DEDEDE',
+	'#E6E6E6',
+	'#EEEEEE'
       ],*/
       title: {
          text: null,
