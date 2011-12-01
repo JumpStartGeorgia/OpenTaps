@@ -631,7 +631,7 @@ $(function()
                 height: contact_height
             });
             $('#contact-us-map').css('height', 0).show().animate({
-                height: 320
+                height: 307
             });
             timedScroll();
 

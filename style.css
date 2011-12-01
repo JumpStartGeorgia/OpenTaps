@@ -221,8 +221,8 @@ div.bottom1 { margin-left: 1px }
 #bot-container { position: relative; width: 932px; margin-top: 0px; z-index: 9999999 }
 #about_us_button, #contact_us_button { cursor: pointer }
 #about-us, #contact-us { background: #fff; display: none; position: relative; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
-#contact-us { height: 360px; position: absolute; width: 100%; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
-#contact-us-map { height: 320px; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
+#contact-us { height: 350px;  width: 100%; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
+#contact-us-map { height: 320px;width:100%;position:absolute;left:0px;top:43px; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
 /*#contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000; background: #eee; position: absolute; top: 0; right: 0; 
 padding: 13px 13px 14px 13px; float: right; display: none; }*/
 #about-us { font-size: 12px; width: 930px; /*text-align: justify*/ }
