@@ -1442,7 +1442,7 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
         }
     }
     //for ($i = 1; $i < 25; $i ++){ $newdata[] = array('test', $i * 250000000); }
-    return json_replace_unicode(json_encode($newdata));
+    return json_replace_unicode(json_encode(array_reverse($newdata)));
     //return json_encode($newdata);
 }
 
@@ -1776,7 +1776,7 @@ function get_organization_chart_data($unique)
 
      $sql = "
 	select left(p.start_at, 4), " ./*left(p.title, 5),*/ "
-	(select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where pb.budget > 0 and left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "')
+	(select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "')
 	 as total_budget
 	from projects as p
 	where p.lang = '" . LANG . "' and (select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where pb.budget > 0 and left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "') > 0

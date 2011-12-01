@@ -1,5 +1,4 @@
 <?php
-
 /*
  *
  * To all those geeks who try to dig deep inside a source code:
