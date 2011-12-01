@@ -1430,8 +1430,8 @@ function char_limit($string, $limit = 30, $dont_break_word = TRUE)
 	$string = mb_substr($string, 0, $limit - 3, $enc);
 	if ($dont_break_word)
 	{
-	    $string = mb_substr($string, 0, strrpos($string, ' '), $enc);
-	    $string == '' and $string = mb_substr($temp, 0, strpos($temp, ' ', $limit - 3), $enc);
+	    $string = mb_substr($string, 0, mb_strrpos($string, ' ', 0, $enc), $enc);
+	    $string == '' and $string = mb_substr($temp, 0, mb_strpos($temp, ' ', $limit - 3, $enc), $enc);
 	}
 	$string .= "...";
     }
