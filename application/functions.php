@@ -1412,10 +1412,29 @@ function word_limiter($text, $limit = 30)
     return $text;
 }
 
-function char_limit($string, $limit = 30)
+function char_limit($string, $limit = 30, $dont_break_word = TRUE)
 {
     $enc = mb_detect_encoding($string);
-    mb_strlen($string, $enc) > $limit AND $string = mb_substr($string, 0, $limit - 3, $enc) . "...";
+    /*
+    * mb_strlen($string, $enc) > $limit AND $string = mb_substr($string, 0, $limit - 3, $enc) . "...";
+    * this single line code workes well, except it breaks the word
+    * but we don't want that because there might by &nbsp or smth like that in the string
+    */
+    if ($limit < 3)
+    {
+	return mb_substr($string, 0, $limit, $enc) . "...";
+    }
+    if (mb_strlen($string, $enc) > $limit)
+    {
+	$temp = $string;
+	$string = mb_substr($string, 0, $limit - 3, $enc);
+	if ($dont_break_word)
+	{
+	    $string = mb_substr($string, 0, strrpos($string, ' '), $enc);
+	    $string == '' and $string = mb_substr($temp, 0, strpos($temp, ' ', $limit - 3), $enc);
+	}
+	$string .= "...";
+    }
     return $string;
 }
 
@@ -1775,11 +1794,28 @@ function get_organization_chart_data($unique)
     );
 
      $sql = "
-	select left(p.start_at, 4), " ./*left(p.title, 5),*/ "
-	(select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "')
-	 as total_budget
+	select  left(p.start_at, 4), " ./*left(p.title, 5),*/ "
+		(
+		 select sum(pb.budget)
+		 from projects as ip
+		 inner join project_budgets as pb on project_unique = ip.`unique`
+		 where
+			left(ip.start_at, 4) = left(p.start_at, 4)
+			and currency = 'gel'
+			and organization_unique = :unique
+			and ip.lang = '" . LANG . "'
+		) as total_budget
 	from projects as p
-	where p.lang = '" . LANG . "' and (select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where pb.budget > 0 and left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "') > 0
+	where   p.lang = '" . LANG . "' and
+		(
+			select sum(pb.budget)
+			from projects as ip inner join project_budgets as pb on project_unique = ip.`unique`
+			where
+				pb.budget > 0
+				and left(ip.start_at, 4) = left(p.start_at, 4)
+				and currency = 'gel'
+				and organization_unique = :unique and ip.lang = '" . LANG . "'
+		) is not null
 	group by left(start_at, 4)
 	order by start_at
       ";
