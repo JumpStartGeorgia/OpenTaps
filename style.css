@@ -7,10 +7,10 @@ include_once('application/functions.php');
 function parse_damn_css($content)
 {
     $variables = array(
-	"@opentaps_default_color" => "#0cb5f5",
-	"@opentaps_default_rgba" => "12, 181, 245",
-	"@baseurl" => '.',
-	"@opentaps_default_bordercolor" => "#A6A6A6"
+    "@opentaps_default_color" => "#0cb5f5",
+    "@opentaps_default_rgba" => "12, 181, 245",
+    "@baseurl" => '.',
+    "@opentaps_default_bordercolor" => "#A6A6A6"
     );
     return strtr($content, $variables);
     //return str_replace(array_keys($variables), $variables, $content);
@@ -54,7 +54,7 @@ html[xmlns] .clearfix {
 
 /* General */
 a img, img { border: 0 }
-a { text-decoration:none;color:#0cb5f5; } 
+a { text-decoration:none;color:#0cb5f5; }
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
 * html .group { zoom: 1 } /* IE6 */
@@ -223,7 +223,7 @@ div.bottom1 { margin-left: 1px }
 #about-us, #contact-us { background: #fff; display: none; position: relative; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
 #contact-us { height: 350px;  width: 100%; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
 #contact-us-map { height: 320px;width:100%;position:absolute;left:0px;top:43px; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
-/*#contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000; background: #eee; position: absolute; top: 0; right: 0; 
+/*#contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000; background: #eee; position: absolute; top: 0; right: 0;
 padding: 13px 13px 14px 13px; float: right; display: none; }*/
 #about-us { font-size: 12px; width: 930px; /*text-align: justify*/ }
 #about-us-main-title-container, .about-us-main-title-container { color: #fff; background: #0CB5F6; padding: 11px 16px 11px 16px; font-weight: bold }
@@ -279,11 +279,19 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 #map-controls > li > ul a.sub { cursor: pointer }
 #map-controls > li > ul a:hover { color: #666 }
 #map-controls a.active { font-weight: bold !important; letter-spacing: normal }
+#map-controls a.inactive { color: #777 !important; font-weight: normal !important; letter-spacing: normal !important; cursor: default !important }
+#map-controls a.inactive img
+{
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
+    filter: alpha(opacity=33);
+    -moz-opacity: .33;
+    -khtml-opacity: .33;
+    opacity: .33;
+}
 #map-controls > li > ul a img { margin-right: 5px; vertical-align: middle }
 #map-controls > li > ul > li > ul { display: none; position: absolute; right: 144px; top: 0; border-right: 1px dashed #CFCFCF }
 #map-controls > li > ul > li > ul > li { border-bottom: 1px dashed #CFCFCF }
 #map-controls > li > ul > li > ul > li.first { border-top: 1px dashed #CFCFCF }
-
 
 /*.highcharts-container svg > text { display: none !important }*/
 #showtables { /*width: 750px;*/ font-family: Arial }
@@ -418,7 +426,7 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 #map-popup a:hover { text-decoration: none }
 #map-popup_close { display: none !important }*/
 
-.wysiwyg { margin: 0 !important; width: 100% !important; display: block } 
+.wysiwyg { margin: 0 !important; width: 100% !important; display: block }
 .wysiwyg iframe { height: 250px; display: block; width: 100% !important }
 
 .region-marker-wrapper { position: absolute; left: 0; top: 0; color: #FFF; text-align: center }

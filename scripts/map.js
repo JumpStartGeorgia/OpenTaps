@@ -360,7 +360,12 @@ function load_region_projects(variations)
         variations[key] = value.replace('|', '-');
     });
 
-    var request_url = baseurl + 'map-data/cluster-region-projects/' + variations.join(',') + '?lang=' + lang;
+    var iations = variations.join(',');
+
+    if (!iations.length)
+        return;
+
+    var request_url = baseurl + 'map-data/cluster-region-projects/' + iations + '?lang=' + lang;
 
     $.getJSON(request_url, function(result)
     {
@@ -533,6 +538,8 @@ function zoom_mode()
 
 function toggle_projects(type, status)
 {
+    if ($('#control-' + type + '-' + status).hasClass('inactive'))
+        return;
     mapping.project_variations[type][status] = !mapping.project_variations[type][status];
     reload_all_projects();
 }
