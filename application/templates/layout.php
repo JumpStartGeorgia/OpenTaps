@@ -70,6 +70,7 @@
         );
         if (isset(Storage::instance()->show_chart))
         {
+            $scripts[] = 'https://www.google.com/jsapi';
             $scripts[] = 'charts/highcharts.js';
             $scripts[] = 'charts/modules/exporting.js';
             $scripts[] = 'charts/chart_config.js';
@@ -99,7 +100,7 @@
         }
         ?>
         <script type="text/javascript">
-			<?php browserIncompatible(); ?>
+	    <?php browserIncompatible(); ?>
         </script>
         <?php
         foreach ($scripts AS $script)
