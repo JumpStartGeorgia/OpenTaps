@@ -176,36 +176,61 @@ Slim::get('/map-data/region-coordinates/:unique', 'check_map_data_access', funct
         }
 );
 
-Slim::get('/map-data/cluster-region-projects(/:type(/:status))', 'check_map_data_access', function($type = NULL, $status = NULl)
+function get_region_projects($region_unique, $type, $status)
+{
+    $type = ucwords(str_replace('_', ' ', trim(strtolower($type))));
+    $status_sql = NULL;
+    switch ($status)
+    {
+        case 'completed':
+            $status_sql = "AND DATE(pr.end_at) < CURDATE()";
+            break;
+        case 'current':
+            $status_sql = "AND CURDATE() BETWEEN DATE(pr.start_at) AND DATE(pr.end_at)";
+            break;
+        case 'scheduled':
+            $status_sql = "AND DATE(pr.start_at) > CURDATE()";
+            break;
+    }
+    $sql = "
+        SELECT COUNT(pl.id) AS number
+        FROM places AS pl
+            INNER JOIN project_places AS pp
+                ON pp.place_id = pl.`unique`
+            INNER JOIN projects AS pr
+                ON pr.`unique` = pp.project_id
+        WHERE pr.region_unique = {$region_unique}
+            AND pl.lang = '" . LANG . "'
+            AND pr.lang = pl.lang
+        AND pr.type = '{$type}'
+        {$status_sql}
+    ;";
+    $result = db()->query($sql, PDO::FETCH_ASSOC)->fetch();
+    if (empty($result))
+        return 0;
+    return $result['number'];
+}
+
+Slim::get('/map-data/cluster-region-projects/(:variations)', 'check_map_data_access', function($variations = NULL)
         {
-            $type = db_escape_string($type);
-            $status = db_escape_string($status);
 
-            $type_sql = NULL;
-            $type_item = NULL;
-            if (!empty($type))
-            {
-                $type_sql = " AND pr.type = '" . ucwords(str_replace('_', ' ', trim(strtolower($type)))) . "' ";
-                $type_item = ", pr.type AS type";
-            }
+            empty($variations) AND exit('[]');
 
-            $status_sql = NULL;
-            $status_item = NULL;
-            switch ($status)
+            if (strpos($variations, ',') === FALSE)
+                $variations = array($variations);
+            else
+                $variations = explode(',', $variations);
+
+            $temp = array();
+            foreach ($variations AS $item)
             {
-                case 'completed':
-                    $status_sql = "AND DATE(pr.end_at) < CURDATE()";
-                    $status_item = 'completed';
-                    break;
-                case 'current':
-                    $status_sql = "AND CURDATE() BETWEEN DATE(pr.start_at) AND DATE(pr.end_at)";
-                    $status_item = 'current';
-                    break;
-                case 'scheduled':
-                    $status_sql = "AND DATE(pr.start_at) > CURDATE()";
-                    $status_item = 'scheduled';
-                    break;
+                if (strpos($item, '-') === FALSE)
+                    continue;
+                $parts = explode('-', $item);
+                $temp[$parts[0]][] = $parts[1];
             }
+            $variations = $temp;
+            unset($temp);
 
             $sql = "
                 SELECT `unique`, name, longitude, latitude
@@ -221,30 +246,16 @@ Slim::get('/map-data/cluster-region-projects(/:type(/:status))', 'check_map_data
 
             foreach ($result AS $region)
             {
-                $sql = "
-                    SELECT COUNT(pl.id) AS number{$type_item}
-                    FROM places AS pl
-                        INNER JOIN project_places AS pp
-                            ON pp.place_id = pl.`unique`
-                        INNER JOIN projects AS pr
-                            ON pr.`unique` = pp.project_id
-                    #WHERE pl.region_unique = {$region['unique']}
-                    WHERE pr.region_unique = {$region['unique']}
-                        AND pl.lang = '" . LANG . "'
-                        AND pr.lang = pl.lang
-                    {$type_sql}
-                    {$status_sql}
-                ;";
 
-                $count = db()->query($sql, PDO::FETCH_ASSOC)->fetch();
+                $count = 0;
+                foreach ($variations AS $type => $status)
+                    $count += get_region_projects($region['unique'], $type, $status);
 
-                if (empty($count) OR empty($count['number']))
-                    continue;
+                //$region['type'] = empty($type_item) ? FALSE : strtolower(str_replace('', '_', $count['type']));
+                //$region['status'] = empty($status_item) ? FALSE : $status_item;
 
                 unset($region['unique']);
-                $region['type'] = empty($type_item) ? FALSE : strtolower(str_replace('', '_', $count['type']));
-                $region['status'] = empty($status_item) ? FALSE : $status_item;
-                $region['places'] = $count['number'];
+                $region['places'] = $count;
 
                 $json[] = $region;
             }
