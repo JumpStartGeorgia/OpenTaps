@@ -39,7 +39,7 @@
                 <div style='margin-top: <?php echo $margin ?>px'><?php __(l('contact_us_address')) ?></div>
                 <div style='margin-top: <?php echo $margin ?>px'>
                     <span style=''><?php __(l('contact_us_mail')) ?>:</span>
-                    <a href="mailto:info@opentaps.ge"><span style='color: #000'>info@opentaps.ge</span></a>
+                    <a href="mailto:info@opentaps.ge"><span style='color: #a11d21'>info@opentaps.ge</span></a>
                 </div>
                 <div style='margin-top: <?php echo $margin ?>px;'><?php __(l('contact_us_tel')) ?>: +995 32 214 29 26</div>
                 <?php if (LANG != 'ka'): ?><div style='color: #000; margin-top: 27px;'><?php __(l('contact_us_text')) ?></div><?php endif; ?>
