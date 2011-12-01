@@ -44,7 +44,7 @@ $this_type = empty($this_type) ? NULL : 'type/' . $this_type . '/';
                     <div class='content_each_left'>
                         <div class='content_each_title'><?php echo $news['title'] ?></div>
                         <div class='content_each_body'>
-                            <?php echo word_limiter(strip_tags($news['body']), 170); ?>
+                            <?php echo char_limit(strip_tags($news['body']), 170); ?>
                         </div>
                     </div>
                     <?php $rgba = 1 - ($index % 3) / 2.5; ?>

@@ -64,7 +64,7 @@
                     <div class="over_background">
                         <img style="width:38px; height:55px; border: 0px;" src="<?php echo $type_src ?>" />
                         <br />
-                        <?php echo strtoupper($news['title']); ?>
+                        <?php echo ($news['title']); ?>
                     </div>
                     <a href="<?php echo href("news/" . $news['unique'], TRUE); ?>">
                         <img src="<?php echo $src ?>" />

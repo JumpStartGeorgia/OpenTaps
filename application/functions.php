@@ -1412,10 +1412,29 @@ function word_limiter($text, $limit = 30)
     return $text;
 }
 
-function char_limit($string, $limit = 30)
+function char_limit($string, $limit = 30, $dont_break_word = TRUE)
 {
     $enc = mb_detect_encoding($string);
-    mb_strlen($string, $enc) > $limit AND $string = mb_substr($string, 0, $limit - 3, $enc) . "...";
+    /*
+    * mb_strlen($string, $enc) > $limit AND $string = mb_substr($string, 0, $limit - 3, $enc) . "...";
+    * this single line code workes well, except it breaks the word
+    * but we don't want that because there might by &nbsp or smth like that in the string
+    */
+    if ($limit < 3)
+    {
+	return mb_substr($string, 0, $limit, $enc) . "...";
+    }
+    if (mb_strlen($string, $enc) > $limit)
+    {
+	$temp = $string;
+	$string = mb_substr($string, 0, $limit - 3, $enc);
+	if ($dont_break_word)
+	{
+	    $string = mb_substr($string, 0, mb_strrpos($string, ' ', 0, $enc), $enc);
+	    $string == '' and $string = mb_substr($temp, 0, mb_strpos($temp, ' ', $limit - 3, $enc), $enc);
+	}
+	$string .= "...";
+    }
     return $string;
 }
 
@@ -1442,7 +1461,7 @@ function convert_to_chart_array($data, $nameindex, $budgetindex)
         }
     }
     //for ($i = 1; $i < 25; $i ++){ $newdata[] = array('test', $i * 250000000); }
-    return json_replace_unicode(json_encode($newdata));
+    return json_replace_unicode(json_encode(array_reverse($newdata)));
     //return json_encode($newdata);
 }
 
@@ -1775,11 +1794,28 @@ function get_organization_chart_data($unique)
     );
 
      $sql = "
-	select left(p.start_at, 4), " ./*left(p.title, 5),*/ "
-	(select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where pb.budget > 0 and left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "')
-	 as total_budget
+	select  left(p.start_at, 4), " ./*left(p.title, 5),*/ "
+		(
+		 select sum(pb.budget)
+		 from projects as ip
+		 inner join project_budgets as pb on project_unique = ip.`unique`
+		 where
+			left(ip.start_at, 4) = left(p.start_at, 4)
+			and currency = 'gel'
+			and organization_unique = :unique
+			and ip.lang = '" . LANG . "'
+		) as total_budget
 	from projects as p
-	where p.lang = '" . LANG . "' and (select sum(pb.budget) from projects as ip inner join project_budgets as pb on project_unique = ip.`unique` where pb.budget > 0 and left(ip.start_at, 4) = left(p.start_at, 4) and currency = 'gel' and organization_unique = :unique and ip.lang = '" . LANG . "') > 0
+	where   p.lang = '" . LANG . "' and
+		(
+			select sum(pb.budget)
+			from projects as ip inner join project_budgets as pb on project_unique = ip.`unique`
+			where
+				pb.budget > 0
+				and left(ip.start_at, 4) = left(p.start_at, 4)
+				and currency = 'gel'
+				and organization_unique = :unique and ip.lang = '" . LANG . "'
+		) is not null
 	group by left(start_at, 4)
 	order by start_at
       ";
@@ -1788,7 +1824,14 @@ function get_organization_chart_data($unique)
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
     $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    array_walk($data, function(&$value){ is_array($value) and $value = array_values($value); empty($value[1]) or $value[1] = (int) $value[1]; });
+    array_walk(
+	$data,
+	function(&$value)
+	{
+	    is_array($value) and $value = array_values($value);
+	    empty($value[1]) or $value[1] = (int) $value[1];
+	}
+    );
 
     $results['budgets_by_year'] = array(
         'description' => '',
