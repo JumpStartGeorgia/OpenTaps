@@ -1190,13 +1190,18 @@ function update_project($unique, $title, $desc, $budgets, $beneficiary_people, $
     		end_at = :end_at,
     		info = :info,
     		type = :type,
-		hidden = :hidden,
-		region_unique = :region_unique,
-		district_unique = :district_unique
+		hidden = :hidden
     	WHERE
     		`projects`.`unique` = :unique
     	AND
     		projects.lang = '" . LANG . "';
+    	UPDATE
+    		`projects`
+    	SET
+		region_unique = :region_unique,
+		district_unique = :district_unique
+    	WHERE
+    		`projects`.`unique` = :unique;
     	DELETE FROM
     		tag_connector
     	WHERE
