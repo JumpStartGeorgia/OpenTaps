@@ -61,7 +61,7 @@
 
         <?php
         $scripts = array(
-            'jquery.js', //'https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js',
+            'jquery.js',
             'ie6mustdie/ie6mustdie.js',
             'jquery.chosen.js',
             'jquery.slideQuery.js',
@@ -70,38 +70,40 @@
         );
         if (isset(Storage::instance()->show_chart))
         {
-            $scripts[] = 'https://www.google.com/jsapi';
-            $scripts[] = 'charts/highcharts.js';
-            $scripts[] = 'charts/modules/exporting.js';
-            $scripts[] = 'charts/chart_config.js';
+            $scripts = array_merge($scripts, array(
+                'https://www.google.com/jsapi',
+                'charts/highcharts.js',
+                'charts/modules/exporting.js',
+                'charts/chart_config.js'
+                    ));
         }
         isset(Storage::instance()->show_chart['home']) AND $scripts[] = 'charts/chart_home.js';
         isset(Storage::instance()->show_chart['organization']) AND $scripts[] = 'charts/chart_org.js';
         isset(Storage::instance()->show_chart['project']) AND $scripts[] = 'charts/chart_project.js';
         $scripts[] = 'OpenLayers/OpenLayers.js';
-        //if (Storage::instance()->show_map OR isset(Storage::instance()->show_project_map))
-        //{
-        //$scripts[] = 'http://maps.google.com/maps/api/js?v=3.5&amp;sensor=false';
-        $scripts[] = 'map.js';
-        //}
+        if (Storage::instance()->show_map OR isset(Storage::instance()->show_project_map))
+        {
+            $scripts[] = 'map.js';
+        }
         if (LANG == 'ka')
         {
-            $scripts[] = 'cufon.js';
-            $scripts[] = 'babuka_mtavruli.js';
+            $scripts = array_merge($scripts, array(
+                'cufon.js',
+                'babuka_mtavruli.js'
+                    ));
         }
         $scripts[] = 'common.js';
-        //userloggedin() AND $scripts[] = 'tinymce/tiny_mce.js';
         if (userloggedin())
         {
-            $scripts[] = 'akzhan-jwysiwyg/jquery.wysiwyg.js';
-            $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.link.js';
-            $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.table.js';
-            $scripts[] = 'akzhan-jwysiwyg/controls/wysiwyg.image.js';
+            $scripts = array_merge($scripts, array(
+                'akzhan-jwysiwyg/jquery.wysiwyg.js',
+                'akzhan-jwysiwyg/controls/wysiwyg.link.js',
+                'akzhan-jwysiwyg/controls/wysiwyg.table.js',
+                'akzhan-jwysiwyg/controls/wysiwyg.image.js'
+                    ));
         }
         ?>
-        <script type="text/javascript">
-	    <?php browserIncompatible(); ?>
-        </script>
+        <script type="text/javascript"><?php browserIncompatible() ?></script>
         <?php
         foreach ($scripts AS $script)
             echo '<script type="text/javascript" src="' . (substr($script, 0, 4) === 'http' ? $script : URL . 'scripts/' . $script) . '"></script>' . PHP_EOL;

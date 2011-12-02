@@ -3,16 +3,17 @@
 /* =================================================================== Regions Fontpage============================================= */
 Slim::get('/region/:unique/', function($unique)
         {
+            Storage::instance()->show_project_map = TRUE;
             Storage::instance()->show_map = FALSE;
             //$unique = get_unique("regions", $id);
             $sql_region_cordinates = "SELECT * FROM region_cordinates WHERE region_unique = '$unique'";
 
             /* list($values, $names, $real_values) = get_region_chart_data($unique); */
 
-            /*$query = "SELECT projects.title,projects.id,projects.type,projects.`unique` FROM projects
-		  LEFT JOIN places ON places.`unique` = projects.place_unique
-		  WHERE (places.region_unique = :unique OR projects.region_unique = :unique) AND projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "';";*/
-	    $query = "SELECT projects.title,projects.id,projects.type,projects.`unique` FROM projects
+            /* $query = "SELECT projects.title,projects.id,projects.type,projects.`unique` FROM projects
+              LEFT JOIN places ON places.`unique` = projects.place_unique
+              WHERE (places.region_unique = :unique OR projects.region_unique = :unique) AND projects.lang = '" . LANG . "' AND places.lang = '" . LANG . "';"; */
+            $query = "SELECT projects.title,projects.id,projects.type,projects.`unique` FROM projects
 		      WHERE projects.region_unique = :unique AND projects.lang = '" . LANG . "';";
             $query = db()->prepare($query);
             $query->execute(array(':unique' => $unique));
@@ -32,7 +33,7 @@ Slim::get('/region/:unique/', function($unique)
                 'data' => $data,
                 'side_data' => $side_data,
                 'count' => count_region_project_types($unique)
-            ));
+                    ));
         });
 
 
