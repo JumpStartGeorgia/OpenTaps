@@ -258,19 +258,24 @@
                 <?php endforeach; ?>
 
                 <?php if (!empty($tags)): ?>
-                    <div class='data_block group'>
+                    <div class="data_block group" style="border-bottom: 0px;">
                         <div class='key'>
                             <?php echo strtoupper(l('tag_cloud')) ?>
                         </div>
-                        <div class='value' style="line-height: 25px;">
-                            <?php
-                            foreach ($tags as $tag):
-                                echo "<a href='" . href('tag/organization/' . $tag['name'], TRUE) . "'>" . char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" . "</a><br />";
-                            endforeach;
-                            ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
+		        <div class="value group" style="padding: 0px;">
+		            <?php
+		            foreach (array_values($tags) as $key => $tag):
+		                $hidden = $key >= config('projects_in_sidebar') ? 'display: none; ' : FALSE;
+		                ?>
+		                <a style="<?php echo $hidden; ?>padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/organization/' . $tag['name'], TRUE) ?>">
+		                <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
+		                </a><?php
+		            endforeach;
+		            if ($hidden):
+		                ?><a class="show_hidden_list_items organization_project_link">▾</a><?php endif; ?>
+		        </div>
+		            </div>
+		        <?php endif; ?>
 
             </div>
 

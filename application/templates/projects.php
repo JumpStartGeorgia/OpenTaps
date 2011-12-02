@@ -117,21 +117,19 @@ $filterlink = $filter ? '/filter/' . $filter : NULL;
                 <div class='right_box_title'><?php echo strtoupper(l('tag_cloud')) ?></div>
             </div>
 
-            <div class='right_box_content' id='right_box_tags'>
-                <?php
-                foreach ($tags as $key => $tag):
-                    if ($key == config('projects_in_sidebar'))
-                    {
-                        break;
-                    }
-                    echo
-                    "<a href='" . href('tag/projects/' . $tag['name'], TRUE) . "'>" .
-                    char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" .
-                    "</a><br />"
-                    ;
-                endforeach;
+	    <div class="value group right_box_content" style="padding: 0px; border-bottom: 0px;" id='right_box_tags'>
+            <?php $limit = config('projects_in_sidebar');
+            foreach (array_values($tags) as $key => $tag):
+                $hidden = $key >= $limit ? 'display: none; ' : FALSE;
                 ?>
-            </div>
+                <a style="<?php echo $hidden; ?>padding: 9px 15px; margin: 0px;" class="organization_project_link" href="<?php echo href('tag/projects/' . $tag['name'], TRUE) ?>">
+                <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
+                </a><?php
+            endforeach;
+            if ($hidden):
+                ?><a class="show_hidden_list_items organization_project_link" style="margin: 0px; display: block;">▾</a><?php
+            endif; ?>
+	    </div>
         </div>
     </div>
 </div>

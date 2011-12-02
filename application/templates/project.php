@@ -102,7 +102,7 @@
                             <?php echo l('type') ?> :
                         </div>
                         <div class="wordwrap">
-                            <?php echo $project['type']; ?>
+                            <?php echo l('pt_' . strtolower($project['type'])); ?>
                         </div>
                     </div>
 
@@ -216,9 +216,9 @@
                 <div class="value group" style="padding: 0px;">
                     <?php
                     foreach (array_values($tags) as $key => $tag):
-                        $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
+                        $hidden = $key >= config('projects_in_sidebar') ? 'display: none; ' : FALSE;
                         ?>
-                        <a <?php echo $hidden; ?> style="padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/project/' . $tag['name'], TRUE) ?>">
+                        <a style="<?php echo $hidden; ?>padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/project/' . $tag['name'], TRUE) ?>">
                         <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
                         </a><?php
                     endforeach;
