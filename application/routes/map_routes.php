@@ -202,7 +202,7 @@ function get_region_projects($region_unique, $type, $status)
         WHERE pr.region_unique = {$region_unique}
             AND pl.lang = '" . LANG . "'
             AND pr.lang = pl.lang
-        AND pr.type = '{$type}'
+            AND pr.type = '{$type}'
         {$status_sql}
     ;";
     $result = db()->query($sql, PDO::FETCH_ASSOC)->fetch();

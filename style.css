@@ -436,4 +436,8 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 
 /*.region-marker-container .region-marker-wrapper .region-marker-item { position: absolute; left: 0; top: 0; font-weight: bold; color: #FFF; font-size: 15px; text-align:  }*/
 
+#pages { font-size: 115%; margin: 1em 0; display: block }
+#pages a { color: #0CB5F5 }
+#pages a:hover { color: #555 }
+
 <?php ob_end_flush(); ?>

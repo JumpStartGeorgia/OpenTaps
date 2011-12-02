@@ -277,7 +277,7 @@ function load_hydro()
             fillColor: '#F38630',
             fillOpacity: 0.9,
             strokeWidth: 0,
-            label: '${NAME_ENG}',
+            label: '${NAME_' + lang + '}',
             fontColor: '#AAAAAA',
             fontSize: '10px',
             labelAlign: 'ct',
