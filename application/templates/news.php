@@ -44,7 +44,7 @@ $this_type = empty($this_type) ? NULL : 'type/' . $this_type . '/';
                     <div class='content_each_left'>
                         <div class='content_each_title'><?php echo $news['title'] ?></div>
                         <div class='content_each_body'>
-                            <?php echo word_limiter(strip_tags($news['body']), 170); ?>
+                            <?php echo char_limit(strip_tags($news['body']), 170); ?>
                         </div>
                     </div>
                     <?php $rgba = 1 - ($index % 3) / 2.5; ?>
@@ -103,17 +103,22 @@ $this_type = empty($this_type) ? NULL : 'type/' . $this_type . '/';
                 <div class="headers">
                     <div class="right_box_title"><?php echo strtoupper(l('tag_cloud')) ?></div>
                 </div>
-                <div class="right_box_content" id="right_box_tags"><?php
-    $limit = config('projects_in_sidebar');
-    foreach ($tags AS $key => $tag):
-        if ($key == $limit)
-            break;
-        $link = href('tag/news/' . $tag['name'], TRUE, 'tags');
-        echo '<a href="' . $link . '" style="display: block">' . $tag['name'] . ' (' . $tag['total_tags'] . ')</a>';
-    endforeach;
-        ?></div>
-            </div>
-        </div>
+
+		<div class="value group right_box_content" style="padding: 0px; border-bottom: 0px;" id='right_box_tags'>
+		    <?php $limit = config('projects_in_sidebar');
+		    foreach (array_values($tags) as $key => $tag):
+			$hidden = $key >= $limit ? 'display: none; ' : FALSE; ?>
+			<a style="<?php echo $hidden; ?>padding: 9px 15px; margin: 0px;" class="organization_project_link" href="<?php echo href('tag/news/' . $tag['name'], TRUE, 'tags') ?>">
+			<?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
+			</a><?php
+		    endforeach;
+		    if ($hidden): ?>
+			<a class="show_hidden_list_items organization_project_link" style="margin: 0px; display: block;">▾</a><?php
+		    endif; ?>
+		</div>
+	    </div>
+	</div>
+
     <?php endif; ?>
 
 </div>

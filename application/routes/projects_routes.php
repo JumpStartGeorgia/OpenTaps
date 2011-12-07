@@ -9,7 +9,7 @@ Slim::get('/projects/(filter/:filter/)', function($filter = FALSE)
 
             $query = "SELECT DISTINCT tags.id,
 			  tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
@@ -36,7 +36,7 @@ Slim::get('/project/:unique/', function($unique)
             Storage::instance()->show_project_map = TRUE;
             Storage::instance()->show_chart = array('project' => TRUE);
             $query = "
-            	  SELECT DISTINCT(tags.id), tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
+            	  SELECT DISTINCT(tags.id), tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL) AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
@@ -77,7 +77,7 @@ Slim::get('/projects/page/:page/(filter/:filter/)', function($page, $filter = FA
 
             $query = "SELECT DISTINCT tags.id,
 			  tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
@@ -110,7 +110,7 @@ Slim::get('/projects/order/:order-:direction/(filter/:filter/)', function($order
             $posp = config('projects_on_single_page');
 
             $query = "SELECT DISTINCT tags.id,tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
@@ -145,7 +145,7 @@ Slim::get('/projects/order/:order-:direction/page/:page/(filter/:filter/)', func
             $posp = config('projects_on_single_page');
 
             $query = "SELECT DISTINCT tags.id,tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
@@ -242,7 +242,7 @@ Slim::get('/export/:type/:uniqid/:name/', function($type, $uniqid, $name)
                     foreach ($data as $fields)
                     {
                         //foreach ($fields as &$value)
-                            //$value = mb_convert_encoding($value, mb_detect_encoding($value), 'UTF-16');
+                        //$value = mb_convert_encoding($value, mb_detect_encoding($value), 'UTF-16');
                         //$value = mb_convert_encoding($value, 'SJIS', 'UTF-8');
                         //$value = iconv('', , $value);
                         //$value = mb_convert_encoding($value, 'UTF-8', mb_detect_encoding($value));

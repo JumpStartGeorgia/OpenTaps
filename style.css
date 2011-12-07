@@ -7,10 +7,10 @@ include_once('application/functions.php');
 function parse_damn_css($content)
 {
     $variables = array(
-	"@opentaps_default_color" => "#0cb5f5",
-	"@opentaps_default_rgba" => "12, 181, 245",
-	"@baseurl" => '.',
-	"@opentaps_default_bordercolor" => "#A6A6A6"
+    "@opentaps_default_color" => "#0cb5f5",
+    "@opentaps_default_rgba" => "12, 181, 245",
+    "@baseurl" => '.',
+    "@opentaps_default_bordercolor" => "#A6A6A6"
     );
     return strtr($content, $variables);
     //return str_replace(array_keys($variables), $variables, $content);
@@ -54,7 +54,7 @@ html[xmlns] .clearfix {
 
 /* General */
 a img, img { border: 0 }
-a { text-decoration:none;color:#0cb5f5; } 
+a { text-decoration:none;color:#0cb5f5; }
 * { margin: 0 auto; font-family: arial; word-wrap: break-word }
 .group:after { visibility: hidden; display: block; content: ""; clear: both; height: 0 }
 * html .group { zoom: 1 } /* IE6 */
@@ -113,6 +113,7 @@ div.news { width: 573px; margin: 0; float: right }
 div.news, div.projects_organization { padding: 11px 0px 11px 13px; font-weight: bold; text-align: left; background: @opentaps_default_color }
 a.organization_project_link { display: block; border-bottom: 1px dotted #a6a6a6; padding: 3px 17px 3px 8px }
 a.organization_project_link img { vertical-align: middle; margin-right: 3px; margin-bottom: 3px; width: 23px }
+a.organization_project_link:hover { background: #F8F8F8; }
 #home-chart-container { padding: 0; float: left; margin: 0; width: 293px; height: 321px }
 div.newsall_body { width: 573px; color: #565656; font-size: 13px; font-family: Arial; border: 1px dotted @opentaps_default_bordercolor; border-top: 0px; float: left; border: 0px }
 div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border: 1px dotted @opentaps_default_bordercolor; border-top: 0px }
@@ -213,7 +214,7 @@ div.news_body { float: right; width: 535px; padding: 28px 22px 15px 27px; border
 .right_box { width: 100% }
 .right_box_title { width: 100%; padding-top: 9px; padding-left: 20px }
 .right_box_content { border: 1px dotted @opentaps_default_bordercolor; border-top: 0; padding: 10px }
-#right_box_tags a { font-size: 12px; margin-left: 11px; display: inline-block; margin-bottom: 6px }
+#right_box_tags a { font-size: 12px; margin-left: 11px; /*display: inline-block;*/ margin-bottom: 6px }
 
 div.bottom { width: 932px; border-top: 2px solid #ccc; padding-top: 5px }
 div.bottom1, div.bottom2 { float: left; font-size: 0.7em; font-family: arial; color: grey }
@@ -223,7 +224,7 @@ div.bottom1 { margin-left: 1px }
 #about-us, #contact-us { background: #fff; display: none; position: relative; left: 0; bottom: 0; border: 1px dotted @opentaps_default_bordercolor; border-bottom: 0px }
 #contact-us { height: 350px;  width: 100%; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
 #contact-us-map { height: 320px;width:100%;position:absolute;left:0px;top:43px; -moz-user-select: none; -webkit-user-select: none; user-select: none; }
-/*#contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000; background: #eee; position: absolute; top: 0; right: 0; 
+/*#contact-us-close-button, #about-us-close-button { cursor: pointer; color: #000; background: #eee; position: absolute; top: 0; right: 0;
 padding: 13px 13px 14px 13px; float: right; display: none; }*/
 #about-us { font-size: 12px; width: 930px; /*text-align: justify*/ }
 #about-us-main-title-container, .about-us-main-title-container { color: #fff; background: #0CB5F6; padding: 11px 16px 11px 16px; font-weight: bold }
@@ -279,11 +280,19 @@ div.tagsItemInactive { width: 25px; height: 20px; background: url("@baseurl/imag
 #map-controls > li > ul a.sub { cursor: pointer }
 #map-controls > li > ul a:hover { color: #666 }
 #map-controls a.active { font-weight: bold !important; letter-spacing: normal }
+#map-controls a.inactive { color: #777 !important; font-weight: normal !important; letter-spacing: normal !important; cursor: default !important }
+#map-controls a.inactive img
+{
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=33)";
+    filter: alpha(opacity=33);
+    -moz-opacity: .33;
+    -khtml-opacity: .33;
+    opacity: .33;
+}
 #map-controls > li > ul a img { margin-right: 5px; vertical-align: middle }
 #map-controls > li > ul > li > ul { display: none; position: absolute; right: 144px; top: 0; border-right: 1px dashed #CFCFCF }
 #map-controls > li > ul > li > ul > li { border-bottom: 1px dashed #CFCFCF }
 #map-controls > li > ul > li > ul > li.first { border-top: 1px dashed #CFCFCF }
-
 
 /*.highcharts-container svg > text { display: none !important }*/
 #showtables { /*width: 750px;*/ font-family: Arial }
@@ -418,7 +427,7 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 #map-popup a:hover { text-decoration: none }
 #map-popup_close { display: none !important }*/
 
-.wysiwyg { margin: 0 !important; width: 100% !important; display: block } 
+.wysiwyg { margin: 0 !important; width: 100% !important; display: block }
 .wysiwyg iframe { height: 250px; display: block; width: 100% !important }
 
 .region-marker-wrapper { position: absolute; left: 0; top: 0; color: #FFF; text-align: center }
@@ -427,5 +436,9 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 .region-marker-wrapper.large { width: 53px; height: 53px; line-height: 53px; font-size: 18px }
 
 /*.region-marker-container .region-marker-wrapper .region-marker-item { position: absolute; left: 0; top: 0; font-weight: bold; color: #FFF; font-size: 15px; text-align:  }*/
+
+#pages { font-size: 115%; margin: 1em 0; display: block }
+#pages a { color: #0CB5F5 }
+#pages a:hover { color: #555 }
 
 <?php ob_end_flush(); ?>

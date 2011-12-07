@@ -88,16 +88,14 @@ $.each(mapping.options.general_icons, function(index, item)
 
 var scaleByMode = function()
 {
-    if ( typeof(mapMode) !== 'undefined' )
+    if (typeof(mapMode) !== 'undefined')
     {
         switch (mapMode.toLowerCase())
         {
             case 'project':
                 return true;
-                break;
             case 'region':
                 return true;
-                break;
             default:
                 return false;
         }
@@ -279,7 +277,7 @@ function load_hydro()
             fillColor: '#F38630',
             fillOpacity: 0.9,
             strokeWidth: 0,
-            label: '${NAME_ENG}',
+            label: '${NAME_' + lang + '}',
             fontColor: '#AAAAAA',
             fontSize: '10px',
             labelAlign: 'ct',
@@ -354,32 +352,49 @@ function unload_all_projects()
     mapping.place_storage = new Object();
 }
 
-function load_region_projects(type, status)
+function load_region_projects(variations)
 {
-    var request_url = baseurl + 'map-data/cluster-region-projects/' + type + '/' + status + '?lang=' + lang;
+
+    $.each(variations, function(key, value)
+    {
+        variations[key] = value.replace('|', '-');
+    });
+
+    var iations = variations.join(',');
+
+    if (!iations.length)
+        return;
+
+    var request_url = baseurl + 'map-data/cluster-region-projects/' + iations + '?lang=' + lang;
+
     $.getJSON(request_url, function(result)
     {
         if (!result.length)
             return;
 
-        $('#control-' + type).addClass('active');
-        $('#control-' + type + '-' + status).addClass('active');
-
-        $.each(result, function(index, project)
+        $.each(variations, function(key, value)
         {
+            var parts = value.split('-');
+            if (parts.length != 2)
+                return;
+            $('#control-' + parts[0]).addClass('active');
+            $('#control-' + parts[0] + '-' + parts[1]).addClass('active');
+        });
 
-            if (!project.places.length)
-                return true;
-
-            var count = parseInt(project.places),
+        $.each(result, function(index, region)
+        {
+            var count = parseInt(region.places),
             size = 'small';
+
+            if (count == 0)
+                return true;
 
             if (count > 8)
                 size = 'large';
             else if (count > 3)
                 size = 'medium';
 
-            var coordinates = new OpenLayers.LonLat(project.longitude, project.latitude),
+            var coordinates = new OpenLayers.LonLat(region.longitude, region.latitude),
             marker = new OpenLayers.Marker(coordinates, mapping.icons['general'][size].clone());
             mapping.markers.addMarker(marker);
 
@@ -428,7 +443,7 @@ function calculate_cluster_distance()
             meters = 2;
             break;
         case 5:
-            meters = 1.6;
+            meters = 2;
             break;
     }
     return parseInt((mapping.options.scales.length - mapping.map.zoom) * meters);
@@ -523,6 +538,8 @@ function zoom_mode()
 
 function toggle_projects(type, status)
 {
+    if ($('#control-' + type + '-' + status).hasClass('inactive'))
+        return;
     mapping.project_variations[type][status] = !mapping.project_variations[type][status];
     reload_all_projects();
 }
@@ -551,17 +568,18 @@ function reload_all_projects()
 
     unload_all_projects();
 
-    $.each(variations, function(key, value)
+    if (state == 'regions')
+        load_region_projects(variations);
+    else
     {
-        var parts = value.split('|');
-        if (parts.length != 2)
-            return true;
-
-        if (state == 'regions')
-            load_region_projects(parts[0], parts[1]);
-        else
+        $.each(variations, function(key, value)
+        {
+            var parts = value.split('|');
+            if (parts.length != 2)
+                return true;
             load_projects(parts[0], parts[1]);
-    });
+        });
+    }
 }
 
 function toggle_layer(object)

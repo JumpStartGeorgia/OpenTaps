@@ -1,6 +1,5 @@
 <?php
-
-/*
+ /*
  *
  * To all those geeks who try to dig deep inside a source code:
  * Life's short, save your nerves and health!
@@ -18,7 +17,7 @@ require_once DIR . 'application/storage.php';
 
 // Declare and define environments by URI string.
 foreach (array(
-'localhost.com' => 'development',
+ 'localhost.com' => 'development',
  'deda.omc.ge' => 'testing',
  'opentaps.ge' => 'production'
 ) AS $uri => $env)

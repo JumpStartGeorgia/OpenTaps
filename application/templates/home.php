@@ -62,9 +62,8 @@
                 ?>
                 <div class="top_image" <?php echo $margin ?>>
                     <div class="over_background">
-                        <img style="width:38px; height:55px; border: 0px;" src="<?php echo $type_src ?>" />
-                        <br />
-                        <?php echo strtoupper($news['title']); ?>
+                        <img style="width:38px; height: 55px; border: 0px;" src="<?php echo $type_src ?>" /><br />
+                        <?php echo ($news['title']); ?>
                     </div>
                     <a href="<?php echo href("news/" . $news['unique'], TRUE); ?>">
                         <img src="<?php echo $src ?>" />
@@ -93,7 +92,7 @@
                         ?>
                         <div class="right_title_one">
                             <a href="<?php echo href("news/" . $news['unique'], TRUE); ?>">
-                                <span><</span><?php echo strtoupper($news['title']); ?>
+                                <span><</span><?php echo ($news['title']); ?>
                             </a>
                             <input type="hidden" class="src_container" value="<?php echo $src; ?>" />
                         </div>

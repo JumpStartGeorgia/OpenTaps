@@ -574,7 +574,7 @@ $(function()
             new OpenLayers.Control.Attribution()
             ]
         }),
-        footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/en/${z}/${x}/${y}.png', {
+        footer_map_layer = new OpenLayers.Layer.OSM('JumpStart Tile-Set', 'http://tile.mapspot.ge/' + lang + '/${z}/${x}/${y}.png', {
             isBaseLayer: true
         }),
         footer_map_marker_layer = new OpenLayers.Layer.Markers('Footer Marker');
@@ -906,18 +906,17 @@ $(function()
 $(function()
 {
 
-    $('#supply_clear_button').click(function(){
-        $('#cont').animate(
-        {
+    $('#supply_clear_button').click(function()
+    {
+        $('#cont').animate({
             height: 0
-        },
-        function(){
+        }, function()
+        {
             $(this).children().remove();
             $(this).css({
                 height: 'auto'
             });
-        }
-        );
+        });
     });
 
     var regions = $('#ws_regions'),
@@ -930,10 +929,10 @@ $(function()
         var request_url = baseurl + 'water_supply/district/' + $(this).val() + '/?lang=' + lang;
         $.getJSON(request_url, function(response)
         {
-            if ($.isEmptyObject(response))
+            if (!response.length || response == 'empty')
                 return;
             var option = (lang == 'ka') ? 'აირჩიეთ' : 'Select an Option';
-            districts.html('<option disabled>' + option + '</option>');
+            districts.html('<option disabled="disabled">' + option + '</option>');
 
             $.each(response, function()
             {
@@ -946,16 +945,17 @@ $(function()
 
     districts.change(function()
     {
-        $.get(baseurl + 'water_supply/supply/' + $(this).children('option:selected').attr('unique') + '/?lang=' + lang, function(json)
+        $.get(baseurl + 'water_supply/supply/' + $(this).children('option:selected').attr('unique') + '/?lang=' + lang, function(response)
         {
-            $("#project_content").find('#cont').prepend(json);
+            $('#cont').html(response);
         });
 
-        $.get(baseurl + 'water_supply/projects/' + $(this).children('option:selected').attr('unique') + '/?lang=' + lang, function(result)
+        /*
+        $.get(baseurl + 'water_supply/projects/' + $(this).children('option:selected').attr('unique') + '/?lang=' + lang, function(response)
         {
-            if (result != '' && typeof(result) !== 'undefined')
+            if (response != '' && typeof(result) !== 'undefined')
             {
-                wsp_list.html(result);
+                wsp_list.html(response);
                 wsp_list_container.slideDown();
                 set_hidden_list_handlers();
             }
@@ -968,6 +968,8 @@ $(function()
                 });
             }
         });
+        */
+
     });
 
 });
@@ -1029,62 +1031,62 @@ $.each(projectGroup,function (ind,val)
 
 $().projectInfoActive();
 
-var getAndProcessCoordinates = function (request_url,the_icon)
-	{
-		var distance = 2,current_coordinate_hashes = [];
-		$.getJSON(request_url, function(results)
-		{
-			
-		    if (!results)
-		        return;                       
-		    
-		    $.each(results, function(index, place)
-		    {
-		        var adjusted_latitude = place.longitude,
-		        adjusted_longitude = place.latitude,
-		        coordinate_hash = String(place.latitude) + String(place.longitude);
-		        while (current_coordinate_hashes[coordinate_hash] != null)
-		        {
-		            adjusted_latitude = parseFloat(place.longitude) + (Math.random() - distance) / 750;
-		            adjusted_longitude = parseFloat(place.latitude) + (Math.random() - distance) / 750;
-		            coordinate_hash = String(adjusted_latitude) + String(adjusted_longitude);
-		        }
-		        current_coordinate_hashes[coordinate_hash] = true;
-		        var coordinates = new OpenLayers.LonLat(adjusted_latitude, adjusted_longitude),
-		        icon =  the_icon.clone(),
-		        marker = new OpenLayers.Marker(coordinates,icon);
-		        mapping.markers.addMarker(marker); 
-		    });
-		    
-		    var theLast = results[results.length-1];
-			mapping.map.setCenter(new OpenLayers.LonLat(theLast.longitude, theLast.latitude));
+var getAndProcessCoordinates = function (request_url, the_icon)
+{
+    var distance = 2,current_coordinate_hashes = [];
+    $.getJSON(request_url, function(results)
+    {
 
-		});
+        if (!results)
+            return;
 
-	};
+        $.each(results, function(index, place)
+        {
+            var adjusted_latitude = place.longitude,
+            adjusted_longitude = place.latitude,
+            coordinate_hash = String(place.latitude) + String(place.longitude);
+            while (current_coordinate_hashes[coordinate_hash] != null)
+            {
+                adjusted_latitude = parseFloat(place.longitude) + (Math.random() - distance) / 750;
+                adjusted_longitude = parseFloat(place.latitude) + (Math.random() - distance) / 750;
+                coordinate_hash = String(adjusted_latitude) + String(adjusted_longitude);
+            }
+            current_coordinate_hashes[coordinate_hash] = true;
+            var coordinates = new OpenLayers.LonLat(adjusted_latitude, adjusted_longitude),
+            icon =  the_icon.clone(),
+            marker = new OpenLayers.Marker(coordinates,icon);
+            mapping.markers.addMarker(marker);
+        });
+
+        var theLast = results[results.length-1];
+        mapping.map.setCenter(new OpenLayers.LonLat(theLast.longitude, theLast.latitude));
+
+    });
+
+};
 
 $(window).load(function ()
-	{
-		if ( typeof(Project) !== 'undefined' )
-		{
-			var project_unique = Project.Unique,
-				project_type = Project.Type,
-				project_status = Project.Status,
-				request_url = baseurl + 'map-data/project-coordinates/' + project_unique + '?lang=' + lang;    
-			getAndProcessCoordinates(request_url,mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()]);		
-		}
-		    
-	}
+{
+    if ( typeof(Project) !== 'undefined' )
+    {
+        var project_unique = Project.Unique,
+        project_type = Project.Type,
+        project_status = Project.Status,
+        request_url = baseurl + 'map-data/project-coordinates/' + project_unique + '?lang=' + lang;
+        getAndProcessCoordinates(request_url,mapping.icons[project_type.toLowerCase()][project_status.toLowerCase()]);
+    }
+
+}
 );
 
 $(window).load(function ()
-	{
-		if ( typeof(Region) !== 'undefined' )
-		{		
-			var request_url = baseurl + 'map-data/region-coordinates/' + Region.unique + '?lang=' + lang;
-			getAndProcessCoordinates(request_url,mapping.icons.general.small);
-		}
-	}
+{
+    if ( typeof(Region) !== 'undefined' )
+    {
+        var request_url = baseurl + 'map-data/region-coordinates/' + Region.unique + '?lang=' + lang;
+        getAndProcessCoordinates(request_url,mapping.icons.general.medium);
+    }
+}
 );
 
 

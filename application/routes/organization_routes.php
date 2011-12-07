@@ -20,7 +20,7 @@ Slim::get('/organization/:unique/', function($unique)
             Storage::instance()->show_map = FALSE;
             Storage::instance()->show_chart = array('organization' => TRUE);
 
-            $query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
+            $query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND org_unique IS NOT NULL) AS total_tags
 		  FROM tags
 		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
 		  LEFT JOIN organizations ON `org_unique` = organizations.`unique`

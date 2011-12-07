@@ -40,32 +40,31 @@
 <div style="float: right;"><!--DATA-->
     <?php $i = 0;
     foreach ($side_data as $d): $i++; ?>
-
         <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
             <div class='key'>
-    <?php echo strtoupper($d['key']); ?>
+		<?php echo strtoupper($d['key']); ?>
             </div>
             <div class='value group'>
-    <?php echo $d['value']; ?>
+		<?php echo $d['value']; ?>
             </div>
         </div>
-
     <?php endforeach; ?>
 
 <?php if (!empty($tags)): ?>
-        <div class='data_block group' <?php ($i == 1) AND print("style='border-top: 0 none;'"); ?>>
+        <div class='data_block group' style="border-top: 0 none;">
             <div class='key'><?php echo l('tag_cloud') ?></div>
-            <div class='value group'>
-                <?php
-                foreach ($tags as $tag):
-                    echo
-                    "<a href='" . href('tag/project/' . $tag['name'], TRUE) . "'>" .
-                    $tag['name'] . " (" . $tag['total_tags'] . ")" .
-                    "</a><br />"
-                    ;
-                endforeach;
-                ?>
-            </div>
+	    <div class="value group" style="padding: 0px; border: 0px;">
+		<?php
+		foreach (array_values($tags) as $key => $tag):
+		    $hidden = $key >= config('projects_in_sidebar') ? 'display: none; ' : FALSE; ?>
+		    <a style="<?php echo $hidden; ?>padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/news/' . $tag['name'], TRUE) ?>">
+		    <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
+		    </a><?php
+		endforeach;
+		if ($hidden): ?>
+		   <a class="show_hidden_list_items organization_project_link" style="border: 0px;">▾</a><?php
+		endif; ?>
+	    </div>
         </div>
 <?php endif; ?>
 

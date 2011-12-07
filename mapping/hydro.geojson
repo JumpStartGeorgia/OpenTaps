@@ -1,65 +1,65 @@
 {
 "type": "FeatureCollection",
 "features": [
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "awhesi", "NAME_ENG": "Achhesi" }, "geometry": { "type": "Point", "coordinates": [ 41.856708, 41.557947 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "აწჰესი", "NAME_en": "Achhesi" }, "geometry": { "type": "Point", "coordinates": [ 41.856708, 41.557947 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "varcixe hesi IV", "NAME_ENG": "Vartsikhe IV" }, "geometry": { "type": "Point", "coordinates": [ 42.434292, 42.147393 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარციხე ჰესი IV", "NAME_en": "Vartsikhe IV" }, "geometry": { "type": "Point", "coordinates": [ 42.434292, 42.147393 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "varcixe hesi III", "NAME_ENG": "Vartsikhe III" }, "geometry": { "type": "Point", "coordinates": [ 42.521595, 42.135707 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარციხე ჰესი III", "NAME_en": "Vartsikhe III" }, "geometry": { "type": "Point", "coordinates": [ 42.521595, 42.135707 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "varcixe hesi II", "NAME_ENG": "Vartsikhe II" }, "geometry": { "type": "Point", "coordinates": [ 42.604704, 42.137473 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარციხე ჰესი II", "NAME_en": "Vartsikhe II" }, "geometry": { "type": "Point", "coordinates": [ 42.604704, 42.137473 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "varcixe hesi I", "NAME_ENG": "Vartsikhe i" }, "geometry": { "type": "Point", "coordinates": [ 42.674292, 42.159132 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარციხე ჰესი I", "NAME_en": "Vartsikhe i" }, "geometry": { "type": "Point", "coordinates": [ 42.674292, 42.159132 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "vardnili hesi IV", "NAME_ENG": "Vardnili IV" }, "geometry": { "type": "Point", "coordinates": [ 41.580677, 42.620255 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარდნილი ჰესი IV", "NAME_en": "Vardnili IV" }, "geometry": { "type": "Point", "coordinates": [ 41.580677, 42.620255 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "vardnili hesi III", "NAME_ENG": "Vardnili III" }, "geometry": { "type": "Point", "coordinates": [ 41.646462, 42.627811 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარდნილი ჰესი III", "NAME_en": "Vardnili III" }, "geometry": { "type": "Point", "coordinates": [ 41.646462, 42.627811 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "vardnili hesi II", "NAME_ENG": "Vardnili II" }, "geometry": { "type": "Point", "coordinates": [ 41.697242, 42.632093 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარდნილი ჰესი II", "NAME_en": "Vardnili II" }, "geometry": { "type": "Point", "coordinates": [ 41.697242, 42.632093 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "soxumi hesi", "NAME_ENG": "Sokhumi I" }, "geometry": { "type": "Point", "coordinates": [ 40.985951, 43.094563 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "სოხუმი ჰესი", "NAME_en": "Sokhumi I" }, "geometry": { "type": "Point", "coordinates": [ 40.985951, 43.094563 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "bJuJa hesi", "NAME_ENG": "Bzhuzha" }, "geometry": { "type": "Point", "coordinates": [ 42.118400, 41.861536 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ბჟუჟა ჰესი", "NAME_en": "Bzhuzha" }, "geometry": { "type": "Point", "coordinates": [ 42.118400, 41.861536 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "rionhesi", "NAME_ENG": "Rionhesi" }, "geometry": { "type": "Point", "coordinates": [ 42.690347, 42.202195 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "რიონჰესი", "NAME_en": "Rionhesi" }, "geometry": { "type": "Point", "coordinates": [ 42.690347, 42.202195 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "gumaThesi I", "NAME_ENG": "Gumathesi I" }, "geometry": { "type": "Point", "coordinates": [ 42.769818, 42.438022 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "გუმათჰესი I", "NAME_en": "Gumathesi I" }, "geometry": { "type": "Point", "coordinates": [ 42.769818, 42.438022 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "gumaThesi II", "NAME_ENG": "Gumathesi II" }, "geometry": { "type": "Point", "coordinates": [ 42.719576, 42.400613 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "გუმათჰესი II", "NAME_en": "Gumathesi II" }, "geometry": { "type": "Point", "coordinates": [ 42.719576, 42.400613 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "lajanuri hesi", "NAME_ENG": "Lazhanuri" }, "geometry": { "type": "Point", "coordinates": [ 42.838397, 42.544959 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ლაჯანური ჰესი", "NAME_en": "Lazhanuri" }, "geometry": { "type": "Point", "coordinates": [ 42.838397, 42.544959 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "Saori hesi", "NAME_ENG": "Shaori" }, "geometry": { "type": "Point", "coordinates": [ 42.980840, 42.358317 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "შაორი ჰესი", "NAME_en": "Shaori" }, "geometry": { "type": "Point", "coordinates": [ 42.980840, 42.358317 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "tyibuli hesi", "NAME_ENG": "Tkibuli" }, "geometry": { "type": "Point", "coordinates": [ 42.991270, 42.322593 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ტყიბული ჰესი", "NAME_en": "Tkibuli" }, "geometry": { "type": "Point", "coordinates": [ 42.991270, 42.322593 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "tyvarCeli sresi", "NAME_ENG": "Tkvarcheli" }, "geometry": { "type": "Point", "coordinates": [ 41.654989, 42.874285 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ტყვარჩელი ჰესი", "NAME_en": "Tkvarcheli" }, "geometry": { "type": "Point", "coordinates": [ 41.654989, 42.874285 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "xudoni hesi", "NAME_ENG": "Khudoni" }, "geometry": { "type": "Point", "coordinates": [ 42.146296, 42.956122 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ხუდონი ჰესი", "NAME_en": "Khudoni" }, "geometry": { "type": "Point", "coordinates": [ 42.146296, 42.956122 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "vardnili hesi I", "NAME_ENG": "Vardnili I" }, "geometry": { "type": "Point", "coordinates": [ 41.780778, 42.665596 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ვარდნილი ჰესი I", "NAME_en": "Vardnili I" }, "geometry": { "type": "Point", "coordinates": [ 41.780778, 42.665596 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "CiTaxevi hesi", "NAME_ENG": "Chitakhevi" }, "geometry": { "type": "Point", "coordinates": [ 43.305553, 41.786206 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ჩიტახევი ჰესი", "NAME_en": "Chitakhevi" }, "geometry": { "type": "Point", "coordinates": [ 43.305553, 41.786206 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "xramhesi I", "NAME_ENG": "Khramhesi" }, "geometry": { "type": "Point", "coordinates": [ 44.139621, 41.556078 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ხრამჰესი I", "NAME_en": "Khramhesi" }, "geometry": { "type": "Point", "coordinates": [ 44.139621, 41.556078 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "xramhesi II", "NAME_ENG": "Khramhesi" }, "geometry": { "type": "Point", "coordinates": [ 44.225837, 41.451531 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ხრამჰესი II", "NAME_en": "Khramhesi" }, "geometry": { "type": "Point", "coordinates": [ 44.225837, 41.451531 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "Jinvali hesi", "NAME_ENG": "Zhinveli" }, "geometry": { "type": "Point", "coordinates": [ 44.749616, 42.110031 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ჟინვალი ჰესი", "NAME_en": "Zhinveli" }, "geometry": { "type": "Point", "coordinates": [ 44.749616, 42.110031 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "zahesi", "NAME_ENG": "Zahesi" }, "geometry": { "type": "Point", "coordinates": [ 44.742333, 41.834044 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ზაჰესი", "NAME_en": "Zahesi" }, "geometry": { "type": "Point", "coordinates": [ 44.742333, 41.834044 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "orTaWalhesi", "NAME_ENG": "Ortachalhesi" }, "geometry": { "type": "Point", "coordinates": [ 44.842256, 41.670975 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ორთაჭალჰესი", "NAME_en": "Ortachalhesi" }, "geometry": { "type": "Point", "coordinates": [ 44.842256, 41.670975 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "Tbilsresi", "NAME_ENG": "Tbilsresi" }, "geometry": { "type": "Point", "coordinates": [ 45.070458, 41.423958 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "თბილსრესი", "NAME_en": "Tbilsresi" }, "geometry": { "type": "Point", "coordinates": [ 45.070458, 41.423958 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "mtkvari", "NAME_ENG": "Mtkvari" }, "geometry": { "type": "Point", "coordinates": [ 45.061183, 41.371419 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "მტკვარი", "NAME_en": "Mtkvari" }, "geometry": { "type": "Point", "coordinates": [ 45.061183, 41.371419 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "enguri hesi", "NAME_ENG": "Engurhesi" }, "geometry": { "type": "Point", "coordinates": [ 41.941817, 42.671925 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ენგური ჰესი", "NAME_en": "Engurhesi" }, "geometry": { "type": "Point", "coordinates": [ 41.941817, 42.671925 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "sacxenis hesi", "NAME_ENG": "Satskhenishesi" }, "geometry": { "type": "Point", "coordinates": [ 45.133963, 41.800588 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "საცხენის ჰესი", "NAME_en": "Satskhenishesi" }, "geometry": { "type": "Point", "coordinates": [ 45.133963, 41.800588 ] } }
 ,
-{ "type": "Feature", "properties": { "type": "", "NAME_GEO": "xadorhesi", "NAME_ENG": "Xadorhesi" }, "geometry": { "type": "Point", "coordinates": [ 45.336149, 42.261801 ] } }
+{ "type": "Feature", "properties": { "type": "", "NAME_ka": "ხადორჰესი", "NAME_en": "Xadorhesi" }, "geometry": { "type": "Point", "coordinates": [ 45.336149, 42.261801 ] } }
 
 ]
 }
