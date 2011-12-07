@@ -1090,13 +1090,81 @@ $(window).load(function ()
 );
 
 
-// Expand accordions before exporting
+// Export :)
 $(function()
 {
-    $('#pdf-export').click(function(event)
-    {
-        //event.preventDefault();
-        $('.expandable').show();
-        $('.organization_project_link').show();
-    });
+	if ( typeof($('#the-export')) !== 'undefined' )
+	{
+		$('#the-export').data('clicked',false).live({
+			click: function(event)
+				{
+	
+					var loadExportTypes = function (ths,theTypes)
+						{									
+							$.each( theTypes, function (typeInd,theType)
+								{
+									var exportType = Array();
+									var __ = function (text)
+										{
+											exportType.push(text);
+										};
+									__('<span id="admin_logout_button">');
+										__('<a id="export-' + theType + '" href="' + baseurl + 'export/' + theType + '/">');
+											__( theType );
+										__('</a>');
+									__('</span>');
+						
+									if ( typeInd !== theTypes.length-1 )
+										__('&nbsp;&nbsp;|&nbsp;&nbsp;');
+
+									$(ths).parent().append(exportType.join(''));
+								}
+							);
+				
+						};
+						Array.prototype.sum = function ()
+						{
+							var arrayElement = null,theSum = 0;					
+							for ( ind in this )
+							{
+								arrayElement = this[ind];
+								if ( typeof arrayElement === 'number' )
+									theSum += arrayElement;
+							}
+							return theSum;
+						};
+					var explodeExport = function (ths)
+						{
+							var theTypes = ['pdf'];
+							$(ths).animate({
+								'margin-right': 10
+							},500,'easeOutBounce').append('&nbsp;&nbsp;|').delay(500);	
+							loadExportTypes(ths,theTypes);				
+						};
+					var implodeExport = function (ths)
+						{
+							$(ths).parent().html($(ths).clone());					
+							ths = $('#the-export');
+							ths.animate({
+									'margin-right': 0	
+							},500,'easeInBounce');
+							ths.html(ths.html().replace('&nbsp;&nbsp;|',''));
+							ths.data('clicked',false);
+						};
+					//event.preventDefault();
+					//$('.expandable').show();
+					//$('.organization_project_link').show();
+					if ( $(this).data('clicked') ){
+						implodeExport(this);
+					}
+					else
+					{
+						explodeExport(this);
+						$(this).data('clicked',true);
+					}
+				}
+		});
+	}
 });
+
+

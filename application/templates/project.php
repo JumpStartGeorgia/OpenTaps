@@ -241,3 +241,5 @@
 		Status: <?php theData($project,'status') ?>
 	}, mapMode = 'project';
 </script>
+
+<?php Storage::instance()->show_export = true; ?>

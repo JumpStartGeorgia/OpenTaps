@@ -2113,3 +2113,25 @@ function theData($the, $opt)
     echo($result);
 }
 
+
+/* Export Classes And Functions	*/
+class processType
+{
+	static public function PDF ()
+	{
+		exit('This is stupid PDF file !!! :)');
+	}
+	
+}
+function processTypes ($theType)
+{
+	switch ( $theType ):
+		case 'pdf':
+			processType::PDF();
+		break;
+		default:
+			processType::PDF();
+	endswitch;
+}
+
+

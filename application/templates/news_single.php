@@ -69,3 +69,5 @@
 <?php endif; ?>
 
 </div><!--DATA END-->
+
+<?php Storage::instance()->show_export = true ?>

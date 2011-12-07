@@ -441,4 +441,7 @@ label.newpiclabel { cursor: pointer; text-decoration: underline }
 #pages a { color: #0CB5F5 }
 #pages a:hover { color: #555 }
 
+
+#admin_button_logout a { text-decoration:none;cursor:pointer;color:grey; }
+
 <?php ob_end_flush(); ?>
