@@ -635,8 +635,6 @@ $(function()
             });
             timedScroll();
 
-
-
             $('#contact-us-form-container').css('z-index','7000');
 
             contact_is_visible = true;
