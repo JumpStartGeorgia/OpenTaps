@@ -10,13 +10,9 @@
                 $p = substr($organization['logo'], 0, 7);
                 if ($p != 'http://' AND $p != 'https:/')
                     $logo = URL . $organization['logo'];
-
-                list($width, $height) = getimagesize($logo);
-                list($maxwidth, $maxheight) = array(262, 174);
-                $k = ($height > $maxheight OR $width > $maxwidth) ? max(($width / $maxwidth), ($height / $maxheight)) : 1;
-                $dimensions = 'width: ' . ($width / $k) . 'px; height: ' . ($height / $k) . 'px;';
+                $dimensions = theOrganizationLogoDimensions($logo);                
                 ?><div style="width: 262px; float: left; padding: 0px 10px; text-align: center; border: 1px dotted #a6a6a6; border-top: 0px;">
-                    <img style="vertical-align:middle;padding: 0px; margin: 0px;<?php echo $dimensions; ?>" src="<?php echo $logo; ?>" />
+                    <img style="vertical-align:middle;padding: 0px; margin: 0px;width:<?php echo $dimensions['width'] ?>px;height:<?php echo $dimensions['height']  ?>px;" src="<?php echo $logo; ?>" />
                 </div><?php
         }
         else
@@ -283,5 +279,10 @@
     <?php endif; ?>
 
 </div>
-
+<script>
+	var Organization = {
+		Unique: <?php theData($organization,'unique') ?>,
+		Prefix: 'org'
+	};
+</script>
 <?php Storage::instance()->show_export = true ?>

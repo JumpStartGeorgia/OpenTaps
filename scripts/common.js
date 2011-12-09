@@ -1098,7 +1098,18 @@ $(function()
 		$('#the-export').data('clicked',false).live({
 			click: function(event)
 				{
-	
+					var guessDataType = function ()
+						{
+							if ( typeof(Project) !== 'undefined' )
+							{
+								return Project;
+							}
+							else if ( typeof(Organization) !== 'undefined' )
+							{
+								return Organization;
+							}
+							return null;
+						};
 					var loadExportTypes = function (ths,theTypes)
 						{									
 							$.each( theTypes, function (typeInd,theType)
@@ -1109,7 +1120,9 @@ $(function()
 											exportType.push(text);
 										};
 									__('<span id="admin_logout_button">');
-										__('<a id="export-' + theType + '" href="' + baseurl + 'export/' + theType + '/">');
+										var dataType = guessDataType();
+										dataType = (typeof(dataType) !== 'undefined') ? dataType : null;
+										__('<a id="export-' + theType + '" href="' + baseurl + 'export/' + theType + '/' + dataType.Prefix + '/' + dataType.Unique + '/">');
 											__( theType );
 										__('</a>');
 									__('</span>');
