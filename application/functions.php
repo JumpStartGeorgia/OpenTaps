@@ -2495,9 +2495,7 @@ class processType
 			case 'proj':
 				$this->PDF_PROJ($theDataTypeId);
 			break;
-			case '':
 			
-			break;
 		}
 		
 		/*  The OutPut	Of The PDF File At Least :)  */
