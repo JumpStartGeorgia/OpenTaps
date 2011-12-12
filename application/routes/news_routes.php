@@ -37,31 +37,11 @@ Slim::get('/news/', function()
 );
 
 Slim::get('/news/:unique/', function($unique)
-    {
-	$sql = "SELECT * FROM pages_data
-		WHERE owner = 'news' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
-		ORDER BY `sort`,`unique`;";
-	$tags_sql = "
-	  SELECT DISTINCT tags.id,
-		 tags.name,
-		 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND lang = '" . LANG . "' AND news_unique IS NOT NULL)
-		 AS total_tags
-	  FROM tag_connector
-	  JOIN tags ON tag_connector.tag_unique = tags.`unique`
-	  JOIN news ON tag_connector.news_unique = news.`unique`
-	  WHERE
-	  	tags.lang = '" . LANG . "' AND
-	  	news.lang = '" . LANG . "' AND
-	  	tag_connector.lang = '" . LANG . "' AND
-	  	news.`unique` = :unique;
-	";
+    {	
+        
+        $theNewsData = theNewsData($unique);
 
-        Storage::instance()->content = template('news_single', array(
-        	'news' => read_news(FALSE, 0, $unique),
-        	'data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0)),
-        	'side_data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1)),
-        	'tags' => fetch_db($tags_sql, array(':unique' => $unique))
-        ));
+        Storage::instance()->content = template('news_single', $theNewsData);
     }
 );
 

@@ -1101,13 +1101,13 @@ $(function()
 					var guessDataType = function ()
 						{
 							if ( typeof(Project) !== 'undefined' )
-							{
 								return Project;
-							}
 							else if ( typeof(Organization) !== 'undefined' )
-							{
 								return Organization;
-							}
+							else if ( typeof(News) !== 'undefined' )
+								return News;
+							else if ( typeof(Page) !== 'undefined' )
+								return Page;
 							return null;
 						};
 					var loadExportTypes = function (ths,theTypes)

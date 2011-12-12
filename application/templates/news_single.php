@@ -70,4 +70,10 @@
 
 </div><!--DATA END-->
 
+<script>
+	var News = {
+		Unique: <?php theData($news[0],'unique') ?>,
+		Prefix: 'news'
+	};
+</script>
 <?php Storage::instance()->show_export = true ?>

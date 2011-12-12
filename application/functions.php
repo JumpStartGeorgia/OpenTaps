@@ -146,7 +146,8 @@ function get_menu($short_name)
         ':short_name' => $short_name
     ));
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return empty($result) ? array() : $result;
+    $result['short_name'] = $short_name;
+    return empty($result) ? array('short_name' => $short_name) : $result;
 }
 
 function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $footer)
@@ -2218,6 +2219,32 @@ function project_beneficiary_people ($project)
 	return implode(' ', $ben_people);
 }
 
+function theNewsData($unique)
+{
+	$sql = "SELECT * FROM pages_data
+		WHERE owner = 'news' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
+	$tags_sql = "
+	  SELECT DISTINCT tags.id,
+		 tags.name,
+		 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND lang = '" . LANG . "' AND news_unique IS NOT NULL)
+		 AS total_tags
+	  FROM tag_connector
+	  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+	  JOIN news ON tag_connector.news_unique = news.`unique`
+	  WHERE
+	  	tags.lang = '" . LANG . "' AND
+	  	news.lang = '" . LANG . "' AND
+	  	tag_connector.lang = '" . LANG . "' AND
+	  	news.`unique` = :unique;
+	";
+	return	array(
+        	'news' => read_news(FALSE, 0, $unique),
+        	'data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0)),
+        	'side_data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1)),
+        	'tags' => fetch_db($tags_sql, array(':unique' => $unique))
+        );
+}
 
 /* 
  * 
@@ -2243,7 +2270,7 @@ class processType
 	*/
 	
 	/* Helper Functions Are Writen In Lowercase  */
-	function exists ( $_IN,$var,$return=true )
+	public function exists ( $_IN,$var,$return=true )
 	{
 		if ( !empty($_IN[$var]) and strlen($_IN[$var]) )
 			return ($return === 'this' ? $_IN[$var] : $return);
@@ -2308,10 +2335,10 @@ class processType
 			}
 			
 			
-			function ORGANIZATION_DATA ($ARR1,$ARR2,$_ADITTIONAL)
+			function ORGANIZATION_DATA ($ARR1,$ARR2,$_ADDITIONAL)
 			{
-				$PDF = $_ADITTIONAL['PDF'];
-				$THE_START_POINT = $_ADITTIONAL['THE_START_POINT'];								
+				$PDF = $_ADDITIONAL['PDF'];
+				$THE_START_POINT = $_ADDITIONAL['THE_START_POINT'];								
 				foreach ( $ARR2 as $key => $value ):	
 					if ( $value !== false ):
 						CURRENT_POINT($THE_START_POINT);
@@ -2325,7 +2352,7 @@ class processType
 		/*	End Helpfull Variables And Functions  */
 				
 		/*  Organization Information Texts	*/
-		if ( exists($_ORGANIZATION,'district') ):
+		if ( $this->exists($_ORGANIZATION,'district') ):
 			$THE_START_POINT += 1;
 			$PDF->Text(LABEL_X, $THE_START_POINT, l('region_district'));	
 			$PDF->Text(LABEL_DATA_X, $THE_START_POINT, $_ORGANIZATION['district']);
@@ -2347,7 +2374,7 @@ class processType
 		/* Main Organization Description	*/		
 		$PDF->SetFont('freeserif','B',19);
 		$PDF->Text(10,70,$_ORGANIZATION['name']);
-		if ( exists($_ORGANIZATION,'description') ):
+		if ( $this->exists($_ORGANIZATION,'description') ):
 			$PDF->SetFont('freeserif','B',17);
 			$PDF->Text(10,78,strtoupper(l('org_desc')));
 			$PDF->SetFont('freeserif','',12);
@@ -2355,7 +2382,7 @@ class processType
 			
 		endif;
 		
-		if ( exists($_ORGANIZATION,'projects_info') ):			
+		if ( $this->exists($_ORGANIZATION,'projects_info') ):			
 			$PDF->addPage();
 			$PDF->SetFillColor(12, 181, 245);
 			$PDF->Rect(10,10,172,0,'F');
@@ -2397,9 +2424,9 @@ class processType
 		define('THE_INFO_LABEL_X',20);
 		define('THE_INFO_LABEL_TEXT_X',100);
 		
-		function PROJECT_INFO($ARR1,$ARR2,$ADITTIONAL)
+		function PROJECT_INFO ($ARR1,$ARR2,$ADDITIONAL)
 		{
-			$PDF = $ADITTIONAL['PDF'];
+			$PDF = $ADDITIONAL['PDF'];
 			$THE_START_POINT = $ADITTIONAL['THE_START_POINT'];
 			$PDF->SetFont('freeserif','',10);
 			foreach ( $ARR2 as $ind => $value ):				
@@ -2452,6 +2479,50 @@ class processType
 		
 	}
 	
+	public function PDF_NEWS ($theDataTypeId) 
+	{
+		/*	The Mr.PDF Instance */
+		$PDF = $this->pdf;
+		
+		/*	Our Data Is Here	*/
+		$theND = theNewsData($theDataTypeId);
+		$_NEWS = $theND['news'][0];
+
+		/*	Write The Main Body	Of The News */	
+		$PDF->addPage();
+		$PDF->SetTextColor(86,86,86);
+		$PDF->SetFont('freeserif','B',17);
+		$PDF->writeHTMLCell(190,10,10,5,$_NEWS['title']);
+		$PDF->SetFont('freeserif','',10);
+		$PDF->Text(10,15,l('news_date').':');
+		$PDF->SetFont('freeserif','B',10);
+		$PDF->Text(25,15,!strtotime($_NEWS['published_at']) ? l('no_time') : dateformat($_NEWS['published_at']));
+		$PDF->SetFont('freeserif','',14);
+		$PDF->writeHTMLCell(190,10,10,25,$_NEWS['body']);
+		
+	}
+	
+	public function PDF_THEPAGE ($theDataTypeId)
+	{
+		/* The Mr.PDF Instance */
+		$PDF = $this->pdf;
+		/*	Our Data Is Here	 */
+		$thePD = get_menu($theDataTypeId);
+		
+		/*	Write The Main Text Of The Menu		*/
+		$PDF->addPage();
+		$PDF->SetTextColor(86,86,86);
+		$PDF->SetFont('freeserif','B',17);
+		if ( $this->exists($thePD,'title') ):
+			$PDF->writeHTMLCell(190,10,10,5,$thePD['title']);
+			$PDF->SetFont('freeserif','',14);
+			$PDF->writeHTMLCell(190,10,10,25,$thePD['text']);
+		else:
+			 $PDF->Text(10,5,l('mt_under_construction'));
+		endif;
+		
+	}
+	
 	public function PDF ($theDataType,$theDataTypeId)
 	{
 		
@@ -2472,9 +2543,9 @@ class processType
 			define('THE_PDF_PDFA',false);
 			define('THE_PDF_CREATOR','OpenTaps');
 			define('THE_PDF_AUTHOR','Irakli Darbuashvili');
-			define('THE_PDF_TITLE','');
-			define('THE_PDF_SUBJECT','');
-			define('THE_PDF_KEYWORDS','');
+			define('THE_PDF_TITLE','OpenTaps PDF File');
+			define('THE_PDF_SUBJECT','OpenTaps The Subject');
+			define('THE_PDF_KEYWORDS','OpenTaps,Data Transparency');
 		
 		/*  Create The Document  */
 		$this->pdf = new TCPDF(THE_PDF_ORIENTATION, THE_PDF_UNIT, THE_PDF_FORMAT, THE_PDF_UNICODE, THE_PDF_ENCODING, THE_PDF_DISKCACHE, THE_PDF_PDFA);
@@ -2495,11 +2566,18 @@ class processType
 			case 'proj':
 				$this->PDF_PROJ($theDataTypeId);
 			break;
+			case 'news':
+				$this->PDF_NEWS($theDataTypeId);
+			break;
+			case 'thepage':
+				$this->PDF_THEPAGE($theDataTypeId);
+			break;
 			
 		}
 		
 		/*  The OutPut	Of The PDF File At Least :)  */
 		$this->pdf->output();
+		$this->pdf->close();
 		exit;		
 	}
 	

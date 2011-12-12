@@ -11,3 +11,12 @@
 	<?php endif; ?>
 
 </div>
+
+<script>
+	var Page = {
+		Unique: '<?php __( $menu['short_name'] ) ?>',
+		Prefix: 'thepage'		
+	};	
+</script>
+
+<?php Storage::instance()->show_export = true ?>
