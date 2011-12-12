@@ -2286,7 +2286,7 @@ class processType
 		$_ORGANIZATION = $theOD['organization'];
 		
 		/*	Add Out First Page	*/
-		$PDf->addPage();
+		$PDF->addPage();
 		
 		/*	Organization Logo	*/		
 		if ( !empty($_ORGANIZATION['logo']) and file_exists($_ORGANIZATION['logo']) ):
@@ -2427,7 +2427,7 @@ class processType
 		function PROJECT_INFO ($ARR1,$ARR2,$ADDITIONAL)
 		{
 			$PDF = $ADDITIONAL['PDF'];
-			$THE_START_POINT = $ADITTIONAL['THE_START_POINT'];
+			$THE_START_POINT = $ADDITIONAL['THE_START_POINT'];
 			$PDF->SetFont('freeserif','',10);
 			foreach ( $ARR2 as $ind => $value ):				
 				if ( $value !== false ):
