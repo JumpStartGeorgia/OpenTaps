@@ -186,6 +186,13 @@ function load_all()
 
 }
 
+function load_villages()
+{
+    if (mapping.map.zoom < 2)
+        return;
+    
+}
+
 function load_bounds()
 {
     if (def(mapping.layers.bounds))
@@ -273,15 +280,15 @@ function load_hydro()
     mapping.layers.hydro = new OpenLayers.Layer.GML('Hydro', baseurl + 'mapping/hydro.geojson', {
         format: OpenLayers.Format.GeoJSON,
         styleMap: new OpenLayers.StyleMap({
-            pointRadius: 4,
+            pointRadius: 3,
             fillColor: '#F38630',
             fillOpacity: 0.9,
             strokeWidth: 0,
             label: '${NAME_' + lang + '}',
-            fontColor: '#AAAAAA',
+            fontColor: '#0CB5F5',
             fontSize: '10px',
-            labelAlign: 'ct',
-            labelYOffset: -2
+            labelAlign: 'lc',
+            labelYOffset: -3
         })
     });
 }

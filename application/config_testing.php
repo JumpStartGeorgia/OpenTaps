@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'url' => 'http://deda.omc.ge/opentaps/',
+    'url' => 'http://deda.jumpstart.ge/opentaps/',
     'db' => array(
         'host' => 'localhost',
         'name' => 'opentaps',
