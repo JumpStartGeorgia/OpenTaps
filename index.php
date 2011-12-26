@@ -80,6 +80,7 @@ catch (PDOException $exception)
 Storage::instance()->title = 'Home Page';
 Storage::instance()->show_map = $homepage = (Slim_Http_Uri::getUri(TRUE) === '/');
 Storage::instance()->show_chart = array('home' => $homepage);
+Storage::instance()->show_export = false;
 
 if (Slim::request()->isGet())
 {

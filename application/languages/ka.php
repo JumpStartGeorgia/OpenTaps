@@ -147,6 +147,6 @@ return array(
     'no_time' => 'თარიღის გარეშე',
     'no_data' => 'არ არის ინფორმაცია',
     'disabled_option' => 'აირჩიეთ',
-    'pdf_export' => 'გვერდის PDF-ში შენახვა'
+    'the_export' => 'გვერდის შენახვა'
 );
 

@@ -9,7 +9,7 @@ Slim::get('/projects/(filter/:filter/)', function($filter = FALSE)
 
             $query = "SELECT DISTINCT tags.id,
 			  tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
@@ -35,36 +35,9 @@ Slim::get('/project/:unique/', function($unique)
         {
             Storage::instance()->show_project_map = TRUE;
             Storage::instance()->show_chart = array('project' => TRUE);
-            $query = "
-            	  SELECT DISTINCT(tags.id), tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
-		  FROM tags
-		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
-		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
-		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique AND tag_connector.lang = '" . LANG . "';";
-            $query = db()->prepare($query);
-            $query->execute(array(':unique' => $unique));
-            $tags = $query->fetchAll(PDO::FETCH_ASSOC);
-
-            $sql = "SELECT * FROM pages_data
-		WHERE owner = 'project' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
-		ORDER BY `sort`,`unique`;";
-            $side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
-            $data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
-
-            $budgets = fetch_db("
-		SELECT pb.*, o.name FROM project_budgets AS pb INNER JOIN organizations AS o ON o.`unique` = pb.organization_unique WHERE project_unique = :unique AND o.lang = '" . LANG . "' ORDER BY id;", array(':unique' => $unique)
-            );
-
-            Storage::instance()->content = template('project', array(
-                'project' => read_projects($unique),
-                'organizations' => get_project_organizations($unique),
-                'data' => $data,
-                'chart_data' => get_project_chart_data($unique),
-                'side_data' => $side_data,
-                'tags' => $tags,
-                'edit_permission' => userloggedin(),
-                'budgets' => $budgets
-                    ));
+           
+			$theProjectData = theProjectData($unique);
+            Storage::instance()->content = template('project',$theProjectData);
         });
 
 Slim::get('/projects/page/:page/(filter/:filter/)', function($page, $filter = FALSE)
@@ -77,7 +50,7 @@ Slim::get('/projects/page/:page/(filter/:filter/)', function($page, $filter = FA
 
             $query = "SELECT DISTINCT tags.id,
 			  tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
@@ -110,7 +83,7 @@ Slim::get('/projects/order/:order-:direction/(filter/:filter/)', function($order
             $posp = config('projects_on_single_page');
 
             $query = "SELECT DISTINCT tags.id,tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`
@@ -145,7 +118,7 @@ Slim::get('/projects/order/:order-:direction/page/:page/(filter/:filter/)', func
             $posp = config('projects_on_single_page');
 
             $query = "SELECT DISTINCT tags.id,tags.name,
-			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "')
+			  (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL)
 			  AS total_tags
 			  FROM tag_connector
 			  JOIN tags ON tag_connector.tag_unique = tags.`unique`

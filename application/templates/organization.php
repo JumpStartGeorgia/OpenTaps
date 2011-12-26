@@ -10,13 +10,9 @@
                 $p = substr($organization['logo'], 0, 7);
                 if ($p != 'http://' AND $p != 'https:/')
                     $logo = URL . $organization['logo'];
-
-                list($width, $height) = getimagesize($logo);
-                list($maxwidth, $maxheight) = array(262, 174);
-                $k = ($height > $maxheight OR $width > $maxwidth) ? max(($width / $maxwidth), ($height / $maxheight)) : 1;
-                $dimensions = 'width: ' . ($width / $k) . 'px; height: ' . ($height / $k) . 'px;';
+                $dimensions = theOrganizationLogoDimensions($logo);                
                 ?><div style="width: 262px; float: left; padding: 0px 10px; text-align: center; border: 1px dotted #a6a6a6; border-top: 0px;">
-                    <img style="vertical-align:middle;padding: 0px; margin: 0px;<?php echo $dimensions; ?>" src="<?php echo $logo; ?>" />
+                    <img style="vertical-align:middle;padding: 0px; margin: 0px;width:<?php echo $dimensions['width'] ?>px;height:<?php echo $dimensions['height']  ?>px;" src="<?php echo $logo; ?>" />
                 </div><?php
         }
         else
@@ -258,19 +254,24 @@
                 <?php endforeach; ?>
 
                 <?php if (!empty($tags)): ?>
-                    <div class='data_block group'>
+                    <div class="data_block group" style="border-bottom: 0px;">
                         <div class='key'>
                             <?php echo strtoupper(l('tag_cloud')) ?>
                         </div>
-                        <div class='value' style="line-height: 25px;">
-                            <?php
-                            foreach ($tags as $tag):
-                                echo "<a href='" . href('tag/organization/' . $tag['name'], TRUE) . "'>" . char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" . "</a><br />";
-                            endforeach;
-                            ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
+		        <div class="value group" style="padding: 0px;">
+		            <?php
+		            foreach (array_values($tags) as $key => $tag):
+		                $hidden = $key >= config('projects_in_sidebar') ? 'display: none; ' : FALSE;
+		                ?>
+		                <a style="<?php echo $hidden; ?>padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/organization/' . $tag['name'], TRUE) ?>">
+		                <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
+		                </a><?php
+		            endforeach;
+		            if ($hidden):
+		                ?><a class="show_hidden_list_items organization_project_link">▾</a><?php endif; ?>
+		        </div>
+		            </div>
+		        <?php endif; ?>
 
             </div>
 
@@ -278,3 +279,10 @@
     <?php endif; ?>
 
 </div>
+<script>
+	var Organization = {
+		Unique: <?php theData($organization,'unique') ?>,
+		Prefix: 'org'
+	};
+</script>
+<?php Storage::instance()->show_export = true ?>

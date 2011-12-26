@@ -19,43 +19,8 @@ Slim::get('/organization/:unique/', function($unique)
         {
             Storage::instance()->show_map = FALSE;
             Storage::instance()->show_chart = array('organization' => TRUE);
-
-            $query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "') AS total_tags
-		  FROM tags
-		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
-		  LEFT JOIN organizations ON `org_unique` = organizations.`unique`
-		  WHERE organizations.`unique` = :unique
-		  AND tags.lang = '" . LANG . "'
-		  AND organizations.lang = '" . LANG . "'
-		  AND tag_connector.lang = '" . LANG . "';";
-            $query = db()->prepare($query);
-            $query->execute(array(':unique' => $unique));
-            $tags = $query->fetchAll(PDO::FETCH_ASSOC);
-
-            $sql = "SELECT * FROM pages_data
-		WHERE owner = 'organization' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
-		ORDER BY `sort`,`unique`;";
-            $side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
-            $data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
-
-            $donors = fetch_db("SELECT DISTINCT(p.`unique`),p.title,p.type FROM projects AS p INNER JOIN project_budgets AS pb ON pb.project_unique = p.`unique` WHERE pb.organization_unique = :unique AND p.lang = '" . LANG . "';", array(':unique' => $unique));
-            $projects = get_organization_projects($unique);
-            foreach ($projects as $key => $project)
-                foreach ($donors as $k => $donor)
-                    if ($project['unique'] == $donor['unique'])
-                        unset($projects[$key]);
-
-            Storage::instance()->content = template('organization', array(
-                'organization' => get_organization($unique, TRUE),
-                'organization_budget' => organization_total_budget($unique),
-                'data' => $data,
-                'side_data' => $side_data,
-                'tags' => $tags,
-                'projects' => $projects,
-                'chart_data' => get_organization_chart_data($unique),
-                'count' => count_organization_project_types($unique),
-                'donors' => $donors
-                    ));
+			$theOrganizationData = theOrganizationData($unique);
+            Storage::instance()->content = template('organization',$theOrganizationData);
         });
 
 

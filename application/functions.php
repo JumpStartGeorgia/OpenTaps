@@ -146,7 +146,8 @@ function get_menu($short_name)
         ':short_name' => $short_name
     ));
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return empty($result) ? array() : $result;
+    $result['short_name'] = $short_name;
+    return empty($result) ? array('short_name' => $short_name) : $result;
 }
 
 function add_menu($adding_lang, $name, $short_name, $parent_unique, $title, $text, $footer)
@@ -2036,7 +2037,7 @@ function browserIncompatible()
     echo implode('', $incbrowserIEText);
 }
 
-function __($text)
+function __ ($text)
 {
     echo $text;
 }
@@ -2080,7 +2081,7 @@ function capture($data)
     exec('cutycapt --url=\'' . $data['url'] . '\' --out=\'capture/' . $data['output_file'] . '\' --delay=' . $data['delay'] . ' --min-width=' . $data['min-width'] . ' --min-height=' . $data['min-height']);
 }
 
-function theData($the, $opt)
+function theData ($the, $opt)
 {
     switch ($opt):
         case 'unique':
@@ -2112,4 +2113,490 @@ function theData($the, $opt)
     endif;    
     echo($result);
 }
+
+
+function theOrganizationData ($unique)
+{
+
+	$query = "SELECT tags.*,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND org_unique IS NOT NULL) AS total_tags
+	FROM tags
+	LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
+	LEFT JOIN organizations ON `org_unique` = organizations.`unique`
+	WHERE organizations.`unique` = :unique
+	AND tags.lang = '" . LANG . "'
+	AND organizations.lang = '" . LANG . "'
+	AND tag_connector.lang = '" . LANG . "';";
+	$query = db()->prepare($query);
+	$query->execute(array(':unique' => $unique));
+	$tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+	$sql = "SELECT * FROM pages_data
+	WHERE owner = 'organization' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+	ORDER BY `sort`,`unique`;";
+	$side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
+	$data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
+
+	$donors = fetch_db("SELECT DISTINCT(p.`unique`),p.title,p.type FROM projects AS p INNER JOIN project_budgets AS pb ON pb.project_unique = p.`unique` WHERE pb.organization_unique = :unique AND p.lang = '" . LANG . "';", array(':unique' => $unique));
+	$projects = get_organization_projects($unique);
+	foreach ($projects as $key => $project)
+	foreach ($donors as $k => $donor)
+	if ($project['unique'] == $donor['unique'])
+	unset($projects[$key]);
+
+	return array(
+	'organization' => get_organization($unique, TRUE),
+	'organization_budget' => organization_total_budget($unique),
+	'data' => $data,
+	'side_data' => $side_data,
+	'tags' => $tags,
+	'projects' => $projects,
+	'chart_data' => get_organization_chart_data($unique),
+	'count' => count_organization_project_types($unique),
+	'donors' => $donors
+	);
+ 
+}
+
+
+function theOrganizationLogoDimensions ($logo)
+{
+	list($width, $height) = getimagesize($logo);
+    list($maxwidth, $maxheight) = array(262, 174);
+    $k = ($height > $maxheight OR $width > $maxwidth) ? max(($width / $maxwidth), ($height / $maxheight)) : 1;
+    return array(
+    	'width' => ($width / $k),
+    	'height' => ($height / $k)
+    );
+}
+
+
+function theProjectData ($unique)
+{
+	 $query = "
+            	  SELECT DISTINCT(tags.id), tags.name,(SELECT count(id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND tag_connector.lang = '" . LANG . "' AND proj_unique IS NOT NULL) AS total_tags
+		  FROM tags
+		  LEFT JOIN tag_connector ON `tag_unique` = tags.`unique`
+		  LEFT JOIN projects ON projects.`unique` = tag_connector.proj_unique
+		  WHERE tags.lang = '" . LANG . "' AND projects.lang = '" . LANG . "' AND projects.`unique` = :unique AND tag_connector.lang = '" . LANG . "';";
+            $query = db()->prepare($query);
+            $query->execute(array(':unique' => $unique));
+            $tags = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            $sql = "SELECT * FROM pages_data
+		WHERE owner = 'project' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
+            $side_data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1));
+            $data = fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0));
+
+            $budgets = fetch_db("
+		SELECT pb.*, o.name FROM project_budgets AS pb INNER JOIN organizations AS o ON o.`unique` = pb.organization_unique WHERE project_unique = :unique AND o.lang = '" . LANG . "' ORDER BY id;", array(':unique' => $unique)
+            );
+        return array(
+                'project' => read_projects($unique),
+                'organizations' => get_project_organizations($unique),
+                'data' => $data,
+                'chart_data' => get_project_chart_data($unique),
+                'side_data' => $side_data,
+                'tags' => $tags,
+                'edit_permission' => userloggedin(),
+                'budgets' => $budgets
+            );
+            
+}
+
+function project_region ($region_unique)
+{
+	$region_sql = "SELECT name FROM regions WHERE `unique` = {$region_unique} AND lang = '" . LANG . "' LIMIT 1;";
+    return db()->query($region_sql, PDO::FETCH_ASSOC)->fetch();
+}
+
+function project_beneficiary_people ($project)
+{
+	$ben_people = explode(' ', $project['beneficiary_people']);
+	if (isset($ben_people[1]))
+		$ben_people[0] = empty($ben_people[0]) ? 'N/A' : number_format($ben_people[0]);
+
+	return implode(' ', $ben_people);
+}
+
+function theNewsData($unique)
+{
+	$sql = "SELECT * FROM pages_data
+		WHERE owner = 'news' AND owner_unique = :unique AND lang = '" . LANG . "' AND `sidebar` = :sidebar
+		ORDER BY `sort`,`unique`;";
+	$tags_sql = "
+	  SELECT DISTINCT tags.id,
+		 tags.name,
+		 (SELECT count(tag_connector.id) FROM tag_connector WHERE tag_connector.tag_unique = tags.`unique` AND lang = '" . LANG . "' AND news_unique IS NOT NULL)
+		 AS total_tags
+	  FROM tag_connector
+	  JOIN tags ON tag_connector.tag_unique = tags.`unique`
+	  JOIN news ON tag_connector.news_unique = news.`unique`
+	  WHERE
+	  	tags.lang = '" . LANG . "' AND
+	  	news.lang = '" . LANG . "' AND
+	  	tag_connector.lang = '" . LANG . "' AND
+	  	news.`unique` = :unique;
+	";
+	return	array(
+        	'news' => read_news(FALSE, 0, $unique),
+        	'data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 0)),
+        	'side_data' => fetch_db($sql, array(':unique' => $unique, ':sidebar' => 1)),
+        	'tags' => fetch_db($tags_sql, array(':unique' => $unique))
+        );
+}
+
+/* 
+ * 
+ * Export Classes And Functions	
+ *
+ * Irakli Darbuashvili
+ *
+ *
+ */
+
+class processType
+{
+
+	/*	Define Class Global Variables	*/
+	private $pdf;
+
+	/*	
+	*
+	*	Type: PDF
+	*	
+	*	Process !!! 
+	*
+	*/
+	
+	/* Helper Functions Are Writen In Lowercase  */
+	public function exists ( $_IN,$var,$return=true )
+	{
+		if ( !empty($_IN[$var]) and strlen($_IN[$var]) )
+			return ($return === 'this' ? $_IN[$var] : $return);
+		else return false;
+	}
+	
+	public function PDF_ORG ($theDataTypeId)
+	{
+		/*	The PDF Instance	*/
+		$PDF = $this->pdf;
+		/*	Get The Organization Data (OD) */
+		$theOD = theOrganizationData($theDataTypeId);		
+		$_ORGANIZATION = $theOD['organization'];
+		
+		/*	Add Out First Page	*/
+		$PDF->addPage();
+		
+		/*	Organization Logo	*/		
+		if ( !empty($_ORGANIZATION['logo']) and file_exists($_ORGANIZATION['logo']) ):
+			$theLogo = $_ORGANIZATION['logo'];
+		 	$PDF->Image($theLogo, 10, 5, 50, 50);
+		else:
+		 	$theLogo = 'No Logo';
+		 	$PDF->Text(10,5,$theLogo);
+		endif;
+		
+		/*	Organization Budget Rectangle	*/
+		$PDF->Rect(61,5,120,50,'D');
+		$PDF->SetFillColor(12,181,245);			
+		$PDF->Rect(61.5,5.5,119,20,'F');
+		/*	Organization Budget Text	*/
+		$PDF->SetTextColor(255,255,255);
+		$PDF->SetFont('freeserif', '', 12);
+		$PDF->Text(65, 10, l('overall_project_budget'));
+		$PDF->SetFont('times', 'B', 19);
+			if ( !empty($theOD['organization_budget']) and $theOD['organization_budget'] != 0 ):
+				$PDF->Text(65, 16, $theOD['organization_budget']);
+			else:
+				$PDF->SetFont('freeserif','B',19);
+				$PDF->Text(65, 16, l('budget_empty_text'));
+			endif;
+		/*	Organization Information Text Styles	*/
+		$PDF->SetFont('freeserif', '', 12);
+		$PDF->SetTextColor(86, 86, 86);
+				
+		
+		/*  Helpfull Variables And Functions	*/
+			
+			define('LABEL_X',65);
+			define('LABEL_DATA_X',95);
+			define('THE_START_POINT',30);
+			define('MINOR_START_POINT',1);
+			define('MAJOR_START_POINT',7);			
+			
+			$THE_START_POINT = THE_START_POINT;
+						
+			function CURRENT_POINT(&$THE_START_POINT)
+			{
+				if ( $THE_START_POINT == THE_START_POINT )
+					$THE_START_POINT += MINOR_START_POINT;				
+				else $THE_START_POINT += MAJOR_START_POINT;
+			}
+			
+			
+			function ORGANIZATION_DATA ($ARR1,$ARR2,$_ADDITIONAL)
+			{
+				$PDF = $_ADDITIONAL['PDF'];
+				$THE_START_POINT = $_ADDITIONAL['THE_START_POINT'];								
+				foreach ( $ARR2 as $key => $value ):	
+					if ( $value !== false ):
+						CURRENT_POINT($THE_START_POINT);
+						$PDF->Text(LABEL_X, $THE_START_POINT, $ARR1[$key]);
+						$PDF->Text(LABEL_DATA_X, $THE_START_POINT, $value);
+					endif;
+				endforeach;
+			}
+			
+			
+		/*	End Helpfull Variables And Functions  */
+				
+		/*  Organization Information Texts	*/
+		if ( $this->exists($_ORGANIZATION,'district') ):
+			$THE_START_POINT += 1;
+			$PDF->Text(LABEL_X, $THE_START_POINT, l('region_district'));	
+			$PDF->Text(LABEL_DATA_X, $THE_START_POINT, $_ORGANIZATION['district']);
+		endif;
+		
+		ORGANIZATION_DATA(array(
+			$this->exists($_ORGANIZATION,'city_town',l('org_city')),
+			$this->exists($_ORGANIZATION,'grante',l('grantee')),
+			$this->exists($_ORGANIZATION,'sector',l('sector'))
+		),array(
+			$this->exists($_ORGANIZATION,'city_town','this'),
+			$this->exists($_ORGANIZATION,'grante','this'),
+			$this->exists($_ORGANIZATION,'sector','this')
+		),array(
+			'THE_START_POINT' => $THE_START_POINT,
+			'PDF' => $PDF
+		));	
+		
+		/* Main Organization Description	*/		
+		$PDF->SetFont('freeserif','B',19);
+		$PDF->Text(10,70,$_ORGANIZATION['name']);
+		if ( $this->exists($_ORGANIZATION,'description') ):
+			$PDF->SetFont('freeserif','B',17);
+			$PDF->Text(10,78,strtoupper(l('org_desc')));
+			$PDF->SetFont('freeserif','',12);
+			$PDF->writeHTMLCell(172,10,10,95,$_ORGANIZATION['description']);
+			
+		endif;
+		
+		if ( $this->exists($_ORGANIZATION,'projects_info') ):			
+			$PDF->addPage();
+			$PDF->SetFillColor(12, 181, 245);
+			$PDF->Rect(10,10,172,0,'F');
+			$PDF->SetFont('freeserif','',12);
+			$PDF->writeHTMLCell(172,50,10,20,$_ORGANIZATION['projects_info']);			
+		endif;
+		
+		foreach ( $theOD['data'] as $d ):
+			$PDF->addPage();
+			$PDF->SetFont('freeserif','B',17);
+			$PDF->Text(10,10,strtoupper($d['key']));
+			$PDF->SetFont('freeserif','',12);
+			$PDF->writeHTMLCell(172,50,10,20,$d['value']);			
+		endforeach;
+			
+	} 
+	
+	public function PDF_PROJ ($theDataTypeId)
+	{
+		/* PDF Instance */
+		$PDF = $this->pdf;
+		
+		/*	Project Data (PD)  */
+		$thePD = theProjectData($theDataTypeId);
+		$_PROJECT = $thePD['project'];
+		
+		/*	Add Our First Page	*/
+		$PDF->addPage();
+		
+		/*	Lets Start Out Project huh :D	*/
+		$PDF->SetFillColor(248,248,248);
+		$PDF->Rect(10,10,190,10,'F');
+		$PDF->SetFont('freeserif','B',12);
+		$PDF->SetTextColor(86,86,86);
+		$PDF->Text(10,12,'  ▼ '.l('project_name').':  '.$_PROJECT['title']);
+		
+		/*	The Project Info Needed Variables And Functions	 */		
+		$THE_START_POINT = 23;
+		define('THE_INFO_LABEL_X',20);
+		define('THE_INFO_LABEL_TEXT_X',100);
+		
+		function PROJECT_INFO ($ARR1,$ARR2,$ADDITIONAL)
+		{
+			$PDF = $ADDITIONAL['PDF'];
+			$THE_START_POINT = $ADDITIONAL['THE_START_POINT'];
+			$PDF->SetFont('freeserif','',10);
+			foreach ( $ARR2 as $ind => $value ):				
+				if ( $value !== false ):
+					$PDF->Text(THE_INFO_LABEL_X,$THE_START_POINT,$ARR1[$ind]);
+					$PDF->Text(THE_INFO_LABEL_TEXT_X,$THE_START_POINT,$value);
+					$THE_START_POINT += 10;
+				endif;
+			endforeach;
+		}
+		/*	End The Project Info Needed Variables And Functions */
+		
+		/* The Project Info */
+		$_REGION = project_region($_PROJECT['region_unique']);
+		PROJECT_INFO(array(
+			l('location_region'),
+			l('location_city_town'),
+			l('grantee'),
+			l('sector'),
+			l('beneficiary_people'),
+			l('beginning'),
+			l('ends'),
+			l('type'),
+			l('budget').' '.$thePD['budgets'][0]['name']
+		),array(
+			$_REGION['name'],
+			$_PROJECT['city'],
+			$_PROJECT['grantee'],
+			$_PROJECT['sector'],
+			project_beneficiary_people($_PROJECT),
+			!strtotime($_PROJECT['start_at']) ? l('no_time') : $_PROJECT['start_at'],
+			!strtotime($_PROJECT['end_at']) ? l('no_time') : $_PROJECT['end_at'] ,
+			l('pt_' . strtolower($_PROJECT['type'])),
+			number_format($thePD['budgets'][0]['budget']) . ' ' . strtoupper($thePD['budgets'][0]['currency'])
+		),array(
+			'PDF' => $PDF,
+			'THE_START_POINT' => $THE_START_POINT
+		));
+		
+		foreach ( $thePD['data'] as $d ):
+			$PDF->addPage();
+			$PDF->SetFillColor(248,248,248);
+			$PDF->Rect(10,10,190,10,'F');
+			$PDF->SetFont('freeserif','B',12);
+			$PDF->SetTextColor(86,86,86);
+			$PDF->Text(10,12,'  ▼ '.$d['key']);
+			$PDF->SetFont('freeserif','',10);
+			$PDF->writeHTMLCell(172,50,10,25,$d['value']);
+		endforeach;
+		
+	}
+	
+	public function PDF_NEWS ($theDataTypeId) 
+	{
+		/*	The Mr.PDF Instance */
+		$PDF = $this->pdf;
+		
+		/*	Our Data Is Here	*/
+		$theND = theNewsData($theDataTypeId);
+		$_NEWS = $theND['news'][0];
+
+		/*	Write The Main Body	Of The News */	
+		$PDF->addPage();
+		$PDF->SetTextColor(86,86,86);
+		$PDF->SetFont('freeserif','B',17);
+		$PDF->writeHTMLCell(190,10,10,5,$_NEWS['title']);
+		$PDF->SetFont('freeserif','',10);
+		$PDF->Text(10,15,l('news_date').':');
+		$PDF->SetFont('freeserif','B',10);
+		$PDF->Text(25,15,!strtotime($_NEWS['published_at']) ? l('no_time') : dateformat($_NEWS['published_at']));
+		$PDF->SetFont('freeserif','',14);
+		$PDF->writeHTMLCell(190,10,10,25,$_NEWS['body']);
+		
+	}
+	
+	public function PDF_THEPAGE ($theDataTypeId)
+	{
+		/* The Mr.PDF Instance */
+		$PDF = $this->pdf;
+		/*	Our Data Is Here	 */
+		$thePD = get_menu($theDataTypeId);
+		
+		/*	Write The Main Text Of The Menu		*/
+		$PDF->addPage();
+		$PDF->SetTextColor(86,86,86);
+		$PDF->SetFont('freeserif','B',17);
+		if ( $this->exists($thePD,'title') ):
+			$PDF->writeHTMLCell(190,10,10,5,$thePD['title']);
+			$PDF->SetFont('freeserif','',14);
+			$PDF->writeHTMLCell(190,10,10,25,$thePD['text']);
+		else:
+			 $PDF->Text(10,5,l('mt_under_construction'));
+		endif;
+		
+	}
+	
+	public function PDF ($theDataType,$theDataTypeId)
+	{
+		
+		/* Set The FPDF Lib Include Path */
+		$fpdfDir = ':'.getcwd().'/application/tcpdf/';
+		ini_set('include_path',$fpdfDir);
+		
+		/*	Get The Main Class File  */				
+		require 'tcpdf.php';		
+		
+		/*	Define PDF Global Variables	 */
+			define('THE_PDF_ORIENTATION','P');
+			define('THE_PDF_UNIT','mm');
+			define('THE_PDF_FORMAT','A4');
+			define('THE_PDF_UNICODE',true);
+			define('THE_PDF_ENCODING','UTF-8');
+			define('THE_PDF_DISKCACHE',false);
+			define('THE_PDF_PDFA',false);
+			define('THE_PDF_CREATOR','OpenTaps');
+			define('THE_PDF_AUTHOR','Irakli Darbuashvili');
+			define('THE_PDF_TITLE','OpenTaps PDF File');
+			define('THE_PDF_SUBJECT','OpenTaps The Subject');
+			define('THE_PDF_KEYWORDS','OpenTaps,Data Transparency');
+		
+		/*  Create The Document  */
+		$this->pdf = new TCPDF(THE_PDF_ORIENTATION, THE_PDF_UNIT, THE_PDF_FORMAT, THE_PDF_UNICODE, THE_PDF_ENCODING, THE_PDF_DISKCACHE, THE_PDF_PDFA);
+		
+		/*	Set PDF Information	 */
+		$this->pdf->SetCreator(THE_PDF_CREATOR);
+		$this->pdf->SetAuthor(THE_PDF_AUTHOR);
+		$this->pdf->SetTitle(THE_PDF_TITLE);
+		$this->pdf->SetSubject(THE_PDF_SUBJECT);
+		$this->pdf->SetKeywords(THE_PDF_KEYWORDS);
+		
+		/*	The Main Creation Part	*/
+		switch ( $theDataType ) 
+		{
+			case 'org':
+				$this->PDF_ORG($theDataTypeId);
+			break;
+			case 'proj':
+				$this->PDF_PROJ($theDataTypeId);
+			break;
+			case 'news':
+				$this->PDF_NEWS($theDataTypeId);
+			break;
+			case 'thepage':
+				$this->PDF_THEPAGE($theDataTypeId);
+			break;
+			
+		}
+		
+		/*  The OutPut	Of The PDF File At Least :)  */
+		$this->pdf->output();
+		$this->pdf->close();
+		exit;		
+	}
+	
+}
+function processTypes ($theType,$theDataType,$theDataTypeId)
+{
+	$processType = new processType;
+	switch ( $theType ):
+		case 'pdf':
+			$processType->PDF($theDataType,$theDataTypeId);
+		break;
+		default:
+			$processType->PDF($theDataType,$theDataTypeId);
+	endswitch;
+}
+
+/*
+ *
+ * End Export Classes And Functions
+ *
+ */
 

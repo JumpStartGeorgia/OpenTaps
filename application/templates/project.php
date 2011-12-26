@@ -15,8 +15,7 @@
                 <div class="expandable" style="display: block;">
 
                     <?php
-                    $region_sql = "SELECT name FROM regions WHERE `unique` = {$project['region_unique']} AND lang = '" . LANG . "' LIMIT 1;";
-                    $region = db()->query($region_sql, PDO::FETCH_ASSOC)->fetch();
+                    $region = project_region($project['region_unique']);
                     if (!empty($region)): ?>
 			<div class="project_details_line clearfix" style="width: 100%;">
 			    <div class='line_left'>
@@ -60,13 +59,9 @@
                             <?php echo l('beneficiary_people') ?> :
                         </div>
                         <div class="wordwrap">
-			<?php
-			    $ben_people = explode(' ', $project['beneficiary_people']);
-			    if (isset($ben_people[1]))
-					$ben_people[0] = empty($ben_people[0]) ? 'N/A' : number_format($ben_people[0]);
-
-                            echo implode(' ', $ben_people);
-                        ?>
+						<?php			   
+			   				echo project_beneficiary_people($project);
+			            ?>
                         </div>
                     </div>
 
@@ -102,7 +97,7 @@
                             <?php echo l('type') ?> :
                         </div>
                         <div class="wordwrap">
-                            <?php echo $project['type']; ?>
+                            <?php echo l('pt_' . strtolower($project['type'])); ?>
                         </div>
                     </div>
 
@@ -216,9 +211,9 @@
                 <div class="value group" style="padding: 0px;">
                     <?php
                     foreach (array_values($tags) as $key => $tag):
-                        $hidden = $key >= config('projects_in_sidebar') ? 'style="display: none;"' : FALSE;
+                        $hidden = $key >= config('projects_in_sidebar') ? 'display: none; ' : FALSE;
                         ?>
-                        <a <?php echo $hidden; ?> style="padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/project/' . $tag['name'], TRUE) ?>">
+                        <a style="<?php echo $hidden; ?>padding: 9px 15px;" class="organization_project_link" href="<?php echo href('tag/project/' . $tag['name'], TRUE) ?>">
                         <?php echo char_limit($tag['name'], 28) . " (" . $tag['total_tags'] . ")" ?>
                         </a><?php
                     endforeach;
@@ -238,6 +233,9 @@
 	var Project = {
 		Unique: <?php theData($project,'unique') ?>,
 		Type: <?php theData($project,'type') ?>,
-		Status: <?php theData($project,'status') ?>
+		Status: <?php theData($project,'status') ?>,
+		Prefix: 'proj'
 	}, mapMode = 'project';
 </script>
+
+<?php Storage::instance()->show_export = true; ?>
