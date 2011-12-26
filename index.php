@@ -1,5 +1,6 @@
 <?php
- /*
+
+/*
  *
  * To all those geeks who try to dig deep inside a source code:
  * Life's short, save your nerves and health!
@@ -17,8 +18,8 @@ require_once DIR . 'application/storage.php';
 
 // Declare and define environments by URI string.
 foreach (array(
- 'localhost.com' => 'development',
- 'deda.omc.ge' => 'testing',
+'localhost.com' => 'development',
+ 'deda.jumpstart.ge' => 'testing',
  'opentaps.ge' => 'production'
 ) AS $uri => $env)
 {
@@ -90,7 +91,7 @@ if (Slim::request()->isGet())
         'submenus' => read_submenu(),
         'projects' => read_projects(FALSE, 14),
         'organizations' => fetch_db("SELECT * FROM organizations WHERE lang = '" . LANG . "' AND hidden = 0;")
-    ));
+            ));
     Storage::instance()->content = template('home', array('home_chart_data' => home_chart_data()));
 }
 
