@@ -6,6 +6,7 @@ return array(
         'host' => 'localhost',
         'name' => 'opentaps',
         'user' => 'root',
-        'pass' => 'asdfg'
-    )
+        'pass' => 'a1w@d34'
+    ),
+    'error_level' => -1
 );

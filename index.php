@@ -7,31 +7,33 @@
  *
  */
 
+define('DIR', getcwd() . '/');
+
 if (!isset($_SESSION) OR (isset($_SESSION) AND empty($_SESSION)))
     session_start();
 
-error_reporting(E_ALL);
-
-define('DIR', getcwd() . '/');
-
 require_once DIR . 'application/storage.php';
 
-// Declare and define environments by URI string.
-foreach (array(
-'localhost.com' => 'development',
- 'deda.jumpstart.ge' => 'testing',
- 'opentaps.ge' => 'production'
-) AS $uri => $env)
+// Environments: Start
+$environments = array(
+    'localhost.com' => 'development',
+    'deda.jumpstart.ge' => 'testing',
+    'opentaps.ge' => 'production'
+);
+foreach ($environments AS $uri => $env)
 {
     if (strpos($_SERVER['SERVER_NAME'], $uri) === FALSE)
         continue;
     define('ENV', $env);
     break;
 }
-defined('ENV') OR define('ENV', 'development');
+defined('ENV') OR define('ENV', key($environments));
 $env_config = DIR . 'application/config_' . ENV . '.php';
 file_exists($env_config) OR exit('Environment configuration not found.');
 Storage::instance()->config_env = require_once $env_config;
+// Environments: End
+
+error_reporting(Storage::instance()->config_env['error_level']);
 
 define('URL', Storage::instance()->config_env['url']);
 

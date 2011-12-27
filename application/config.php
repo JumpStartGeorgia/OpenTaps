@@ -40,29 +40,28 @@ return array(
         '109.238.228.*'
     ),
     'currency_list' => array(
-	'gel',
-	'usd'
+        'gel',
+        'usd'
     ),
-    /*'getDate' => function($lang='en',$timestring){
-		$the_months = array(
-			'January' => 'იანვარი',
-			'February' => 'თებერვალი',
-			'March' => 'მარტი',
-			'April' => 'აპრილი',
-			'May' => 'მაისი',
-			'June' => 'ივნისი',
-			'July' => 'ივლისი',
-			'August' => 'აგვისტო',
-			'September' => 'სექტემბერი',
-			'October' => 'ოქტომბერი',
-			'November' => 'ნოემბერი',
-			'December' => 'დეკემბერი'	
-		);
-		if( $lang == 'en' )
-			return date('F d, Y',strtotime($timestring));			
-		else
-			return str_replace(array_keys($the_months), $the_months, date('F d, Y',strtotime($timestring)));
-    },*/
+    /* 'getDate' => function($lang='en',$timestring){
+      $the_months = array(
+      'January' => 'იანვარი',
+      'February' => 'თებერვალი',
+      'March' => 'მარტი',
+      'April' => 'აპრილი',
+      'May' => 'მაისი',
+      'June' => 'ივნისი',
+      'July' => 'ივლისი',
+      'August' => 'აგვისტო',
+      'September' => 'სექტემბერი',
+      'October' => 'ოქტომბერი',
+      'November' => 'ნოემბერი',
+      'December' => 'დეკემბერი'
+      );
+      if( $lang == 'en' )
+      return date('F d, Y',strtotime($timestring));
+      else
+      return str_replace(array_keys($the_months), $the_months, date('F d, Y',strtotime($timestring)));
+      }, */
     'projects_in_sidebar' => 10
-
 );

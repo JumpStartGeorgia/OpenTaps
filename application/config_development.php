@@ -7,5 +7,6 @@ return array(
         'name' => 'opentaps',
         'user' => 'root',
         'pass' => 'asdfg'
-    )
+    ),
+    'error_level' => -1
 );
