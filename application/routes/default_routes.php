@@ -1,5 +1,23 @@
 <?php
 
+Slim::get('/temproute/', function()
+    {
+	$ps = fetch_db("select `unique`, region_unique as ru, district_unique as du from projects where lang = 'ka' and region_unique != 0 and district_unique != 0;");
+	foreach($ps as $p)
+	{
+	    fetch_db(
+		"update projects set region_unique = :ru, district_unique = :du where lang = 'en' and `unique` = :un",
+		array(
+		    ':ru' => $p['ru'],
+		    ':du' => $p['du'],
+		    ':un' => $p['unique']
+		)
+	    );
+	}
+	Storage::instance()->content = 'success';
+    }
+);
+
 Slim::get('/', function()
         {
 
