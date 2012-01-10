@@ -56,7 +56,7 @@ Slim::post('/admin/menu/create/', function()
             {
                 !empty($_POST['record_language']) AND in_array($_POST['record_language'], config('languages')) OR $_POST['record_language'] = LANG;
 
-                dd_menu($_POST['record_language'], $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], 0);
+                add_menu($_POST['record_language'], $_POST['m_name'], $_POST['m_short_name'], $_POST['m_parent_unique'], $_POST['m_title'], $_POST['m_text'], 0);
                 Slim::redirect(href('admin/menu', TRUE));
             }
             else
