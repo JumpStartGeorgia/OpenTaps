@@ -1778,6 +1778,7 @@ function get_organization_chart_data($unique)
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
     $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'budget');
+    //array_walk($data, function(&$value){ $value = array($value['title'], $value['budget'], $value['start_at']); });
 
     $results['organization_projects'] = array(
         'description' => 'Projects of this organization.',
@@ -1800,7 +1801,7 @@ function get_organization_chart_data($unique)
     );
 
      $sql = "
-	select  left(p.start_at, 4), " ./*left(p.title, 5),*/ "
+	select  left(p.start_at, 4),
 		(
 		 select sum(pb.budget)
 		 from projects as ip
@@ -1830,14 +1831,42 @@ function get_organization_chart_data($unique)
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
     $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    array_walk(
-	$data,
-	function(&$value)
+    array_walk($data, function(&$value){
+	    $value = array_values($value);
+	    $value[1] = (int) $value[1];
+    });
+    if (count($data) == 1)
+    {
+	$query = db()->prepare(str_replace('4', '7', $sql));
+	$query->closeCursor();
+	$query->execute(array(':unique' => $unique));
+	$data = $query->fetchAll(PDO::FETCH_ASSOC);
+	list($cdate) = array_values($data[0]);
+	$year = substr($cdate, 0, 4);
+	$months = array();
+	for ($i = 1; $i <= 12; $i ++)
 	{
-	    is_array($value) and $value = array_values($value);
-	    empty($value[1]) or $value[1] = (int) $value[1];
+	    $months[] = $year . '-' . ($i > 9 ? $i : '0' . $i);
 	}
-    );
+	foreach ($data as $value)
+	{
+	    $value = array_values($value);
+	    unset($months[array_search($value[0], $months)]);
+	}
+	foreach ($months as $month)
+	{
+	    $data[] = array($month, null);
+	}
+	array_walk($data, function(&$value){
+		$value = array_values($value);
+		empty($value[1]) or $value[1] = (int) $value[1];
+	});
+	array_multisort($data, SORT_ASC, $data);
+	array_walk($data, function(&$value){
+	    $value[0] = lang_months($value[0]) . ' ' . substr($value[0], 0, 4);
+	});
+    }
+    //print_r(substr("2011-08", 5) - substr("2011-04", 5));die;
 
     $results['budgets_by_year'] = array(
         'description' => '',
@@ -1916,6 +1945,27 @@ function dateformat($date)
     );
 
     return strtr(strtolower(date('F d, Y', $date)), $months);
+}
+function lang_months($month)
+{
+    $c = LANG == 'ka';
+    $rep = array(
+        'january' => ($c ? 'იანვარი' : 'January'),
+        'february' => ($c ? 'თებერვალი' : 'February'),
+        'march' => ($c ? 'მარტი' : 'March'),
+        'april' => ($c ? 'აპრილი' : 'April'),
+        'may' => ($c ? 'მაისი' : 'May'),
+        'june' => ($c ? 'ივნისი' : 'June'),
+        'july' => ($c ? 'ივლისი' : 'July'),
+        'august' => ($c ? 'აგვისტო' : 'August'),
+        'september' => ($c ? 'სექტემბერი' : 'September'),
+        'october' => ($c ? 'ოქტომბერი' : 'October'),
+        'november' => ($c ? 'ნოემბერი' : 'November'),
+        'december' => ($c ? 'დეკემბერი' : 'December')
+    );
+    strlen($month > 2) and $month = substr($month, 5, 2);
+    $month = date("F", strtotime('2010-' . $month));
+    return $rep[strtolower($month)];
 }
 
 function change_language($lang)

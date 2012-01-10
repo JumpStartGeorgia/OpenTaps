@@ -119,6 +119,7 @@ $(document).ready(function()
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
+	/* line */
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'year');
 	data.addColumn('number', 'budget');
@@ -126,4 +127,28 @@ $(document).ready(function()
 
         var chart = new google.visualization.LineChart(document.getElementById('org-chart-container-3'));
         chart.draw(data, {legend: 'none', width: '100%', colors: ['#0CB5F6'], pointSize: 4});
+
+	/* scatter */
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'Age');
+        data.addColumn('number', 'Weight');
+        data.addRows([
+          [8, 12],
+          [4, 5.5],
+          [11, 14],
+          [4, 4.5],
+          [3, 3.5],
+          [6.5, 7]
+        ]);
+
+        var options = {
+          width: 400, height: 240,
+          title: 'Age vs. Weight comparison',
+          hAxis: {title: 'Age', minValue: 0, maxValue: 15},
+          vAxis: {title: 'Weight', minValue: 0, maxValue: 15},
+          legend: 'none'
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
       }
