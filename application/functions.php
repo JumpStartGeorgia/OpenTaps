@@ -1768,17 +1768,34 @@ function get_organization_chart_data($unique)
 		DISTINCT(projects.`unique`), projects.title,
 		(SELECT SUM(budget) FROM project_budgets
 		 WHERE organization_unique = :unique AND project_unique = projects.`unique` AND currency = 'gel')
-		 AS budget
+		 AS budget,
+		LEFT(start_at, 4) as year,
+		SUBSTRING(start_at, 6, 2) as month
 	    FROM projects
 	    INNER JOIN project_budgets AS pb ON pb.project_unique = projects.`unique`
 	    WHERE projects.lang = '" . LANG . "' AND pb.organization_unique = :unique
-	    ORDER BY budget";
+	    ORDER BY start_at, budget";
 
     $query = db()->prepare($sql);
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
-    $data = convert_to_chart_array($query->fetchAll(PDO::FETCH_ASSOC), 'title', 'budget');
-    //array_walk($data, function(&$value){ $value = array($value['title'], $value['budget'], $value['start_at']); });
+    $data = $query->fetchAll(PDO::FETCH_ASSOC);
+    $year = $data[0]['year'];
+    foreach ($data as $d)
+    {
+	$year < $d['year'] and $year = $d['year'];
+    }
+    if ($year == $data[0]['year'])
+    {
+	array_walk($data, function(&$value){
+	    $value = array($value['title'], (int) $value['budget'], (int) $value['month']);
+	});
+    }
+    else
+    {
+	array_walk($data, function(&$value){ $value = array($value['title'], (int) $value['budget'], (int) $value['year']); });
+    }
+    $data = /*json_replace_unicode*/(json_encode($data));
 
     $results['organization_projects'] = array(
         'description' => 'Projects of this organization.',

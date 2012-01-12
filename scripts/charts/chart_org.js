@@ -3,7 +3,7 @@ $(document).ready(function()
 
         if (typeof(org_page) !== 'undefined' && org_page)
         {
-            if (typeof(data_1) !== 'undefined')
+            /*if (typeof(data_1) !== 'undefined')
             {
                 pie_chart_options.chart.renderTo = 'org-chart-container-1';
                 pie_chart_options.series = [{
@@ -34,7 +34,7 @@ $(document).ready(function()
                 ];
 
                 var org_chart_1 = new Highcharts.Chart(pie_chart_options);
-            }
+            }*/
 
             if (typeof(data_2) !== 'undefined')
             {
@@ -112,7 +112,18 @@ $(document).ready(function()
 
 
 
-
+    function addCommas(nStr)
+    {
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+	x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+    }
 
 
     //google chart api
@@ -128,27 +139,45 @@ $(document).ready(function()
         var chart = new google.visualization.LineChart(document.getElementById('org-chart-container-3'));
         chart.draw(data, {legend: 'none', width: '100%', colors: ['#0CB5F6'], pointSize: 4});
 
-	/* scatter */
-        var data = new google.visualization.DataTable();
-        data.addColumn('number', 'Age');
-        data.addColumn('number', 'Weight');
-        data.addRows([
-          [8, 12],
-          [4, 5.5],
-          [11, 14],
-          [4, 4.5],
-          [3, 3.5],
-          [6.5, 7]
-        ]);
 
-        var options = {
-          width: 400, height: 240,
-          title: 'Age vs. Weight comparison',
-          hAxis: {title: 'Age', minValue: 0, maxValue: 15},
-          vAxis: {title: 'Weight', minValue: 0, maxValue: 15},
-          legend: 'none'
-        };
+	/* scatter *//*
+	var data = new google.visualization.DataTable();
+	data.addColumn('number', 'X');
+	data.addColumn('number', 'Budget');
+	data.addColumn({type:'string', role:'tooltip'});
+	var mindate = data_1[0][2], maxdate = data_1[0][2], direction = 1;
+	for (var i = 0; i < data_1.length; i ++)
+	{
+	    data.addRow([data_1[i][1], data_1[i][2], data_1[i][0] + '\nBudget: ' + addCommas(data_1[i][1])]);
+	    if (data_1[i][2] > maxdate) maxdate = data_1[i][2];
+	    if (data_1[i][2] < mindate) mindate = data_1[i][2];
+	}
+	if (mindate == maxdate)
+	{
+	    mindate += -1;
+	    maxdate += 1;
+	}
+	if (data_1[0][2] < 13)
+	{
+	    mindate = 1;
+	    maxdate = 12;
+	    direction = -1;
+	}
 
-        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+	var chart = new google.visualization.ScatterChart(document.getElementById('org-chart-container-1'));
+	/*google.visualization.events.addListener(chart, 'onmouseover', function (e){
+	    //chart.setSelection([e]);
+	    //console.log('column: ' + e.column + '; row: ' + e.row);
+	    //console.log(titles[e.row]);
+	});*//*
+
+	chart.draw(
+	    data,
+	    {title: null,
+	     width: '100%',
+	     pointSize: 4,
+	     vAxis: {title: 'Month', format: '####', direction: direction, minValue: mindate, maxValue: maxdate, gridlines: {count: Math.abs(maxdate - mindate + 1)}, titleTextStyle: {color: "#0CB5F5"}},
+	     hAxis: {title: "Budget", titleTextStyle: {color: "green"}}}
+	);*/
+
       }

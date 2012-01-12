@@ -119,7 +119,7 @@
 
             <?php if (!empty($chart_data['organizations_budgets'])): ?>
                 <div class="group">
-                    <?php 
+                    <?php /*
                     if (!empty($chart_data['organization_projects']['data'])):
                         $csv_uniq = 'chartcsv' . uniqid();
                         $_SESSION[$csv_uniq] = $chart_data['organization_projects']['data'];
@@ -130,9 +130,24 @@
                             data_1 = <?php echo $chart_data['organization_projects']['data'] ?>,
                             uniqid_1 = "<?php echo $csv_uniq; ?>";
                         </script>
-                        <div class="withmargin" style="width: 336px; text-align: center; float: left; border-right: 1px dotted #a6a6a6;">
+                        <div class="withmargin" style="width: 100%; text-align: center;">
                             <p class='desc'><?php echo l('chart_org_projects') ?></p>
-                            <div id="org-chart-container-1" style="padding: 0; margin: 0 auto; width: 335px;"></div>
+                            <div id="org-chart-container-1" style="padding: 0; margin: 0 auto; width: 100%;"></div>
+                        </div>
+                    <?php endif; */
+
+                    if (!empty($chart_data['budgets_by_year']['data'])):
+                        /*$csv_uniq = 'chartcsv' . uniqid();
+                        $_SESSION[$csv_uniq] = $chart_data['budgets_by_year']['data'];
+                        $_SESSION[$csv_uniq . '_first_row'] = array('Project Name', 'Budget');
+                        */ ?>
+                        <script type="text/javascript">
+                            var data_3 = <?php echo $chart_data['budgets_by_year']['data'] ?>;
+                            //uniqid_3 = "<?php //echo $csv_uniq; ?>";
+                        </script><div id="breaker" class="group" style="clear:both; display: block; height: 0px; width: 100%;"></div>
+                        <div class="withmargin" style="width: 100%; text-align: center; display: block;">
+                            <p class="desc"><?php echo l('budgets_by_year'); ?></p>
+                            <div id="org-chart-container-3" style="padding: 0; margin: 0 auto; width: 100%;"></div>
                         </div>
                     <?php endif; ?>
 
@@ -148,24 +163,9 @@
                             data_2 = <?php echo $chart_data['organizations_budgets']['data'] ?>,
                             uniqid_2 = "<?php echo $csv_uniq; ?>";
                         </script>
-                        <div class="withmargin group" style="float: left; width: 334px; margin-left: 1px; text-align: center; display: block;">
+                        <div class="withmargin group" style="width: 334px; margin: 20px auto 0px auto; text-align: center; display: block;">
                             <p class="desc"><?php echo l('chart_org_budget') ?></p>
                             <div id="org-chart-container-2" style="padding: 0; margin: 0 auto; width: 335px;"></div>
-                        </div>
-                    <?php endif; 
-
-                    if (!empty($chart_data['budgets_by_year']['data'])):
-                        /*$csv_uniq = 'chartcsv' . uniqid();
-                        $_SESSION[$csv_uniq] = $chart_data['budgets_by_year']['data'];
-                        $_SESSION[$csv_uniq . '_first_row'] = array('Project Name', 'Budget');
-                        */ ?>
-                        <script type="text/javascript">
-                            var data_3 = <?php echo $chart_data['budgets_by_year']['data'] ?>;
-                            //uniqid_3 = "<?php echo $csv_uniq; ?>";
-                        </script><div id="breaker" class="group" style="clear:both; display: block; height: 0px; width: 100%;"></div>
-                        <div class="withmargin" style="width: 100%; text-align: center; display: block;">
-                            <p class="desc"><?php echo l('budgets_by_year'); ?></p>
-                            <div id="org-chart-container-3" style="padding: 0; margin: 0 auto; width: 100%;"></div>
                         </div>
                     <?php endif; ?>
                 </div>
