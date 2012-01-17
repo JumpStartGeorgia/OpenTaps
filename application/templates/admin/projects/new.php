@@ -164,7 +164,7 @@
     </select>
     <br /><br />
 
-    <label for='porgs'>Organizations: (hold down Ctrl to select multiple)</label>
+    <label for='porgs'>Organizations:</label>
     <br />
     <select name='p_orgs[]' id='porgs' multiple='multiple'>
         <?php foreach ($organizations as $org): ?>

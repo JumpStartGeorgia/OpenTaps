@@ -2,7 +2,29 @@
 
 Slim::get('/temproute/', function()
     {
-	$ps = fetch_db("select `unique`, region_unique as ru, district_unique as du from projects where lang = 'ka' and region_unique != 0 and district_unique != 0;");
+	$projects = fetch_db("select `unique`
+	from projects as kap where
+	    (select count(id) from pages_data where lang = 'ka' and owner = 'project' and owner_unique = kap.`unique`) > 0 and
+	    (select count(id) from pages_data where lang = 'en' and owner = 'project' and owner_unique = kap.`unique`) = 0 and
+	    lang = 'ka'");
+	foreach ($projects as &$p)
+	{
+	    $ds = fetch_db("select * from pages_data where lang = 'ka' and owner = 'project' and owner_unique = " . $p['unique'] . "");
+
+	    foreach ($ds as $d)
+	    {
+		fetch_db("insert into pages_data(`unique`, lang, `key`, `sort`, sidebar, `value`, owner, owner_unique) values(
+				" . generate_unique('pages_data') . ",
+				'en',
+				'" . $d['key'] . " (en)',
+				" . $d['sort'] . ",
+				" . $d['sidebar'] . ",
+				'" . $d['value'] . "',
+				'" . $d['owner'] . "',
+				" . $d['owner_unique'] . ")");
+	    }
+	}
+	/*$ps = fetch_db("select `unique`, region_unique as ru, district_unique as du from projects where lang = 'ka' and region_unique != 0 and district_unique != 0;");
 	foreach($ps as $p)
 	{
 	    fetch_db(
@@ -13,7 +35,7 @@ Slim::get('/temproute/', function()
 		    ':un' => $p['unique']
 		)
 	    );
-	}
+	}*/
 	Storage::instance()->content = 'success';
     }
 );

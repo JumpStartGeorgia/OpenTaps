@@ -205,7 +205,7 @@ $db = 'style="display: block;"';
     </select>
     <br /><br />
 
-    <label for='porgs'>Organizations: (hold down Ctrl to select multiple)</label>
+    <label for='porgs'>Organizations:</label>
     <br />
     <select class="chosen-select" name='p_orgs[]' id='porgs' multiple='multiple'>
         <?php
