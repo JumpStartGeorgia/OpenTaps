@@ -1780,22 +1780,29 @@ function get_organization_chart_data($unique)
     $query->closeCursor();
     $query->execute(array(':unique' => $unique));
     $data = $query->fetchAll(PDO::FETCH_ASSOC);
-    $year = $data[0]['year'];
-    foreach ($data as $d)
+    if (!empty($data[0]['year']))
     {
-	$year < $d['year'] and $year = $d['year'];
-    }
-    if ($year == $data[0]['year'])
-    {
-	array_walk($data, function(&$value){
-	    $value = array($value['title'], (int) $value['budget'], (int) $value['month']);
-	});
+	$year = $data[0]['year'];
+	foreach ($data as $d)
+	{
+	    $year < $d['year'] and $year = $d['year'];
+	}
+	if ($year == $data[0]['year'])
+	{
+	    array_walk($data, function(&$value){
+		$value = array($value['title'], (int) $value['budget'], (int) $value['month']);
+	    });
+	}
+	else
+	{
+	    array_walk($data, function(&$value){ $value = array($value['title'], (int) $value['budget'], (int) $value['year']); });
+	}
+	$data = /*json_replace_unicode*/(json_encode($data));
     }
     else
     {
-	array_walk($data, function(&$value){ $value = array($value['title'], (int) $value['budget'], (int) $value['year']); });
+	$data = NULL;
     }
-    $data = /*json_replace_unicode*/(json_encode($data));
 
     $results['organization_projects'] = array(
         'description' => 'Projects of this organization.',
