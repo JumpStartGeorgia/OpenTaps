@@ -51,9 +51,10 @@ Slim::get('/map-data/settlements(/:type)', 'check_map_data_access', function($ty
         }
 );
 
-Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', function($type, $status = 'all')
+Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', function($type = NULL, $status = 'all')
         {
-            $type = db_escape_string($type);
+            if (!empty($type))
+                $type = db_escape_string($type);
             $status = db_escape_string($status);
 
             $type = ucwords(str_replace('_', ' ', trim(strtolower($type))));
@@ -72,6 +73,10 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
                     break;
             }
 
+            $type_sql = NULL;
+            if (!empty($type))
+                $type_sql = "AND pr.type = '{$type}'";
+
             $sql = "
                 SELECT
                     pr.`unique` AS id,
@@ -85,7 +90,7 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
                         ON pp.project_id = pr.`unique`
                 WHERE pr.lang = '" . LANG . "'
                     AND pr.lang = pl.lang
-                    AND pr.type = '{$type}'
+                    {$type_sql}
                     {$status_sql}
             ;";
 
