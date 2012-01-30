@@ -974,34 +974,22 @@ function read_projects($project_unique = FALSE, $limit = NULL, $readhidden = FAL
     return $statement->fetchAll();
 }
 
-function projects_total_pages($filter = FALSE)
-{
-    $per_page = config('projects_on_single_page');
-    $query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "' " . ($filter ? ' AND type = :type ' : NULL) . ";";
-    $query = db()->prepare($query);
-    $query->execute($filter ? array(':type' => $filter) : NULL);
-    $total = $query->fetch(PDO::FETCH_ASSOC);
-    $total = $total['total'];
-    $total == 0 AND $total = 1;
-    $total_pages = ceil($total / $per_page);
-    //$total_pages = ($total % $per_page == 0) ? $total / $per_page : ($total + ($per_page - $total % $per_page)) / $per_page;
-    return $total_pages;
-}
 
-/*
 function projects_total_pages($filter = FALSE)
 {
     $posp = config('projects_on_single_page');
-    $query = "SELECT COUNT(id) AS total FROM projects WHERE lang = '" . LANG . "' " . ($filter ? ' AND type = :type ' : NULL) . ";";
+    $query = "SELECT COUNT(id) AS total FROM projects WHERE hidden = 0 and lang = '" . LANG . "' " . ($filter ? ' AND type = :type ' : NULL) . ";";
     $query = db()->prepare($query);
     $query->execute($filter ? array(':type' => $filter) : NULL);
     $total = $query->fetch(PDO::FETCH_ASSOC);
     $total = $total['total'];
     $total == 0 and $total = 1;
     $total_pages = ($total % $posp == 0) ? $total / $posp : ($total + ($posp - $total % $posp)) / $posp;
+
+    //$total_pages = ceil($total / $per_page);
+
     return $total_pages;
 }
-*/
 
 function read_projects_one_page($from, $limit, $order = FALSE, $direction = FALSE, $type = FALSE)
 {
