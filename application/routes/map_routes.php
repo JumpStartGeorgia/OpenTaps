@@ -51,9 +51,10 @@ Slim::get('/map-data/settlements(/:type)', 'check_map_data_access', function($ty
         }
 );
 
-Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', function($type, $status = 'all')
+Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', function($type = NULL, $status = 'all')
         {
-            $type = db_escape_string($type);
+            if (!empty($type))
+                $type = db_escape_string($type);
             $status = db_escape_string($status);
 
             $type = ucwords(str_replace('_', ' ', trim(strtolower($type))));
@@ -72,6 +73,10 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
                     break;
             }
 
+            $type_sql = NULL;
+            if (!empty($type))
+                $type_sql = "AND pr.type = '{$type}'";
+
             $sql = "
                 SELECT
                     pr.`unique` AS id,
@@ -85,7 +90,7 @@ Slim::get('/map-data/projects/:type(/:status)', 'check_map_data_access', functio
                         ON pp.project_id = pr.`unique`
                 WHERE pr.lang = '" . LANG . "'
                     AND pr.lang = pl.lang
-                    AND pr.type = '{$type}'
+                    {$type_sql}
                     {$status_sql}
             ;";
 
@@ -244,12 +249,19 @@ Slim::get('/map-data/cluster-region-projects/(:variations)', 'check_map_data_acc
 
             $json = array();
 
+            // Don't blame me with the code below... ^_^
+            
             foreach ($result AS $region)
             {
 
                 $count = 0;
-                foreach ($variations AS $type => $status)
-                    $count += get_region_projects($region['unique'], $type, $status);
+                foreach ($variations AS $type => $statuses)
+                {
+                    foreach ($statuses AS $status)
+                    {
+                        $count += get_region_projects($region['unique'], $type, $status);
+                    }
+                }
 
                 //$region['type'] = empty($type_item) ? FALSE : strtolower(str_replace('', '_', $count['type']));
                 //$region['status'] = empty($status_item) ? FALSE : $status_item;

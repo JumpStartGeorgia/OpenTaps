@@ -1,6 +1,6 @@
 /**
  * Mapping script for OpenTaps project.
- * Used plain JavaScript, jQuery, OpenLayers and geo-data by JumpStart Georgia in GeoJSON format.
+ * Used jQuery, OpenLayers and geo-data by JumpStart Georgia in GeoJSON format.
  * Otar Chekurishvili - otar@chekurishvili.com
  */
 
