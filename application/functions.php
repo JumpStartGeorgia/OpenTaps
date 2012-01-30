@@ -877,10 +877,11 @@ function update_region($unique, $name, $region_info, $region_projects_info, $cit
 function region_total_budget($region_unique)
 {
     $total_budget = fetch_db("
-				SELECT SUM(budget) AS total_budget FROM projects
-				LEFT JOIN places ON projects.place_unique = places.`unique`
-				WHERE places.region_unique = $region_unique
-			");
+				SELECT SUM(pb.budget) AS total_budget FROM project_budgets as pb
+				inner join projects as p on pb.project_unique = p.`unique`
+				LEFT JOIN places ON p.place_unique = places.`unique` and places.region_unique = p.region_unique
+				WHERE p.region_unique = :ru
+			", array(':ru' => $region_unique));
     $total_budget = number_format($total_budget[0]['total_budget']);
 
     return $total_budget;
