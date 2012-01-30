@@ -249,12 +249,19 @@ Slim::get('/map-data/cluster-region-projects/(:variations)', 'check_map_data_acc
 
             $json = array();
 
+            // Don't blame me with the code below... ^_^
+            
             foreach ($result AS $region)
             {
 
                 $count = 0;
-                foreach ($variations AS $type => $status)
-                    $count += get_region_projects($region['unique'], $type, $status);
+                foreach ($variations AS $type => $statuses)
+                {
+                    foreach ($statuses AS $status)
+                    {
+                        $count += get_region_projects($region['unique'], $type, $status);
+                    }
+                }
 
                 //$region['type'] = empty($type_item) ? FALSE : strtolower(str_replace('', '_', $count['type']));
                 //$region['status'] = empty($status_item) ? FALSE : $status_item;
