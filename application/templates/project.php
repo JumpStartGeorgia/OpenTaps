@@ -54,16 +54,19 @@
                         </div>
                     </div>
 
+		    <?php
+		    $people = project_beneficiary_people($project);
+		    if ($people > 1):
+		    ?>
                     <div class="project_details_line clearfix" style="width: 100%;">
                         <div class='line_left'>
                             <?php echo l('beneficiary_people') ?> :
                         </div>
                         <div class="wordwrap">
-						<?php			   
-			   				echo project_beneficiary_people($project);
-			            ?>
+                            <?php echo $people ?>
                         </div>
                     </div>
+                    <?php endif; ?>
 
                     <div class="project_details_line clearfix" style="width: 100%;">
                         <div class='line_left'>
