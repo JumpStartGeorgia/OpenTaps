@@ -33,10 +33,12 @@
 
                 <div class="header_right slidenews">
                     <?php foreach ($slide_news as $news): ?>
-                        <div class="slide"><a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
+                        <div class="slide">
+			    <a href="<?php echo href('news/' . $news['unique'], TRUE) ?>">
                                 <p><?php echo $news['title']; ?></p>
                                 <?php echo char_limit(strip_tags($news['body'], 320), 130) ?>
-                            </a></div>
+                            </a>
+                        </div>
                     <?php endforeach; ?>
                 </div>
 

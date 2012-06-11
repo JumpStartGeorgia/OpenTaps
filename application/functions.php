@@ -384,7 +384,7 @@ function image_upload($filedata, $path = "uploads/")
                 $filedata['type'] == "image/gif" || $filedata['type'] == "image/png") && $filedata['size'] / 1024 < 3149)
         {
             $path = "uploads/";
-            $name = substr(sha1(uniqid() . time() . mt_rand(0, 1000)), 0, 15) . substr($filedata['name'], -20);
+            $name = substr(sha1(uniqid() . time() . mt_rand(0, 1000)), 0, 15) . substr(str_replace(' ', '_', $filedata['name']), -20);
             if (file_exists($path . $name))
                 $name = mt_rand(0, 99999) . $name;
             $upload = move_uploaded_file($filedata["tmp_name"], $path . $name);
@@ -2239,7 +2239,7 @@ function theOrganizationData ($unique)
 
 function theOrganizationLogoDimensions ($logo)
 {
-	list($width, $height) = getimagesize($logo);
+    list($width, $height) = getimagesize($logo);
     list($maxwidth, $maxheight) = array(262, 174);
     $k = ($height > $maxheight OR $width > $maxwidth) ? max(($width / $maxwidth), ($height / $maxheight)) : 1;
     return array(
